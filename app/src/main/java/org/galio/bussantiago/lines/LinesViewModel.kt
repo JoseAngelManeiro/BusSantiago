@@ -10,6 +10,8 @@ class LinesViewModel(getLines: GetLines) : ViewModel() {
   fun getLiveString() = liveString
 
   init {
-    liveString.postValue(getLines.invoke().toString())
+    getLines(Unit) {
+      liveString.postValue(it.toString())
+    }
   }
 }
