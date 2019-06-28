@@ -1,4 +1,6 @@
-package org.galio.bussantiago.common
+package org.galio.bussantiago.domain
+
+import org.galio.bussantiago.common.Either
 
 abstract class Interactor<Request, Response>(
   private val appExecutors: AppExecutors
@@ -11,9 +13,9 @@ abstract class Interactor<Request, Response>(
     onError: (Exception) -> Unit = {},
     onSuccess: (Response) -> Unit = {}
   ) {
-    appExecutors.bg.execute {
+    appExecutors.background {
       val response = execute(request)
-      appExecutors.ui.execute {
+      appExecutors.main {
         if (response.isRight) {
           onSuccess(response.rightValue)
         } else {

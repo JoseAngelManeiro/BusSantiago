@@ -1,8 +1,8 @@
 package org.galio.bussantiago.lines
 
-import org.galio.bussantiago.common.AppExecutors
 import org.galio.bussantiago.common.Either
-import org.galio.bussantiago.common.Interactor
+import org.galio.bussantiago.domain.Interactor
+import org.galio.bussantiago.domain.AppExecutors
 import org.galio.bussantiago.domain.Line
 import org.galio.bussantiago.domain.LineRepository
 
