@@ -1,13 +1,18 @@
 package org.galio.bussantiago.data.api
 
+import org.galio.bussantiago.common.Either.Right
+import org.galio.bussantiago.common.Either.Left
 import org.galio.bussantiago.common.Either
+import org.galio.bussantiago.common.exception.NetworkConnectionException
+import org.galio.bussantiago.common.exception.ServiceException
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 private const val BASE_URL = "http://app.tussa.org/tussa/api/"
 
-class ApiClient {
+class ApiClient(private val networkHandler: NetworkHandler) {
 
   private val service: ApiService
 
@@ -17,7 +22,7 @@ class ApiClient {
       .addConverterFactory(GsonConverterFactory.create())
       .build()
 
-    service = retrofit.create<ApiService>(ApiService::class.java)
+    service = retrofit.create(ApiService::class.java)
   }
 
   fun getLines() = callService {
@@ -25,12 +30,20 @@ class ApiClient {
   }
 
   private fun <T> callService(callback: () -> Call<T>): Either<Exception, T> {
-    val response = callback().execute()
-    val responseBody = response.body()
-    return if (response.isSuccessful && responseBody != null) {
-      Either.Right(responseBody)
+    return if (networkHandler.isConnected()) {
+      try {
+        val response = callback().execute()
+        val responseBody = response.body()
+        if (response.isSuccessful && responseBody != null) {
+          Right(responseBody)
+        } else {
+          Left(ServiceException())
+        }
+      } catch (exception: IOException) {
+        Left(ServiceException())
+      }
     } else {
-      Either.Left(Exception())
+      Left(NetworkConnectionException())
     }
   }
 }

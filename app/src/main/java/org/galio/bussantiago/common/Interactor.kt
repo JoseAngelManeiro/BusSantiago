@@ -1,6 +1,6 @@
-package org.galio.bussantiago.domain
+package org.galio.bussantiago.common
 
-import org.galio.bussantiago.common.Either
+import org.galio.bussantiago.common.executor.AppExecutors
 
 abstract class Interactor<Request, Response>(
   private val appExecutors: AppExecutors
