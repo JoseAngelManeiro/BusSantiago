@@ -4,22 +4,25 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.executor.InteractorExecutor
 
-class LinesViewModel(getLines: GetLines) : ViewModel() {
+class LinesViewModel(
+  executor: InteractorExecutor,
+  getLines: GetLines
+) : ViewModel() {
 
-  private val lines = MutableLiveData<Resource<List<LineView>>>()
+  private val _lines = MutableLiveData<Resource<List<LineView>>>()
 
-  fun getLines(): LiveData<Resource<List<LineView>>> = lines
+  val lines: LiveData<Resource<List<LineView>>>
+    get() = _lines
 
   init {
-    lines.value = Resource.loading()
-    getLines(
-      request = Unit,
-      onError = {
-        lines.value = Resource.error(it)
-      },
+    _lines.value = Resource.loading()
+    executor(
+      getLines,
+      Unit,
       onSuccess = {
-        lines.value = Resource.success(
+        _lines.value = Resource.success(
           it.map { line ->
             LineView(
               id = line.id,
@@ -29,6 +32,9 @@ class LinesViewModel(getLines: GetLines) : ViewModel() {
             )
           }
         )
+      },
+      onError = {
+        _lines.value = Resource.error(it)
       }
     )
   }
