@@ -43,7 +43,12 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.retrofit2:converter-gson:2.4.0"
 
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    testImplementation "android.arch.core:core-testing:1.1.1"
 }

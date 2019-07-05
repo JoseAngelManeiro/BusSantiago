@@ -27,7 +27,7 @@ class LinesFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    viewModel.getLines().observe(this, Observer {
+    viewModel.lines.observe(this, Observer {
       it?.let { resourceLines ->
         when (resourceLines.status) {
           Status.LOADING -> Toast.makeText(this.context, "Init Loading", Toast.LENGTH_SHORT).show()
