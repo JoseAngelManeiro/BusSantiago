@@ -1,17 +1,15 @@
 package org.galio.bussantiago.lines
 
 import org.galio.bussantiago.common.Either
-import org.galio.bussantiago.common.Interactor
-import org.galio.bussantiago.common.executor.AppExecutors
+import org.galio.bussantiago.domain.Interactor
 import org.galio.bussantiago.domain.Line
 import org.galio.bussantiago.domain.LineRepository
 
 class GetLines(
-  appExecutors: AppExecutors,
   private val lineRepository: LineRepository
-) : Interactor<Unit, List<Line>>(appExecutors) {
+) : Interactor<Unit, List<Line>> {
 
-  override fun execute(request: Unit): Either<Exception, List<Line>> {
+  override fun invoke(request: Unit): Either<Exception, List<Line>> {
     return lineRepository.getLines()
   }
 }

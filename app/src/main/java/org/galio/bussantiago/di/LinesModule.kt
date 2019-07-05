@@ -6,6 +6,6 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val linesModule = module {
-  factory { GetLines(appExecutors = get(), lineRepository = get()) }
-  viewModel { LinesViewModel(getLines = get()) }
+  factory { GetLines(lineRepository = get()) }
+  viewModel { LinesViewModel(executor = get(), getLines = get()) }
 }
