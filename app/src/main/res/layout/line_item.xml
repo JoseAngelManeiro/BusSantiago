@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:paddingStart="@dimen/default_padding"
+  android:paddingEnd="@dimen/default_padding"
+  android:paddingTop="@dimen/small_padding"
+  android:paddingBottom="@dimen/small_padding"
+  android:gravity="center_vertical"
+  android:background="?attr/selectableItemBackground"
+  tools:context=".lines.LinesFragment">
+
+  <TextView
+    style="@style/Synoptic"
+    android:id="@+id/synopticTextView"
+    tools:text="P2"/>
+
+  <TextView
+    android:id="@+id/nameTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="18sp"
+    android:lines="2"
+    android:ellipsize="end"
+    android:layout_marginStart="@dimen/default_margin"
+    android:gravity="center_vertical"
+    tools:text="Est. de autobuses / Ortoño de autobuses"/>
+
+</LinearLayout>
