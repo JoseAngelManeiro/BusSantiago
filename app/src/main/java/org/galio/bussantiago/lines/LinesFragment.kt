@@ -30,18 +30,34 @@ class LinesFragment : Fragment() {
     viewModel.lines.observe(this, Observer {
       it?.let { resourceLines ->
         when (resourceLines.status) {
-          Status.LOADING -> Toast.makeText(this.context, "Init Loading", Toast.LENGTH_SHORT).show()
+          Status.LOADING -> {
+            progressBar.visibility = View.VISIBLE
+          }
           Status.SUCCESS -> {
-            Toast.makeText(this.context, "Finish Loading", Toast.LENGTH_SHORT).show()
-            textViewLines.text = resourceLines.data.toString()
+            hideProgressBarIfNecessary()
+            setUpRecyclerView(resourceLines.data!!)
           }
           Status.ERROR -> {
-            Toast.makeText(this.context, "Finish Loading", Toast.LENGTH_SHORT).show()
+            hideProgressBarIfNecessary()
             Toast.makeText(this.context, resourceLines.exception!!.message, Toast.LENGTH_SHORT)
               .show()
           }
         }
       }
     })
+  }
+
+  private fun hideProgressBarIfNecessary() {
+    if (progressBar.visibility == View.VISIBLE) {
+      progressBar.visibility = View.GONE
+    }
+  }
+
+  private fun setUpRecyclerView(lines: List<LineView>) {
+    linesRecyclerView.adapter = LinesAdapter(lines) { onLineClicked(it) }
+  }
+
+  private fun onLineClicked(id: Int) {
+    Toast.makeText(this.context, "Line: $id", Toast.LENGTH_SHORT).show()
   }
 }
