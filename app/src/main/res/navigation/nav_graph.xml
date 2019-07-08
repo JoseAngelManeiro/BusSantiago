@@ -9,7 +9,7 @@
   <fragment
     android:id="@+id/linesFragment"
     android:name="org.galio.bussantiago.lines.LinesFragment"
-    android:label="Lines Fragment"
+    android:label="Líneas"
     tools:layout="@layout/lines_fragment">
   </fragment>
 
