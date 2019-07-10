@@ -29,6 +29,10 @@ class ApiClient(private val networkHandler: NetworkHandler) {
     service.getLines()
   }
 
+  fun getLineDetails(id: String) = callService {
+    service.getLineDetails(id)
+  }
+
   private fun <T> callService(callback: () -> Call<T>): Either<Exception, T> {
     return if (networkHandler.isConnected()) {
       try {
