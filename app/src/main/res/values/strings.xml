@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Bus Santiago</string>
+  <string name="app_name">Bus Santiago</string>
+  <string name="favorites">Favoritas</string>
 </resources>
