@@ -4,8 +4,11 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
@@ -15,6 +18,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class LinesFragment : Fragment() {
 
   private val viewModel: LinesViewModel by viewModel()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setHasOptionsMenu(true)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -59,5 +67,20 @@ class LinesFragment : Fragment() {
 
   private fun onLineClicked(id: Int) {
     Toast.makeText(this.context, "Line: $id", Toast.LENGTH_SHORT).show()
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    inflater?.inflate(R.menu.lines_menu, menu)
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    return when (item?.itemId) {
+      R.id.favorites_action -> {
+        Toast.makeText(this.context, "Favoritas", Toast.LENGTH_SHORT).show()
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
   }
 }
