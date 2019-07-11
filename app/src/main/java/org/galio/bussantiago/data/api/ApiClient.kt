@@ -29,7 +29,7 @@ class ApiClient(private val networkHandler: NetworkHandler) {
     service.getLines()
   }
 
-  fun getLineDetails(id: String) = callService {
+  fun getLineDetails(id: Int) = callService {
     service.getLineDetails(id)
   }
 

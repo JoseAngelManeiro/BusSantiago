@@ -3,8 +3,8 @@ package org.galio.bussantiago.data
 import org.galio.bussantiago.common.Either
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.mapper.LineMapper
-import org.galio.bussantiago.domain.Line
-import org.galio.bussantiago.domain.LineRepository
+import org.galio.bussantiago.domain.model.Line
+import org.galio.bussantiago.domain.repository.LineRepository
 
 internal class LineRepositoryImpl(
   private val apiClient: ApiClient,

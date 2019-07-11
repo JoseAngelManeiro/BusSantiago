@@ -2,8 +2,8 @@ package org.galio.bussantiago.lines
 
 import org.galio.bussantiago.common.Either
 import org.galio.bussantiago.domain.Interactor
-import org.galio.bussantiago.domain.Line
-import org.galio.bussantiago.domain.LineRepository
+import org.galio.bussantiago.domain.model.Line
+import org.galio.bussantiago.domain.repository.LineRepository
 
 class GetLines(
   private val lineRepository: LineRepository

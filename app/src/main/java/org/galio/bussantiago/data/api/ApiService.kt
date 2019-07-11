@@ -12,5 +12,5 @@ interface ApiService {
   fun getLines(): Call<List<LineEntity>>
 
   @GET("lineas/{id}?lang=es")
-  fun getLineDetails(@Path("id") id: String): Call<LineDetailsEntity>
+  fun getLineDetails(@Path("id") id: Int): Call<LineDetailsEntity>
 }
