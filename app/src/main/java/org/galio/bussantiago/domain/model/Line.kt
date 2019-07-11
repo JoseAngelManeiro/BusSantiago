@@ -1,4 +1,4 @@
-package org.galio.bussantiago.domain
+package org.galio.bussantiago.domain.model
 
 data class Line(
   val id: Int,
