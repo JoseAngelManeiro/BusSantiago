@@ -5,7 +5,7 @@ import android.arch.lifecycle.Observer
 import org.galio.bussantiago.common.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.executor.SyncInteractorExecutor
-import org.galio.bussantiago.domain.Line
+import org.galio.bussantiago.domain.model.Line
 import org.galio.bussantiago.util.mock
 import org.junit.Rule
 import org.junit.Test
@@ -50,13 +50,13 @@ class LinesViewModelTest {
 
     private fun createLineStub(): Line {
         return Line(
-            id = 1,
-            code = "Any code",
-            synoptic = "Any Synoptic",
-            name = "Any name",
-            company = "Any company",
-            incidents = 0,
-            style = "Any color"
+          id = 1,
+          code = "Any code",
+          synoptic = "Any Synoptic",
+          name = "Any name",
+          company = "Any company",
+          incidents = 0,
+          style = "Any color"
         )
     }
 

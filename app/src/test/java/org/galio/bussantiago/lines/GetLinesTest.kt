@@ -1,6 +1,6 @@
 package org.galio.bussantiago.lines
 
-import org.galio.bussantiago.domain.LineRepository
+import org.galio.bussantiago.domain.repository.LineRepository
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
