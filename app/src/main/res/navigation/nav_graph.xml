@@ -11,6 +11,17 @@
     android:name="org.galio.bussantiago.lines.LinesFragment"
     android:label="Líneas"
     tools:layout="@layout/lines_fragment">
+
+    <action
+      android:id="@+id/actionShowMenu"
+      app:destination="@id/menuFragment" />
+
   </fragment>
+
+  <dialog-fragment
+    android:id="@+id/menuFragment"
+    android:name="org.galio.bussantiago.menu.MenuFragment"
+    tools:layout="@layout/menu_fragment">
+  </dialog-fragment>
 
 </navigation>

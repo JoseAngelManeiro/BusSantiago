@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.menu.MenuFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LinesFragment : Fragment() {
@@ -66,7 +68,7 @@ class LinesFragment : Fragment() {
   }
 
   private fun onLineClicked(id: Int) {
-    Toast.makeText(this.context, "Line: $id", Toast.LENGTH_SHORT).show()
+    findNavController().navigate(R.id.actionShowMenu, MenuFragment.createArguments(id))
   }
 
   override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
