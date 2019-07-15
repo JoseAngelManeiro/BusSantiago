@@ -32,7 +32,7 @@ class DialogFragmentNavigator(
 
   class Destination(navigator: DialogFragmentNavigator) : NavDestination(navigator) {
 
-    // The value of <dialog-fragment app:name=""/>
+    // The value of <dialog-fragment android:name=""/>
     lateinit var name: String
 
     override fun onInflate(context: Context, attrs: AttributeSet) {

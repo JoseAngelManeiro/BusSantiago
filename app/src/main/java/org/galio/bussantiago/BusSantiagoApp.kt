@@ -3,6 +3,7 @@ package org.galio.bussantiago
 import android.app.Application
 import org.galio.bussantiago.di.appModule
 import org.galio.bussantiago.di.linesModule
+import org.galio.bussantiago.di.menuModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,7 +15,7 @@ class BusSantiagoApp : Application() {
     startKoin {
       androidLogger()
       androidContext(this@BusSantiagoApp)
-      modules(listOf(appModule, linesModule))
+      modules(listOf(appModule, linesModule, menuModule))
     }
   }
 }
