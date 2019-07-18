@@ -20,7 +20,7 @@ class LinesViewModelTest {
 
     private val executor = SyncInteractorExecutor()
     private val getLines = mock<GetLines>()
-    private val observer = mock<Observer<Resource<List<LineView>>>>()
+    private val observer = mock<Observer<Resource<List<LineModel>>>>()
 
     private lateinit var linesViewModel: LinesViewModel
 
@@ -60,12 +60,14 @@ class LinesViewModelTest {
         )
     }
 
-    private fun createLineViewStub(): LineView {
-        return LineView(
+    private fun createLineViewStub(): LineModel {
+        return LineModel(
             id = 1,
-            synoptic = "Any Synoptic",
-            name = "Any name",
-            style = "Any color"
+            synopticModel = SynopticModel(
+              synoptic = "Any Synoptic",
+              style = "Any color"
+            ),
+            name = "Any name"
         )
     }
 }

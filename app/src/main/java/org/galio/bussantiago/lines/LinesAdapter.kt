@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
-import android.graphics.Color.parseColor
-import android.graphics.drawable.GradientDrawable
 
 class LinesAdapter(
-  private val items: List<LineView>,
+  private val items: List<LineModel>,
   private val listener: (Int) -> Unit
 ) : RecyclerView.Adapter<LinesAdapter.ItemViewHolder>() {
 
@@ -26,7 +24,7 @@ class LinesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val synoptic = itemView.findViewById(R.id.synopticTextView) as TextView
+    private val synoptic = itemView.findViewById(R.id.synopticView) as SynopticView
     private val name = itemView.findViewById(R.id.nameTextView) as TextView
 
     init {
@@ -35,11 +33,9 @@ class LinesAdapter(
       }
     }
 
-    fun bind(lineView: LineView) {
-      val synopticBackground = synoptic.background as GradientDrawable
-      synopticBackground.setColor(parseColor(lineView.style))
-      synoptic.text = lineView.synoptic.removePrefix("L")
-      name.text = lineView.name
+    fun bind(lineModel: LineModel) {
+      synoptic.render(lineModel.synopticModel)
+      name.text = lineModel.name
     }
   }
 }
