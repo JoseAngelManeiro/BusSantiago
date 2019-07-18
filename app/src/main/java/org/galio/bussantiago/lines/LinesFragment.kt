@@ -63,7 +63,7 @@ class LinesFragment : Fragment() {
     }
   }
 
-  private fun setUpRecyclerView(lines: List<LineView>) {
+  private fun setUpRecyclerView(lines: List<LineModel>) {
     linesRecyclerView.adapter = LinesAdapter(lines) { onLineClicked(it) }
   }
 

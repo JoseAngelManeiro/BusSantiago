@@ -1,8 +1,6 @@
 package org.galio.bussantiago.lines
 
-data class LineView(
-  val id: Int,
+data class SynopticModel(
   val synoptic: String,
-  val name: String,
   val style: String
 )

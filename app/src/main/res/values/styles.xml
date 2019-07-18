@@ -9,8 +9,6 @@
   </style>
 
   <style name="Synoptic">
-    <item name="android:layout_width">40dp</item>
-    <item name="android:layout_height">40dp</item>
     <item name="android:textSize">16dp</item>
     <item name="android:gravity">center</item>
     <item name="android:textColor">@android:color/white</item>
