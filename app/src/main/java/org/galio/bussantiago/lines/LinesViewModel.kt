@@ -11,9 +11,9 @@ class LinesViewModel(
   getLines: GetLines
 ) : ViewModel() {
 
-  private val _lines = MutableLiveData<Resource<List<LineView>>>()
+  private val _lines = MutableLiveData<Resource<List<LineModel>>>()
 
-  val lines: LiveData<Resource<List<LineView>>>
+  val lines: LiveData<Resource<List<LineModel>>>
     get() = _lines
 
   init {
@@ -24,11 +24,13 @@ class LinesViewModel(
       onSuccess = {
         _lines.value = Resource.success(
           it.map { line ->
-            LineView(
+            LineModel(
               id = line.id,
-              synoptic = line.synoptic,
-              name = line.name,
-              style = line.style
+              synopticModel = SynopticModel(
+                synoptic = line.synoptic,
+                style = line.style
+              ),
+              name = line.name
             )
           }
         )

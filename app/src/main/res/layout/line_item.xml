@@ -13,10 +13,11 @@
   android:background="?attr/selectableItemBackground"
   tools:context=".lines.LinesFragment">
 
-  <TextView
-    style="@style/Synoptic"
-    android:id="@+id/synopticTextView"
-    tools:text="P2"/>
+  <org.galio.bussantiago.lines.SynopticView
+    android:id="@+id/synopticView"
+    android:layout_width="@dimen/synoptic_size"
+    android:layout_height="@dimen/synoptic_size"
+    tools:text="P2" />
 
   <TextView
     android:id="@+id/nameTextView"
