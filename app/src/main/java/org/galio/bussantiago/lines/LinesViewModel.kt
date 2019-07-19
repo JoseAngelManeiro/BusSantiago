@@ -7,8 +7,8 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.executor.InteractorExecutor
 
 class LinesViewModel(
-  executor: InteractorExecutor,
-  getLines: GetLines
+  private val executor: InteractorExecutor,
+  private val getLines: GetLines
 ) : ViewModel() {
 
   private val _lines = MutableLiveData<Resource<List<LineModel>>>()
@@ -16,7 +16,7 @@ class LinesViewModel(
   val lines: LiveData<Resource<List<LineModel>>>
     get() = _lines
 
-  init {
+  fun loadLines() {
     _lines.value = Resource.loading()
     executor(
       getLines,
