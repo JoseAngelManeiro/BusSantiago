@@ -35,7 +35,7 @@ class MenuFragment : DialogFragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    viewModel.lineDetails.observe(this, Observer {
+    viewModel.menuModel.observe(this, Observer {
       it?.let { resourceLineDetails ->
         when (resourceLineDetails.status) {
           Status.LOADING -> {

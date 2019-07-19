@@ -7,6 +7,7 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.executor.SyncInteractorExecutor
 import org.galio.bussantiago.domain.model.Line
 import org.galio.bussantiago.util.mock
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -24,17 +25,22 @@ class LinesViewModelTest {
 
     private lateinit var linesViewModel: LinesViewModel
 
-    private val lines = listOf(createLineStub())
-    private val lineViews = listOf(createLineViewStub())
+    @Before
+    fun setUp() {
+      linesViewModel = LinesViewModel(executor, getLines)
+      linesViewModel.lines.observeForever(observer)
+    }
 
     @Test
     fun `load the expected list of lines`() {
-        `when`(getLines(Unit)).thenReturn(Either.Right(lines))
+        val linesStub = listOf(createLineStub())
+        val lineViewsStub = listOf(createLineViewStub())
+        `when`(getLines(Unit)).thenReturn(Either.Right(linesStub))
 
-        linesViewModel = LinesViewModel(executor, getLines)
-        linesViewModel.lines.observeForever(observer)
+        linesViewModel.loadLines()
 
-        verify(observer).onChanged(Resource.success(lineViews))
+        verify(observer).onChanged(Resource.loading())
+        verify(observer).onChanged(Resource.success(lineViewsStub))
     }
 
     @Test
@@ -42,9 +48,9 @@ class LinesViewModelTest {
         val exception = Exception("Fake exception")
         `when`(getLines(Unit)).thenReturn(Either.Left(exception))
 
-        linesViewModel = LinesViewModel(executor, getLines)
-        linesViewModel.lines.observeForever(observer)
+        linesViewModel.loadLines()
 
+        verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.error(exception))
     }
 

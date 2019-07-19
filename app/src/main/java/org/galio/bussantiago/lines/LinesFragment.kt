@@ -55,6 +55,8 @@ class LinesFragment : Fragment() {
         }
       }
     })
+
+    viewModel.loadLines()
   }
 
   private fun hideProgressBarIfNecessary() {

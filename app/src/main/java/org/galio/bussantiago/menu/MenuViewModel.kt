@@ -5,28 +5,28 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.executor.InteractorExecutor
-import org.galio.bussantiago.domain.model.LineDetails
 
 class MenuViewModel(
   private val executor: InteractorExecutor,
-  private val getLineDetails: GetLineDetails
+  private val getLineDetails: GetLineDetails,
+  private val menuFactory: MenuFactory
 ) : ViewModel() {
 
-  private val _lineDetails = MutableLiveData<Resource<LineDetails>>()
+  private val _menuModel = MutableLiveData<Resource<MenuModel>>()
 
-  val lineDetails: LiveData<Resource<LineDetails>>
-    get() = _lineDetails
+  val menuModel: LiveData<Resource<MenuModel>>
+    get() = _menuModel
 
   fun loadLineDetails(id: Int) {
-    _lineDetails.value = Resource.loading()
+    _menuModel.value = Resource.loading()
     executor(
       interactor = getLineDetails,
       request = id,
       onSuccess = {
-        _lineDetails.value = Resource.success(it)
+        _menuModel.value = Resource.success(menuFactory.createMenu(it))
       },
       onError = {
-        _lineDetails.value = Resource.error(it)
+        _menuModel.value = Resource.error(it)
       }
     )
   }
