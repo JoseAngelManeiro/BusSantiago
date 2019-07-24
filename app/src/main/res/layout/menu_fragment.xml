@@ -7,10 +7,21 @@
   android:layout_height="match_parent"
   tools:context=".menu.MenuFragment">
 
-  <TextView
-    android:id="@+id/textMenu"
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/menuOptionsRecyclerView"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+    tools:visibility="visible"
+    tools:listitem="@layout/menu_item" />
+
+  <ProgressBar
+    android:id="@+id/progressBar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Menu"/>
+    android:layout_gravity="center"
+    android:visibility="gone"
+    tools:visibility="visible"/>
 
 </FrameLayout>

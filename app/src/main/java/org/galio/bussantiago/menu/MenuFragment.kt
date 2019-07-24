@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.menu_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
@@ -36,16 +37,19 @@ class MenuFragment : DialogFragment() {
     super.onActivityCreated(savedInstanceState)
 
     viewModel.menuModel.observe(this, Observer {
-      it?.let { resourceLineDetails ->
-        when (resourceLineDetails.status) {
+      it?.let { resourceMenuModel ->
+        when (resourceMenuModel.status) {
           Status.LOADING -> {
-            // Todo Not Implemented
+            progressBar.visibility = View.VISIBLE
           }
           Status.SUCCESS -> {
-            textMenu.text = it.toString()
+            hideProgressBarIfNecessary()
+            setUpRecyclerView(resourceMenuModel.data!!.options)
           }
           Status.ERROR -> {
-            // Todo Not Implemented
+            hideProgressBarIfNecessary()
+            Toast.makeText(this.context, resourceMenuModel.exception!!.message, Toast.LENGTH_SHORT)
+              .show()
           }
         }
       }
@@ -53,5 +57,22 @@ class MenuFragment : DialogFragment() {
 
     val id = arguments?.get(ID_KEY) as Int
     viewModel.loadLineDetails(id)
+  }
+
+  private fun hideProgressBarIfNecessary() {
+    if (progressBar.visibility == View.VISIBLE) {
+      progressBar.visibility = View.GONE
+    }
+  }
+
+  private fun setUpRecyclerView(menuOptionModels: List<MenuOptionModel>) {
+    menuOptionsRecyclerView.visibility = View.VISIBLE
+    menuOptionsRecyclerView.adapter = MenuAdapter(menuOptionModels) { onMenuOptionClicked(it) }
+  }
+
+  private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
+    // Todo Not Implemented
+    Toast.makeText(context, menuOptionModel.menuType.name, Toast.LENGTH_SHORT).show()
+    dismiss()
   }
 }
