@@ -8,6 +8,7 @@ import org.galio.bussantiago.data.LineDetailsRepositoryImpl
 import org.galio.bussantiago.data.LineRepositoryImpl
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.api.NetworkHandler
+import org.galio.bussantiago.data.cache.LineDetailsCache
 import org.galio.bussantiago.data.mapper.BusStopMapper
 import org.galio.bussantiago.data.mapper.CoordinatesMapper
 import org.galio.bussantiago.data.mapper.LineMapper
@@ -31,9 +32,16 @@ val appModule = module {
   factory { IncidenceMapper() }
   factory { LineDetailsMapper(routeMapper = get(), incidenceMapper = get()) }
 
+  // Cache factories
+  factory { LineDetailsCache() }
+
   // Repositories
-  single<LineRepository> { LineRepositoryImpl(apiClient = get(), mapper = get()) }
-  single<LineDetailsRepository> { LineDetailsRepositoryImpl(apiClient = get(), mapper = get()) }
+  single<LineRepository> {
+    LineRepositoryImpl(apiClient = get(), mapper = get())
+  }
+  single<LineDetailsRepository> {
+    LineDetailsRepositoryImpl(apiClient = get(), mapper = get(), cache = get())
+  }
 
   // Executor
   single<InteractorExecutor> {
