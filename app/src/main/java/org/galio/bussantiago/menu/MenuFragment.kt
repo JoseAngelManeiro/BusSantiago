@@ -3,6 +3,7 @@ package org.galio.bussantiago.menu
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.text.HtmlCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,9 @@ class MenuFragment : DialogFragment() {
 
   private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
     // Todo Not Implemented
+
+    HtmlCompat.fromHtml("", HtmlCompat.FROM_HTML_MODE_LEGACY)
+
     Toast.makeText(context, menuOptionModel.menuType.name, Toast.LENGTH_SHORT).show()
     dismiss()
   }
