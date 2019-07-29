@@ -9,7 +9,7 @@
   <fragment
     android:id="@+id/linesFragment"
     android:name="org.galio.bussantiago.ui.lines.LinesFragment"
-    android:label="Líneas"
+    android:label="@string/lines"
     tools:layout="@layout/lines_fragment">
 
     <action
@@ -22,6 +22,18 @@
     android:id="@+id/menuFragment"
     android:name="org.galio.bussantiago.ui.menu.MenuFragment"
     tools:layout="@layout/menu_fragment">
+
+    <action
+      android:id="@+id/actionShowInformation"
+      app:destination="@id/informationFragment" />
+
   </dialog-fragment>
+
+  <fragment
+    android:id="@+id/informationFragment"
+    android:name="org.galio.bussantiago.ui.information.InformationFragment"
+    android:label="@string/information"
+    tools:layout="@layout/information_fragment">
+  </fragment>
 
 </navigation>

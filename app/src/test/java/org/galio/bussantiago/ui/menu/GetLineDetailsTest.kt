@@ -12,7 +12,7 @@ class GetLineDetailsTest {
 
     @Test
     fun `invokes the line details repository`() {
-        val lineIdStub = 11
+        val lineIdStub = 123
 
         getLineDetails(lineIdStub)
 
