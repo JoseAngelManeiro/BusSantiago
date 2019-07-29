@@ -7,7 +7,7 @@
   android:orientation="horizontal"
   android:padding="@dimen/default_padding"
   android:background="?attr/selectableItemBackground"
-  tools:context=".menu.MenuFragment">
+  tools:context="org.galio.bussantiago.ui.menu.MenuFragment">
 
   <ImageView
     android:id="@+id/iconImageView"

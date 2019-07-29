@@ -11,9 +11,9 @@
   android:paddingBottom="@dimen/small_padding"
   android:gravity="center_vertical"
   android:background="?attr/selectableItemBackground"
-  tools:context=".lines.LinesFragment">
+  tools:context="org.galio.bussantiago.ui.lines.LinesFragment">
 
-  <org.galio.bussantiago.lines.SynopticView
+  <org.galio.bussantiago.ui.lines.SynopticView
     android:id="@+id/synopticView"
     android:layout_width="@dimen/synoptic_size"
     android:layout_height="@dimen/synoptic_size"
