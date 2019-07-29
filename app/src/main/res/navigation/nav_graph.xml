@@ -8,7 +8,7 @@
 
   <fragment
     android:id="@+id/linesFragment"
-    android:name="org.galio.bussantiago.lines.LinesFragment"
+    android:name="org.galio.bussantiago.ui.lines.LinesFragment"
     android:label="Líneas"
     tools:layout="@layout/lines_fragment">
 
@@ -20,7 +20,7 @@
 
   <dialog-fragment
     android:id="@+id/menuFragment"
-    android:name="org.galio.bussantiago.menu.MenuFragment"
+    android:name="org.galio.bussantiago.ui.menu.MenuFragment"
     tools:layout="@layout/menu_fragment">
   </dialog-fragment>
 
