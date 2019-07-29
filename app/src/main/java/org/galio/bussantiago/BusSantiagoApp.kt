@@ -1,9 +1,9 @@
 package org.galio.bussantiago
 
 import android.app.Application
-import org.galio.bussantiago.di.appModule
-import org.galio.bussantiago.di.linesModule
-import org.galio.bussantiago.di.menuModule
+import org.galio.bussantiago.common.di.appModule
+import org.galio.bussantiago.common.di.linesModule
+import org.galio.bussantiago.common.di.menuModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
