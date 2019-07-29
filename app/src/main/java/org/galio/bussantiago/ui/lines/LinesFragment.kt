@@ -2,7 +2,6 @@ package org.galio.bussantiago.ui.lines
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.Menu
@@ -14,10 +13,11 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.ui.BaseFragment
 import org.galio.bussantiago.ui.menu.MenuFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LinesFragment : Fragment() {
+class LinesFragment : BaseFragment() {
 
   private val viewModel: LinesViewModel by viewModel()
 
@@ -36,6 +36,8 @@ class LinesFragment : Fragment() {
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
+
+    initActionBar(R.string.lines)
 
     viewModel.lines.observe(this, Observer {
       it?.let { resourceLines ->
