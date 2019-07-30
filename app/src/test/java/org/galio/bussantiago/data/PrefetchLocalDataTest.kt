@@ -12,6 +12,7 @@ import org.mockito.Mockito.verify
 class PrefetchLocalDataTest {
 
     private val handleLoadFromLocal = mock<() -> Foo?>()
+    private val handleShouldFetch = mock<(Foo?) -> Boolean>()
     private val handleLoadFromService = mock<() -> Either<Exception, Foo>>()
     private val handleSaveServiceResult = mock<(Foo) -> Unit>()
 
@@ -22,6 +23,10 @@ class PrefetchLocalDataTest {
         prefetchLocalData = object : PrefetchLocalData<Foo, Foo>() {
             override fun loadFromLocal(): Foo? {
                 return handleLoadFromLocal()
+            }
+
+            override fun shouldFetch(data: Foo?): Boolean {
+                return handleShouldFetch(data)
             }
 
             override fun loadFromService(): Either<Exception, Foo> {
@@ -35,9 +40,10 @@ class PrefetchLocalDataTest {
     }
 
     @Test
-    fun `local data is always returned first if they are not null`() {
+    fun `local data is always returned first if the data should not be fetched`() {
         val localData = Foo(1)
         given(handleLoadFromLocal()).willReturn(localData)
+        given(handleShouldFetch(localData)).willReturn(false)
 
         val result = prefetchLocalData.load()
 
@@ -46,13 +52,14 @@ class PrefetchLocalDataTest {
     }
 
     @Test
-    fun `if there is no local data, it is fetched from service`() {
+    fun `data will be obtained from the service where applicable`() {
         val localDataFirstTime = null
         val localDataAfterSaving = Foo(1)
         val serviceData = Foo(2)
         given(handleLoadFromLocal())
             .willReturn(localDataFirstTime)
             .willReturn(localDataAfterSaving)
+        given(handleShouldFetch(localDataFirstTime)).willReturn(true)
         given(handleLoadFromService()).willReturn(Either.Right(serviceData))
 
         val result = prefetchLocalData.load()
@@ -63,10 +70,11 @@ class PrefetchLocalDataTest {
     }
 
     @Test
-    fun `if there is no local data and the service fails, an exception is returned`() {
+    fun `if there is no valid local data and the service fails, an exception is returned`() {
         val localData = null
         val serviceException = Exception("Any exception")
         given(handleLoadFromLocal()).willReturn(localData)
+        given(handleShouldFetch(localData)).willReturn(true)
         given(handleLoadFromService()).willReturn(Either.Left(serviceException))
 
         val result = prefetchLocalData.load()
