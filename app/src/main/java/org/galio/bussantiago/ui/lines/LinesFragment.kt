@@ -1,6 +1,6 @@
 package org.galio.bussantiago.ui.lines
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuInflater
@@ -75,13 +75,13 @@ class LinesFragment : BaseFragment() {
     findNavController().navigate(R.id.actionShowMenu, MenuFragment.createArguments(id))
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-    inflater?.inflate(R.menu.lines_menu, menu)
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.lines_menu, menu)
     super.onCreateOptionsMenu(menu, inflater)
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-    return when (item?.itemId) {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
       R.id.favorites_action -> {
         Toast.makeText(this.context, "Favoritas", Toast.LENGTH_SHORT).show()
         true

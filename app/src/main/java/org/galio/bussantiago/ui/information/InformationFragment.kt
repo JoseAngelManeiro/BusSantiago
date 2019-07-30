@@ -1,9 +1,8 @@
 package org.galio.bussantiago.ui.information
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.text.HtmlCompat
-import android.text.method.ScrollingMovementMethod
+import androidx.core.text.HtmlCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class InformationFragment : BaseFragment() {
               resourceInformationModel.data!!,
               HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            informationTextView.movementMethod = ScrollingMovementMethod()
             informationTextView.text = information
           }
           Status.ERROR -> {

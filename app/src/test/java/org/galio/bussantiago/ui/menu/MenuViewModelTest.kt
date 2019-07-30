@@ -1,7 +1,7 @@
 package org.galio.bussantiago.ui.menu
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.Observer
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.executor.SyncInteractorExecutor
