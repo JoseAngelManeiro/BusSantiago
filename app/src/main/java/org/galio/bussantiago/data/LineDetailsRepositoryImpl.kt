@@ -18,6 +18,8 @@ internal class LineDetailsRepositoryImpl(
     return object : PrefetchLocalData<LineDetailsEntity, LineDetails>() {
       override fun loadFromLocal() = cache.get(id)
 
+      override fun shouldFetch(data: LineDetails?) = data == null
+
       override fun loadFromService() = apiClient.getLineDetails(id)
 
       override fun saveServiceResult(item: LineDetailsEntity) {
