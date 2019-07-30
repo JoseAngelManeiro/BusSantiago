@@ -8,7 +8,7 @@ abstract class PrefetchLocalData<RequestType, ResultType> {
 
   fun load(): Either<Exception, ResultType> {
     val localData = loadFromLocal()
-    return if (localData == null) {
+    return if (shouldFetch(localData)) {
       val serviceData = loadFromService()
       if (serviceData.isRight) {
         saveServiceResult(serviceData.rightValue)
@@ -17,11 +17,13 @@ abstract class PrefetchLocalData<RequestType, ResultType> {
         Left(serviceData.leftValue)
       }
     } else {
-      Right(localData)
+      Right(localData!!)
     }
   }
 
   abstract fun loadFromLocal(): ResultType?
+
+  abstract fun shouldFetch(data: ResultType?): Boolean
 
   abstract fun loadFromService(): Either<Exception, RequestType>
 
