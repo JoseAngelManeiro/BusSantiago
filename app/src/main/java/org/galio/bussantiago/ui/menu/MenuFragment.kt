@@ -1,20 +1,23 @@
 package org.galio.bussantiago.ui.menu
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.menu_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.ui.information.InformationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MenuFragment : DialogFragment() {
 
   private val viewModel: MenuViewModel by viewModel()
+  private var lineId: Int = 0
 
   companion object {
     private const val ID_KEY = "id_key"
@@ -55,8 +58,8 @@ class MenuFragment : DialogFragment() {
       }
     })
 
-    val id = arguments?.get(ID_KEY) as Int
-    viewModel.loadLineDetails(id)
+    lineId = arguments?.get(ID_KEY) as Int
+    viewModel.loadLineDetails(lineId)
   }
 
   private fun hideProgressBarIfNecessary() {
@@ -71,15 +74,13 @@ class MenuFragment : DialogFragment() {
   }
 
   private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
-    // dismiss()
-
     when (menuOptionModel.menuType) {
       MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE -> {
         // Todo Not implemented
       }
       MenuType.INFORMATION -> {
-        // findNavController()
-        // .navigate(R.id.actionShowInformation, InformationFragment.createArguments(id))
+        findNavController()
+          .navigate(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
       }
       MenuType.INCIDENCES -> {
         // Todo Not implemented

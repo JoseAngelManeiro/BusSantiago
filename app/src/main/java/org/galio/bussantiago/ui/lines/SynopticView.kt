@@ -3,8 +3,8 @@ package org.galio.bussantiago.ui.lines
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import org.galio.bussantiago.R
 
