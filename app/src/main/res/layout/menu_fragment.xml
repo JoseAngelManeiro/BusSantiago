@@ -7,12 +7,12 @@
   android:layout_height="match_parent"
   tools:context="org.galio.bussantiago.ui.menu.MenuFragment">
 
-  <android.support.v7.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/menuOptionsRecyclerView"
     android:layout_width="300dp"
     android:layout_height="match_parent"
     android:visibility="gone"
-    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:visibility="visible"
     tools:listitem="@layout/menu_item" />
 
