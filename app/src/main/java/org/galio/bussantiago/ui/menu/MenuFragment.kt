@@ -6,11 +6,11 @@ import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.menu_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
+import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.ui.information.InformationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -79,8 +79,7 @@ class MenuFragment : DialogFragment() {
         // Todo Not implemented
       }
       MenuType.INFORMATION -> {
-        findNavController()
-          .navigate(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
+        navigateSafe(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
       }
       MenuType.INCIDENCES -> {
         // Todo Not implemented
