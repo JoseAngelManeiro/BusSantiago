@@ -6,11 +6,11 @@ import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.menu_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.ui.information.InformationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -51,8 +51,8 @@ class MenuFragment : DialogFragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            Toast.makeText(this.context, resourceMenuModel.exception!!.message, Toast.LENGTH_SHORT)
-              .show()
+            handleException(resourceMenuModel.exception!!)
+            dismiss()
           }
         }
       }
