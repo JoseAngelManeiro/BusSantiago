@@ -6,14 +6,15 @@ import androidx.core.text.HtmlCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.information_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
-import org.galio.bussantiago.ui.BaseFragment
+import org.galio.bussantiago.common.handleException
+import org.galio.bussantiago.common.initActionBar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class InformationFragment : BaseFragment() {
+class InformationFragment : Fragment() {
 
   private val viewModel: InformationViewModel by viewModel()
 
@@ -60,11 +61,7 @@ class InformationFragment : BaseFragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            Toast.makeText(
-              this.context,
-              resourceInformationModel.exception!!.message,
-              Toast.LENGTH_SHORT
-            ).show()
+            handleException(resourceInformationModel.exception!!)
           }
         }
       }

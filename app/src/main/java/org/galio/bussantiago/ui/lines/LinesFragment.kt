@@ -9,15 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
-import org.galio.bussantiago.ui.BaseFragment
+import org.galio.bussantiago.common.handleException
+import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.ui.menu.MenuFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LinesFragment : BaseFragment() {
+class LinesFragment : Fragment() {
 
   private val viewModel: LinesViewModel by viewModel()
 
@@ -51,8 +53,7 @@ class LinesFragment : BaseFragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            Toast.makeText(this.context, resourceLines.exception!!.message, Toast.LENGTH_SHORT)
-              .show()
+            handleException(resourceLines.exception!!)
           }
         }
       }
