@@ -24,8 +24,8 @@ class LinesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val synoptic = itemView.findViewById(R.id.synopticView) as SynopticView
-    private val name = itemView.findViewById(R.id.nameTextView) as TextView
+    private val synopticView = itemView.findViewById(R.id.synopticView) as SynopticView
+    private val nameView = itemView.findViewById(R.id.nameTextView) as TextView
 
     init {
       itemView.setOnClickListener {
@@ -34,8 +34,8 @@ class LinesAdapter(
     }
 
     fun bind(lineModel: LineModel) {
-      synoptic.render(lineModel.synopticModel)
-      name.text = lineModel.name
+      synopticView.render(lineModel.synopticModel)
+      nameView.text = lineModel.name
     }
   }
 }

@@ -11,6 +11,7 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.ui.incidences.IncidencesFragment
 import org.galio.bussantiago.ui.information.InformationFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -82,7 +83,7 @@ class MenuFragment : DialogFragment() {
         navigateSafe(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
       }
       MenuType.INCIDENCES -> {
-        // Todo Not implemented
+        navigateSafe(R.id.actionShowIncidences, IncidencesFragment.createArguments(lineId))
       }
     }
   }
