@@ -27,8 +27,8 @@ class MenuAdapter(
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val context = itemView.context
-    private val icon = itemView.findViewById(R.id.iconImageView) as ImageView
-    private val name = itemView.findViewById(R.id.titleTextView) as TextView
+    private val iconView = itemView.findViewById(R.id.iconImageView) as ImageView
+    private val nameView = itemView.findViewById(R.id.titleTextView) as TextView
 
     init {
       itemView.setOnClickListener {
@@ -37,8 +37,8 @@ class MenuAdapter(
     }
 
     fun bind(menuOptionModel: MenuOptionModel) {
-      icon.setImageResource(getIconResourceByMenuType(menuOptionModel.menuType))
-      name.text = getTitle(context, menuOptionModel)
+      iconView.setImageResource(getIconResourceByMenuType(menuOptionModel.menuType))
+      nameView.text = getTitle(context, menuOptionModel)
     }
   }
 

@@ -26,12 +26,22 @@
       android:id="@+id/actionShowInformation"
       app:destination="@id/informationFragment" />
 
+    <action
+      android:id="@+id/actionShowIncidences"
+      app:destination="@id/incidencesFragment" />
+
   </dialog>
 
   <fragment
     android:id="@+id/informationFragment"
     android:name="org.galio.bussantiago.ui.information.InformationFragment"
     tools:layout="@layout/information_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/incidencesFragment"
+    android:name="org.galio.bussantiago.ui.incidences.IncidencesFragment"
+    tools:layout="@layout/incidences_fragment">
   </fragment>
 
 </navigation>

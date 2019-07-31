@@ -1,22 +1,24 @@
-package org.galio.bussantiago.ui.information
+package org.galio.bussantiago.ui.incidences
 
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.information_fragment.*
+import androidx.recyclerview.widget.DividerItemDecoration
+import kotlinx.android.synthetic.main.incidences_fragment.*
+import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
-import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class InformationFragment : Fragment() {
+class IncidencesFragment : Fragment() {
 
-  private val viewModel: InformationViewModel by viewModel()
+  private val viewModel: IncidencesViewModel by viewModel()
 
   companion object {
     private const val ID_KEY = "id_key"
@@ -32,34 +34,39 @@ class InformationFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.information_fragment, container, false)
+    return inflater.inflate(R.layout.incidences_fragment, container, false)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    initActionBar(R.string.information, true)
+    initActionBar(R.string.incidences, true)
 
-    viewModel.informationModel.observe(this, Observer {
-      it?.let { resourceInformationModel ->
-        when (resourceInformationModel.status) {
+    viewModel.incidencesModel.observe(this, Observer {
+      it?.let { resourceIncidencesModel ->
+        when (resourceIncidencesModel.status) {
           Status.LOADING -> {
             progressBar.visibility = View.VISIBLE
           }
           Status.SUCCESS -> {
             hideProgressBarIfNecessary()
-            informationTextView.text = resourceInformationModel.data!!.fromHtml()
+            incidencesRecyclerView.adapter = IncidencesAdapter(it.data!!)
+            val itemDecoration = DividerItemDecoration(
+              incidencesRecyclerView.context,
+              LinearLayout.VERTICAL
+            )
+            incidencesRecyclerView.addItemDecoration(itemDecoration)
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceInformationModel.exception!!)
+            handleException(resourceIncidencesModel.exception!!)
           }
         }
       }
     })
 
     val id = arguments?.get(ID_KEY) as Int
-    viewModel.loadLineInformation(id)
+    viewModel.loadIncidences(id)
   }
 
   private fun hideProgressBarIfNecessary() {
