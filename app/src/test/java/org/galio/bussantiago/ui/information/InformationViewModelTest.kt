@@ -27,28 +27,28 @@ class InformationViewModelTest {
     @Before
     fun setUp() {
         viewModel = InformationViewModel(executor, getLineInformation)
-        viewModel.informationModel.observeForever(observer)
+        viewModel.information.observeForever(observer)
     }
 
     @Test
     fun `if all goes well, the data is loaded correctly`() {
-        val lineIdStub = 123
+        val lineId = 123
         val lineInformationStub = "Any Information"
-        `when`(getLineInformation(lineIdStub)).thenReturn(Either.Right(lineInformationStub))
+        `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
 
-        viewModel.loadLineInformation(lineIdStub)
+        viewModel.loadLineInformation(lineId)
 
         verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success(lineInformationStub))
+        verify(observer).onChanged(Resource.success("Any Information"))
     }
 
     @Test
     fun `fire the exception received`() {
-        val lineIdStub = 123
+        val lineId = 123
         val exception = Exception("Fake exception")
-        `when`(getLineInformation(lineIdStub)).thenReturn(Either.Left(exception))
+        `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
 
-        viewModel.loadLineInformation(lineIdStub)
+        viewModel.loadLineInformation(lineId)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.error(exception))

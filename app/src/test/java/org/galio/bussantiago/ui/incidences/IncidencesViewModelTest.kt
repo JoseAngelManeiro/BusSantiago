@@ -29,19 +29,19 @@ class IncidencesViewModelTest {
     @Before
     fun setUp() {
         viewModel = IncidencesViewModel(executor, getLineIncidences)
-        viewModel.incidencesModel.observeForever(observer)
+        viewModel.incidences.observeForever(observer)
     }
 
     @Test
     fun `if all goes well, the incidences' descriptions are loaded correctly`() {
-        val lineIdStub = 123
+        val lineId = 123
         val incidencesStub = listOf(
             createIncidence(description = "Incidence 1"),
             createIncidence(description = "Incidence 2")
         )
-        `when`(getLineIncidences(lineIdStub)).thenReturn(Either.Right(incidencesStub))
+        `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
 
-        viewModel.loadIncidences(lineIdStub)
+        viewModel.loadIncidences(lineId)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.success(listOf("Incidence 1", "Incidence 2")))
@@ -49,11 +49,11 @@ class IncidencesViewModelTest {
 
     @Test
     fun `fire the exception received`() {
-        val lineIdStub = 123
+        val lineId = 123
         val exception = Exception("Fake exception")
-        `when`(getLineIncidences(lineIdStub)).thenReturn(Either.Left(exception))
+        `when`(getLineIncidences(lineId)).thenReturn(Either.Left(exception))
 
-        viewModel.loadIncidences(lineIdStub)
+        viewModel.loadIncidences(lineId)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.error(exception))

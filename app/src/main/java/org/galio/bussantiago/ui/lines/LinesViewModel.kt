@@ -11,18 +11,18 @@ class LinesViewModel(
   private val getLines: GetLines
 ) : ViewModel() {
 
-  private val _lines = MutableLiveData<Resource<List<LineModel>>>()
+  private val _lineModels = MutableLiveData<Resource<List<LineModel>>>()
 
-  val lines: LiveData<Resource<List<LineModel>>>
-    get() = _lines
+  val lineModels: LiveData<Resource<List<LineModel>>>
+    get() = _lineModels
 
   fun loadLines() {
-    _lines.value = Resource.loading()
+    _lineModels.value = Resource.loading()
     executor(
       getLines,
       Unit,
       onSuccess = {
-        _lines.value = Resource.success(
+        _lineModels.value = Resource.success(
           it.map { line ->
             LineModel(
               id = line.id,
@@ -36,7 +36,7 @@ class LinesViewModel(
         )
       },
       onError = {
-        _lines.value = Resource.error(it)
+        _lineModels.value = Resource.error(it)
       }
     )
   }

@@ -38,9 +38,9 @@ class InformationFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    initActionBar(R.string.information, true)
+    initActionBar(title = getString(R.string.information), backEnabled = true)
 
-    viewModel.informationModel.observe(this, Observer {
+    viewModel.information.observe(this, Observer {
       it?.let { resourceInformationModel ->
         when (resourceInformationModel.status) {
           Status.LOADING -> {
