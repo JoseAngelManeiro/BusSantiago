@@ -11,21 +11,21 @@ class InformationViewModel(
   private val getLineInformation: GetLineInformation
 ) : ViewModel() {
 
-  private val _informationModel = MutableLiveData<Resource<String>>()
+  private val _information = MutableLiveData<Resource<String>>()
 
-  val informationModel: LiveData<Resource<String>>
-    get() = _informationModel
+  val information: LiveData<Resource<String>>
+    get() = _information
 
   fun loadLineInformation(id: Int) {
-    _informationModel.value = Resource.loading()
+    _information.value = Resource.loading()
     executor(
       interactor = getLineInformation,
       request = id,
       onSuccess = {
-        _informationModel.value = Resource.success(it)
+        _information.value = Resource.success(it)
       },
       onError = {
-        _informationModel.value = Resource.error(it)
+        _information.value = Resource.error(it)
       }
     )
   }

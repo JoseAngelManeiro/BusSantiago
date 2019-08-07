@@ -1,30 +1,30 @@
-package org.galio.bussantiago.ui.incidences
+package org.galio.bussantiago.ui.stops
 
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import kotlinx.android.synthetic.main.incidences_fragment.*
-import kotlinx.android.synthetic.main.information_fragment.progressBar
+import kotlinx.android.synthetic.main.busstops_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class IncidencesFragment : Fragment() {
+class BusStopsFragment : Fragment() {
 
-  private val viewModel: IncidencesViewModel by viewModel()
+  private val viewModel: BusStopsViewModel by viewModel()
 
   companion object {
-    private const val ID_KEY = "id_key"
-    fun createArguments(id: Int): Bundle {
+    private const val LINE_ID_KEY = "line_id_key"
+    private const val ROUTE_NAME_KEY = "route_name_key"
+    fun createArguments(id: Int, routeName: String): Bundle {
       val bundle = Bundle()
-      bundle.putInt(ID_KEY, id)
+      bundle.putInt(LINE_ID_KEY, id)
+      bundle.putString(ROUTE_NAME_KEY, routeName)
       return bundle
     }
   }
@@ -34,15 +34,18 @@ class IncidencesFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.incidences_fragment, container, false)
+    return inflater.inflate(R.layout.busstops_fragment, container, false)
   }
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    initActionBar(title = getString(R.string.incidences), backEnabled = true)
+    val lineId = arguments?.get(LINE_ID_KEY) as Int
+    val routeName = arguments?.get(ROUTE_NAME_KEY) as String
 
-    viewModel.incidences.observe(this, Observer {
+    initActionBar(title = routeName, backEnabled = true)
+
+    viewModel.busStopModels.observe(this, Observer {
       it?.let { resourceIncidencesModel ->
         when (resourceIncidencesModel.status) {
           Status.LOADING -> {
@@ -50,12 +53,8 @@ class IncidencesFragment : Fragment() {
           }
           Status.SUCCESS -> {
             hideProgressBarIfNecessary()
-            incidencesRecyclerView.adapter = IncidencesAdapter(it.data!!)
-            val itemDecoration = DividerItemDecoration(
-              incidencesRecyclerView.context,
-              LinearLayout.VERTICAL
-            )
-            incidencesRecyclerView.addItemDecoration(itemDecoration)
+            busStopsRecyclerView.adapter =
+              BusStopsAdapter(resourceIncidencesModel.data!!) { onBusStopClick(it) }
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
@@ -65,13 +64,17 @@ class IncidencesFragment : Fragment() {
       }
     })
 
-    val id = arguments?.get(ID_KEY) as Int
-    viewModel.loadIncidences(id)
+    viewModel.loadBusStops(lineId, routeName)
   }
 
   private fun hideProgressBarIfNecessary() {
     if (progressBar.visibility == View.VISIBLE) {
       progressBar.visibility = View.GONE
     }
+  }
+
+  private fun onBusStopClick(busStopModel: BusStopModel) {
+    // Todo not implemented
+    Toast.makeText(context, busStopModel.code, Toast.LENGTH_SHORT).show()
   }
 }

@@ -39,9 +39,9 @@ class LinesFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    initActionBar(R.string.lines)
+    initActionBar(title = getString(R.string.lines))
 
-    viewModel.lines.observe(this, Observer {
+    viewModel.lineModels.observe(this, Observer {
       it?.let { resourceLines ->
         when (resourceLines.status) {
           Status.LOADING -> {

@@ -20,31 +20,31 @@ class GetLineIncidencesTest {
 
     @Test
     fun `invokes repository and returns the incidences`() {
-        val lineIdStub = 123
-        val incidencesExpected = mock<List<Incidence>>()
-        val lineDetailsStub = createLineDetails(incidencesExpected)
-        given(lineDetailsRepository.getLineDetails(lineIdStub))
+        val lineId = 123
+        val incidences = mock<List<Incidence>>()
+        val lineDetailsStub = createLineDetails(incidences)
+        given(lineDetailsRepository.getLineDetails(lineId))
             .willReturn(Either.Right(lineDetailsStub))
 
-        val result = getLineIncidences(lineIdStub)
+        val result = getLineIncidences(lineId)
 
-        verify(lineDetailsRepository).getLineDetails(lineIdStub)
+        verify(lineDetailsRepository).getLineDetails(lineId)
         assertTrue(result.isRight)
-        assertEquals(incidencesExpected, result.rightValue)
+        assertEquals(incidences, result.rightValue)
     }
 
     @Test
     fun `if the repository fails, returns the exception received`() {
-        val lineIdStub = 123
-        val exceptionExpected = ServiceException()
-        given(lineDetailsRepository.getLineDetails(lineIdStub))
-            .willReturn(Either.Left(exceptionExpected))
+        val lineId = 123
+        val exception = ServiceException()
+        given(lineDetailsRepository.getLineDetails(lineId))
+            .willReturn(Either.Left(exception))
 
-        val result = getLineIncidences(lineIdStub)
+        val result = getLineIncidences(lineId)
 
-        verify(lineDetailsRepository).getLineDetails(lineIdStub)
+        verify(lineDetailsRepository).getLineDetails(lineId)
         assertTrue(result.isLeft)
-        assertEquals(exceptionExpected, result.leftValue)
+        assertEquals(exception, result.leftValue)
     }
 
     private fun createLineDetails(incidences: List<Incidence>): LineDetails {

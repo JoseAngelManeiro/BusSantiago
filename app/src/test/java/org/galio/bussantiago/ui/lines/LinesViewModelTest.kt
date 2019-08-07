@@ -28,19 +28,19 @@ class LinesViewModelTest {
     @Before
     fun setUp() {
       linesViewModel = LinesViewModel(executor, getLines)
-      linesViewModel.lines.observeForever(observer)
+      linesViewModel.lineModels.observeForever(observer)
     }
 
     @Test
     fun `load the expected list of lines`() {
         val linesStub = listOf(createLineStub())
-        val lineViewsStub = listOf(createLineViewStub())
         `when`(getLines(Unit)).thenReturn(Either.Right(linesStub))
 
         linesViewModel.loadLines()
 
         verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success(lineViewsStub))
+        val lineViewsExpected = listOf(createLineViewStub())
+        verify(observer).onChanged(Resource.success(lineViewsExpected))
     }
 
     @Test

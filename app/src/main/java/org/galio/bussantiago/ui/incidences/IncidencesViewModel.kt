@@ -11,21 +11,21 @@ class IncidencesViewModel(
   private val getLineIncidences: GetLineIncidences
 ) : ViewModel() {
 
-  private val _incidencesModel = MutableLiveData<Resource<List<String>>>()
+  private val _incidences = MutableLiveData<Resource<List<String>>>()
 
-  val incidencesModel: LiveData<Resource<List<String>>>
-    get() = _incidencesModel
+  val incidences: LiveData<Resource<List<String>>>
+    get() = _incidences
 
   fun loadIncidences(id: Int) {
-    _incidencesModel.value = Resource.loading()
+    _incidences.value = Resource.loading()
     executor(
       interactor = getLineIncidences,
       request = id,
       onSuccess = { incidences ->
-        _incidencesModel.value = Resource.success(incidences.map { it.description })
+        _incidences.value = Resource.success(incidences.map { it.description })
       },
       onError = {
-        _incidencesModel.value = Resource.error(it)
+        _incidences.value = Resource.error(it)
       }
     )
   }

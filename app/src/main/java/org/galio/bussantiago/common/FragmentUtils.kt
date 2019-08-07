@@ -7,10 +7,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 
-fun Fragment.initActionBar(titleResId: Int = 0, backEnabled: Boolean = false) {
+fun Fragment.initActionBar(
+  title: String = "",
+  subTitle: String = "",
+  backEnabled: Boolean = false
+) {
   val appCompatActivity = activity as AppCompatActivity
-  appCompatActivity.supportActionBar?.setTitle(titleResId)
-  appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(backEnabled)
+  appCompatActivity.supportActionBar?.let { actionBar ->
+    actionBar.title = title
+    actionBar.subtitle = subTitle
+    actionBar.setDisplayHomeAsUpEnabled(backEnabled)
+  }
 }
 
 fun Fragment.handleException(exception: Exception) {
