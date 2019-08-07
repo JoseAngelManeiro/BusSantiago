@@ -12,10 +12,8 @@ class GetLineDetailsTest {
 
     @Test
     fun `invokes the line details repository`() {
-        val lineIdStub = 123
+        getLineDetails(123)
 
-        getLineDetails(lineIdStub)
-
-        verify(lineDetailsRepository).getLineDetails(lineIdStub)
+        verify(lineDetailsRepository).getLineDetails(123)
     }
 }

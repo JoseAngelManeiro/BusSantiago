@@ -34,13 +34,13 @@ class MenuViewModelTest {
 
     @Test
     fun `if all goes well, the data is loaded correctly`() {
-        val lineIdStub = 123
+        val lineId = 123
         val lineDetailsStub = mock<LineDetails>()
         val menuModelStub = mock<MenuModel>()
-        `when`(getLineDetails(lineIdStub)).thenReturn(Either.Right(lineDetailsStub))
+        `when`(getLineDetails(lineId)).thenReturn(Either.Right(lineDetailsStub))
         `when`(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
-        viewModel.loadLineDetails(lineIdStub)
+        viewModel.loadLineDetails(lineId)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.success(menuModelStub))
@@ -48,11 +48,11 @@ class MenuViewModelTest {
 
     @Test
     fun `fire the exception received`() {
-        val lineIdStub = 123
+        val lineId = 123
         val exception = Exception("Fake exception")
-        `when`(getLineDetails(lineIdStub)).thenReturn(Either.Left(exception))
+        `when`(getLineDetails(lineId)).thenReturn(Either.Left(exception))
 
-        viewModel.loadLineDetails(lineIdStub)
+        viewModel.loadLineDetails(lineId)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.error(exception))

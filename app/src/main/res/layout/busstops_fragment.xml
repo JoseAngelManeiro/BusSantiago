@@ -5,22 +5,23 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="org.galio.bussantiago.ui.lines.LinesFragment">
+  tools:context="org.galio.bussantiago.ui.stops.BusStopsFragment">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/linesRecyclerView"
+    android:id="@+id/busStopsRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/line_item" />
+    tools:listitem="@layout/busstop_item" />
 
   <ProgressBar
     android:id="@+id/progressBar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:visibility="gone"/>
+    android:visibility="gone"
+    tools:visibility="visible" />
 
 </FrameLayout>

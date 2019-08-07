@@ -18,31 +18,31 @@ class GetLineInformationTest {
 
     @Test
     fun `invokes repository and returns the information field`() {
-        val lineIdStub = 123
-        val informationExpected = "Any Information"
-        val lineDetailsStub = createLineDetails(informationExpected)
-        given(lineDetailsRepository.getLineDetails(lineIdStub))
+        val lineId = 123
+        val information = "Any Information"
+        val lineDetailsStub = createLineDetails(information)
+        given(lineDetailsRepository.getLineDetails(lineId))
             .willReturn(Either.Right(lineDetailsStub))
 
-        val result = getLineInformation(lineIdStub)
+        val result = getLineInformation(lineId)
 
-        verify(lineDetailsRepository).getLineDetails(lineIdStub)
+        verify(lineDetailsRepository).getLineDetails(lineId)
         assertTrue(result.isRight)
-        assertEquals(informationExpected, result.rightValue)
+        assertEquals("Any Information", result.rightValue)
     }
 
     @Test
     fun `if the repository fails, returns the exception received`() {
-        val lineIdStub = 123
-        val exceptionExpected = ServiceException()
-        given(lineDetailsRepository.getLineDetails(lineIdStub))
-            .willReturn(Either.Left(exceptionExpected))
+        val lineId = 123
+        val exception = ServiceException()
+        given(lineDetailsRepository.getLineDetails(lineId))
+            .willReturn(Either.Left(exception))
 
-        val result = getLineInformation(lineIdStub)
+        val result = getLineInformation(lineId)
 
-        verify(lineDetailsRepository).getLineDetails(lineIdStub)
+        verify(lineDetailsRepository).getLineDetails(lineId)
         assertTrue(result.isLeft)
-        assertEquals(exceptionExpected, result.leftValue)
+        assertEquals(exception, result.leftValue)
     }
 
     private fun createLineDetails(information: String): LineDetails {
