@@ -33,6 +33,10 @@ class ApiClient(private val networkHandler: NetworkHandler) {
     service.getLineDetails(id)
   }
 
+  fun getBusStopRemainingTimes(code: String) = callService {
+    service.getBusStopRemainingTimes(code)
+  }
+
   private fun <T> callService(callback: () -> Call<T>): Either<Exception, T> {
     return if (networkHandler.isConnected()) {
       try {
