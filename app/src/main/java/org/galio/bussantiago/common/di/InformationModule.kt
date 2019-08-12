@@ -1,7 +1,7 @@
 package org.galio.bussantiago.common.di
 
-import org.galio.bussantiago.ui.information.GetLineInformation
-import org.galio.bussantiago.ui.information.InformationViewModel
+import org.galio.bussantiago.features.information.GetLineInformation
+import org.galio.bussantiago.features.information.InformationViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

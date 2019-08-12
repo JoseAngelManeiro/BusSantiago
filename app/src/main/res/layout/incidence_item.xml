@@ -8,5 +8,5 @@
   android:textSize="@dimen/default_text_size"
   android:padding="@dimen/default_padding"
   android:clickable="false"
-  tools:context="org.galio.bussantiago.ui.incidences.IncidencesFragment"
+  tools:context="org.galio.bussantiago.features.incidences.IncidencesFragment"
   tools:text="Desvío en la línea 7 por corte de tráfico en la calle Castrón Douro (a partir del lunes 20/8/2018)"/>
