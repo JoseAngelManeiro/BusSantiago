@@ -1,7 +1,7 @@
 package org.galio.bussantiago.common.di
 
-import org.galio.bussantiago.ui.incidences.GetLineIncidences
-import org.galio.bussantiago.ui.incidences.IncidencesViewModel
+import org.galio.bussantiago.features.incidences.GetLineIncidences
+import org.galio.bussantiago.features.incidences.IncidencesViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
