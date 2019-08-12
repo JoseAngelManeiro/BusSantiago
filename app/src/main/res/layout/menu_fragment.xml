@@ -5,11 +5,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="org.galio.bussantiago.ui.menu.MenuFragment">
+  tools:context="org.galio.bussantiago.features.menu.MenuFragment">
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/menuOptionsRecyclerView"
-    android:layout_width="300dp"
+    android:layout_width="@dimen/dialog_size"
     android:layout_height="match_parent"
     android:visibility="gone"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

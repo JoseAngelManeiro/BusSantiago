@@ -1,7 +1,7 @@
 package org.galio.bussantiago.common.di
 
-import org.galio.bussantiago.ui.stops.BusStopsViewModel
-import org.galio.bussantiago.ui.stops.GetLineBusStops
+import org.galio.bussantiago.features.stops.BusStopsViewModel
+import org.galio.bussantiago.features.stops.GetLineBusStops
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -8,7 +8,7 @@
 
   <fragment
     android:id="@+id/linesFragment"
-    android:name="org.galio.bussantiago.ui.lines.LinesFragment"
+    android:name="org.galio.bussantiago.features.lines.LinesFragment"
     tools:layout="@layout/lines_fragment">
 
     <action
@@ -19,7 +19,7 @@
 
   <dialog
     android:id="@+id/menuFragment"
-    android:name="org.galio.bussantiago.ui.menu.MenuFragment"
+    android:name="org.galio.bussantiago.features.menu.MenuFragment"
     tools:layout="@layout/menu_fragment">
 
     <action
@@ -38,20 +38,31 @@
 
   <fragment
     android:id="@+id/informationFragment"
-    android:name="org.galio.bussantiago.ui.information.InformationFragment"
+    android:name="org.galio.bussantiago.features.information.InformationFragment"
     tools:layout="@layout/information_fragment">
   </fragment>
 
   <fragment
     android:id="@+id/incidencesFragment"
-    android:name="org.galio.bussantiago.ui.incidences.IncidencesFragment"
+    android:name="org.galio.bussantiago.features.incidences.IncidencesFragment"
     tools:layout="@layout/incidences_fragment">
   </fragment>
 
   <fragment
     android:id="@+id/busStopsFragment"
-    android:name="org.galio.bussantiago.ui.stops.BusStopsFragment"
+    android:name="org.galio.bussantiago.features.stops.BusStopsFragment"
     tools:layout="@layout/busstops_fragment">
+
+    <action
+      android:id="@+id/actionShowTimesFragment"
+      app:destination="@id/timesFragment" />
+
   </fragment>
+
+  <dialog
+    android:id="@+id/timesFragment"
+    android:name="org.galio.bussantiago.features.times.TimesFragment"
+    tools:layout="@layout/times_fragment">
+  </dialog>
 
 </navigation>
