@@ -6,6 +6,7 @@ import org.galio.bussantiago.common.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.exception.NetworkConnectionException
 import org.galio.bussantiago.common.executor.SyncInteractorExecutor
+import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -17,47 +18,104 @@ import org.mockito.Mockito.verify
 
 class TimesViewModelTest {
 
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
+  companion object {
+    private const val busStopCode = "1234"
+    private const val busStopName = "BusStop Name"
+  }
 
-    private val executor = SyncInteractorExecutor()
-    private val getBusStopRemainingTimes = mock<GetBusStopRemainingTimes>()
-    private val timesFactory = mock<TimesFactory>()
-    private val observer = mock<Observer<Resource<List<LineRemainingTimeModel>>>>()
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
 
-    private lateinit var viewModel: TimesViewModel
+  private val executor = SyncInteractorExecutor()
+  private val getBusStopRemainingTimes = mock<GetBusStopRemainingTimes>()
+  private val validateIfBusStopIsFavorite = mock<ValidateIfBusStopIsFavorite>()
+  private val addBusStopFavorite = mock<AddBusStopFavorite>()
+  private val removeBusStopFavorite = mock<RemoveBusStopFavorite>()
+  private val timesFactory = mock<TimesFactory>()
+  private val timesObserver = mock<Observer<Resource<List<LineRemainingTimeModel>>>>()
+  private val favoriteObserver = mock<Observer<Boolean>>()
 
-    @Before
-    fun setUp() {
-        viewModel = TimesViewModel(executor, getBusStopRemainingTimes, timesFactory)
-        viewModel.lineRemainingTimeModels.observeForever(observer)
-    }
+  private lateinit var viewModel: TimesViewModel
 
-    @Test
-    fun `if all goes well, the line remaining time models are loaded correctly`() {
-        val busStopCode = "1234"
-        val busStopRemainingTimesStub = mock<BusStopRemainingTimes>()
-        val lineRemainingTimeModelsStub = mock<List<LineRemainingTimeModel>>()
-        `when`(getBusStopRemainingTimes(busStopCode))
-            .thenReturn(Either.Right(busStopRemainingTimesStub))
-        `when`(timesFactory.createLineRemainingTimeModels(busStopRemainingTimesStub))
-            .thenReturn(lineRemainingTimeModelsStub)
+  @Before
+  fun setUp() {
+    viewModel = TimesViewModel(
+      executor,
+      getBusStopRemainingTimes,
+      validateIfBusStopIsFavorite,
+      addBusStopFavorite,
+      removeBusStopFavorite,
+      timesFactory
+    )
+    viewModel.setArgs(busStopCode, busStopName)
+  }
 
-        viewModel.loadRemainingTimes(busStopCode)
+  @Test
+  fun `the line remaining time models are loaded correctly`() {
+    val busStopRemainingTimesStub = mock<BusStopRemainingTimes>()
+    val lineRemainingTimeModelsStub = mock<List<LineRemainingTimeModel>>()
+    `when`(getBusStopRemainingTimes(busStopCode))
+      .thenReturn(Either.Right(busStopRemainingTimesStub))
+    `when`(timesFactory.createLineRemainingTimeModels(busStopRemainingTimesStub))
+      .thenReturn(lineRemainingTimeModelsStub)
+    viewModel.lineRemainingTimeModels.observeForever(timesObserver)
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success(lineRemainingTimeModelsStub))
-    }
+    viewModel.loadTimes()
 
-    @Test
-    fun `fire the exception received`() {
-        val busStopCode = "1234"
-        val exceptionStub = NetworkConnectionException()
-        `when`(getBusStopRemainingTimes(busStopCode)).thenReturn(Either.Left(exceptionStub))
+    verify(timesObserver).onChanged(Resource.loading())
+    verify(timesObserver).onChanged(Resource.success(lineRemainingTimeModelsStub))
+  }
 
-        viewModel.loadRemainingTimes(busStopCode)
+  @Test
+  fun `fire the exception received when load times fail`() {
+    val exceptionStub = NetworkConnectionException()
+    `when`(getBusStopRemainingTimes(busStopCode)).thenReturn(Either.Left(exceptionStub))
+    viewModel.lineRemainingTimeModels.observeForever(timesObserver)
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.error(exceptionStub))
-    }
+    viewModel.loadTimes()
+
+    verify(timesObserver).onChanged(Resource.loading())
+    verify(timesObserver).onChanged(Resource.error(exceptionStub))
+  }
+
+  @Test
+  fun `after validating if the stop is favorite, the status will be updated`() {
+    `when`(validateIfBusStopIsFavorite(busStopCode)).thenReturn(Either.Right(true))
+    viewModel.isFavorite.observeForever(favoriteObserver)
+
+    viewModel.validateBusStop()
+
+    verify(favoriteObserver).onChanged(true)
+  }
+
+  @Test
+  fun `when changing the status to favorite, we add the stop to favorites`() {
+    initFavoriteState(false)
+    val request = BusStopFavorite(busStopCode, busStopName)
+    `when`(addBusStopFavorite(request)).thenReturn(Either.Right(Unit))
+    viewModel.isFavorite.observeForever(favoriteObserver)
+
+    viewModel.changeFavoriteState()
+
+    verify(favoriteObserver).onChanged(true)
+    verify(addBusStopFavorite).invoke(request)
+  }
+
+  @Test
+  fun `when changing the status to not favorite, we remove the stop from favorites`() {
+    initFavoriteState(true)
+    val request = BusStopFavorite(busStopCode, busStopName)
+    `when`(removeBusStopFavorite(request)).thenReturn(Either.Right(Unit))
+    viewModel.isFavorite.observeForever(favoriteObserver)
+
+    viewModel.changeFavoriteState()
+
+    verify(favoriteObserver).onChanged(false)
+    verify(removeBusStopFavorite).invoke(request)
+  }
+
+  private fun initFavoriteState(state: Boolean) {
+    `when`(validateIfBusStopIsFavorite(busStopCode)).thenReturn(Either.Right(state))
+    viewModel.validateBusStop()
+  }
 }

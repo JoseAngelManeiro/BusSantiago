@@ -55,7 +55,11 @@ class TimesFragment : DialogFragment() {
 
     busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
 
+    viewModel.setArgs(busStopModel.code, busStopModel.name)
+
     setUpToolbar()
+
+    setUpFavoriteButton()
 
     viewModel.lineRemainingTimeModels.observe(this, Observer {
       it?.let { resourceLineRemainingTimeModels ->
@@ -82,7 +86,16 @@ class TimesFragment : DialogFragment() {
       }
     })
 
-    viewModel.loadRemainingTimes(busStopModel.code)
+    viewModel.isFavorite.observe(this, Observer { isFavorite ->
+      if (isFavorite) {
+        favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
+      } else {
+        favoriteFAB.setImageResource(R.drawable.ic_fab_favorite_border)
+      }
+    })
+
+    viewModel.loadTimes()
+    viewModel.validateBusStop()
   }
 
   private fun setUpToolbar() {
@@ -90,6 +103,12 @@ class TimesFragment : DialogFragment() {
     toolbar.subtitle = busStopModel.name
     toolbar.setNavigationIcon(R.drawable.ic_close)
     toolbar.setNavigationOnClickListener { dismiss() }
+  }
+
+  private fun setUpFavoriteButton() {
+    favoriteFAB.setOnClickListener {
+      viewModel.changeFavoriteState()
+    }
   }
 
   private fun hideProgressBarIfNecessary() {
