@@ -42,4 +42,13 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/favoriteFAB"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_margin="@dimen/default_margin"
+    tools:src="@drawable/ic_fab_favorite"/>
+
 </RelativeLayout>
