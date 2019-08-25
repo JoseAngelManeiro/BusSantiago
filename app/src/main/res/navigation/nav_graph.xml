@@ -4,7 +4,13 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/nav_graph"
-  app:startDestination="@+id/linesFragment">
+  app:startDestination="@+id/launcherFragment">
+
+  <fragment
+    android:id="@+id/launcherFragment"
+    android:name="org.galio.bussantiago.features.LauncherFragment"
+    tools:layout="@layout/launcher_fragment">
+  </fragment>
 
   <fragment
     android:id="@+id/linesFragment"
@@ -52,11 +58,6 @@
     android:id="@+id/busStopsFragment"
     android:name="org.galio.bussantiago.features.stops.BusStopsFragment"
     tools:layout="@layout/busstops_fragment">
-
-    <action
-      android:id="@+id/actionShowTimesFragment"
-      app:destination="@id/timesFragment" />
-
   </fragment>
 
   <dialog
@@ -64,5 +65,26 @@
     android:name="org.galio.bussantiago.features.times.TimesFragment"
     tools:layout="@layout/times_fragment">
   </dialog>
+
+  <fragment
+    android:id="@+id/favoritesFragment"
+    android:name="org.galio.bussantiago.features.favorites.FavoritesFragment"
+    tools:layout="@layout/favorites_fragment">
+
+  </fragment>
+
+  <action
+    android:id="@+id/actionShowTimesFragment"
+    app:destination="@id/timesFragment" />
+
+  <action
+    android:id="@+id/actionShowFavorites"
+    app:destination="@id/favoritesFragment"
+    app:popUpTo="@id/nav_graph"/>
+
+  <action
+    android:id="@+id/actionShowLines"
+    app:destination="@id/linesFragment"
+    app:popUpTo="@id/nav_graph"/>
 
 </navigation>
