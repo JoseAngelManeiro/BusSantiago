@@ -7,6 +7,7 @@ import org.galio.bussantiago.common.di.linesModule
 import org.galio.bussantiago.common.di.menuModule
 import org.galio.bussantiago.common.di.incidencesModule
 import org.galio.bussantiago.common.di.busStopsModule
+import org.galio.bussantiago.common.di.favoritesModule
 import org.galio.bussantiago.common.di.timesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,7 +27,8 @@ class BusSantiagoApp : Application() {
         informationModule,
         incidencesModule,
         busStopsModule,
-        timesModule
+        timesModule,
+        favoritesModule
       ))
     }
   }

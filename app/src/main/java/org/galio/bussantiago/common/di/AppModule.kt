@@ -31,6 +31,7 @@ import org.koin.dsl.module
 val appModule = module {
 
   single { ApiClient(networkHandler = NetworkHandler(androidContext())) }
+  single { FavoriteDataSource(androidContext()) }
 
   // Mappers factories
   factory { LineMapper() }
@@ -59,7 +60,7 @@ val appModule = module {
     BusStopRemainingTimesRepositoryImpl(apiClient = get(), mapper = get())
   }
   single<BusStopFavoriteRepository> {
-    BusStopFavoriteRepositoryImpl(favoriteDataSource = FavoriteDataSource(androidContext()))
+    BusStopFavoriteRepositoryImpl(favoriteDataSource = get())
   }
 
   // Executor
