@@ -23,7 +23,7 @@ fun Fragment.initActionBar(
 fun Fragment.handleException(exception: Exception) {
   AlertDialog.Builder(context!!)
     .setMessage(exception.message)
-    .setPositiveButton(R.string.aceptar) { dialog, _ ->
+    .setPositiveButton(R.string.accept) { dialog, _ ->
       dialog.dismiss()
     }
     .create()
