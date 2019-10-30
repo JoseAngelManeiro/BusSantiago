@@ -37,17 +37,32 @@ class MenuAdapter(
     }
 
     fun bind(menuOptionModel: MenuOptionModel) {
-      iconView.setImageResource(getIconResourceByMenuType(menuOptionModel.menuType))
+      iconView.setImageResource(getIconResource(menuOptionModel.menuType))
+      iconView.contentDescription = getContentDescription(context, menuOptionModel.menuType)
       nameView.text = getTitle(context, menuOptionModel)
     }
   }
 
-  private fun getIconResourceByMenuType(menuType: MenuType): Int {
+  private fun getIconResource(menuType: MenuType): Int {
     return when (menuType) {
       MenuType.OUTWARD_ROUTE -> R.drawable.ic_outward_route
       MenuType.RETURN_ROUTE -> R.drawable.ic_return_route
       MenuType.INFORMATION -> R.drawable.ic_information
       MenuType.INCIDENCES -> R.drawable.ic_incidences
+    }
+  }
+
+  private fun getContentDescription(context: Context, menuType: MenuType): String {
+    return when (menuType) {
+      MenuType.OUTWARD_ROUTE -> {
+        if (items.find { it.menuType == MenuType.RETURN_ROUTE } != null) {
+          context.getString(R.string.outward_route_stops)
+        } else {
+          context.getString(R.string.one_way_route_stops)
+        }
+      }
+      MenuType.RETURN_ROUTE -> context.getString(R.string.return_route_stops)
+      else -> ""
     }
   }
 

@@ -1,11 +1,15 @@
 <resources>
   <string name="app_name" translatable="false">Bus Santiago</string>
   <string name="favorites">Favoritas</string>
-  <string name="menu_icon_description" translatable="false">Menu icon</string>
   <string name="information">Información</string>
   <string name="incidences">Incidencias</string>
   <string name="lines">Líneas</string>
-  <string name="aceptar">Aceptar</string>
+  <string name="accept">Aceptar</string>
   <string name="no_information">Sin información</string>
   <string name="no_favorites">No hay paradas favoritas</string>
+  <string name="one_way_route_stops">Paradas</string>
+  <string name="outward_route_stops">Paradas ida</string>
+  <string name="return_route_stops">Paradas vuelta</string>
+  <string name="favorite_stop">Parada favorita</string>
+  <string name="no_favorite_stop">Parada no favorita</string>
 </resources>

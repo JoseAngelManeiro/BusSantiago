@@ -89,8 +89,10 @@ class TimesFragment : DialogFragment() {
     viewModel.isFavorite.observe(this, Observer { isFavorite ->
       if (isFavorite) {
         favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
+        favoriteFAB.contentDescription = getString(R.string.favorite_stop)
       } else {
         favoriteFAB.setImageResource(R.drawable.ic_fab_favorite_border)
+        favoriteFAB.contentDescription = getString(R.string.no_favorite_stop)
       }
     })
 
