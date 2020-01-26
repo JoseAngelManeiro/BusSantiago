@@ -47,7 +47,7 @@ class BusStopsFragment : Fragment() {
 
     initActionBar(title = routeName, backEnabled = true)
 
-    viewModel.busStopModels.observe(this, Observer {
+    viewModel.busStopModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceIncidencesModel ->
         when (resourceIncidencesModel.status) {
           Status.LOADING -> {

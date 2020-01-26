@@ -40,7 +40,7 @@ class InformationFragment : Fragment() {
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
-    viewModel.information.observe(this, Observer {
+    viewModel.information.observe(viewLifecycleOwner, Observer {
       it?.let { resourceInformationModel ->
         when (resourceInformationModel.status) {
           Status.LOADING -> {

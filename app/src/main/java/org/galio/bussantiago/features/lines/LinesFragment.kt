@@ -40,7 +40,7 @@ class LinesFragment : Fragment() {
 
     initActionBar(title = getString(R.string.lines))
 
-    viewModel.lineModels.observe(this, Observer {
+    viewModel.lineModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceLines ->
         when (resourceLines.status) {
           Status.LOADING -> {

@@ -43,7 +43,7 @@ class FavoritesFragment : Fragment() {
 
     initActionBar(title = getString(R.string.favorites))
 
-    viewModel.busStopFavorites.observe(this, Observer {
+    viewModel.busStopFavorites.observe(viewLifecycleOwner, Observer {
       it?.let { resourceBusStopFavorites ->
         when (resourceBusStopFavorites.status) {
           Status.LOADING -> {

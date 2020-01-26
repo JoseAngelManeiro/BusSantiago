@@ -42,7 +42,7 @@ class IncidencesFragment : Fragment() {
 
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
 
-    viewModel.incidences.observe(this, Observer {
+    viewModel.incidences.observe(viewLifecycleOwner, Observer {
       it?.let { resourceIncidencesModel ->
         when (resourceIncidencesModel.status) {
           Status.LOADING -> {

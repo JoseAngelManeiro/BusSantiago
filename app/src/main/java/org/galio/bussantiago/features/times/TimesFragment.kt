@@ -61,7 +61,7 @@ class TimesFragment : DialogFragment() {
 
     setUpFavoriteButton()
 
-    viewModel.lineRemainingTimeModels.observe(this, Observer {
+    viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceLineRemainingTimeModels ->
         when (resourceLineRemainingTimeModels.status) {
           Status.LOADING -> {
@@ -86,7 +86,7 @@ class TimesFragment : DialogFragment() {
       }
     })
 
-    viewModel.isFavorite.observe(this, Observer { isFavorite ->
+    viewModel.isFavorite.observe(viewLifecycleOwner, Observer { isFavorite ->
       if (isFavorite) {
         favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
         favoriteFAB.contentDescription = getString(R.string.favorite_stop)
