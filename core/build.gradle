@@ -1,0 +1,18 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+
+    testImplementation 'junit:junit:4.13'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"

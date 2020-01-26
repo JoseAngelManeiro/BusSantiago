@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
-import org.galio.bussantiago.common.ui.BusStopModel
+import org.galio.bussantiago.common.model.BusStopModel
 
 class BusStopsAdapter(
   private val items: List<BusStopModel>,

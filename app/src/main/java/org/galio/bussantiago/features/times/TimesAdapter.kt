@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
-import org.galio.bussantiago.common.ui.SynopticView
+import org.galio.bussantiago.common.model.SynopticView
 
 class TimesAdapter(
   private val items: List<LineRemainingTimeModel>

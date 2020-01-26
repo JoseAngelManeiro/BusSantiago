@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.executor.InteractorExecutor
-import org.galio.bussantiago.common.ui.BusStopModel
+import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.domain.interactor.GetLineBusStops
 
 class BusStopsViewModel(
   private val executor: InteractorExecutor,

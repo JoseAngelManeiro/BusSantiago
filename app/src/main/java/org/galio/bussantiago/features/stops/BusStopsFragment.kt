@@ -12,7 +12,7 @@ import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
-import org.galio.bussantiago.common.ui.BusStopModel
+import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -47,7 +47,7 @@ class BusStopsFragment : Fragment() {
 
     initActionBar(title = routeName, backEnabled = true)
 
-    viewModel.busStopModels.observe(this, Observer {
+    viewModel.busStopModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceIncidencesModel ->
         when (resourceIncidencesModel.status) {
           Status.LOADING -> {
