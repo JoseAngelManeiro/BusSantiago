@@ -2,9 +2,10 @@ package org.galio.bussantiago.features.incidences
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.common.Either
+import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.executor.SyncInteractorExecutor
+import org.galio.bussantiago.executor.SyncInteractorExecutor
+import org.galio.bussantiago.domain.interactor.GetLineIncidences
 import org.galio.bussantiago.domain.model.Incidence
 import org.galio.bussantiago.util.mock
 import org.junit.Before
