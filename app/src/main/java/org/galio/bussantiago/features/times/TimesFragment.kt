@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.times_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.ui.BusStopModel
+import org.galio.bussantiago.common.model.BusStopModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TimesFragment : DialogFragment() {

@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.executor.InteractorExecutor
+import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
+import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
+import org.galio.bussantiago.domain.interactor.RemoveBusStopFavorite
+import org.galio.bussantiago.domain.interactor.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.model.BusStopFavorite
 
 class TimesViewModel(

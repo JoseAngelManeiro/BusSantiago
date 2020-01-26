@@ -2,10 +2,11 @@ package org.galio.bussantiago.features.stops
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.common.Either
+import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.executor.SyncInteractorExecutor
-import org.galio.bussantiago.common.ui.BusStopModel
+import org.galio.bussantiago.executor.SyncInteractorExecutor
+import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.domain.interactor.GetLineBusStops
 import org.galio.bussantiago.domain.model.BusStop
 import org.galio.bussantiago.util.mock
 import org.junit.Before
