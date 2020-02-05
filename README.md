@@ -51,11 +51,11 @@ You can execute them all with this command: `./gradlew runUnitTests`
 [application-video]: ./art/ApplicationVideo.gif
 [architecture]: https://developer.android.com/topic/libraries/architecture
 [koin]: https://insert-koin.io/
-[prefetchlocaldata]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/data/PrefetchLocalData.kt
+[prefetchlocaldata]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/core/src/main/java/org/galio/bussantiago/data/PrefetchLocalData.kt
 [single-source]: https://developer.android.com/jetpack/docs/guide#truth
 [viewmodel]: https://developer.android.com/topic/libraries/architecture/viewmodel
 [mvvm-pattern]: https://docs.microsoft.com/en-us/previous-versions/msp-n-p/hh848246(v%3dpandp.10)
 [livedata]: https://developer.android.com/topic/libraries/architecture/livedata
 [resource]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/common/Resource.kt
-[executor]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/common/executor/InteractorExecutor.kt
+[executor]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/executor/InteractorExecutor.kt
 [navigation]: https://developer.android.com/guide/navigation/navigation-getting-started
