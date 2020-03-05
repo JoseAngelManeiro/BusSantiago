@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.busstops_fragment.progressBar
+import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import kotlinx.android.synthetic.main.times_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status

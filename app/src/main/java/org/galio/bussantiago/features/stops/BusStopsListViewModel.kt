@@ -8,7 +8,7 @@ import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
 
-class BusStopsViewModel(
+class BusStopsListViewModel(
   private val executor: InteractorExecutor,
   private val getLineBusStops: GetLineBusStops
 ) : ViewModel() {

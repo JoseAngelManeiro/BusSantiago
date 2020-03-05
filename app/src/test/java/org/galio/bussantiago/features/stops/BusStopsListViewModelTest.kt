@@ -16,7 +16,7 @@ import org.junit.rules.TestRule
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 
-class BusStopsViewModelTest {
+class BusStopsListViewModelTest {
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -25,11 +25,11 @@ class BusStopsViewModelTest {
     private val getLineBusStops = mock<GetLineBusStops>()
     private val observer = mock<Observer<Resource<List<BusStopModel>>>>()
 
-    private lateinit var viewModel: BusStopsViewModel
+    private lateinit var viewModel: BusStopsListViewModel
 
     @Before
     fun setUp() {
-        viewModel = BusStopsViewModel(executor, getLineBusStops)
+        viewModel = BusStopsListViewModel(executor, getLineBusStops)
         viewModel.busStopModels.observeForever(observer)
     }
 
