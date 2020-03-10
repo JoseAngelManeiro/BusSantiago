@@ -12,11 +12,22 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file('src/release/mykey.jks')
+            storePassword "chuches1"
+            keyAlias "gelu"
+            keyPassword "chuches1"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+        sourceSets.debug.resources.srcDirs = ['src/debug/res']
+        sourceSets.release.resources.srcDirs = ['src/release/res']
     }
     androidExtensions {
         experimental = true
@@ -42,6 +53,10 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    // Maps & Location
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     // Mockito
     testImplementation 'org.mockito:mockito-core:2.19.0'
