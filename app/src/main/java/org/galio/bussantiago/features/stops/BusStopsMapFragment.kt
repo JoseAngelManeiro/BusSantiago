@@ -2,20 +2,35 @@ package org.galio.bussantiago.features.stops
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import org.galio.bussantiago.R
+import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.common.handleException
+import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.features.times.TimesFragment
+import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val REQUEST_LOCATION_PERMISSION = 1
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
+  private val viewModel: BusStopsMapViewModel by viewModel()
+
+  private var lineId: Int = 0
+  private lateinit var routeName: String
   private lateinit var mGoogleMap: GoogleMap
 
   companion object {
@@ -34,26 +49,69 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    val lineId = arguments?.get(LINE_ID_KEY) as Int
-    val routeName = arguments?.get(ROUTE_NAME_KEY) as String
+    lineId = arguments?.get(LINE_ID_KEY) as Int
+    routeName = arguments?.get(ROUTE_NAME_KEY) as String
 
     getMapAsync(this)
+
+    viewModel.lineMapModel.observe(viewLifecycleOwner, Observer {
+      it?.let { resourceLineMapModel ->
+        when (resourceLineMapModel.status) {
+          Status.LOADING -> {}
+          Status.SUCCESS -> {
+            setUpMap(resourceLineMapModel.data!!)
+          }
+          Status.ERROR -> {
+            handleException(resourceLineMapModel.exception!!)
+          }
+        }
+      }
+    })
   }
 
   override fun onMapReady(googleMap: GoogleMap?) {
     if (googleMap != null) {
       mGoogleMap = googleMap
-      // Add a marker in Home and move the camera
-      val home = LatLng(42.567595, -8.988767)
-      val zoom = 15f
-      mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, zoom))
-      mGoogleMap.addMarker(MarkerOptions()
-          .position(home)
-          .title("Code Stop")
-          .snippet("Name Stop")
-      )
       enableMyLocation()
+      mGoogleMap.setOnInfoWindowClickListener {
+        navigateSafe(R.id.actionShowTimesFragment,
+          TimesFragment.createArguments(BusStopModel(it.title, it.snippet)))
+      }
+      viewModel.load(lineId, routeName)
     }
+  }
+
+  private fun setUpMap(lineMapModel: LineMapModel) {
+    val polylineOptions = PolylineOptions()
+
+    val busStopMapModels = lineMapModel.busStopMapModels
+
+    busStopMapModels.forEachIndexed { index, busStopMapModel ->
+      var hue = BitmapDescriptorFactory.HUE_RED
+      if (index == 0 || index == busStopMapModels.lastIndex) {
+        hue = BitmapDescriptorFactory.HUE_BLUE
+      }
+
+      val latLng = LatLng(busStopMapModel.coordinates.latitude,
+        busStopMapModel.coordinates.longitude)
+
+      polylineOptions.add(latLng)
+
+      mGoogleMap.addMarker(MarkerOptions()
+        .position(latLng)
+        .title(busStopMapModel.code)
+        .snippet(busStopMapModel.name))
+        .setIcon(BitmapDescriptorFactory.defaultMarker(hue))
+    }
+
+    polylineOptions.color(Color.parseColor(lineMapModel.lineStyle))
+
+    mGoogleMap.addPolyline(polylineOptions)
+
+    val firstBusStopMapModel = lineMapModel.busStopMapModels.first()
+    val firstLatLng = LatLng(firstBusStopMapModel.coordinates.latitude,
+      firstBusStopMapModel.coordinates.longitude)
+    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 14f))
   }
 
   private fun enableMyLocation() {
