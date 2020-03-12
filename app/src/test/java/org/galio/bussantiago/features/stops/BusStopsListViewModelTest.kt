@@ -35,13 +35,12 @@ class BusStopsListViewModelTest {
 
     @Test
     fun `if all goes well, the bus stop models are mapped and loaded correctly`() {
-        val lineId = 123
-        val routeName = "Any route name"
-        val request = GetLineBusStops.Request(lineId, routeName)
+        val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Any route name")
+        val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
         val busStopsStub = listOf(createBusStop(code = "1234", name = "Bus Stop 1"))
         `when`(getLineBusStops(request)).thenReturn(Either.Right(busStopsStub))
 
-        viewModel.loadBusStops(lineId, routeName)
+        viewModel.loadBusStops(busStopsArgs)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.success(
@@ -51,13 +50,12 @@ class BusStopsListViewModelTest {
 
     @Test
     fun `fire the exception received`() {
-        val lineId = 123
-        val routeName = "Any route name"
-        val request = GetLineBusStops.Request(lineId, routeName)
+        val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Any route name")
+        val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
         val exception = Exception("Fake exception")
         `when`(getLineBusStops(request)).thenReturn(Either.Left(exception))
 
-        viewModel.loadBusStops(lineId, routeName)
+        viewModel.loadBusStops(busStopsArgs)
 
         verify(observer).onChanged(Resource.loading())
         verify(observer).onChanged(Resource.error(exception))

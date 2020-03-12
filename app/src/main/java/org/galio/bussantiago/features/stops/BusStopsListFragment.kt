@@ -20,13 +20,11 @@ class BusStopsListFragment : Fragment() {
   private val viewModel: BusStopsListViewModel by viewModel()
 
   companion object {
-    private const val LINE_ID_KEY = "line_id_key"
-    private const val ROUTE_NAME_KEY = "route_name_key"
-    fun newInstance(id: Int, routeName: String): BusStopsListFragment {
+    private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
+    fun newInstance(busStopsArgs: BusStopsArgs): BusStopsListFragment {
       val fragment = BusStopsListFragment()
       val bundle = Bundle()
-      bundle.putInt(LINE_ID_KEY, id)
-      bundle.putString(ROUTE_NAME_KEY, routeName)
+      bundle.putParcelable(BUS_STOPS_ARGS_KEY, busStopsArgs)
       fragment.arguments = bundle
       return fragment
     }
@@ -43,8 +41,7 @@ class BusStopsListFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    val lineId = arguments?.get(LINE_ID_KEY) as Int
-    val routeName = arguments?.get(ROUTE_NAME_KEY) as String
+    val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
     viewModel.busStopModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceIncidencesModel ->
@@ -65,7 +62,7 @@ class BusStopsListFragment : Fragment() {
       }
     })
 
-    viewModel.loadBusStops(lineId, routeName)
+    viewModel.loadBusStops(busStopsArgs)
   }
 
   private fun hideProgressBarIfNecessary() {

@@ -12,12 +12,10 @@ import org.galio.bussantiago.common.initActionBar
 class BusStopsContainerFragment : Fragment() {
 
   companion object {
-    private const val LINE_ID_KEY = "line_id_key"
-    private const val ROUTE_NAME_KEY = "route_name_key"
-    fun createArguments(id: Int, routeName: String): Bundle {
+    private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
+    fun createArguments(busStopsArgs: BusStopsArgs): Bundle {
       val bundle = Bundle()
-      bundle.putInt(LINE_ID_KEY, id)
-      bundle.putString(ROUTE_NAME_KEY, routeName)
+      bundle.putParcelable(BUS_STOPS_ARGS_KEY, busStopsArgs)
       return bundle
     }
   }
@@ -33,13 +31,12 @@ class BusStopsContainerFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    val lineId = arguments?.get(LINE_ID_KEY) as Int
-    val routeName = arguments?.get(ROUTE_NAME_KEY) as String
+    val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
-    initActionBar(title = routeName, backEnabled = true)
+    initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
     stops_viewPager.adapter = BusStopsPagerAdapter(
-      lineId, routeName, context!!, childFragmentManager)
+      busStopsArgs, context!!, childFragmentManager)
     stops_tabLayout.setupWithViewPager(stops_viewPager)
   }
 }

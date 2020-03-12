@@ -18,11 +18,14 @@ class BusStopsListViewModel(
   val busStopModels: LiveData<Resource<List<BusStopModel>>>
     get() = _busStopModels
 
-  fun loadBusStops(lineId: Int, routeName: String) {
+  fun loadBusStops(busStopsArgs: BusStopsArgs) {
     _busStopModels.value = Resource.loading()
     executor(
       interactor = getLineBusStops,
-      request = GetLineBusStops.Request(lineId = lineId, routeName = routeName),
+      request = GetLineBusStops.Request(
+        lineId = busStopsArgs.lineId,
+        routeName = busStopsArgs.routeName
+      ),
       onSuccess = { busStops ->
         _busStopModels.value = Resource.success(
           busStops.map { BusStopModel(code = it.code, name = it.name) }

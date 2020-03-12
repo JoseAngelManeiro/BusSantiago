@@ -7,17 +7,16 @@ import androidx.fragment.app.FragmentPagerAdapter
 import org.galio.bussantiago.R
 
 class BusStopsPagerAdapter(
-  private val id: Int,
-  private val routeName: String,
+  private val busStopsArgs: BusStopsArgs,
   private val context: Context,
   fragmentManager: FragmentManager
 ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   override fun getItem(position: Int): Fragment {
     return if (position == 0) {
-      BusStopsListFragment.newInstance(id, routeName)
+      BusStopsListFragment.newInstance(busStopsArgs)
     } else {
-      BusStopsMapFragment.newInstance(id, routeName)
+      BusStopsMapFragment.newInstance(busStopsArgs)
     }
   }
 

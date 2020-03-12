@@ -18,13 +18,14 @@ class BusStopsMapViewModel(
   val lineMapModel: LiveData<Resource<LineMapModel>>
     get() = _lineMapModel
 
-  fun load(lineId: Int, routeName: String) {
+  fun load(busStopsArgs: BusStopsArgs) {
     executor(
       interactor = getLineDetails,
-      request = lineId,
+      request = busStopsArgs.lineId,
       onSuccess = { lineDetails ->
         _lineMapModel.value = Resource.success(
-          lineMapModelFactory.createLineMapModelFactory(routeName, lineDetails)
+          lineMapModelFactory.createLineMapModelFactory(
+            busStopsArgs.routeName, lineDetails)
         )
       },
       onError = {

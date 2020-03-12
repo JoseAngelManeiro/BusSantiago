@@ -29,18 +29,15 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
   private val viewModel: BusStopsMapViewModel by viewModel()
 
-  private var lineId: Int = 0
-  private lateinit var routeName: String
+  private lateinit var busStopsArgs: BusStopsArgs
   private lateinit var mGoogleMap: GoogleMap
 
   companion object {
-    private const val LINE_ID_KEY = "line_id_key"
-    private const val ROUTE_NAME_KEY = "route_name_key"
-    fun newInstance(id: Int, routeName: String): BusStopsMapFragment {
+    private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
+    fun newInstance(busStopsArgs: BusStopsArgs): BusStopsMapFragment {
       val fragment = BusStopsMapFragment()
       val bundle = Bundle()
-      bundle.putInt(LINE_ID_KEY, id)
-      bundle.putString(ROUTE_NAME_KEY, routeName)
+      bundle.putParcelable(BUS_STOPS_ARGS_KEY, busStopsArgs)
       fragment.arguments = bundle
       return fragment
     }
@@ -49,8 +46,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    lineId = arguments?.get(LINE_ID_KEY) as Int
-    routeName = arguments?.get(ROUTE_NAME_KEY) as String
+    busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
     getMapAsync(this)
 
@@ -77,7 +73,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         navigateSafe(R.id.actionShowTimesFragment,
           TimesFragment.createArguments(BusStopModel(it.title, it.snippet)))
       }
-      viewModel.load(lineId, routeName)
+      viewModel.load(busStopsArgs)
     }
   }
 
