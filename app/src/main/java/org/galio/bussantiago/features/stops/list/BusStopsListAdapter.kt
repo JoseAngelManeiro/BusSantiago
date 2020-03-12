@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.list
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View

@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.map
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -20,6 +20,7 @@ import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 

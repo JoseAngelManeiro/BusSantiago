@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
+import org.galio.bussantiago.features.stops.BusStopsArgs
 
 class BusStopsListViewModel(
   private val executor: InteractorExecutor,

@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -8,6 +8,7 @@ import org.galio.bussantiago.executor.SyncInteractorExecutor
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
 import org.galio.bussantiago.domain.model.BusStop
+import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
@@ -29,7 +30,11 @@ class BusStopsListViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = BusStopsListViewModel(executor, getLineBusStops)
+        viewModel =
+          BusStopsListViewModel(
+            executor,
+            getLineBusStops
+          )
         viewModel.busStopModels.observeForever(observer)
     }
 

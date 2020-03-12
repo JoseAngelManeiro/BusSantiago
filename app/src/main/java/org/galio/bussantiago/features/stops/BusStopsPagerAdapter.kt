@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.galio.bussantiago.R
+import org.galio.bussantiago.features.stops.list.BusStopsListFragment
+import org.galio.bussantiago.features.stops.map.BusStopsMapFragment
 
 class BusStopsPagerAdapter(
   private val busStopsArgs: BusStopsArgs,

@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.map
 
 import org.galio.bussantiago.domain.model.LineDetails
 
