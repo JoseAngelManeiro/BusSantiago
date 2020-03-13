@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.list
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
@@ -8,10 +8,10 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
 import org.galio.bussantiago.common.model.BusStopModel
 
-class BusStopsAdapter(
+class BusStopsListAdapter(
   private val items: List<BusStopModel>,
   private val listener: (BusStopModel) -> Unit
-) : RecyclerView.Adapter<BusStopsAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<BusStopsListAdapter.ItemViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
     val itemViewHolder = parent.inflate(R.layout.busstop_item)

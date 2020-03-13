@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.stops
+package org.galio.bussantiago.features.stops.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,8 +7,9 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
+import org.galio.bussantiago.features.stops.BusStopsArgs
 
-class BusStopsViewModel(
+class BusStopsListViewModel(
   private val executor: InteractorExecutor,
   private val getLineBusStops: GetLineBusStops
 ) : ViewModel() {
@@ -18,11 +19,14 @@ class BusStopsViewModel(
   val busStopModels: LiveData<Resource<List<BusStopModel>>>
     get() = _busStopModels
 
-  fun loadBusStops(lineId: Int, routeName: String) {
+  fun loadBusStops(busStopsArgs: BusStopsArgs) {
     _busStopModels.value = Resource.loading()
     executor(
       interactor = getLineBusStops,
-      request = GetLineBusStops.Request(lineId = lineId, routeName = routeName),
+      request = GetLineBusStops.Request(
+        lineId = busStopsArgs.lineId,
+        routeName = busStopsArgs.routeName
+      ),
       onSuccess = { busStops ->
         _busStopModels.value = Resource.success(
           busStops.map { BusStopModel(code = it.code, name = it.name) }

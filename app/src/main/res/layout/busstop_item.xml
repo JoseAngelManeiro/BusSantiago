@@ -8,16 +8,17 @@
   android:padding="@dimen/default_padding"
   android:gravity="center_vertical"
   android:background="?attr/selectableItemBackground"
-  tools:context="org.galio.bussantiago.features.stops.BusStopsAdapter">
+  tools:context="org.galio.bussantiago.features.stops.list.BusStopsListAdapter">
 
   <TextView
     android:id="@+id/codeTextView"
     android:layout_width="44dp"
     android:layout_height="wrap_content"
-    android:textSize="18dp"
+    android:textSize="@dimen/busStopCode_text_size"
     android:textStyle="bold"
     android:textColor="@android:color/darker_gray"
-    tools:text="512"/>
+    tools:text="512"
+    tools:ignore="SpUsage" />
 
   <TextView
     android:id="@+id/nameTextView"
