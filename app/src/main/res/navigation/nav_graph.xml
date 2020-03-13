@@ -56,8 +56,8 @@
 
   <fragment
     android:id="@+id/busStopsFragment"
-    android:name="org.galio.bussantiago.features.stops.BusStopsFragment"
-    tools:layout="@layout/busstops_fragment">
+    android:name="org.galio.bussantiago.features.stops.BusStopsContainerFragment"
+    tools:layout="@layout/busstopscontainer_fragment">
   </fragment>
 
   <dialog

@@ -13,7 +13,8 @@ import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.incidences.IncidencesFragment
 import org.galio.bussantiago.features.information.InformationFragment
-import org.galio.bussantiago.features.stops.BusStopsFragment
+import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.features.stops.BusStopsContainerFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MenuFragment : DialogFragment() {
@@ -79,7 +80,8 @@ class MenuFragment : DialogFragment() {
     when (menuOptionModel.menuType) {
       MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE -> {
         navigateSafe(R.id.actionShowBusStops,
-          BusStopsFragment.createArguments(lineId, menuOptionModel.title!!))
+          BusStopsContainerFragment.createArguments(
+            BusStopsArgs(lineId = lineId, routeName = menuOptionModel.title!!)))
       }
       MenuType.INFORMATION -> {
         navigateSafe(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
