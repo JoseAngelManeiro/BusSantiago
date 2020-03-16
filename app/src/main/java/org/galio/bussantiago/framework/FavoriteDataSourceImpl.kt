@@ -1,41 +1,75 @@
 package org.galio.bussantiago.framework
 
+import android.content.ContentValues
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
 
-class FavoriteDataSourceImpl(context: Context) : FavoriteDataSource {
+private const val DATABASE_NAME = "stops.db"
+private const val DATABASE_VERSION = 2
 
-  companion object {
-    private const val PREF_FILE_NAME = "bussantiago_app_preferences"
-    private const val PREF_KEY_FAVORITE = "pref_key_favorite"
+class FavoriteDataSourceImpl(
+  context: Context
+) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
+  FavoriteDataSource {
+
+  private val database: SQLiteDatabase by lazy { writableDatabase }
+
+  override fun onCreate(database: SQLiteDatabase) {
+    database.execSQL("CREATE TABLE " + Tables.FAVOURITE + " (" +
+        BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        FavouriteColumns.CODE + " TEXT, " +
+        FavouriteColumns.NAME + " TEXT);"
+    )
   }
 
-  private val preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
-  private val gson = Gson()
-  private val favoritesType = object : TypeToken<ArrayList<BusStopFavorite>>() {}.type
+  override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+    database.execSQL("DROP TABLE IF EXISTS " + Tables.STOP)
+    database.execSQL("DROP TABLE IF EXISTS " + Tables.LINE)
+    database.execSQL("DROP TABLE IF EXISTS " + Tables.JOURNEY)
+    database.execSQL("DROP TABLE IF EXISTS " + Tables.TIME)
+  }
 
   override fun getAll(): List<BusStopFavorite> {
-    val favoritesJson = preferences.getString(PREF_KEY_FAVORITE, null)
-    return if (favoritesJson != null) {
-      gson.fromJson(favoritesJson, favoritesType)
-    } else {
-      emptyList()
+    val busStopFavorites = mutableListOf<BusStopFavorite>()
+    val cursor = database.query(
+      Tables.FAVOURITE,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    )
+    if (cursor != null) {
+      while (cursor.moveToNext()) {
+        busStopFavorites.add(readBusStopFavorite(cursor))
+      }
     }
+    return busStopFavorites
   }
 
   override fun remove(busStopFavorite: BusStopFavorite) {
-    saveAll(getAll().minus(busStopFavorite))
+    val whereClause = FavouriteColumns.CODE + "=? AND " + FavouriteColumns.NAME + "=?"
+    val whereArgs = arrayOf(busStopFavorite.code, busStopFavorite.name)
+    database.delete(Tables.FAVOURITE, whereClause, whereArgs)
   }
 
   override fun save(busStopFavorite: BusStopFavorite) {
-    saveAll(getAll().plus(busStopFavorite))
+    val values = ContentValues().apply {
+      put(FavouriteColumns.CODE, busStopFavorite.code)
+      put(FavouriteColumns.NAME, busStopFavorite.name)
+    }
+    database.insert(Tables.FAVOURITE, null, values)
   }
 
-  private fun saveAll(busStopFavorites: List<BusStopFavorite>) {
-    val busStopsFavoritesJson = gson.toJson(busStopFavorites, favoritesType)
-    preferences.edit().putString(PREF_KEY_FAVORITE, busStopsFavoritesJson).apply()
-  }
+  private fun readBusStopFavorite(cursor: Cursor) =
+    BusStopFavorite(
+      code = cursor.getString(cursor.getColumnIndex(FavouriteColumns.CODE)),
+      name = cursor.getString(cursor.getColumnIndex(FavouriteColumns.NAME))
+    )
 }
