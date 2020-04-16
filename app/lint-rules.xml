@@ -41,7 +41,7 @@
 
   <!-- App is not indexable by Google Search;
   consider adding at least one Activity with an ACTION-VIEW intent filter. -->
-  <issue id="GoogleAppIndexingWarning" severity="warning" />
+  <issue id="GoogleAppIndexingWarning" severity="error" />
 
   <!-- If a View that overrides onTouchEvent or uses an OnTouchListener
   does not also implement performClick and call it when clicks are detected,
