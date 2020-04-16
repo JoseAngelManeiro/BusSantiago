@@ -36,7 +36,7 @@ class BusStopsContainerFragment : Fragment() {
     initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
     stops_viewPager.adapter = BusStopsPagerAdapter(
-      busStopsArgs, context!!, childFragmentManager)
+      busStopsArgs, requireContext(), childFragmentManager)
     stops_tabLayout.setupWithViewPager(stops_viewPager)
   }
 }

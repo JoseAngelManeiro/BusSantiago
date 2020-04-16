@@ -112,11 +112,11 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   }
 
   private fun enableMyLocation() {
-    if (ContextCompat.checkSelfPermission(context!!,
+    if (ContextCompat.checkSelfPermission(requireContext(),
         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
       mGoogleMap.isMyLocationEnabled = true
     } else {
-      ActivityCompat.requestPermissions(activity!!,
+      ActivityCompat.requestPermissions(requireActivity(),
         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
     }
   }
