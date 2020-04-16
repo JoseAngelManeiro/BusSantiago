@@ -12,6 +12,7 @@ android {
         versionName "4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     signingConfigs {
         release {
             storeFile file('src/release/mykey.jks')
@@ -20,6 +21,7 @@ android {
             keyPassword "chuches1"
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,8 +31,17 @@ android {
         sourceSets.debug.resources.srcDirs = ['src/debug/res']
         sourceSets.release.resources.srcDirs = ['src/release/res']
     }
+
     androidExtensions {
         experimental = true
+    }
+
+    lintOptions {
+        lintConfig file("$rootDir/app/lint-rules.xml")
+        abortOnError true
+        ignoreWarnings false
+        htmlReport true
+        htmlOutput file("$rootDir/app/lint-results.html")
     }
 }
 

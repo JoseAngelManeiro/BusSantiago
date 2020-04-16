@@ -43,3 +43,6 @@ captures/
 freeline.py
 freeline/
 freeline_project_description.json
+
+# Lint results
+app/lint-results.html
