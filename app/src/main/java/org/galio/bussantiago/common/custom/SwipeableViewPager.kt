@@ -1,5 +1,6 @@
 package org.galio.bussantiago.common.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -28,6 +29,7 @@ class SwipeableViewPager : ViewPager {
     return if (swipeable) super.onInterceptTouchEvent(event) else false
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     return if (swipeable) super.onTouchEvent(event) else false
   }

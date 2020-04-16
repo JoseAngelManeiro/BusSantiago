@@ -12,6 +12,7 @@ android {
         versionName "4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     signingConfigs {
         release {
             storeFile file('src/release/mykey.jks')
@@ -20,6 +21,7 @@ android {
             keyPassword "********"
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,8 +31,17 @@ android {
         sourceSets.debug.resources.srcDirs = ['src/debug/res']
         sourceSets.release.resources.srcDirs = ['src/release/res']
     }
+
     androidExtensions {
         experimental = true
+    }
+
+    lintOptions {
+        lintConfig file("$rootDir/app/lint-rules.xml")
+        abortOnError true
+        ignoreWarnings false
+        htmlReport true
+        htmlOutput file("$rootDir/app/lint-results.html")
     }
 }
 
@@ -45,8 +56,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
 
     // Koin
     implementation 'org.koin:koin-android-viewmodel:2.0.1'
