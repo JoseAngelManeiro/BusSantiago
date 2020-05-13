@@ -14,4 +14,5 @@
   <string name="no_favorite_stop">Parada no favorita</string>
   <string name="lista">Lista</string>
   <string name="mapa">Mapa</string>
+  <string name="select_stop">Seleccionar parada</string>
 </resources>
