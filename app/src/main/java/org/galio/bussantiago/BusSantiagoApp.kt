@@ -9,6 +9,7 @@ import org.galio.bussantiago.di.incidencesModule
 import org.galio.bussantiago.di.busStopsModule
 import org.galio.bussantiago.di.favoritesModule
 import org.galio.bussantiago.di.timesModule
+import org.galio.bussantiago.di.widgetModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,7 +29,8 @@ class BusSantiagoApp : Application() {
         incidencesModule,
         busStopsModule,
         timesModule,
-        favoritesModule
+        favoritesModule,
+        widgetModule
       ))
     }
   }
