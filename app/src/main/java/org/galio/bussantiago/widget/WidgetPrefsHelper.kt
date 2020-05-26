@@ -17,42 +17,34 @@ class WidgetPrefsHelper(context: Context) {
     hour: String? = null,
     widgetId: Int
   ): Boolean {
-    val editor = prefs.edit()
-    if (code != null) editor.putString(getPreferencesKeyCode(widgetId), code)
-    if (name != null) editor.putString(getPreferencesKeyName(widgetId), name)
-    if (hour != null) editor.putString(getPreferencesKeyHour(widgetId), name)
-    return editor.commit()
+    return prefs.edit().apply {
+      if (code != null) putString(widgetId.toKeyCode(), code)
+      if (name != null) putString(widgetId.toKeyName(), name)
+      if (hour != null) putString(widgetId.toKeyHour(), hour)
+    }.commit()
   }
 
   fun getCode(widgetId: Int): String {
-    return prefs.getString(getPreferencesKeyCode(widgetId), "")
+    return prefs.getString(widgetId.toKeyCode(), "")
   }
 
   fun getName(widgetId: Int): String {
-    return prefs.getString(getPreferencesKeyName(widgetId), "")
+    return prefs.getString(widgetId.toKeyName(), "")
   }
 
   fun getHour(widgetId: Int): String {
-    return prefs.getString(getPreferencesKeyHour(widgetId), "")
+    return prefs.getString(widgetId.toKeyHour(), "")
   }
 
   fun remove(widgetId: Int): Boolean {
-    val editor = prefs.edit()
-    editor.remove(getPreferencesKeyCode(widgetId))
-    editor.remove(getPreferencesKeyName(widgetId))
-    editor.remove(getPreferencesKeyHour(widgetId))
-    return editor.commit()
+    return prefs.edit().apply {
+      remove(widgetId.toKeyCode())
+      remove(widgetId.toKeyName())
+      remove(widgetId.toKeyHour())
+    }.commit()
   }
 
-  private fun getPreferencesKeyCode(widgetId: Int): String? {
-    return widgetId.toString() + "CODE"
-  }
-
-  private fun getPreferencesKeyName(widgetId: Int): String? {
-    return widgetId.toString() + "NAME"
-  }
-
-  private fun getPreferencesKeyHour(widgetId: Int): String? {
-    return widgetId.toString() + "HOUR"
-  }
+  private fun Int.toKeyCode() = this.toString() + "CODE"
+  private fun Int.toKeyName() = this.toString() + "NAME"
+  private fun Int.toKeyHour() = this.toString() + "HOUR"
 }

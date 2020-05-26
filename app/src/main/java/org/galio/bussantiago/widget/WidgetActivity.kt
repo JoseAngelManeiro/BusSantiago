@@ -1,6 +1,7 @@
 package org.galio.bussantiago.widget
 
 import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,6 @@ import org.koin.android.ext.android.inject
 class WidgetActivity : AppCompatActivity() {
 
   private val favoriteDataSource: FavoriteDataSource by inject()
-  private val widgetPrefsHelper: WidgetPrefsHelper by inject()
 
   private var widgetId: Int = 0
 
@@ -49,6 +49,7 @@ class WidgetActivity : AppCompatActivity() {
   }
 
   private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
+    val widgetPrefsHelper = WidgetPrefsHelper(this)
     // Save stop code and name in preferences linked to widget id
     widgetPrefsHelper.save(
       code = busStopFavorite.code,
@@ -60,7 +61,9 @@ class WidgetActivity : AppCompatActivity() {
     val appWidgetManager = AppWidgetManager.getInstance(this)
     WidgetProvider.updateWidget(this, appWidgetManager, widgetId)
 
-    setResult(RESULT_OK)
+    val intent = Intent()
+    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+    setResult(RESULT_OK, intent)
     finish()
   }
 }

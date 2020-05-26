@@ -15,4 +15,5 @@
   <string name="lista">Lista</string>
   <string name="mapa">Mapa</string>
   <string name="select_stop">Seleccionar parada</string>
+  <string name="action_refresh_widget" translatable="false">org.galio.bussantiago.REFRESH_WIDGET</string>
 </resources>
