@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import kotlinx.android.synthetic.main.times_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
+import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class TimesFragment : DialogFragment() {
+class TimesFragment : Fragment() {
 
   private val viewModel: TimesViewModel by viewModel()
   private lateinit var busStopModel: BusStopModel
@@ -25,20 +26,6 @@ class TimesFragment : DialogFragment() {
       val bundle = Bundle()
       bundle.putParcelable(BUS_STOP_KEY, busStopModel)
       return bundle
-    }
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
-  }
-
-  override fun onStart() {
-    super.onStart()
-    dialog?.let { dialog ->
-      val width = ViewGroup.LayoutParams.MATCH_PARENT
-      val height = ViewGroup.LayoutParams.MATCH_PARENT
-      dialog.window?.setLayout(width, height)
     }
   }
 
@@ -55,11 +42,15 @@ class TimesFragment : DialogFragment() {
 
     busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
 
-    viewModel.setArgs(busStopModel.code, busStopModel.name)
-
-    setUpToolbar()
+    initActionBar(
+      title = busStopModel.code,
+      subTitle = busStopModel.name,
+      backEnabled = true
+    )
 
     setUpFavoriteButton()
+
+    viewModel.setArgs(busStopModel.code, busStopModel.name)
 
     viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner, Observer {
       it?.let { resourceLineRemainingTimeModels ->
@@ -80,7 +71,6 @@ class TimesFragment : DialogFragment() {
           Status.ERROR -> {
             hideProgressBarIfNecessary()
             handleException(resourceLineRemainingTimeModels.exception!!)
-            dismiss()
           }
         }
       }
@@ -98,13 +88,6 @@ class TimesFragment : DialogFragment() {
 
     viewModel.loadTimes()
     viewModel.validateBusStop()
-  }
-
-  private fun setUpToolbar() {
-    toolbar.title = busStopModel.code
-    toolbar.subtitle = busStopModel.name
-    toolbar.setNavigationIcon(R.drawable.ic_close)
-    toolbar.setNavigationOnClickListener { dismiss() }
   }
 
   private fun setUpFavoriteButton() {
