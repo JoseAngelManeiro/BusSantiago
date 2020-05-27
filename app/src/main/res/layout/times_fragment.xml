@@ -7,21 +7,12 @@
   android:layout_height="match_parent"
   tools:context="org.galio.bussantiago.features.times.TimesFragment">
 
-  <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    tools:title="Times"/>
-
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/timesRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    android:layout_below="@id/toolbar"
     tools:listitem="@layout/time_item" />
 
   <ProgressBar

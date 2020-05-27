@@ -5,6 +5,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.net.URL
 
 class ObtainJson {
@@ -21,21 +22,17 @@ class ObtainJson {
       val url = URL(urlString)
       urlConnection = url.openConnection() as HttpURLConnection
       urlConnection.requestMethod = "GET"
-      urlConnection.connectTimeout = 3000
-      urlConnection.readTimeout = 7000
+      urlConnection.connectTimeout = 4000
+      urlConnection.readTimeout = 4000
       urlConnection.connect()
 
       // Read the input stream into a String
-      val inputStream = urlConnection.inputStream
-      val buffer = StringBuffer()
-      if (inputStream == null) { // Nothing to do.
-        return null
-      }
-
+      val inputStream = urlConnection.inputStream ?: return null // Nothing to do
       reader = BufferedReader(InputStreamReader(inputStream))
+      val buffer = StringBuffer()
       var line = reader.readLine()
       while (line != null) {
-        buffer.append(line + "\n")
+        buffer.append(line).append("\n")
         line = reader.readLine()
       }
 
@@ -44,6 +41,9 @@ class ObtainJson {
       }
 
       callJsonString = buffer.toString()
+    } catch (e: SocketTimeoutException) {
+      callJsonString = null
+      Log.e(TAG, e.message)
     } catch (e: IOException) {
       callJsonString = null
       Log.e(TAG, e.message)
