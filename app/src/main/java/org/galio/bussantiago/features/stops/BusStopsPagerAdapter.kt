@@ -26,8 +26,8 @@ class BusStopsPagerAdapter(
 
   override fun getPageTitle(position: Int): CharSequence? {
     return when (position) {
-      0 -> context.getString(R.string.mapa)
-      1 -> context.getString(R.string.lista)
+      0 -> context.getString(R.string.map)
+      1 -> context.getString(R.string.list)
       else -> null
     }
   }

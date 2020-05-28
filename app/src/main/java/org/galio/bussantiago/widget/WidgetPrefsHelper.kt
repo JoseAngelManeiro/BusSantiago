@@ -25,15 +25,15 @@ class WidgetPrefsHelper(context: Context) {
   }
 
   fun getCode(widgetId: Int): String {
-    return prefs.getString(widgetId.toKeyCode(), "")
+    return prefs.getString(widgetId.toKeyCode(), "")!!
   }
 
   fun getName(widgetId: Int): String {
-    return prefs.getString(widgetId.toKeyName(), "")
+    return prefs.getString(widgetId.toKeyName(), "")!!
   }
 
   fun getHour(widgetId: Int): String {
-    return prefs.getString(widgetId.toKeyHour(), "")
+    return prefs.getString(widgetId.toKeyHour(), "")!!
   }
 
   fun remove(widgetId: Int): Boolean {
