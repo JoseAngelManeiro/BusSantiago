@@ -16,9 +16,9 @@ class BusStopsPagerAdapter(
 
   override fun getItem(position: Int): Fragment {
     return if (position == 0) {
-      BusStopsListFragment.newInstance(busStopsArgs)
-    } else {
       BusStopsMapFragment.newInstance(busStopsArgs)
+    } else {
+      BusStopsListFragment.newInstance(busStopsArgs)
     }
   }
 
@@ -26,8 +26,8 @@ class BusStopsPagerAdapter(
 
   override fun getPageTitle(position: Int): CharSequence? {
     return when (position) {
-      0 -> context.getString(R.string.lista)
-      1 -> context.getString(R.string.mapa)
+      0 -> context.getString(R.string.mapa)
+      1 -> context.getString(R.string.lista)
       else -> null
     }
   }
