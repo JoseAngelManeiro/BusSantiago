@@ -3,6 +3,9 @@ package org.galio.bussantiago.features.times
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -27,6 +30,11 @@ class TimesFragment : Fragment() {
       bundle.putParcelable(BUS_STOP_KEY, busStopModel)
       return bundle
     }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setHasOptionsMenu(true)
   }
 
   override fun onCreateView(
@@ -100,5 +108,25 @@ class TimesFragment : Fragment() {
     if (progressBar.visibility == View.VISIBLE) {
       progressBar.visibility = View.GONE
     }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.times_menu, menu)
+    super.onCreateOptionsMenu(menu, inflater)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.sync_action -> {
+        if (!timesAreLoading()) viewModel.loadTimes()
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
+  }
+
+  private fun timesAreLoading(): Boolean {
+    val resource = viewModel.lineRemainingTimeModels.value ?: return true
+    return resource.status == Status.LOADING
   }
 }

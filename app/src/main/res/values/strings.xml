@@ -17,4 +17,5 @@
   <string name="select_stop">Seleccionar parada</string>
   <string name="action_refresh_widget" translatable="false">org.galio.bussantiago.REFRESH_WIDGET</string>
   <string name="sync_widget">Sincronizar Widget</string>
+  <string name="update_data">Actualizar información</string>
 </resources>
