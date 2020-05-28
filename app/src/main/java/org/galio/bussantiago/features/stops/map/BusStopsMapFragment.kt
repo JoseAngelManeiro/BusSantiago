@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -116,8 +115,8 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
       mGoogleMap.isMyLocationEnabled = true
     } else {
-      ActivityCompat.requestPermissions(requireActivity(),
-        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+      requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+        REQUEST_LOCATION_PERMISSION)
     }
   }
 

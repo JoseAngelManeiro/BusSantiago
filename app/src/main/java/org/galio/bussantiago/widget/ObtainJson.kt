@@ -43,10 +43,10 @@ class ObtainJson {
       callJsonString = buffer.toString()
     } catch (e: SocketTimeoutException) {
       callJsonString = null
-      Log.e(TAG, e.message)
+      Log.e(TAG, e.message.toString())
     } catch (e: IOException) {
       callJsonString = null
-      Log.e(TAG, e.message)
+      Log.e(TAG, e.message.toString())
     } finally {
       urlConnection?.disconnect()
       if (reader != null) {
