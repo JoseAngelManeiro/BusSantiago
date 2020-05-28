@@ -2,16 +2,26 @@ package org.galio.bussantiago.framework
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
+import android.os.Build
 import org.galio.bussantiago.data.api.NetworkHandler
 
 class NetworkHandlerImpl(private val context: Context) : NetworkHandler {
 
   override fun isConnected(): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
-    return if (connectivityManager is ConnectivityManager) {
-      val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
-      networkInfo?.isConnected ?: false
-    } else false
+    val connectivityManager = context
+      .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      val network = connectivityManager.activeNetwork ?: return false
+      val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+      return when {
+        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+        else -> false
+      }
+    } else {
+      val network = connectivityManager.activeNetworkInfo ?: return false
+      return network.isConnected
+    }
   }
 }
