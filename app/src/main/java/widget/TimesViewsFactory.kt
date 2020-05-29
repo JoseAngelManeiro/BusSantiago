@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class TimeViewsFactory(
+class TimesViewsFactory(
   private val context: Context,
   intent: Intent
 ) : RemoteViewsService.RemoteViewsFactory {

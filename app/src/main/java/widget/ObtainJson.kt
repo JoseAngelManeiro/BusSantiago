@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package widget
 
 import android.util.Log
 import java.io.BufferedReader

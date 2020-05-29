@@ -8,7 +8,7 @@
   android:padding="@dimen/small_padding"
   android:gravity="center_vertical"
   android:background="@android:color/white"
-  tools:context="org.galio.bussantiago.widget.TimeViewsFactory">
+  tools:context="widget.TimesViewsFactory">
 
   <FrameLayout
     android:layout_width="wrap_content"

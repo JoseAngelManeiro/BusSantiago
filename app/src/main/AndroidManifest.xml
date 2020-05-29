@@ -41,14 +41,14 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".widget.WidgetActivity"
+    <activity android:name="widget.WidgetActivity"
       android:label="@string/select_stop">
       <intent-filter>
         <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
     </activity>
 
-    <receiver android:name=".widget.WidgetProvider"
+    <receiver android:name="widget.WidgetProvider"
       android:label="@string/favorite_stop">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -58,11 +58,11 @@
       </intent-filter>
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/app_widget_info" />
+        android:resource="@xml/widget_wprovider" />
     </receiver>
 
     <service
-      android:name="org.galio.bussantiago.widget.WidgetService"
+      android:name="widget.WidgetService"
       android:permission="android.permission.BIND_REMOTEVIEWS" />
 
   </application>

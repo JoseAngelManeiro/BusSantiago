@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -45,7 +45,7 @@ class WidgetProvider : AppWidgetProvider() {
       }
       val refreshPIntent = PendingIntent.getBroadcast(context, 0,
         refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-      remoteViews.setOnClickPendingIntent(R.id.refresh_button, refreshPIntent)
+      remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
       // Declare an explicit deep link to launch TimesFragment
       val navPIntent = NavDeepLinkBuilder(context)
