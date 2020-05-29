@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package widget
 
 import android.content.Intent
 import android.widget.RemoteViewsService
@@ -6,6 +6,6 @@ import android.widget.RemoteViewsService
 class WidgetService : RemoteViewsService() {
 
   override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
-    return TimeViewsFactory(this.applicationContext, intent)
+    return TimesViewsFactory(this.applicationContext, intent)
   }
 }
