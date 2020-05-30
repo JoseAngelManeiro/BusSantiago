@@ -18,64 +18,64 @@ import org.mockito.Mockito.verify
 
 class LinesViewModelTest {
 
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
 
-    private val executor = SyncInteractorExecutor()
-    private val getLines = mock<GetLines>()
-    private val observer = mock<Observer<Resource<List<LineModel>>>>()
+  private val executor = SyncInteractorExecutor()
+  private val getLines = mock<GetLines>()
+  private val observer = mock<Observer<Resource<List<LineModel>>>>()
 
-    private lateinit var linesViewModel: LinesViewModel
+  private lateinit var linesViewModel: LinesViewModel
 
-    @Before
-    fun setUp() {
-      linesViewModel = LinesViewModel(executor, getLines)
-      linesViewModel.lineModels.observeForever(observer)
-    }
+  @Before
+  fun setUp() {
+    linesViewModel = LinesViewModel(executor, getLines)
+    linesViewModel.lineModels.observeForever(observer)
+  }
 
-    @Test
-    fun `load the expected list of lines`() {
-        val linesStub = listOf(createLineStub())
-        `when`(getLines(Unit)).thenReturn(Either.Right(linesStub))
+  @Test
+  fun `load the expected list of lines`() {
+    val linesStub = listOf(createLineStub())
+    `when`(getLines(Unit)).thenReturn(Either.Right(linesStub))
 
-        linesViewModel.loadLines()
+    linesViewModel.loadLines()
 
-        verify(observer).onChanged(Resource.loading())
-        val lineViewsExpected = listOf(createLineViewStub())
-        verify(observer).onChanged(Resource.success(lineViewsExpected))
-    }
+    verify(observer).onChanged(Resource.loading())
+    val lineViewsExpected = listOf(createLineViewStub())
+    verify(observer).onChanged(Resource.success(lineViewsExpected))
+  }
 
-    @Test
-    fun `fire the exception received`() {
-        val exception = Exception("Fake exception")
-        `when`(getLines(Unit)).thenReturn(Either.Left(exception))
+  @Test
+  fun `fire the exception received`() {
+    val exception = Exception("Fake exception")
+    `when`(getLines(Unit)).thenReturn(Either.Left(exception))
 
-        linesViewModel.loadLines()
+    linesViewModel.loadLines()
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.error(exception))
-    }
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.error(exception))
+  }
 
-    private fun createLineStub(): Line {
-        return Line(
-          id = 1,
-          code = "Any code",
-          synoptic = "Any Synoptic",
-          name = "Any name",
-          company = "Any company",
-          incidents = 0,
-          style = "Any color"
-        )
-    }
+  private fun createLineStub(): Line {
+    return Line(
+      id = 1,
+      code = "Any code",
+      synoptic = "Any Synoptic",
+      name = "Any name",
+      company = "Any company",
+      incidents = 0,
+      style = "Any color"
+    )
+  }
 
-    private fun createLineViewStub(): LineModel {
-        return LineModel(
-            id = 1,
-            synopticModel = SynopticModel(
-              synoptic = "Any Synoptic",
-              style = "Any color"
-            ),
-            name = "Any name"
-        )
-    }
+  private fun createLineViewStub(): LineModel {
+    return LineModel(
+      id = 1,
+      synopticModel = SynopticModel(
+        synoptic = "Any Synoptic",
+        style = "Any color"
+      ),
+      name = "Any name"
+    )
+  }
 }

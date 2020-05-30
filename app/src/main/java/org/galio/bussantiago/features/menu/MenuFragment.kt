@@ -42,6 +42,9 @@ class MenuFragment : DialogFragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
+    lineId = arguments?.get(ID_KEY) as Int
+    viewModel.setArgs(lineId)
+
     viewModel.menuModel.observe(viewLifecycleOwner, Observer {
       it?.let { resourceMenuModel ->
         when (resourceMenuModel.status) {
@@ -54,15 +57,17 @@ class MenuFragment : DialogFragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceMenuModel.exception!!)
-            dismiss()
+            handleException(
+              resourceMenuModel.exception!!,
+              cancel = { dismiss() },
+              retry = { viewModel.loadLineDetails() }
+            )
           }
         }
       }
     })
 
-    lineId = arguments?.get(ID_KEY) as Int
-    viewModel.loadLineDetails(lineId)
+    viewModel.loadLineDetails()
   }
 
   private fun hideProgressBarIfNecessary() {

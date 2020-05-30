@@ -61,15 +61,12 @@ class FavoritesFragment : Fragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceBusStopFavorites.exception!!)
+            handleException(resourceBusStopFavorites.exception!!) { viewModel.loadFavorites() }
           }
         }
       }
     })
-  }
 
-  override fun onResume() {
-    super.onResume()
     viewModel.loadFavorites()
   }
 

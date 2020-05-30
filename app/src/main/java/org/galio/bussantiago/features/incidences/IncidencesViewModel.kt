@@ -12,16 +12,22 @@ class IncidencesViewModel(
   private val getLineIncidences: GetLineIncidences
 ) : ViewModel() {
 
+  private var lineId: Int = 0
+
   private val _incidences = MutableLiveData<Resource<List<String>>>()
 
   val incidences: LiveData<Resource<List<String>>>
     get() = _incidences
 
-  fun loadIncidences(id: Int) {
+  fun setArgs(lineId: Int) {
+    this.lineId = lineId
+  }
+
+  fun loadIncidences() {
     _incidences.value = Resource.loading()
     executor(
       interactor = getLineIncidences,
-      request = id,
+      request = lineId,
       onSuccess = { incidences ->
         _incidences.value = Resource.success(incidences.map { it.description })
       },

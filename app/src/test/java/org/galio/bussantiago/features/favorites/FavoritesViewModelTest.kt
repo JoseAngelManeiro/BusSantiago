@@ -17,42 +17,42 @@ import org.mockito.Mockito.verify
 
 class FavoritesViewModelTest {
 
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
 
-    private val executor = SyncInteractorExecutor()
-    private val getBusStopFavorites = mock<GetBusStopFavorites>()
-    private val observer = mock<Observer<Resource<List<BusStopFavorite>>>>()
+  private val executor = SyncInteractorExecutor()
+  private val getBusStopFavorites = mock<GetBusStopFavorites>()
+  private val observer = mock<Observer<Resource<List<BusStopFavorite>>>>()
 
-    private lateinit var viewModel: FavoritesViewModel
+  private lateinit var viewModel: FavoritesViewModel
 
-    @Before
-    fun setUp() {
-        viewModel = FavoritesViewModel(executor, getBusStopFavorites)
-        viewModel.busStopFavorites.observeForever(observer)
-    }
+  @Before
+  fun setUp() {
+    viewModel = FavoritesViewModel(executor, getBusStopFavorites)
+    viewModel.busStopFavorites.observeForever(observer)
+  }
 
-    @Test
-    fun `if all goes well, the favorites are loaded correctly`() {
-        val request = Unit
-        val busStopFavoritesStub = mock<List<BusStopFavorite>>()
-        `when`(getBusStopFavorites(request)).thenReturn(Either.Right(busStopFavoritesStub))
+  @Test
+  fun `if all goes well, the favorites are loaded correctly`() {
+    val request = Unit
+    val busStopFavoritesStub = mock<List<BusStopFavorite>>()
+    `when`(getBusStopFavorites(request)).thenReturn(Either.Right(busStopFavoritesStub))
 
-        viewModel.loadFavorites()
+    viewModel.loadFavorites()
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success(busStopFavoritesStub))
-    }
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.success(busStopFavoritesStub))
+  }
 
-    @Test
-    fun `fire the exception received`() {
-        val request = Unit
-        val exception = Exception("Fake exception")
-        `when`(getBusStopFavorites(request)).thenReturn(Either.Left(exception))
+  @Test
+  fun `fire the exception received`() {
+    val request = Unit
+    val exception = Exception("Fake exception")
+    `when`(getBusStopFavorites(request)).thenReturn(Either.Left(exception))
 
-        viewModel.loadFavorites()
+    viewModel.loadFavorites()
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.error(exception))
-    }
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.error(exception))
+  }
 }

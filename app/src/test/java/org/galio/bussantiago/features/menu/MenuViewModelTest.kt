@@ -17,45 +17,46 @@ import org.mockito.Mockito.verify
 
 class MenuViewModelTest {
 
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
 
-    private val executor = SyncInteractorExecutor()
-    private val getLineDetails = mock<GetLineDetails>()
-    private val menuFactory = mock<MenuFactory>()
-    private val observer = mock<Observer<Resource<MenuModel>>>()
+  private val executor = SyncInteractorExecutor()
+  private val getLineDetails = mock<GetLineDetails>()
+  private val menuFactory = mock<MenuFactory>()
+  private val observer = mock<Observer<Resource<MenuModel>>>()
 
-    private lateinit var viewModel: MenuViewModel
+  private lateinit var viewModel: MenuViewModel
 
-    @Before
-    fun setUp() {
-        viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
-        viewModel.menuModel.observeForever(observer)
-    }
+  private val lineId = 123
 
-    @Test
-    fun `if all goes well, the data is loaded correctly`() {
-        val lineId = 123
-        val lineDetailsStub = mock<LineDetails>()
-        val menuModelStub = mock<MenuModel>()
-        `when`(getLineDetails(lineId)).thenReturn(Either.Right(lineDetailsStub))
-        `when`(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
+  @Before
+  fun setUp() {
+    viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
+    viewModel.setArgs(lineId)
+    viewModel.menuModel.observeForever(observer)
+  }
 
-        viewModel.loadLineDetails(lineId)
+  @Test
+  fun `if all goes well, the data is loaded correctly`() {
+    val lineDetailsStub = mock<LineDetails>()
+    val menuModelStub = mock<MenuModel>()
+    `when`(getLineDetails(lineId)).thenReturn(Either.Right(lineDetailsStub))
+    `when`(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success(menuModelStub))
-    }
+    viewModel.loadLineDetails()
 
-    @Test
-    fun `fire the exception received`() {
-        val lineId = 123
-        val exception = Exception("Fake exception")
-        `when`(getLineDetails(lineId)).thenReturn(Either.Left(exception))
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.success(menuModelStub))
+  }
 
-        viewModel.loadLineDetails(lineId)
+  @Test
+  fun `fire the exception received`() {
+    val exception = Exception("Fake exception")
+    `when`(getLineDetails(lineId)).thenReturn(Either.Left(exception))
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.error(exception))
-    }
+    viewModel.loadLineDetails()
+
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.error(exception))
+  }
 }
