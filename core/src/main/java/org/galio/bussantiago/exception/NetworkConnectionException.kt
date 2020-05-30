@@ -1,5 +1,5 @@
 package org.galio.bussantiago.exception
 
 class NetworkConnectionException(
-  message: String = "No network connection"
+  message: String = "Error de conexión"
 ) : Exception(message)

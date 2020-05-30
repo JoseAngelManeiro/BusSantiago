@@ -20,12 +20,23 @@ fun Fragment.initActionBar(
   }
 }
 
-fun Fragment.handleException(exception: Exception) {
+fun Fragment.handleException(
+  exception: Exception,
+  cancel: () -> Unit = {},
+  retry: () -> Unit = {}
+) {
   AlertDialog.Builder(context!!)
-    .setMessage(exception.message)
-    .setPositiveButton(R.string.accept) { dialog, _ ->
+    .setTitle(exception.message)
+    .setMessage(R.string.what_want_to_do)
+    .setNegativeButton(R.string.cancel) { dialog, _ ->
       dialog.dismiss()
+      cancel()
     }
+    .setPositiveButton(R.string.retry) { dialog, _ ->
+      dialog.dismiss()
+      retry()
+    }
+    .setCancelable(false)
     .create()
     .show()
 }

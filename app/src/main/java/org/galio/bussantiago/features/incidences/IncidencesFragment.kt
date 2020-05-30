@@ -22,9 +22,9 @@ class IncidencesFragment : Fragment() {
 
   companion object {
     private const val ID_KEY = "id_key"
-    fun createArguments(id: Int): Bundle {
+    fun createArguments(lineId: Int): Bundle {
       val bundle = Bundle()
-      bundle.putInt(ID_KEY, id)
+      bundle.putInt(ID_KEY, lineId)
       return bundle
     }
   }
@@ -41,6 +41,9 @@ class IncidencesFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
 
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
+
+    val lineId = arguments?.get(ID_KEY) as Int
+    viewModel.setArgs(lineId)
 
     viewModel.incidences.observe(viewLifecycleOwner, Observer {
       it?.let { resourceIncidencesModel ->
@@ -59,14 +62,13 @@ class IncidencesFragment : Fragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceIncidencesModel.exception!!)
+            handleException(resourceIncidencesModel.exception!!) { viewModel.loadIncidences() }
           }
         }
       }
     })
 
-    val id = arguments?.get(ID_KEY) as Int
-    viewModel.loadIncidences(id)
+    viewModel.loadIncidences()
   }
 
   private fun hideProgressBarIfNecessary() {

@@ -52,7 +52,7 @@ class LinesFragment : Fragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceLines.exception!!)
+            handleException(resourceLines.exception!!) { viewModel.loadLines() }
           }
         }
       }

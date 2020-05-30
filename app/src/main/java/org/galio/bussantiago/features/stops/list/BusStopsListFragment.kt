@@ -44,26 +44,28 @@ class BusStopsListFragment : Fragment() {
 
     val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
+    viewModel.setArgs(busStopsArgs)
+
     viewModel.busStopModels.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceIncidencesModel ->
-        when (resourceIncidencesModel.status) {
+      it?.let { resourceBusStopModels ->
+        when (resourceBusStopModels.status) {
           Status.LOADING -> {
             progressBar.visibility = View.VISIBLE
           }
           Status.SUCCESS -> {
             hideProgressBarIfNecessary()
             busStopsRecyclerView.adapter =
-              BusStopsListAdapter(resourceIncidencesModel.data!!) { onBusStopClick(it) }
+              BusStopsListAdapter(resourceBusStopModels.data!!) { onBusStopClick(it) }
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceIncidencesModel.exception!!)
+            handleException(resourceBusStopModels.exception!!) { viewModel.loadBusStops() }
           }
         }
       }
     })
 
-    viewModel.loadBusStops(busStopsArgs)
+    viewModel.loadBusStops()
   }
 
   private fun hideProgressBarIfNecessary() {

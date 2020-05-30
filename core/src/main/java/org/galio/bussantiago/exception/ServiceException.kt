@@ -1,5 +1,5 @@
 package org.galio.bussantiago.exception
 
 class ServiceException(
-  message: String = "An error has occurred with the server"
+  message: String = "Error del servidor"
 ) : Exception(message)

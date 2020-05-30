@@ -16,42 +16,43 @@ import org.mockito.Mockito.verify
 
 class InformationViewModelTest {
 
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
 
-    private val executor = SyncInteractorExecutor()
-    private val getLineInformation = mock<GetLineInformation>()
-    private val observer = mock<Observer<Resource<String>>>()
+  private val executor = SyncInteractorExecutor()
+  private val getLineInformation = mock<GetLineInformation>()
+  private val observer = mock<Observer<Resource<String>>>()
 
-    private lateinit var viewModel: InformationViewModel
+  private lateinit var viewModel: InformationViewModel
 
-    @Before
-    fun setUp() {
-        viewModel = InformationViewModel(executor, getLineInformation)
-        viewModel.information.observeForever(observer)
-    }
+  private val lineId = 123
 
-    @Test
-    fun `if all goes well, the data is loaded correctly`() {
-        val lineId = 123
-        val lineInformationStub = "Any Information"
-        `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
+  @Before
+  fun setUp() {
+    viewModel = InformationViewModel(executor, getLineInformation)
+    viewModel.setArgs(lineId)
+    viewModel.information.observeForever(observer)
+  }
 
-        viewModel.loadLineInformation(lineId)
+  @Test
+  fun `if all goes well, the data is loaded correctly`() {
+    val lineInformationStub = "Any Information"
+    `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.success("Any Information"))
-    }
+    viewModel.loadLineInformation()
 
-    @Test
-    fun `fire the exception received`() {
-        val lineId = 123
-        val exception = Exception("Fake exception")
-        `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.success("Any Information"))
+  }
 
-        viewModel.loadLineInformation(lineId)
+  @Test
+  fun `fire the exception received`() {
+    val exception = Exception("Fake exception")
+    `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
 
-        verify(observer).onChanged(Resource.loading())
-        verify(observer).onChanged(Resource.error(exception))
-    }
+    viewModel.loadLineInformation()
+
+    verify(observer).onChanged(Resource.loading())
+    verify(observer).onChanged(Resource.error(exception))
+  }
 }

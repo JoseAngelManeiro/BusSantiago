@@ -18,4 +18,7 @@
   <string name="action_refresh_widget" translatable="false">org.galio.bussantiago.REFRESH_WIDGET</string>
   <string name="sync_widget">Sincronizar Widget</string>
   <string name="update_data">Actualizar información</string>
+  <string name="cancel">Cancelar</string>
+  <string name="retry">Reintentar</string>
+  <string name="what_want_to_do">¿Que desea hacer?</string>
 </resources>

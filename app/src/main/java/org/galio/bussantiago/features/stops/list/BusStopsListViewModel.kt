@@ -14,12 +14,18 @@ class BusStopsListViewModel(
   private val getLineBusStops: GetLineBusStops
 ) : ViewModel() {
 
+  private lateinit var busStopsArgs: BusStopsArgs
+
   private val _busStopModels = MutableLiveData<Resource<List<BusStopModel>>>()
 
   val busStopModels: LiveData<Resource<List<BusStopModel>>>
     get() = _busStopModels
 
-  fun loadBusStops(busStopsArgs: BusStopsArgs) {
+  fun setArgs(busStopsArgs: BusStopsArgs) {
+    this.busStopsArgs = busStopsArgs
+  }
+
+  fun loadBusStops() {
     _busStopModels.value = Resource.loading()
     executor(
       interactor = getLineBusStops,
