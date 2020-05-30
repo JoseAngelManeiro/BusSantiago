@@ -40,6 +40,9 @@ class InformationFragment : Fragment() {
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
+    val lineId = arguments?.get(ID_KEY) as Int
+    viewModel.setArgs(lineId)
+
     viewModel.information.observe(viewLifecycleOwner, Observer {
       it?.let { resourceInformationModel ->
         when (resourceInformationModel.status) {
@@ -52,14 +55,15 @@ class InformationFragment : Fragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceInformationModel.exception!!)
+            handleException(
+              resourceInformationModel.exception!!
+            ) { viewModel.loadLineInformation() }
           }
         }
       }
     })
 
-    val id = arguments?.get(ID_KEY) as Int
-    viewModel.loadLineInformation(id)
+    viewModel.loadLineInformation()
   }
 
   private fun hideProgressBarIfNecessary() {

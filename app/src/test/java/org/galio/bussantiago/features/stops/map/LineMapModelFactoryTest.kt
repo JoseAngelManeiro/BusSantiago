@@ -13,10 +13,14 @@ class LineMapModelFactoryTest {
 
   @Test
   fun `should filter the bus stops by route`() {
-    val route1 = createRoute("Route 1",
-      listOf(createBusStop("657"), createBusStop("210")))
-    val route2 = createRoute("Route 2",
-      listOf(createBusStop("502")))
+    val route1 = createRoute(
+      "Route 1",
+      listOf(createBusStop("657"), createBusStop("210"))
+    )
+    val route2 = createRoute(
+      "Route 2",
+      listOf(createBusStop("502"))
+    )
     val lineDetails = createLineDetails(listOf(route1, route2))
 
     val result = lineMapModelFactory.createLineMapModelFactory(

@@ -78,7 +78,7 @@ class TimesFragment : Fragment() {
           }
           Status.ERROR -> {
             hideProgressBarIfNecessary()
-            handleException(resourceLineRemainingTimeModels.exception!!)
+            handleException(resourceLineRemainingTimeModels.exception!!) { viewModel.loadTimes() }
           }
         }
       }
