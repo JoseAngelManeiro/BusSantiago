@@ -21,7 +21,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true"
-    tools:targetApi="m">
+    tools:targetApi="m"
+    tools:ignore="LockedOrientationActivity">
     <!--
     The API key for Google Maps-based APIs is defined as a string resource.
     (See the file "res/values/google_maps_api.xml").
@@ -34,7 +35,8 @@
       android:name="com.google.android.geo.API_KEY"
       android:value="@string/google_maps_api_key" />
 
-    <activity android:name=".features.MainActivity">
+    <activity android:name=".features.MainActivity"
+      android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
@@ -42,7 +44,8 @@
     </activity>
 
     <activity android:name="widget.WidgetActivity"
-      android:label="@string/select_stop">
+      android:label="@string/select_stop"
+      android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
