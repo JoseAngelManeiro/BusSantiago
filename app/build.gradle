@@ -37,6 +37,16 @@ android {
         sourceSets.release.resources.srcDirs = ['src/release/res']
     }
 
+    sourceSets {
+        main {
+            res.srcDirs =
+                    ['src/main/res/layouts/app',
+                     'src/main/res/layouts/widget',
+                     'src/main/res/layouts',
+                     'src/main/res']
+        }
+    }
+
     androidExtensions {
         experimental = true
     }
