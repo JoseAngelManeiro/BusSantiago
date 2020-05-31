@@ -3,29 +3,21 @@ package org.galio.bussantiago.features.lines
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.features.BaseHomeFragment
 import org.galio.bussantiago.features.menu.MenuFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LinesFragment : Fragment() {
+class LinesFragment : BaseHomeFragment() {
 
   private val viewModel: LinesViewModel by viewModel()
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setHasOptionsMenu(true)
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -73,20 +65,5 @@ class LinesFragment : Fragment() {
 
   private fun onLineClicked(id: Int) {
     navigateSafe(R.id.actionShowMenu, MenuFragment.createArguments(id))
-  }
-
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.lines_menu, menu)
-    super.onCreateOptionsMenu(menu, inflater)
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
-      R.id.favorites_action -> {
-        navigateSafe(R.id.actionShowFavorites)
-        true
-      }
-      else -> super.onOptionsItemSelected(item)
-    }
   }
 }
