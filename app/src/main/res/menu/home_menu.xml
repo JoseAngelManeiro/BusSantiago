@@ -4,9 +4,8 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/lines_action"
-    android:title="@string/lines"
-    android:icon="@drawable/ic_menu_lines"
+    android:id="@+id/nav_action"
+    android:title="@string/favorites"
     app:showAsAction="always"/>
 
 </menu>
