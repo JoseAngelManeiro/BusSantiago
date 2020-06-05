@@ -2,7 +2,7 @@ package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.domain.model.Coordinates
-import org.galio.bussantiago.domain.model.SearchBusStop
+import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.galio.bussantiago.exception.ServiceException
 import org.galio.bussantiago.util.mock
@@ -13,10 +13,10 @@ import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
 
-class GetSearchBusStopTest {
+class SearchBusStopTest {
 
   private val searchBusStopRepository = mock<SearchBusStopRepository>()
-  private val getSearchBusStop = GetSearchBusStop(searchBusStopRepository)
+  private val getSearchBusStop = SearchBusStop(searchBusStopRepository)
 
   private val request = "45"
 
@@ -66,8 +66,8 @@ class GetSearchBusStopTest {
     assertEquals(exception, result.leftValue)
   }
 
-  private fun createSearchBusStop(code: String): SearchBusStop {
-    return SearchBusStop(
+  private fun createSearchBusStop(code: String): BusStopSearch {
+    return BusStopSearch(
       id = 1,
       code = code,
       name = "Any name",

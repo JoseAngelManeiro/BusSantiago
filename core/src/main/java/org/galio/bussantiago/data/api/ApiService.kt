@@ -4,7 +4,7 @@ import org.galio.bussantiago.data.entity.BusStopRemainingTimesEntity
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.entity.LineDetailsEntity
 import org.galio.bussantiago.data.entity.LineEntity
-import org.galio.bussantiago.data.entity.SearchBusStopEntity
+import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,5 +25,5 @@ interface ApiService {
 
   @Headers("Content-Type: application/json;charset=UTF-8")
   @POST("paradas")
-  fun searchBusStop(@Body body: BusStopRequest): Call<List<SearchBusStopEntity>>
+  fun searchBusStop(@Body body: BusStopRequest): Call<List<BusStopSearchEntity>>
 }

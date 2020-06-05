@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.entity
 
-data class SearchLineEntity(
+data class LineSearchEntity(
   val sinoptico: String,
   val estilo: String
 )
