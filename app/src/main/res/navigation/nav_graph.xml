@@ -72,6 +72,19 @@
     tools:layout="@layout/favorites_fragment">
   </fragment>
 
+  <fragment
+    android:id="@+id/searchFragment"
+    android:name="org.galio.bussantiago.features.search.SearchFragment"
+    tools:layout="@layout/search_fragment">
+
+    <action
+      android:id="@+id/actionShowTimesFromSearch"
+      app:destination="@id/timesFragment"
+      app:popUpTo="@id/searchFragment"
+      app:popUpToInclusive="true"/>
+
+  </fragment>
+
   <action
     android:id="@+id/actionShowTimesFragment"
     app:destination="@id/timesFragment" />
@@ -85,5 +98,9 @@
     android:id="@+id/actionShowLines"
     app:destination="@id/linesFragment"
     app:popUpTo="@id/nav_graph"/>
+
+  <action
+    android:id="@+id/actionShowSearchBusStop"
+    app:destination="@id/searchFragment"/>
 
 </navigation>

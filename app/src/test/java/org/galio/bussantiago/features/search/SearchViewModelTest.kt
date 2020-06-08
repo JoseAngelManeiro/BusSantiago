@@ -45,7 +45,7 @@ class SearchViewModelTest {
     )
     given(searchBusStop(busStopCode)).willReturn(Either.right(busStopSearchStub))
 
-    searchViewModel.search(busStopCode)
+    searchViewModel.search(busStopCode.toInt())
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.success(
@@ -57,7 +57,7 @@ class SearchViewModelTest {
   fun `load null when interactor doesn't find a value`() {
     given(searchBusStop(busStopCode)).willReturn(Either.right(null))
 
-    searchViewModel.search(busStopCode)
+    searchViewModel.search(busStopCode.toInt())
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.success(null))
@@ -68,7 +68,7 @@ class SearchViewModelTest {
     val exception = NetworkConnectionException()
     given(searchBusStop(busStopCode)).willReturn(Either.left(exception))
 
-    searchViewModel.search(busStopCode)
+    searchViewModel.search(busStopCode.toInt())
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))

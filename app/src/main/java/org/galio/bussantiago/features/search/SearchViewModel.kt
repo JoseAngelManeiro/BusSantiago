@@ -18,11 +18,11 @@ class SearchViewModel(
   val busStopModel: LiveData<Resource<BusStopModel?>>
     get() = _busStopModel
 
-  fun search(busStopCode: String) {
+  fun search(busStopCode: Int) {
     _busStopModel.value = Resource.loading()
     executor(
       interactor = searchBusStop,
-      request = busStopCode,
+      request = busStopCode.toString(),
       onSuccess = {
         _busStopModel.value = Resource.success(
           it?.let { BusStopModel(code = it.code, name = it.name) }

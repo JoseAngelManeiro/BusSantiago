@@ -1,6 +1,8 @@
 package org.galio.bussantiago.common
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,10 +15,10 @@ fun Fragment.initActionBar(
   backEnabled: Boolean = false
 ) {
   val appCompatActivity = activity as AppCompatActivity
-  appCompatActivity.supportActionBar?.let { actionBar ->
-    actionBar.title = title
-    actionBar.subtitle = subTitle
-    actionBar.setDisplayHomeAsUpEnabled(backEnabled)
+  appCompatActivity.supportActionBar?.apply {
+    this.title = title
+    this.subtitle = subTitle
+    this.setDisplayHomeAsUpEnabled(backEnabled)
   }
 }
 
@@ -47,4 +49,10 @@ fun Fragment.navigateSafe(resId: Int, args: Bundle? = null) {
   if (action != null) {
     navController.navigate(resId, args)
   }
+}
+
+fun Fragment.hideKeyboard() {
+  val inputMethodManager = activity
+    ?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+  inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
 }

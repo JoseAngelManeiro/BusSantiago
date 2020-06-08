@@ -11,7 +11,7 @@ class BusStopSearchMapper(
   override fun toDomain(dataModel: BusStopSearchEntity): BusStopSearch {
     return BusStopSearch(
       id = dataModel.id,
-      code = dataModel.codigo,
+      code = dataModel.codigo.toInt().toString(),
       name = dataModel.nombre,
       zone = dataModel.zona,
       coordinates = coordinatesMapper.toDomain(dataModel.coordenadas),
