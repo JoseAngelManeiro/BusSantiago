@@ -43,6 +43,10 @@ open class BaseHomeFragment : Fragment() {
         }
         true
       }
+      R.id.search_action -> {
+        navigateSafe(R.id.actionShowSearchBusStop)
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }
