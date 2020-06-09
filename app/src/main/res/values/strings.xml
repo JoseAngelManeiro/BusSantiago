@@ -27,4 +27,21 @@
   <string name="search">Buscar</string>
   <string name="must_type_code">Debe introducir el código de la parada</string>
   <string name="search_bus_stop">Buscar parada</string>
+  <string name="about">Acerca de</string>
+  <string name="author">Autor</string>
+  <string name="author_name">José Ángel Maneiro González</string>
+  <string name="author_web">www.joseangelmaneiro.com</string>
+  <string name="privacy_policy">Política de privacidad</string>
+  <string name="privacy_policy_description">Bus Santiago es una aplicación donde poder consultar
+    información relativa al transporte urbano de Santiago de Compostela. Esta aplicación no
+    es oficial, por lo que no se puede ofrecer ningún tipo de garantía acerca de la información mostrada.</string>
+  <string name="privacy_policy_user_data_label">Datos de usuario</string>
+  <string name="privacy_policy_user_data_description">Esta aplicación no almacena ni envía ningún tipo
+  de información personal relativa al usuario. La única información que se almacena localmente en el
+  dispositivo es la lista de paradas favoritas.</string>
+  <string name="privacy_policy_permission_label">Permiso de ubicación</string>
+  <string name="privacy_policy_permission_description">El único permiso que se le requiere al
+  usuario es el de ubicación, con la finalidad de que el usuario pueda visualizar en el mapa
+  aquellas paradas que se encuentren más cerca de su posición. La aplicación podrá funcionar
+  perfectamente en caso de que el permiso no sea aceptado.</string>
 </resources>

@@ -5,5 +5,5 @@
   <color name="colorSecondary" tools:ignore="UnusedResources">#4FC3F7</color>//Light Blue 300
   <color name="colorAccent">#FF6E40</color>//Deep Orange A200
 
-    <color name="ic_launcher_background">#FFFFFF</color>
+  <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
