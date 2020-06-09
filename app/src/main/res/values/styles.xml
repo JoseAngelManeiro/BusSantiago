@@ -16,4 +16,32 @@
     <item name="android:textStyle">bold</item>
   </style>
 
+  <style name="FullScreenDialogStyle" parent="AppTheme">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">false</item>
+    <item name="android:windowIsFloating">false</item>
+  </style>
+
+  <style name="AboutInfoBox">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:background">@drawable/about_info_box_bg</item>
+    <item name="android:padding">@dimen/extra_small_padding</item>
+  </style>
+
+  <style name="AboutInfoBox_Title">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">@dimen/extra_small_text_size</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="AboutInfoBox_Description">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">@dimen/extra_small_text_size</item>
+    <item name="android:layout_marginTop">@dimen/small_margin</item>
+  </style>
 </resources>

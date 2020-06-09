@@ -23,7 +23,7 @@ class ObtainJson {
       urlConnection = url.openConnection() as HttpURLConnection
       urlConnection.requestMethod = "GET"
       urlConnection.connectTimeout = 4000
-      urlConnection.readTimeout = 4000
+      urlConnection.readTimeout = 8000
       urlConnection.connect()
 
       // Read the input stream into a String
