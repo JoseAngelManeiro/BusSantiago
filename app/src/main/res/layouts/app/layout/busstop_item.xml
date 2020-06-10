@@ -12,7 +12,7 @@
 
   <TextView
     android:id="@+id/codeTextView"
-    android:layout_width="44dp"
+    android:layout_width="@dimen/busStopCode_width"
     android:layout_height="wrap_content"
     android:textSize="@dimen/busStopCode_text_size"
     android:textStyle="bold"
@@ -25,7 +25,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="@dimen/default_text_size"
-    android:layout_marginStart="@dimen/default_margin"
+    android:layout_marginStart="@dimen/small_margin"
     tools:text="Rúa de Sandino (fr. nº 62A) "/>
 
 </LinearLayout>

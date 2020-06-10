@@ -107,7 +107,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     val firstBusStopMapModel = lineMapModel.busStopMapModels.first()
     val firstLatLng = LatLng(firstBusStopMapModel.coordinates.latitude,
       firstBusStopMapModel.coordinates.longitude)
-    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 14f))
+    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
   }
 
   private fun enableMyLocation() {
