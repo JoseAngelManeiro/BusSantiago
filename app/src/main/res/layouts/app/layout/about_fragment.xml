@@ -64,6 +64,11 @@
           android:text="@string/author_web"
           android:autoLink="web"/>
 
+        <TextView
+          style="@style/AboutInfoBox_Description"
+          android:text="@string/author_email"
+          android:autoLink="email"/>
+
       </LinearLayout>
 
       <LinearLayout
