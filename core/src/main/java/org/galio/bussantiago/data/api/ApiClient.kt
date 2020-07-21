@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-private const val BASE_URL = "http://app.tussa.org/tussa/api/"
+private const val BASE_URL = "https://app.tussa.org/tussa/api/"
 
 class ApiClient(private val networkHandler: NetworkHandler) {
 
