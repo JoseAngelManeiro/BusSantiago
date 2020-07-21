@@ -11,15 +11,16 @@ import java.net.URL
 class ObtainJson {
 
   private val TAG = this::class.java.simpleName
+  private val BASE_URL = "https://app.tussa.org/tussa/api/lineas/0/parada/"
 
-  fun call(urlString: String): String? {
+  fun call(stopCode: String): String? {
 
     var urlConnection: HttpURLConnection? = null
     var reader: BufferedReader? = null
     var callJsonString: String?
 
     try {
-      val url = URL(urlString)
+      val url = URL(BASE_URL + stopCode)
       urlConnection = url.openConnection() as HttpURLConnection
       urlConnection.requestMethod = "GET"
       urlConnection.connectTimeout = 4000
@@ -43,10 +44,10 @@ class ObtainJson {
       callJsonString = buffer.toString()
     } catch (e: SocketTimeoutException) {
       callJsonString = null
-      Log.e(TAG, e.message.toString())
+      Log.d(TAG, e.message.toString())
     } catch (e: IOException) {
       callJsonString = null
-      Log.e(TAG, e.message.toString())
+      Log.d(TAG, e.message.toString())
     } finally {
       urlConnection?.disconnect()
       if (reader != null) {

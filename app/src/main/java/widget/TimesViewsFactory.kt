@@ -15,6 +15,7 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.features.times.LineRemainingTimeModel
 import org.galio.bussantiago.features.times.getDescriptionByMinutes
+import org.json.JSONException
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -48,8 +49,7 @@ class TimesViewsFactory(
 
     // Obtain times from service
     val tempList = mutableListOf<LineRemainingTimeModel>()
-    val result = ObtainJson()
-      .call("http://app.tussa.org/tussa/api/lineas/0/parada/$stopCode")
+    val result = ObtainJson().call(stopCode)
     if (result != null) {
       tempList.addAll(parseToItemWidgets(result))
     }
@@ -101,21 +101,27 @@ class TimesViewsFactory(
 
   private fun parseToItemWidgets(jsonString: String): List<LineRemainingTimeModel> {
     val arrayListTimes = mutableListOf<LineRemainingTimeModel>()
-    val jsonObjectResult = JSONObject(jsonString)
-    val jsonArrayLines = jsonObjectResult.getJSONArray("lineas")
-    var jsonObjectLine: JSONObject
-    for (i in 0 until jsonArrayLines.length()) {
-      jsonObjectLine = jsonArrayLines[i] as JSONObject
-      arrayListTimes.add(
-        LineRemainingTimeModel(
+
+    try {
+      val jsonObjectResult = JSONObject(jsonString)
+      val jsonArrayLines = jsonObjectResult.getJSONArray("lineas")
+      var jsonObjectLine: JSONObject
+      var lineRemainingTimeModel: LineRemainingTimeModel
+      for (i in 0 until jsonArrayLines.length()) {
+        jsonObjectLine = jsonArrayLines[i] as JSONObject
+        lineRemainingTimeModel = LineRemainingTimeModel(
           SynopticModel(
             jsonObjectLine.getString("sinoptico"),
             jsonObjectLine.getString("estilo")
           ),
           jsonObjectLine.getInt("minutosProximoPaso")
         )
-      )
+        arrayListTimes.add(lineRemainingTimeModel)
+      }
+    } catch (e: JSONException) {
+      // If there is an exception, simply return the empty list
     }
+
     return arrayListTimes
   }
 
