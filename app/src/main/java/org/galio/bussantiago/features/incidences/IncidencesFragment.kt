@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.incidences_fragment.*
 import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -45,35 +44,27 @@ class IncidencesFragment : Fragment() {
     val lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.incidences.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceIncidencesModel ->
-        when (resourceIncidencesModel.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            incidencesRecyclerView.adapter = IncidencesAdapter(it.data!!)
-            val itemDecoration = DividerItemDecoration(
-              incidencesRecyclerView.context,
-              LinearLayout.VERTICAL
-            )
-            incidencesRecyclerView.addItemDecoration(itemDecoration)
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(resourceIncidencesModel.exception!!) { viewModel.loadIncidences() }
-          }
+    viewModel.incidences.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          progressBar.visibility = View.GONE
+          handleException(it) { viewModel.loadIncidences() }
+        },
+        onSuccess = {
+          progressBar.visibility = View.GONE
+          incidencesRecyclerView.adapter = IncidencesAdapter(it)
+          val itemDecoration = DividerItemDecoration(
+            incidencesRecyclerView.context,
+            LinearLayout.VERTICAL
+          )
+          incidencesRecyclerView.addItemDecoration(itemDecoration)
         }
-      }
+      )
     })
 
     viewModel.loadIncidences()
-  }
-
-  private fun hideProgressBarIfNecessary() {
-    if (progressBar.visibility == View.VISIBLE) {
-      progressBar.visibility = View.GONE
-    }
   }
 }

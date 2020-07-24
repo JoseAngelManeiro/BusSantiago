@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.busstopslist_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.model.BusStopModel
@@ -46,23 +45,21 @@ class BusStopsListFragment : Fragment() {
 
     viewModel.setArgs(busStopsArgs)
 
-    viewModel.busStopModels.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceBusStopModels ->
-        when (resourceBusStopModels.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            busStopsRecyclerView.adapter =
-              BusStopsListAdapter(resourceBusStopModels.data!!) { onBusStopClick(it) }
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(resourceBusStopModels.exception!!) { viewModel.loadBusStops() }
-          }
+    viewModel.busStopModels.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          hideProgressBarIfNecessary()
+          handleException(it) { viewModel.loadBusStops() }
+        },
+        onSuccess = { busStopModels ->
+          hideProgressBarIfNecessary()
+          busStopsRecyclerView.adapter =
+            BusStopsListAdapter(busStopModels) { onBusStopClick(it) }
         }
-      }
+      )
     })
 
     viewModel.loadBusStops()

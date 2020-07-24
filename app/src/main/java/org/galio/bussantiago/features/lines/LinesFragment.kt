@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.lines_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
@@ -32,22 +31,20 @@ class LinesFragment : BaseHomeFragment() {
 
     initActionBar(title = getString(R.string.lines))
 
-    viewModel.lineModels.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceLines ->
-        when (resourceLines.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            setUpRecyclerView(resourceLines.data!!)
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(resourceLines.exception!!) { viewModel.loadLines() }
-          }
+    viewModel.lineModels.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          hideProgressBarIfNecessary()
+          handleException(it) { viewModel.loadLines() }
+        },
+        onSuccess = {
+          hideProgressBarIfNecessary()
+          setUpRecyclerView(it)
         }
-      }
+      )
     })
 
     viewModel.loadLines()

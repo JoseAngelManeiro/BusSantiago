@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.information_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
@@ -43,32 +42,22 @@ class InformationFragment : Fragment() {
     val lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.information.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceInformationModel ->
-        when (resourceInformationModel.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            informationTextView.text = resourceInformationModel.data!!.fromHtml()
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(
-              resourceInformationModel.exception!!
-            ) { viewModel.loadLineInformation() }
-          }
+    viewModel.information.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          progressBar.visibility = View.GONE
+          handleException(it) { viewModel.loadLineInformation() }
+        },
+        onSuccess = {
+          progressBar.visibility = View.GONE
+          informationTextView.text = it.fromHtml()
         }
-      }
+      )
     })
 
     viewModel.loadLineInformation()
-  }
-
-  private fun hideProgressBarIfNecessary() {
-    if (progressBar.visibility == View.VISIBLE) {
-      progressBar.visibility = View.GONE
-    }
   }
 }

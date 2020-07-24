@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import kotlinx.android.synthetic.main.times_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
@@ -60,28 +59,24 @@ class TimesFragment : Fragment() {
 
     viewModel.setArgs(busStopModel.code, busStopModel.name)
 
-    viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceLineRemainingTimeModels ->
-        when (resourceLineRemainingTimeModels.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            resourceLineRemainingTimeModels.data?.let { times ->
-              if (times.isEmpty()) {
-                noInfoTextView.visibility = View.VISIBLE
-              } else {
-                timesRecyclerView.adapter = TimesAdapter(times)
-              }
-            }
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(resourceLineRemainingTimeModels.exception!!) { viewModel.loadTimes() }
+    viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          progressBar.visibility = View.GONE
+          handleException(it) { viewModel.loadTimes() }
+        },
+        onSuccess = { times ->
+          progressBar.visibility = View.GONE
+          if (times.isEmpty()) {
+            noInfoTextView.visibility = View.VISIBLE
+          } else {
+            timesRecyclerView.adapter = TimesAdapter(times)
           }
         }
-      }
+      )
     })
 
     viewModel.isFavorite.observe(viewLifecycleOwner, Observer { isFavorite ->
@@ -104,12 +99,6 @@ class TimesFragment : Fragment() {
     }
   }
 
-  private fun hideProgressBarIfNecessary() {
-    if (progressBar.visibility == View.VISIBLE) {
-      progressBar.visibility = View.GONE
-    }
-  }
-
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.times_menu, menu)
     super.onCreateOptionsMenu(menu, inflater)
@@ -126,7 +115,6 @@ class TimesFragment : Fragment() {
   }
 
   private fun timesAreLoading(): Boolean {
-    val resource = viewModel.lineRemainingTimeModels.value ?: return true
-    return resource.status == Status.LOADING
+    return progressBar.visibility == View.VISIBLE
   }
 }

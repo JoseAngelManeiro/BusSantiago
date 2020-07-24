@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.menu_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.incidences.IncidencesFragment
@@ -45,35 +44,27 @@ class MenuFragment : DialogFragment() {
     lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.menuModel.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceMenuModel ->
-        when (resourceMenuModel.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            setUpRecyclerView(resourceMenuModel.data!!.options)
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(
-              resourceMenuModel.exception!!,
-              cancel = { dismiss() },
-              retry = { viewModel.loadLineDetails() }
-            )
-          }
+    viewModel.menuModel.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          progressBar.visibility = View.GONE
+          handleException(
+            it,
+            cancel = { dismiss() },
+            retry = { viewModel.loadLineDetails() }
+          )
+        },
+        onSuccess = {
+          progressBar.visibility = View.GONE
+          setUpRecyclerView(it.options)
         }
-      }
+      )
     })
 
     viewModel.loadLineDetails()
-  }
-
-  private fun hideProgressBarIfNecessary() {
-    if (progressBar.visibility == View.VISIBLE) {
-      progressBar.visibility = View.GONE
-    }
   }
 
   private fun setUpRecyclerView(menuOptionModels: List<MenuOptionModel>) {

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.favorites_fragment.*
 import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
@@ -35,28 +34,25 @@ class FavoritesFragment : BaseHomeFragment() {
 
     initActionBar(title = getString(R.string.favorites))
 
-    viewModel.busStopFavorites.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceBusStopFavorites ->
-        when (resourceBusStopFavorites.status) {
-          Status.LOADING -> {
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            hideProgressBarIfNecessary()
-            val busStopFavorites = resourceBusStopFavorites.data
-            if (busStopFavorites.isNullOrEmpty()) {
-              noFavoritesTextView.visibility = View.VISIBLE
-            } else {
-              favoritesRecyclerView.adapter =
-                BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
-            }
-          }
-          Status.ERROR -> {
-            hideProgressBarIfNecessary()
-            handleException(resourceBusStopFavorites.exception!!) { viewModel.loadFavorites() }
+    viewModel.busStopFavorites.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = { exception ->
+          hideProgressBarIfNecessary()
+          handleException(exception) { viewModel.loadFavorites() }
+        },
+        onSuccess = { busStopFavorites ->
+          hideProgressBarIfNecessary()
+          if (busStopFavorites.isNullOrEmpty()) {
+            noFavoritesTextView.visibility = View.VISIBLE
+          } else {
+            favoritesRecyclerView.adapter =
+              BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
           }
         }
-      }
+      )
     })
 
     viewModel.loadFavorites()

@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
@@ -50,18 +49,11 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     getMapAsync(this)
 
-    viewModel.lineMapModel.observe(viewLifecycleOwner, Observer {
-      it?.let { resourceLineMapModel ->
-        when (resourceLineMapModel.status) {
-          Status.LOADING -> {}
-          Status.SUCCESS -> {
-            setUpMap(resourceLineMapModel.data!!)
-          }
-          Status.ERROR -> {
-            handleException(resourceLineMapModel.exception!!)
-          }
-        }
-      }
+    viewModel.lineMapModel.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onError = { handleException(it) },
+        onSuccess = { setUpMap(it) }
+      )
     })
   }
 

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.search_fragment.*
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
@@ -38,28 +37,26 @@ class SearchFragment : Fragment() {
     setUpCodeEditText()
     setUpSearchButton()
 
-    viewModel.busStopModel.observe(viewLifecycleOwner, Observer {
-      it.let { resourceBusStopModel ->
-        when (resourceBusStopModel.status) {
-          Status.LOADING -> {
-            errorTextView.text = ""
-            progressBar.visibility = View.VISIBLE
-          }
-          Status.SUCCESS -> {
-            progressBar.visibility = View.INVISIBLE
-            if (resourceBusStopModel.data == null) {
-              errorTextView.text = getString(R.string.bus_stop_not_exist)
-            } else {
-              navigateSafe(R.id.actionShowTimesFromSearch,
-                TimesFragment.createArguments(resourceBusStopModel.data.copy()))
-            }
-          }
-          Status.ERROR -> {
-            progressBar.visibility = View.INVISIBLE
-            handleException(resourceBusStopModel.exception!!) { search() }
+    viewModel.busStopModel.observe(viewLifecycleOwner, Observer { resource ->
+      resource.fold(
+        onLoading = {
+          errorTextView.text = ""
+          progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          progressBar.visibility = View.INVISIBLE
+          handleException(it) { search() }
+        },
+        onSuccess = { busStopModel ->
+          progressBar.visibility = View.INVISIBLE
+          if (busStopModel == null) {
+            errorTextView.text = getString(R.string.bus_stop_not_exist)
+          } else {
+            navigateSafe(R.id.actionShowTimesFromSearch,
+              TimesFragment.createArguments(busStopModel.copy()))
           }
         }
-      }
+      )
     })
   }
 
