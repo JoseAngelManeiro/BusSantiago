@@ -3,14 +3,32 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 // Load keystore properties file
-def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-// Load apikey properties file
-def apikeyPropertiesFile = rootProject.file("apikey.properties");
-def apikeyProperties = new Properties()
-apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+// First, we try to access to CircleCI environment variable,
+// if this is a local build, we obtain api key from a local file
+def getApiKeyDebug() {
+    def apiKeyDebug = System.getenv("API_KEY_DEBUG")
+    if (apiKeyDebug == null || apiKeyDebug.length() == 0) {
+        def apiKeyPropertiesFile = rootProject.file("apikey.properties")
+        def apiKeyProperties = new Properties()
+        apiKeyProperties.load(new FileInputStream(apiKeyPropertiesFile))
+        apiKeyDebug = apiKeyProperties['apikeyDebug']
+    }
+    return apiKeyDebug
+}
+def getApiKeyRelease() {
+    def apiKeyRelease = System.getenv("API_KEY_RELEASE")
+    if (apiKeyRelease == null || apiKeyRelease.length() == 0) {
+        def apiKeyPropertiesFile = rootProject.file("apikey.properties")
+        def apiKeyProperties = new Properties()
+        apiKeyProperties.load(new FileInputStream(apiKeyPropertiesFile))
+        apiKeyRelease = apiKeyProperties['apikeyRelease']
+    }
+    return apiKeyRelease
+}
 
 android {
     compileSdkVersion 29
@@ -35,10 +53,10 @@ android {
 
     buildTypes {
         debug {
-            resValue("string", "google_maps_api_key", apikeyProperties['apikeyDebug'])
+            resValue("string", "google_maps_api_key", getApiKeyDebug())
         }
         release {
-            resValue("string", "google_maps_api_key", apikeyProperties['apikeyRelease'])
+            resValue("string", "google_maps_api_key", getApiKeyRelease())
 
             minifyEnabled true
             shrinkResources true

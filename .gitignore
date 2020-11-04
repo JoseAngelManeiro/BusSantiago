@@ -52,3 +52,6 @@ keystore.properties
 
 # Local apikey file
 apikey.properties
+
+# Local .jks file
+mykey.jks
