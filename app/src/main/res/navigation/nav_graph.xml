@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_graph"
+  app:startDestination="@+id/launcherFragment">
+
+  <fragment
+    android:id="@+id/launcherFragment"
+    android:name="org.galio.bussantiago.features.LauncherFragment"
+    tools:layout="@layout/launcher_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/linesFragment"
+    android:name="org.galio.bussantiago.features.lines.LinesFragment"
+    tools:layout="@layout/lines_fragment">
+
+    <action
+      android:id="@+id/actionShowMenu"
+      app:destination="@id/menuFragment" />
+
+  </fragment>
+
+  <dialog
+    android:id="@+id/menuFragment"
+    android:name="org.galio.bussantiago.features.menu.MenuFragment"
+    tools:layout="@layout/menu_fragment">
+
+    <action
+      android:id="@+id/actionShowInformation"
+      app:destination="@id/informationFragment" />
+
+    <action
+      android:id="@+id/actionShowIncidences"
+      app:destination="@id/incidencesFragment" />
+
+    <action
+      android:id="@+id/actionShowBusStops"
+      app:destination="@id/busStopsFragment" />
+
+  </dialog>
+
+  <fragment
+    android:id="@+id/informationFragment"
+    android:name="org.galio.bussantiago.features.information.InformationFragment"
+    tools:layout="@layout/information_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/incidencesFragment"
+    android:name="org.galio.bussantiago.features.incidences.IncidencesFragment"
+    tools:layout="@layout/incidences_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/busStopsFragment"
+    android:name="org.galio.bussantiago.features.stops.BusStopsContainerFragment"
+    tools:layout="@layout/busstopscontainer_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/timesFragment"
+    android:name="org.galio.bussantiago.features.times.TimesFragment"
+    tools:layout="@layout/times_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/favoritesFragment"
+    android:name="org.galio.bussantiago.features.favorites.FavoritesFragment"
+    tools:layout="@layout/favorites_fragment">
+  </fragment>
+
+  <fragment
+    android:id="@+id/searchFragment"
+    android:name="org.galio.bussantiago.features.search.SearchFragment"
+    tools:layout="@layout/search_fragment">
+
+    <action
+      android:id="@+id/actionShowTimesFromSearch"
+      app:destination="@id/timesFragment"
+      app:popUpTo="@id/searchFragment"
+      app:popUpToInclusive="true"/>
+
+  </fragment>
+
+  <dialog
+    android:id="@+id/aboutFragment"
+    android:name="org.galio.bussantiago.features.about.AboutFragment"
+    tools:layout="@layout/about_fragment">
+  </dialog>
+
+  <action
+    android:id="@+id/actionShowTimesFragment"
+    app:destination="@id/timesFragment" />
+
+  <action
+    android:id="@+id/actionShowFavorites"
+    app:destination="@id/favoritesFragment"
+    app:popUpTo="@id/nav_graph"/>
+
+  <action
+    android:id="@+id/actionShowLines"
+    app:destination="@id/linesFragment"
+    app:popUpTo="@id/nav_graph"/>
+
+  <action
+    android:id="@+id/actionShowSearchBusStop"
+    app:destination="@id/searchFragment"/>
+
+  <action
+    android:id="@+id/actionShowAbout"
+    app:destination="@id/aboutFragment"/>
+
+</navigation>
