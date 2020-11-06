@@ -1,6 +1,18 @@
-version: 2
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build_test
+      - deploy:
+          requires:
+            - build_test
+          filters:
+            branches:
+              only: master
+
+
 jobs:
-  build:
+  build_test:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28
@@ -10,11 +22,6 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      #      - run:
-      #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-      #         command: sudo chmod +x ./gradlew
-      - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
-      - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -25,17 +32,33 @@ jobs:
       - run:
           name: Run Tests (app)
           command: ./gradlew lint test
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+      - store_artifacts:
           path: app/build/reports
           destination: app_reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+      - store_test_results:
           path: app/build/test-results
       - run:
           name: Run Tests (core)
           command: ./gradlew core:test
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+      - store_artifacts:
           path: core/build/reports
           destination: core_reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+      - store_test_results:
           path: core/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+
+  deploy:
+    docker:
+      - image: circleci/android:api-28
+    steps:
+      - checkout
+      - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
+      - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
+      - run:
+          name: Build Release
+          command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+      - store_artifacts:
+          path: app/build/outputs/apk/release
+          destination: distribution
+      - store_artifacts:
+          path: app/build/outputs/mapping
+          destination: distribution
