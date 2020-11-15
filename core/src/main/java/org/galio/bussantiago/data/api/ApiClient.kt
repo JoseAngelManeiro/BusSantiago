@@ -15,7 +15,10 @@ import java.io.IOException
 
 private const val BASE_URL = "https://app.tussa.org/tussa/api/"
 
-class ApiClient(private val networkHandler: NetworkHandler) {
+class ApiClient(
+  private val networkHandler: NetworkHandler,
+  baseEndpoint: String = BASE_URL
+) {
 
   private val service: ApiService
 
@@ -25,7 +28,7 @@ class ApiClient(private val networkHandler: NetworkHandler) {
     val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     val retrofit = Retrofit.Builder()
-      .baseUrl(BASE_URL)
+      .baseUrl(baseEndpoint)
       .client(client)
       .addConverterFactory(GsonConverterFactory.create())
       .build()
