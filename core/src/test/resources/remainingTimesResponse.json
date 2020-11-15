@@ -1,0 +1,20 @@
+{
+  "id": 662,
+  "codigo": "662",
+  "nombre": "Virxe da Cerca nº 10",
+  "zona": "Casco antiguo",
+  "coordenadas": {
+    "latitud": 42.8804523843327,
+    "longitud": -8.54050487279892
+  },
+  "lineas": [
+    {
+      "id": 11,
+      "sinoptico": "C11",
+      "nombre": "Circular de Fontiñas",
+      "estilo": "#aec741",
+      "proximoPaso": "2020-11-15 12:59",
+      "minutosProximoPaso": 5
+    }
+  ]
+}
