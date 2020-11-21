@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.navigateSafe
@@ -45,6 +46,10 @@ open class BaseHomeFragment : Fragment() {
       }
       R.id.search_action -> {
         navigateSafe(R.id.actionShowSearchBusStop)
+        true
+      }
+      R.id.settings_action -> {
+        Toast.makeText(context, "Ajustes", Toast.LENGTH_SHORT).show()
         true
       }
       R.id.about_action -> {

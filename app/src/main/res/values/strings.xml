@@ -28,6 +28,7 @@
   <string name="must_type_code">Debe introducir el código de la parada</string>
   <string name="search_bus_stop">Buscar parada</string>
   <string name="about">Acerca de</string>
+  <string name="settings">Ajustes</string>
   <string name="author">Autor</string>
   <string name="author_name">José Ángel Maneiro González</string>
   <string name="author_web">www.joseangelmaneiro.com</string>
