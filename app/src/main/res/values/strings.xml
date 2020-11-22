@@ -46,4 +46,9 @@
   usuario es el de ubicación, con la finalidad de que el usuario pueda visualizar en el mapa
   aquellas paradas que se encuentren más cerca de su posición. La aplicación podrá funcionar
   perfectamente en caso de que el permiso no sea aceptado.</string>
+  <string name="home_screen_settings_header_title">Pantalla de inicio</string>
+  <string name="favorite_screen_settings_option_title">Ver mis paradas favoritas</string>
+  <string name="favorite_screen_settings_option_subtitle">Si tenemos alguna guardada</string>
+  <string name="lines_screen_settings_option_title">Mostrar siempre la lista de líneas</string>
 </resources>
+
