@@ -11,7 +11,7 @@
   a normal FragmentTransaction under the hood to add the initial fragment,
   allowing further FragmentTransaction operations on the FragmentContainerView
   and providing a consistent timing for lifecycle events. -->
-  <issue id="FragmentTagUsage" severity="ignore" />
+  <issue id="FragmentTagUsage" severity="warning" />
 
   <!-- This detector looks for usages of libraries where the version
   you are using is not the current stable release.
@@ -49,4 +49,8 @@
   Logic handling the click actions should ideally be placed in View#performClick
   as some accessibility services invoke performClick when a click action should occur. -->
   <issue id="ClickableViewAccessibility" severity="warning" />
+
+  <!-- This check looks through the string definitions,
+  and if it finds any words that look like likely misspellings, they are flagged. -->
+  <issue id="Typos" severity="warning" />
 </lint>

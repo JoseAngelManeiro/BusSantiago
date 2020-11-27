@@ -1,10 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name" translatable="false">Bus Santiago</string>
   <string name="favorites">Favoritas</string>
   <string name="information">Información</string>
   <string name="incidences">Incidencias</string>
   <string name="lines">Líneas</string>
-  <string name="accept">Aceptar</string>
   <string name="no_information">Sin información</string>
   <string name="no_favorites">No hay paradas favoritas</string>
   <string name="one_way_route_stops">Paradas</string>
@@ -28,7 +27,8 @@
   <string name="must_type_code">Debe introducir el código de la parada</string>
   <string name="search_bus_stop">Buscar parada</string>
   <string name="about">Acerca de</string>
-  <string name="author">Autor</string>
+  <string name="settings">Ajustes</string>
+  <string name="author" tools:ignore="Typos">Autor</string>
   <string name="author_name">José Ángel Maneiro González</string>
   <string name="author_web">www.joseangelmaneiro.com</string>
   <string name="author_email">joseangelmaneiro@yahoo.es</string>
@@ -45,4 +45,9 @@
   usuario es el de ubicación, con la finalidad de que el usuario pueda visualizar en el mapa
   aquellas paradas que se encuentren más cerca de su posición. La aplicación podrá funcionar
   perfectamente en caso de que el permiso no sea aceptado.</string>
+  <string name="home_screen_settings_header_title">Pantalla de inicio</string>
+  <string name="favorite_screen_settings_option_title">Ver mis paradas favoritas</string>
+  <string name="favorite_screen_settings_option_subtitle">Si tenemos alguna guardada</string>
+  <string name="lines_screen_settings_option_title">Mostrar siempre la lista de líneas</string>
 </resources>
+
