@@ -1,10 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name" translatable="false">Bus Santiago</string>
   <string name="favorites">Favoritas</string>
   <string name="information">Información</string>
   <string name="incidences">Incidencias</string>
   <string name="lines">Líneas</string>
-  <string name="accept">Aceptar</string>
   <string name="no_information">Sin información</string>
   <string name="no_favorites">No hay paradas favoritas</string>
   <string name="one_way_route_stops">Paradas</string>
@@ -29,7 +28,7 @@
   <string name="search_bus_stop">Buscar parada</string>
   <string name="about">Acerca de</string>
   <string name="settings">Ajustes</string>
-  <string name="author">Autor</string>
+  <string name="author" tools:ignore="Typos">Autor</string>
   <string name="author_name">José Ángel Maneiro González</string>
   <string name="author_web">www.joseangelmaneiro.com</string>
   <string name="author_email">joseangelmaneiro@yahoo.es</string>
