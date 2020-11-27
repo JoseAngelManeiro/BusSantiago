@@ -1,0 +1,22 @@
+[
+  {
+    "id": 345,
+    "codigo": "345",
+    "nombre": "Os Tilos (rúa Carballo - Hotel)",
+    "zona": "Os Tilos",
+    "coordenadas": {
+      "latitud": 42.8462243073367,
+      "longitud": -8.53974312543869
+    },
+    "lineas": [
+      {
+        "sinoptico": "L6",
+        "estilo": "#d73983"
+      },
+      {
+        "sinoptico": "L12",
+        "estilo": "#842e14"
+      }
+    ]
+  }
+]

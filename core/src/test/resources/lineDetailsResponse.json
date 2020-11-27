@@ -1,0 +1,36 @@
+{
+  "id": 15,
+  "codigo": "15",
+  "sinoptico": "L15",
+  "nombre": "Campus Norte / Campus Sur",
+  "informacion": "Información",
+  "estilo": "#7a4b2a",
+  "trayectos": [
+    {
+      "nombre": "Vite de Arriba - Campus Sur",
+      "sentido": "IDA",
+      "paradas": [
+        {
+          "id": 669,
+          "codigo": "669",
+          "nombre": "Vite de Arriba nº 35",
+          "zona": "Vite",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.8963479268562,
+            "longitud": -8.54296579957008
+          }
+        }
+      ]
+    }
+  ],
+  "incidencias": [
+    {
+      "id": 298,
+      "titulo": "Peonalización Ensanche",
+      "descripcion": "Cualquier descripción",
+      "inicio": "2020-07-02 02:00",
+      "fin": null
+    }
+  ]
+}

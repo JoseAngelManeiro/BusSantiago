@@ -85,6 +85,12 @@
 
   </fragment>
 
+  <fragment
+    android:id="@+id/settingsFragment"
+    android:name="org.galio.bussantiago.features.settings.SettingsFragment"
+    tools:layout="@layout/settings_fragment">
+  </fragment>
+
   <dialog
     android:id="@+id/aboutFragment"
     android:name="org.galio.bussantiago.features.about.AboutFragment"
@@ -108,6 +114,10 @@
   <action
     android:id="@+id/actionShowSearchBusStop"
     app:destination="@id/searchFragment"/>
+
+  <action
+    android:id="@+id/actionShowSettings"
+    app:destination="@id/settingsFragment"/>
 
   <action
     android:id="@+id/actionShowAbout"
