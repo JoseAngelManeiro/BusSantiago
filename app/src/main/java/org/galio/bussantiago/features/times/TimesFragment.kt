@@ -15,12 +15,16 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.framework.ReviewsHelper
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TimesFragment : Fragment() {
 
   private val viewModel: TimesViewModel by viewModel()
   private lateinit var busStopModel: BusStopModel
+
+  private val reviewsHelper: ReviewsHelper by inject()
 
   companion object {
     private const val BUS_STOP_KEY = "bus_stop_key"
@@ -74,6 +78,7 @@ class TimesFragment : Fragment() {
             noInfoTextView.visibility = View.VISIBLE
           } else {
             timesRecyclerView.adapter = TimesAdapter(times)
+            reviewsHelper.launchReviews(requireActivity())
           }
         }
       )
