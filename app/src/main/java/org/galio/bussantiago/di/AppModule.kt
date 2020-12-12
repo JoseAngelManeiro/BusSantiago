@@ -30,6 +30,7 @@ import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 import org.galio.bussantiago.domain.repository.LineRepository
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
+import org.galio.bussantiago.framework.ReviewsHelper
 import org.galio.bussantiago.framework.SettingsPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -44,6 +45,9 @@ val appModule = module {
   }
   single {
     SettingsPreferences(androidContext())
+  }
+  single {
+    ReviewsHelper(androidContext())
   }
 
   // Mappers factories
