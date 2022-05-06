@@ -2,7 +2,7 @@ package org.galio.bussantiago.di
 
 import org.galio.bussantiago.domain.interactor.GetLineIncidences
 import org.galio.bussantiago.features.incidences.IncidencesViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val incidencesModule = module {

@@ -12,7 +12,7 @@ import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.BaseHomeFragment
 import org.galio.bussantiago.features.menu.MenuFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LinesFragment : BaseHomeFragment() {
 

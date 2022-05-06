@@ -14,7 +14,7 @@ import org.galio.bussantiago.features.incidences.IncidencesFragment
 import org.galio.bussantiago.features.information.InformationFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment : DialogFragment() {
 

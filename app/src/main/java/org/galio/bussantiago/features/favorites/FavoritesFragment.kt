@@ -15,7 +15,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.features.BaseHomeFragment
 import org.galio.bussantiago.features.times.TimesFragment
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : BaseHomeFragment() {
 
