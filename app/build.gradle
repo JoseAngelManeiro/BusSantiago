@@ -26,11 +26,11 @@ def getApiKeyRelease() {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         applicationId "org.galio.bussantiago"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 43
         versionName "4.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -84,6 +84,19 @@ android {
         htmlReport true
         htmlOutput file("$rootDir/app/lint-results.html")
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.0-beta03'
+    }
 }
 
 dependencies {
@@ -101,7 +114,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
 
     // Koin
-    implementation 'org.koin:koin-android-viewmodel:2.0.1'
+    implementation 'io.insert-koin:koin-core:3.0.1'
+    implementation 'io.insert-koin:koin-android:3.0.1'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -113,10 +127,20 @@ dependencies {
     // Play Core (In-app reviews)
     implementation 'com.google.android.play:core:1.9.0'
 
+    // Compose
+    implementation "androidx.compose.runtime:runtime:1.1.1"
+    implementation "androidx.compose.ui:ui:1.1.1"
+    implementation "androidx.compose.foundation:foundation:1.1.1"
+    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
+    implementation "androidx.compose.material:material:1.1.1"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
+    implementation "androidx.compose.ui:ui-tooling:1.1.1"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.1"
+
     // Mockito
-    testImplementation 'org.mockito:mockito-core:2.23.4'
+    testImplementation 'org.mockito:mockito-core:4.5.1'
     // Mockito (final classes)
-    testImplementation 'org.mockito:mockito-inline:2.23.4'
+    testImplementation 'org.mockito:mockito-inline:4.5.1'
 
     testImplementation 'junit:junit:4.13'
 

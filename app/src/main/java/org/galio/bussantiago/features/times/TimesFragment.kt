@@ -17,7 +17,7 @@ import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TimesFragment : Fragment() {
 
