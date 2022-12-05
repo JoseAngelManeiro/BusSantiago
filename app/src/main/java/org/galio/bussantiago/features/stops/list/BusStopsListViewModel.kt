@@ -2,8 +2,7 @@ package org.galio.bussantiago.features.stops.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
@@ -13,7 +12,7 @@ import org.galio.bussantiago.features.stops.BusStopsArgs
 class BusStopsListViewModel(
   private val executor: InteractorExecutor,
   private val getLineBusStops: GetLineBusStops
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private lateinit var busStopsArgs: BusStopsArgs
 
@@ -21,10 +20,6 @@ class BusStopsListViewModel(
 
   val busStopModels: LiveData<Resource<List<BusStopModel>>>
     get() = _busStopModels
-
-  init {
-    executor.setViewModelScope(viewModelScope)
-  }
 
   fun setArgs(busStopsArgs: BusStopsArgs) {
     this.busStopsArgs = busStopsArgs

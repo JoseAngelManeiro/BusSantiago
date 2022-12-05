@@ -2,8 +2,7 @@ package org.galio.bussantiago.features.lines
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.domain.interactor.GetLines
@@ -12,16 +11,12 @@ import org.galio.bussantiago.executor.InteractorExecutor
 class LinesViewModel(
   private val executor: InteractorExecutor,
   private val getLines: GetLines
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private val _lineModels = MutableLiveData<Resource<List<LineModel>>>()
 
   val lineModels: LiveData<Resource<List<LineModel>>>
     get() = _lineModels
-
-  init {
-    executor.setViewModelScope(viewModelScope)
-  }
 
   fun loadLines() {
     _lineModels.value = Resource.loading()

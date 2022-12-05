@@ -2,8 +2,7 @@ package org.galio.bussantiago.features.stops.map
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.domain.interactor.GetLineDetails
 import org.galio.bussantiago.executor.InteractorExecutor
@@ -13,16 +12,12 @@ class BusStopsMapViewModel(
   private val executor: InteractorExecutor,
   private val getLineDetails: GetLineDetails,
   private val lineMapModelFactory: LineMapModelFactory
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private val _lineMapModel = MutableLiveData<Resource<LineMapModel>>()
 
   val lineMapModel: LiveData<Resource<LineMapModel>>
     get() = _lineMapModel
-
-  init {
-    executor.setViewModelScope(viewModelScope)
-  }
 
   fun load(busStopsArgs: BusStopsArgs) {
     executor(

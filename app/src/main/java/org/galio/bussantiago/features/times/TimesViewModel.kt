@@ -2,8 +2,7 @@ package org.galio.bussantiago.features.times
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
@@ -19,7 +18,7 @@ class TimesViewModel(
   private val addBusStopFavorite: AddBusStopFavorite,
   private val removeBusStopFavorite: RemoveBusStopFavorite,
   private val timesFactory: TimesFactory
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private lateinit var busStopCode: String
   private lateinit var busStopName: String
@@ -31,10 +30,6 @@ class TimesViewModel(
     get() = _lineRemainingTimeModels
   val isFavorite: LiveData<Boolean>
     get() = _isFavorite
-
-  init {
-    executor.setViewModelScope(viewModelScope)
-  }
 
   fun setArgs(busStopCode: String, busStopName: String) {
     this.busStopCode = busStopCode
