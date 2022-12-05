@@ -10,7 +10,7 @@ import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.domain.model.NullBusStopSearch
 import org.galio.bussantiago.exception.NetworkConnectionException
-import org.galio.bussantiago.executor.SyncInteractorExecutor
+import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +24,7 @@ class SearchViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = SyncInteractorExecutor()
+  private val executor = TestInteractorExecutor()
   private val searchBusStop = mock<SearchBusStop>()
   private val observer = mock<Observer<Resource<BusStopModel>>>()
 

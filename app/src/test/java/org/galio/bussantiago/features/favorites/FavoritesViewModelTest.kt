@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.executor.SyncInteractorExecutor
 import org.galio.bussantiago.domain.interactor.GetBusStopFavorites
 import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
@@ -20,7 +20,7 @@ class FavoritesViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = SyncInteractorExecutor()
+  private val executor = TestInteractorExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
   private val observer = mock<Observer<Resource<List<BusStopFavorite>>>>()
 

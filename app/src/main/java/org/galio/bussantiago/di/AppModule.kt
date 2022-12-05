@@ -2,10 +2,6 @@ package org.galio.bussantiago.di
 
 import org.galio.bussantiago.framework.FavoriteDataSourceImpl
 import org.galio.bussantiago.framework.NetworkHandlerImpl
-import org.galio.bussantiago.executor.AsyncInteractorExecutor
-import org.galio.bussantiago.executor.BackgroundRunner
-import org.galio.bussantiago.executor.InteractorExecutor
-import org.galio.bussantiago.executor.MainRunner
 import org.galio.bussantiago.data.BusStopFavoriteRepositoryImpl
 import org.galio.bussantiago.data.BusStopRemainingTimesRepositoryImpl
 import org.galio.bussantiago.data.LineDetailsRepositoryImpl
@@ -30,6 +26,8 @@ import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 import org.galio.bussantiago.domain.repository.LineRepository
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
+import org.galio.bussantiago.executor.AsyncInteractorExecutor
+import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.galio.bussantiago.framework.SettingsPreferences
 import org.koin.android.ext.koin.androidContext
@@ -86,7 +84,7 @@ val appModule = module {
   }
 
   // Executor
-  single<InteractorExecutor> {
-    AsyncInteractorExecutor(runOnBgThread = BackgroundRunner(), runOnMainThread = MainRunner())
+  factory<InteractorExecutor> {
+    AsyncInteractorExecutor()
   }
 }

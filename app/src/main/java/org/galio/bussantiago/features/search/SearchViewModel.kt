@@ -3,10 +3,11 @@ package org.galio.bussantiago.features.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.domain.interactor.SearchBusStop
+import org.galio.bussantiago.executor.InteractorExecutor
 
 class SearchViewModel(
   private val executor: InteractorExecutor,
@@ -17,6 +18,10 @@ class SearchViewModel(
 
   val busStopModel: LiveData<Resource<BusStopModel>>
     get() = _busStopModel
+
+  init {
+    executor.setViewModelScope(viewModelScope)
+  }
 
   fun search(busStopCode: Int) {
     _busStopModel.value = Resource.loading()
