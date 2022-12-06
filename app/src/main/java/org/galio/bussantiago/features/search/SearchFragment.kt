@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.search_fragment.*
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
@@ -29,15 +28,15 @@ class SearchFragment : Fragment() {
     return inflater.inflate(R.layout.search_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.search_bus_stop), backEnabled = true)
 
     setUpCodeEditText()
     setUpSearchButton()
 
-    viewModel.busStopModel.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.busStopModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           errorTextView.text = ""
@@ -52,12 +51,14 @@ class SearchFragment : Fragment() {
           if (busStopModel.isNotValid()) {
             errorTextView.text = getString(R.string.bus_stop_not_exist)
           } else {
-            navigateSafe(R.id.actionShowTimesFromSearch,
-              TimesFragment.createArguments(busStopModel.copy()))
+            navigateSafe(
+              R.id.actionShowTimesFromSearch,
+              TimesFragment.createArguments(busStopModel.copy())
+            )
           }
         }
       )
-    })
+    }
   }
 
   private fun setUpCodeEditText() {

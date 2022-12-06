@@ -5,13 +5,13 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.exception.NetworkConnectionException
-import org.galio.bussantiago.executor.SyncInteractorExecutor
 import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
 import org.galio.bussantiago.domain.interactor.RemoveBusStopFavorite
 import org.galio.bussantiago.domain.interactor.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
+import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
@@ -30,7 +30,6 @@ class TimesViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = SyncInteractorExecutor()
   private val getBusStopRemainingTimes = mock<GetBusStopRemainingTimes>()
   private val validateIfBusStopIsFavorite = mock<ValidateIfBusStopIsFavorite>()
   private val addBusStopFavorite = mock<AddBusStopFavorite>()
@@ -44,7 +43,7 @@ class TimesViewModelTest {
   @Before
   fun setUp() {
     viewModel = TimesViewModel(
-      executor,
+      executor = TestInteractorExecutor(),
       getBusStopRemainingTimes,
       validateIfBusStopIsFavorite,
       addBusStopFavorite,

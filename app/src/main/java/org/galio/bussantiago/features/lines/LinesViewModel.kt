@@ -2,16 +2,16 @@ package org.galio.bussantiago.features.lines
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.domain.interactor.GetLines
+import org.galio.bussantiago.executor.InteractorExecutor
 
 class LinesViewModel(
   private val executor: InteractorExecutor,
   private val getLines: GetLines
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private val _lineModels = MutableLiveData<Resource<List<LineModel>>>()
 

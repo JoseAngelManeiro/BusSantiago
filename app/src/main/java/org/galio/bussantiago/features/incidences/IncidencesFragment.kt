@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.incidences
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,15 +35,15 @@ class IncidencesFragment : Fragment() {
     return inflater.inflate(R.layout.incidences_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
 
     val lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.incidences.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.incidences.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -63,7 +62,7 @@ class IncidencesFragment : Fragment() {
           incidencesRecyclerView.addItemDecoration(itemDecoration)
         }
       )
-    })
+    }
 
     viewModel.loadIncidences()
   }

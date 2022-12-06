@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.stops.list
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,14 +37,14 @@ class BusStopsListFragment : Fragment() {
     return inflater.inflate(R.layout.busstopslist_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
     viewModel.setArgs(busStopsArgs)
 
-    viewModel.busStopModels.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.busStopModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -60,7 +59,7 @@ class BusStopsListFragment : Fragment() {
             BusStopsListAdapter(busStopModels) { onBusStopClick(it) }
         }
       )
-    })
+    }
 
     viewModel.loadBusStops()
   }

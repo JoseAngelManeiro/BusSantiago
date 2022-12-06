@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.menu
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
@@ -38,13 +37,13 @@ class MenuFragment : DialogFragment() {
     return inflater.inflate(R.layout.menu_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.menuModel.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.menuModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -62,7 +61,7 @@ class MenuFragment : DialogFragment() {
           setUpRecyclerView(it.options)
         }
       )
-    })
+    }
 
     viewModel.loadLineDetails()
   }

@@ -1,10 +1,11 @@
-package org.galio.bussantiago.executor
+package org.galio.bussantiago.util
 
 import org.galio.bussantiago.domain.interactor.Interactor
+import org.galio.bussantiago.executor.InteractorExecutor
 
-class SyncInteractorExecutor : InteractorExecutor {
+class TestInteractorExecutor : InteractorExecutor() {
 
-  override fun <Request, Response> invoke(
+  override operator fun <Request, Response> invoke(
     interactor: Interactor<Request, Response>,
     request: Request,
     onError: (Exception) -> Unit,

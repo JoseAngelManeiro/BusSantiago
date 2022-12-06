@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.information
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,15 +33,15 @@ class InformationFragment : Fragment() {
     return inflater.inflate(R.layout.information_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
     val lineId = arguments?.get(ID_KEY) as Int
     viewModel.setArgs(lineId)
 
-    viewModel.information.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.information.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -56,7 +55,7 @@ class InformationFragment : Fragment() {
           informationTextView.text = it.fromHtml()
         }
       )
-    })
+    }
 
     viewModel.loadLineInformation()
   }

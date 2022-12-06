@@ -69,7 +69,7 @@ class FavoriteDataSourceImpl(
 
   private fun readBusStopFavorite(cursor: Cursor) =
     BusStopFavorite(
-      code = cursor.getString(cursor.getColumnIndex(FavouriteColumns.CODE)),
-      name = cursor.getString(cursor.getColumnIndex(FavouriteColumns.NAME))
+      code = cursor.getString(cursor.getColumnIndexOrThrow(FavouriteColumns.CODE)),
+      name = cursor.getString(cursor.getColumnIndexOrThrow(FavouriteColumns.NAME))
     )
 }

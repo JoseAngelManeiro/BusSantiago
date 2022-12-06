@@ -4,11 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.executor.SyncInteractorExecutor
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
 import org.galio.bussantiago.domain.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
@@ -22,7 +22,7 @@ class BusStopsListViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = SyncInteractorExecutor()
+  private val executor = TestInteractorExecutor()
   private val getLineBusStops = mock<GetLineBusStops>()
   private val observer = mock<Observer<Resource<List<BusStopModel>>>>()
 

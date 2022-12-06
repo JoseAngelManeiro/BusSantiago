@@ -2,14 +2,14 @@ package org.galio.bussantiago.features.times
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
 import org.galio.bussantiago.domain.interactor.RemoveBusStopFavorite
 import org.galio.bussantiago.domain.interactor.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.executor.InteractorExecutor
 
 class TimesViewModel(
   private val executor: InteractorExecutor,
@@ -18,7 +18,7 @@ class TimesViewModel(
   private val addBusStopFavorite: AddBusStopFavorite,
   private val removeBusStopFavorite: RemoveBusStopFavorite,
   private val timesFactory: TimesFactory
-) : ViewModel() {
+) : BaseViewModel(executor) {
 
   private lateinit var busStopCode: String
   private lateinit var busStopName: String
@@ -53,7 +53,10 @@ class TimesViewModel(
   }
 
   fun validateBusStop() {
-    executor(interactor = validateIfBusStopIsFavorite, request = busStopCode) {
+    executor(
+      interactor = validateIfBusStopIsFavorite,
+      request = busStopCode
+    ) {
       _isFavorite.value = it
     }
   }

@@ -1,11 +1,11 @@
 package org.galio.bussantiago.executor
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.galio.bussantiago.domain.interactor.Interactor
 
-class AsyncInteractorExecutor(
-  private val runOnMainThread: Runner,
-  private val runOnBgThread: Runner
-) : InteractorExecutor {
+class AsyncInteractorExecutor : InteractorExecutor() {
 
   override fun <Request, Response> invoke(
     interactor: Interactor<Request, Response>,
@@ -13,15 +13,15 @@ class AsyncInteractorExecutor(
     onError: (Exception) -> Unit,
     onSuccess: (Response) -> Unit
   ) {
-    runOnBgThread {
+    getViewModelScope()?.launch(Dispatchers.IO) {
       val response = interactor(request)
-      runOnMainThread {
+      withContext(Dispatchers.Main) {
         if (response.isRight) {
           onSuccess(response.rightValue)
         } else {
           onError(response.leftValue)
         }
       }
-    }
+    } ?: throw IllegalStateException("InteractorExecutor's scope is not initialized")
   }
 }
