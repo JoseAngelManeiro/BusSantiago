@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.favorites
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,13 +27,12 @@ class FavoritesFragment : BaseHomeFragment() {
   ): View? {
     return inflater.inflate(R.layout.favorites_fragment, container, false)
   }
-
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.favorites))
 
-    viewModel.busStopFavorites.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.busStopFavorites.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -53,7 +51,7 @@ class FavoritesFragment : BaseHomeFragment() {
           }
         }
       )
-    })
+    }
 
     viewModel.loadFavorites()
   }

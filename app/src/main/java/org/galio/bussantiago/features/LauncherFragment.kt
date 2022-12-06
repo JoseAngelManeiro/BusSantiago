@@ -24,8 +24,8 @@ class LauncherFragment : Fragment() {
     return inflater.inflate(R.layout.launcher_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     val busStopFavorites = favoriteDataSource.getAll()
     val homeScreenSelected = settingsPreferences.getHomeScreenType()

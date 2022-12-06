@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.times
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -48,8 +47,8 @@ class TimesFragment : Fragment() {
     return inflater.inflate(R.layout.times_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
 
@@ -63,7 +62,7 @@ class TimesFragment : Fragment() {
 
     viewModel.setArgs(busStopModel.code, busStopModel.name)
 
-    viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -82,9 +81,9 @@ class TimesFragment : Fragment() {
           }
         }
       )
-    })
+    }
 
-    viewModel.isFavorite.observe(viewLifecycleOwner, Observer { isFavorite ->
+    viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
       if (isFavorite) {
         favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
         favoriteFAB.contentDescription = getString(R.string.favorite_stop)
@@ -92,7 +91,7 @@ class TimesFragment : Fragment() {
         favoriteFAB.setImageResource(R.drawable.ic_fab_favorite_border)
         favoriteFAB.contentDescription = getString(R.string.no_favorite_stop)
       }
-    })
+    }
 
     viewModel.loadTimes()
     viewModel.validateBusStop()

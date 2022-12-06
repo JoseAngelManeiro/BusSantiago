@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.lines
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,12 +25,12 @@ class LinesFragment : BaseHomeFragment() {
     return inflater.inflate(R.layout.lines_fragment, container, false)
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.lines))
 
-    viewModel.lineModels.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.lineModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
@@ -45,7 +44,7 @@ class LinesFragment : BaseHomeFragment() {
           setUpRecyclerView(it)
         }
       )
-    })
+    }
 
     viewModel.loadLines()
   }
