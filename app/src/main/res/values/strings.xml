@@ -30,7 +30,6 @@
   <string name="settings">Ajustes</string>
   <string name="author" tools:ignore="Typos">Autor</string>
   <string name="author_name">José Ángel Maneiro González</string>
-  <string name="author_web">www.joseangelmaneiro.com</string>
   <string name="author_email">joseangelmaneiro@yahoo.es</string>
   <string name="privacy_policy">Política de privacidad</string>
   <string name="privacy_policy_description">Bus Santiago es una aplicación donde poder consultar
