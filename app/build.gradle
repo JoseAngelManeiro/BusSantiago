@@ -26,8 +26,8 @@ def getApiKeyRelease() {
 }
 
 android {
-    compileSdkVersion 31
     defaultConfig {
+        compileSdk 31
         applicationId "org.galio.bussantiago"
         minSdkVersion 21
         targetSdkVersion 31

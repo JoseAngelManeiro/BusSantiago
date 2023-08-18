@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,14 +25,13 @@ import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private const val REQUEST_LOCATION_PERMISSION = 1
-
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
   private val viewModel: BusStopsMapViewModel by viewModel()
 
   private lateinit var busStopsArgs: BusStopsArgs
   private lateinit var mGoogleMap: GoogleMap
+  private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
   companion object {
     private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
@@ -42,8 +44,19 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     }
   }
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun onCreate(bundle: Bundle?) {
+    super.onCreate(bundle)
+
+    requestPermissionLauncher =
+      registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+          enableMyLocation()
+        }
+      }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
 
@@ -107,22 +120,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
       mGoogleMap.isMyLocationEnabled = true
     } else {
-      requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-        REQUEST_LOCATION_PERMISSION)
-    }
-  }
-
-  override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<String?>,
-    grantResults: IntArray
-  ) {
-    // Check if location permissions are granted and if so enable the location data layer.
-    when (requestCode) {
-      REQUEST_LOCATION_PERMISSION ->
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          enableMyLocation()
-        }
+      requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
   }
 }
