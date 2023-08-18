@@ -7,7 +7,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import kotlinx.android.synthetic.main.times_fragment.*
 import org.galio.bussantiago.R
@@ -34,11 +37,6 @@ class TimesFragment : Fragment() {
     }
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setHasOptionsMenu(true)
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -49,6 +47,8 @@ class TimesFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    setUpMenu()
 
     busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
 
@@ -103,19 +103,25 @@ class TimesFragment : Fragment() {
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.times_menu, menu)
-    super.onCreateOptionsMenu(menu, inflater)
-  }
+  private fun setUpMenu() {
+    val menuHost: MenuHost = requireActivity()
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
-      R.id.sync_action -> {
-        if (!timesAreLoading()) viewModel.loadTimes()
-        true
+    menuHost.addMenuProvider(object : MenuProvider {
+      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.times_menu, menu)
       }
-      else -> super.onOptionsItemSelected(item)
-    }
+
+      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+          R.id.sync_action -> {
+            if (!timesAreLoading()) viewModel.loadTimes()
+            return true
+          }
+          else ->
+            return false
+        }
+      }
+    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
   }
 
   private fun timesAreLoading(): Boolean {

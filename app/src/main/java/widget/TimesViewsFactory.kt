@@ -80,12 +80,13 @@ class TimesViewsFactory(
 
       val circleSizePx = dpToPixel(40) // synoptic_size = 40dp
       val bitmap = Bitmap.createBitmap(circleSizePx, circleSizePx, Bitmap.Config.ARGB_8888)
-      setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
       val paint = Paint(Paint.ANTI_ALIAS_FLAG)
       val canvas = Canvas(bitmap)
       paint.color = Color.parseColor(lineRemainingTimeModel.synopticModel.style)
       canvas.drawCircle(circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
         (circleSizePx.toFloat() / 2) - 1, paint)
+
+      setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
 
       setTextViewText(R.id.lineWidgetTextView,
         lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L"))

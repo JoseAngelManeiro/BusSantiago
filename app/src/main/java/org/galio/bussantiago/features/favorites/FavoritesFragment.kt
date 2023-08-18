@@ -43,7 +43,7 @@ class FavoritesFragment : BaseHomeFragment() {
         },
         onSuccess = { busStopFavorites ->
           hideProgressBarIfNecessary()
-          if (busStopFavorites.isNullOrEmpty()) {
+          if (busStopFavorites.isEmpty()) {
             noFavoritesTextView.visibility = View.VISIBLE
           } else {
             favoritesRecyclerView.adapter =

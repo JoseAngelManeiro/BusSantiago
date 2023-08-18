@@ -26,8 +26,8 @@ def getApiKeyRelease() {
 }
 
 android {
-    compileSdkVersion 31
     defaultConfig {
+        compileSdk 31
         applicationId "org.galio.bussantiago"
         minSdkVersion 21
         targetSdkVersion 31
@@ -110,8 +110,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
 
     // Koin
     implementation 'io.insert-koin:koin-core:3.0.1'
