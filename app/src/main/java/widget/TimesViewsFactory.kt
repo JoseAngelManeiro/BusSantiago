@@ -74,7 +74,11 @@ class TimesViewsFactory(
     lineRemainingTimeModels = tempList
   }
 
-  override fun getViewAt(position: Int): RemoteViews {
+  override fun getViewAt(position: Int): RemoteViews? {
+    // Sometimes the position received causes IndexOutOfBoundsException
+    if (position > lineRemainingTimeModels.lastIndex) {
+      return null
+    }
     return RemoteViews(context.packageName, R.layout.time_item_widget).apply {
       val lineRemainingTimeModel = lineRemainingTimeModels[position]
 
