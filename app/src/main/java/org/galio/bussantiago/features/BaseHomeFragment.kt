@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.lines.LinesFragment
@@ -58,6 +57,6 @@ open class BaseHomeFragment : Fragment() {
             return false
         }
       }
-    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }, viewLifecycleOwner)
   }
 }
