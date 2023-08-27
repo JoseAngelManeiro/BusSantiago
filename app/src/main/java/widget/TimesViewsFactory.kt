@@ -74,29 +74,26 @@ class TimesViewsFactory(
     lineRemainingTimeModels = tempList
   }
 
-  override fun getViewAt(position: Int): RemoteViews? {
-    // Sometimes the position received causes IndexOutOfBoundsException
-    if (position > lineRemainingTimeModels.lastIndex) {
-      return null
-    }
+  override fun getViewAt(position: Int): RemoteViews {
     return RemoteViews(context.packageName, R.layout.time_item_widget).apply {
-      val lineRemainingTimeModel = lineRemainingTimeModels[position]
+      // Validation that prevents IndexOutOfBoundsException
+      lineRemainingTimeModels.getOrNull(position)?.let { lineRemainingTimeModel ->
+        val circleSizePx = dpToPixel(40) // synoptic_size = 40dp
+        val bitmap = Bitmap.createBitmap(circleSizePx, circleSizePx, Bitmap.Config.ARGB_8888)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        val canvas = Canvas(bitmap)
+        paint.color = Color.parseColor(lineRemainingTimeModel.synopticModel.style)
+        canvas.drawCircle(circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
+          (circleSizePx.toFloat() / 2) - 1, paint)
 
-      val circleSizePx = dpToPixel(40) // synoptic_size = 40dp
-      val bitmap = Bitmap.createBitmap(circleSizePx, circleSizePx, Bitmap.Config.ARGB_8888)
-      val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-      val canvas = Canvas(bitmap)
-      paint.color = Color.parseColor(lineRemainingTimeModel.synopticModel.style)
-      canvas.drawCircle(circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
-        (circleSizePx.toFloat() / 2) - 1, paint)
+        setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
 
-      setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
+        setTextViewText(R.id.lineWidgetTextView,
+          lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L"))
 
-      setTextViewText(R.id.lineWidgetTextView,
-        lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L"))
-
-      setTextViewText(R.id.timeWidgetTextView,
-        getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival))
+        setTextViewText(R.id.timeWidgetTextView,
+          getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival))
+      }
     }
   }
 
