@@ -73,8 +73,11 @@ class TimesFragment : Fragment() {
         onSuccess = { times ->
           progressBar.visibility = View.GONE
           if (times.isEmpty()) {
+            timesRecyclerView.visibility = View.GONE
             noInfoTextView.visibility = View.VISIBLE
           } else {
+            noInfoTextView.visibility = View.GONE
+            timesRecyclerView.visibility = View.VISIBLE
             timesRecyclerView.adapter = TimesAdapter(times)
             reviewsHelper.launchReviews(requireActivity())
           }
