@@ -32,7 +32,8 @@ class LinesViewModel(
                 synoptic = line.synoptic,
                 style = line.style
               ),
-              name = line.name
+              name = line.name,
+              incidents = line.incidents
             )
           }
         )

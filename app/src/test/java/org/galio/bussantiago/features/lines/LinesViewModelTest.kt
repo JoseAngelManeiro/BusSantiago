@@ -75,7 +75,8 @@ class LinesViewModelTest {
         synoptic = "Any Synoptic",
         style = "Any color"
       ),
-      name = "Any name"
+      name = "Any name",
+      incidents = 0
     )
   }
 }
