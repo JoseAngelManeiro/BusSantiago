@@ -37,17 +37,20 @@ class IncidencesViewModelTest {
   }
 
   @Test
-  fun `if all goes well, the incidences' descriptions are loaded correctly`() {
+  fun `if all goes well, the incidences descriptions are loaded correctly in reverse order`() {
     val incidencesStub = listOf(
       createIncidence(description = "Incidence 1"),
-      createIncidence(description = "Incidence 2")
+      createIncidence(description = "Incidence 2"),
+      createIncidence(description = "Incidence 3")
     )
     `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
 
     viewModel.loadIncidences()
 
     verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(listOf("Incidence 1", "Incidence 2")))
+    verify(observer).onChanged(
+      Resource.success(listOf("Incidence 3", "Incidence 2", "Incidence 1"))
+    )
   }
 
   @Test
