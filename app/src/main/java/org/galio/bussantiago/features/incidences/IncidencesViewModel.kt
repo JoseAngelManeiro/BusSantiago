@@ -29,7 +29,9 @@ class IncidencesViewModel(
       interactor = getLineIncidences,
       request = lineId,
       onSuccess = { incidences ->
-        _incidences.value = Resource.success(incidences.map { it.description })
+        _incidences.value = Resource.success(
+          incidences.map { it.description }.sortedDescending()
+        )
       },
       onError = {
         _incidences.value = Resource.error(it)
