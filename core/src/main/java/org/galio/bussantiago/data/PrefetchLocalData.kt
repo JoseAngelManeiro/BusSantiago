@@ -1,8 +1,8 @@
 package org.galio.bussantiago.data
 
 import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.Either.Left
+import org.galio.bussantiago.Either.Right
 
 abstract class PrefetchLocalData<RequestType, ResultType> {
 

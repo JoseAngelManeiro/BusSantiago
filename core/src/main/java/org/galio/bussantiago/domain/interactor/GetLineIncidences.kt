@@ -1,8 +1,8 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.Either.Left
+import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.domain.model.Incidence
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 

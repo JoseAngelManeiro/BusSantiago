@@ -8,18 +8,18 @@ import org.mockito.Mockito.verify
 
 class AddBusStopFavoriteTest {
 
-    private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-    private val addBusStopFavorite =
-      AddBusStopFavorite(
-        busStopFavoriteRepository
-      )
+  private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
+  private val addBusStopFavorite =
+    AddBusStopFavorite(
+      busStopFavoriteRepository
+    )
 
-    @Test
-    fun `invokes the repository with the correct request`() {
-        val request = BusStopFavorite("1234", "Name")
+  @Test
+  fun `invokes the repository with the correct request`() {
+    val request = BusStopFavorite("1234", "Name")
 
-        addBusStopFavorite(request)
+    addBusStopFavorite(request)
 
-        verify(busStopFavoriteRepository).add(request)
-    }
+    verify(busStopFavoriteRepository).add(request)
+  }
 }

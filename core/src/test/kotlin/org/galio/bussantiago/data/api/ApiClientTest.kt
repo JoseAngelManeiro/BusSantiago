@@ -151,8 +151,10 @@ class ApiClientTest : MockWebServerTest() {
 
     apiClient.searchBusStop(BusStopRequest(nombre = "345"))
 
-    assertRequestContainsHeader("Content-Type",
-      "application/json;charset=UTF-8")
+    assertRequestContainsHeader(
+      "Content-Type",
+      "application/json;charset=UTF-8"
+    )
   }
 
   @Test
@@ -228,29 +230,47 @@ class ApiClientTest : MockWebServerTest() {
     assertEquals(lineDetailsEntity?.informacion, "Información")
     assertEquals(lineDetailsEntity?.estilo, "#7a4b2a")
 
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.nombre,
-      "Vite de Arriba - Campus Sur")
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.nombre,
+      "Vite de Arriba - Campus Sur"
+    )
     assertEquals(lineDetailsEntity?.trayectos?.get(0)?.sentido, "IDA")
     assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.id, 669)
     assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.codigo, "669")
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.nombre,
-      "Vite de Arriba nº 35")
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.zona,
-      "Vite")
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.extraordinaria,
-      true)
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.coordenadas?.latitud,
-      42.8963479268562)
-    assertEquals(lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.coordenadas?.longitud,
-      -8.54296579957008)
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.nombre,
+      "Vite de Arriba nº 35"
+    )
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.zona,
+      "Vite"
+    )
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.extraordinaria,
+      true
+    )
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.coordenadas?.latitud,
+      42.8963479268562
+    )
+    assertEquals(
+      lineDetailsEntity?.trayectos?.get(0)?.paradas?.get(0)?.coordenadas?.longitud,
+      -8.54296579957008
+    )
 
     assertEquals(lineDetailsEntity?.incidencias?.get(0)?.id, 298)
-    assertEquals(lineDetailsEntity?.incidencias?.get(0)?.titulo,
-      "Peonalización Ensanche")
-    assertEquals(lineDetailsEntity?.incidencias?.get(0)?.descripcion,
-      "Cualquier descripción")
-    assertEquals(lineDetailsEntity?.incidencias?.get(0)?.inicio,
-      "2020-07-02 02:00")
+    assertEquals(
+      lineDetailsEntity?.incidencias?.get(0)?.titulo,
+      "Peonalización Ensanche"
+    )
+    assertEquals(
+      lineDetailsEntity?.incidencias?.get(0)?.descripcion,
+      "Cualquier descripción"
+    )
+    assertEquals(
+      lineDetailsEntity?.incidencias?.get(0)?.inicio,
+      "2020-07-02 02:00"
+    )
     assertEquals(lineDetailsEntity?.incidencias?.get(0)?.fin, null)
   }
 
@@ -266,11 +286,15 @@ class ApiClientTest : MockWebServerTest() {
     assertEquals(busStopRemainingTimesEntity?.coordenadas?.longitud, -8.54050487279892)
     assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.id, 11)
     assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.sinoptico, "C11")
-    assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.nombre,
-      "Circular de Fontiñas")
+    assertEquals(
+      busStopRemainingTimesEntity?.lineas?.get(0)?.nombre,
+      "Circular de Fontiñas"
+    )
     assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.estilo, "#aec741")
-    assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.proximoPaso,
-      "2020-11-15 12:59")
+    assertEquals(
+      busStopRemainingTimesEntity?.lineas?.get(0)?.proximoPaso,
+      "2020-11-15 12:59"
+    )
     assertEquals(busStopRemainingTimesEntity?.lineas?.get(0)?.minutosProximoPaso, 5)
   }
 

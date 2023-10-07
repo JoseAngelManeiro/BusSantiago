@@ -12,7 +12,8 @@ class ValidateIfBusStopIsFavorite(
     return if (response.isRight) {
       val busStopFavorites = response.rightValue
       if (busStopFavorites.isEmpty() ||
-        busStopFavorites.find { it.code == request } == null) {
+        busStopFavorites.find { it.code == request } == null
+      ) {
         Either.Right(false)
       } else {
         Either.Right(true)
