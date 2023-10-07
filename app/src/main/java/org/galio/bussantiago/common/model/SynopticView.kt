@@ -3,9 +3,9 @@ package org.galio.bussantiago.common.model
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.AttributeSet
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatTextView
-import android.util.AttributeSet
 import org.galio.bussantiago.R
 
 class SynopticView(

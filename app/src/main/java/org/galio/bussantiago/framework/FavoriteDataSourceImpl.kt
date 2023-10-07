@@ -20,7 +20,8 @@ class FavoriteDataSourceImpl(
   private val database: SQLiteDatabase by lazy { writableDatabase }
 
   override fun onCreate(database: SQLiteDatabase) {
-    database.execSQL("CREATE TABLE " + Tables.FAVOURITE + " (" +
+    database.execSQL(
+      "CREATE TABLE " + Tables.FAVOURITE + " (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         FavouriteColumns.CODE + " TEXT, " +
         FavouriteColumns.NAME + " TEXT);"

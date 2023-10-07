@@ -6,8 +6,8 @@ import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.domain.interactor.SearchBusStop
-import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.NullBusStopSearch
 import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
@@ -49,8 +49,10 @@ class SearchViewModelTest {
     searchViewModel.search(busStopCode.toInt())
 
     verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(
-      BusStopModel(busStopCode, "Ensinanza"))
+    verify(observer).onChanged(
+      Resource.success(
+        BusStopModel(busStopCode, "Ensinanza")
+      )
     )
   }
 

@@ -1,8 +1,8 @@
 package org.galio.bussantiago.common
 
-import org.galio.bussantiago.common.Status.SUCCESS
 import org.galio.bussantiago.common.Status.ERROR
 import org.galio.bussantiago.common.Status.LOADING
+import org.galio.bussantiago.common.Status.SUCCESS
 
 data class Resource<out T>(
   private val status: Status,

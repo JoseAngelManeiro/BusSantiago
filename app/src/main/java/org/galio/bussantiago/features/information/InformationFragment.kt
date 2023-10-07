@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.information_fragment.*
+import kotlinx.android.synthetic.main.information_fragment.informationTextView
+import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.common.handleException

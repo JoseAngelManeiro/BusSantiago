@@ -1,11 +1,11 @@
 package org.galio.bussantiago.features.menu
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
 
@@ -61,6 +61,7 @@ class MenuAdapter(
           context.getString(R.string.one_way_route_stops)
         }
       }
+
       MenuType.RETURN_ROUTE -> context.getString(R.string.return_route_stops)
       else -> ""
     }

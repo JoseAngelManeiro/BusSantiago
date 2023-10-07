@@ -12,16 +12,16 @@
   <item
     android:id="@+id/search_action"
     android:title="@string/search_bus_stop"
-    app:showAsAction="never"/>
+    app:showAsAction="never" />
 
   <item
     android:id="@+id/settings_action"
     android:title="@string/settings"
-    app:showAsAction="never"/>
+    app:showAsAction="never" />
 
   <item
     android:id="@+id/about_action"
     android:title="@string/about"
-    app:showAsAction="never"/>
+    app:showAsAction="never" />
 
 </menu>

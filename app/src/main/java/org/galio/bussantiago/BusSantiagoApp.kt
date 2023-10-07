@@ -2,12 +2,12 @@ package org.galio.bussantiago
 
 import android.app.Application
 import org.galio.bussantiago.di.appModule
+import org.galio.bussantiago.di.busStopsModule
+import org.galio.bussantiago.di.favoritesModule
+import org.galio.bussantiago.di.incidencesModule
 import org.galio.bussantiago.di.informationModule
 import org.galio.bussantiago.di.linesModule
 import org.galio.bussantiago.di.menuModule
-import org.galio.bussantiago.di.incidencesModule
-import org.galio.bussantiago.di.busStopsModule
-import org.galio.bussantiago.di.favoritesModule
 import org.galio.bussantiago.di.searchModule
 import org.galio.bussantiago.di.timesModule
 import org.koin.android.ext.koin.androidContext
@@ -22,17 +22,19 @@ class BusSantiagoApp : Application() {
     startKoin {
       androidLogger(Level.ERROR)
       androidContext(this@BusSantiagoApp)
-      modules(listOf(
-        appModule,
-        linesModule,
-        menuModule,
-        informationModule,
-        incidencesModule,
-        busStopsModule,
-        timesModule,
-        favoritesModule,
-        searchModule
-      ))
+      modules(
+        listOf(
+          appModule,
+          linesModule,
+          menuModule,
+          informationModule,
+          incidencesModule,
+          busStopsModule,
+          timesModule,
+          favoritesModule,
+          searchModule
+        )
+      )
     }
   }
 }

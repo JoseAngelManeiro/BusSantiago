@@ -4,8 +4,8 @@ import org.galio.bussantiago.domain.model.BusStop
 import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.LineDetails
 import org.galio.bussantiago.domain.model.Route
-import org.junit.Test
 import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class LineMapModelFactoryTest {
 

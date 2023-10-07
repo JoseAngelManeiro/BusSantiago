@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.settings_fragment.view.*
+import kotlinx.android.synthetic.main.settings_fragment.view.home_screen_radio_group
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.framework.SettingsPreferences

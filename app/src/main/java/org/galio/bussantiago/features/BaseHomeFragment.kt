@@ -41,18 +41,22 @@ open class BaseHomeFragment : Fragment() {
             }
             return true
           }
+
           R.id.search_action -> {
             navigateSafe(R.id.actionShowSearchBusStop)
             return true
           }
+
           R.id.settings_action -> {
             navigateSafe(R.id.actionShowSettings)
             return true
           }
+
           R.id.about_action -> {
             navigateSafe(R.id.actionShowAbout)
             return true
           }
+
           else ->
             return false
         }

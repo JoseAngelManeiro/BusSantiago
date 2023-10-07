@@ -14,6 +14,7 @@ def getApiKeyDebug() {
     }
     return apiKeyDebug
 }
+
 def getApiKeyRelease() {
     def apiKeyRelease = System.getenv("API_KEY_RELEASE")
     if (apiKeyRelease == null || apiKeyRelease.length() == 0) {

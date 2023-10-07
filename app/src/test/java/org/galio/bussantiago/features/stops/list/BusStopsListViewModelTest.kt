@@ -14,8 +14,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 
 class BusStopsListViewModelTest {
 
@@ -47,7 +47,8 @@ class BusStopsListViewModelTest {
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(
-      Resource.success(listOf(BusStopModel(code = "1234", name = "Bus Stop 1"))))
+      Resource.success(listOf(BusStopModel(code = "1234", name = "Bus Stop 1")))
+    )
   }
 
   @Test

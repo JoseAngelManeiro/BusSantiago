@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -12,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/home_screen_settings_header_title"
-    android:textSize="@dimen/default_text_size"/>
+    android:textSize="@dimen/default_text_size" />
 
   <RadioGroup
     android:id="@+id/home_screen_radio_group"
@@ -26,14 +25,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/favorite_screen_settings_option_title"
-      android:textSize="@dimen/small_text_size"/>
+      android:textSize="@dimen/small_text_size" />
 
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/favorite_screen_settings_option_subtitle"
       android:layout_marginStart="33dp"
-      android:textSize="12sp"/>
+      android:textSize="12sp" />
 
     <RadioButton
       android:id="@+id/lines_radio_button"
@@ -41,7 +40,7 @@
       android:layout_height="wrap_content"
       android:text="@string/lines_screen_settings_option_title"
       android:layout_marginTop="@dimen/small_margin"
-      android:textSize="@dimen/small_text_size"/>
+      android:textSize="@dimen/small_text_size" />
 
   </RadioGroup>
 

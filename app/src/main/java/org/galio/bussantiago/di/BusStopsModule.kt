@@ -1,7 +1,7 @@
 package org.galio.bussantiago.di
 
-import org.galio.bussantiago.features.stops.list.BusStopsListViewModel
 import org.galio.bussantiago.domain.interactor.GetLineBusStops
+import org.galio.bussantiago.features.stops.list.BusStopsListViewModel
 import org.galio.bussantiago.features.stops.map.BusStopsMapViewModel
 import org.galio.bussantiago.features.stops.map.LineMapModelFactory
 import org.koin.androidx.viewmodel.dsl.viewModel

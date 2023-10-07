@@ -26,8 +26,10 @@ class TimesViewsFactory(
   intent: Intent
 ) : RemoteViewsService.RemoteViewsFactory {
 
-  private val widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-    AppWidgetManager.INVALID_APPWIDGET_ID)
+  private val widgetId = intent.getIntExtra(
+    AppWidgetManager.EXTRA_APPWIDGET_ID,
+    AppWidgetManager.INVALID_APPWIDGET_ID
+  )
   private val widgetPrefsHelper = WidgetPrefsHelper(context)
   private val stopCode = widgetPrefsHelper.getCode(widgetId)
 
@@ -83,16 +85,22 @@ class TimesViewsFactory(
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val canvas = Canvas(bitmap)
         paint.color = Color.parseColor(lineRemainingTimeModel.synopticModel.style)
-        canvas.drawCircle(circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
-          (circleSizePx.toFloat() / 2) - 1, paint)
+        canvas.drawCircle(
+          circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
+          (circleSizePx.toFloat() / 2) - 1, paint
+        )
 
         setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
 
-        setTextViewText(R.id.lineWidgetTextView,
-          lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L"))
+        setTextViewText(
+          R.id.lineWidgetTextView,
+          lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L")
+        )
 
-        setTextViewText(R.id.timeWidgetTextView,
-          getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival))
+        setTextViewText(
+          R.id.timeWidgetTextView,
+          getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival)
+        )
       }
     }
   }
@@ -131,7 +139,9 @@ class TimesViewsFactory(
 
   override fun getViewTypeCount() = 1
 
-  override fun onDestroy() { lineRemainingTimeModels.clear() }
+  override fun onDestroy() {
+    lineRemainingTimeModels.clear()
+  }
 
   override fun getLoadingView(): RemoteViews? = null
 

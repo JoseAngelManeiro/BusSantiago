@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import org.galio.bussantiago.executor.InteractorExecutor
 
 /**
-* Base class that helps to isolate the process of scope initialization.
-* */
+ * Base class that helps to isolate the process of scope initialization.
+ * */
 open class BaseViewModel(
   interactorExecutor: InteractorExecutor
 ) : ViewModel() {
