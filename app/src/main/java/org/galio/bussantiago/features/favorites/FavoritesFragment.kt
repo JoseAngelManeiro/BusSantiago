@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.favorites_fragment.*
+import kotlinx.android.synthetic.main.favorites_fragment.favoritesRecyclerView
+import kotlinx.android.synthetic.main.favorites_fragment.noFavoritesTextView
 import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.features.BaseHomeFragment
 import org.galio.bussantiago.features.times.TimesFragment
@@ -27,6 +28,7 @@ class FavoritesFragment : BaseHomeFragment() {
   ): View? {
     return inflater.inflate(R.layout.favorites_fragment, container, false)
   }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 

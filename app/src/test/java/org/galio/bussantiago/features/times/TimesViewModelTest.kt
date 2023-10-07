@@ -4,21 +4,21 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
 import org.galio.bussantiago.domain.interactor.RemoveBusStopFavorite
 import org.galio.bussantiago.domain.interactor.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
+import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 
 class TimesViewModelTest {
 

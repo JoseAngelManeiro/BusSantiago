@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/nav_graph"
@@ -9,8 +8,7 @@
   <fragment
     android:id="@+id/launcherFragment"
     android:name="org.galio.bussantiago.features.LauncherFragment"
-    tools:layout="@layout/launcher_fragment">
-  </fragment>
+    tools:layout="@layout/launcher_fragment"></fragment>
 
   <fragment
     android:id="@+id/linesFragment"
@@ -45,32 +43,27 @@
   <fragment
     android:id="@+id/informationFragment"
     android:name="org.galio.bussantiago.features.information.InformationFragment"
-    tools:layout="@layout/information_fragment">
-  </fragment>
+    tools:layout="@layout/information_fragment"></fragment>
 
   <fragment
     android:id="@+id/incidencesFragment"
     android:name="org.galio.bussantiago.features.incidences.IncidencesFragment"
-    tools:layout="@layout/incidences_fragment">
-  </fragment>
+    tools:layout="@layout/incidences_fragment"></fragment>
 
   <fragment
     android:id="@+id/busStopsFragment"
     android:name="org.galio.bussantiago.features.stops.BusStopsContainerFragment"
-    tools:layout="@layout/busstopscontainer_fragment">
-  </fragment>
+    tools:layout="@layout/busstopscontainer_fragment"></fragment>
 
   <fragment
     android:id="@+id/timesFragment"
     android:name="org.galio.bussantiago.features.times.TimesFragment"
-    tools:layout="@layout/times_fragment">
-  </fragment>
+    tools:layout="@layout/times_fragment"></fragment>
 
   <fragment
     android:id="@+id/favoritesFragment"
     android:name="org.galio.bussantiago.features.favorites.FavoritesFragment"
-    tools:layout="@layout/favorites_fragment">
-  </fragment>
+    tools:layout="@layout/favorites_fragment"></fragment>
 
   <fragment
     android:id="@+id/searchFragment"
@@ -81,21 +74,19 @@
       android:id="@+id/actionShowTimesFromSearch"
       app:destination="@id/timesFragment"
       app:popUpTo="@id/searchFragment"
-      app:popUpToInclusive="true"/>
+      app:popUpToInclusive="true" />
 
   </fragment>
 
   <fragment
     android:id="@+id/settingsFragment"
     android:name="org.galio.bussantiago.features.settings.SettingsFragment"
-    tools:layout="@layout/settings_fragment">
-  </fragment>
+    tools:layout="@layout/settings_fragment"></fragment>
 
   <dialog
     android:id="@+id/aboutFragment"
     android:name="org.galio.bussantiago.features.about.AboutFragment"
-    tools:layout="@layout/about_fragment">
-  </dialog>
+    tools:layout="@layout/about_fragment"></dialog>
 
   <action
     android:id="@+id/actionShowTimesFragment"
@@ -104,23 +95,23 @@
   <action
     android:id="@+id/actionShowFavorites"
     app:destination="@id/favoritesFragment"
-    app:popUpTo="@id/nav_graph"/>
+    app:popUpTo="@id/nav_graph" />
 
   <action
     android:id="@+id/actionShowLines"
     app:destination="@id/linesFragment"
-    app:popUpTo="@id/nav_graph"/>
+    app:popUpTo="@id/nav_graph" />
 
   <action
     android:id="@+id/actionShowSearchBusStop"
-    app:destination="@id/searchFragment"/>
+    app:destination="@id/searchFragment" />
 
   <action
     android:id="@+id/actionShowSettings"
-    app:destination="@id/settingsFragment"/>
+    app:destination="@id/settingsFragment" />
 
   <action
     android:id="@+id/actionShowAbout"
-    app:destination="@id/aboutFragment"/>
+    app:destination="@id/aboutFragment" />
 
 </navigation>

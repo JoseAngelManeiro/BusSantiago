@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.busstopslist_fragment.*
+import kotlinx.android.synthetic.main.busstopslist_fragment.busStopsRecyclerView
+import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel

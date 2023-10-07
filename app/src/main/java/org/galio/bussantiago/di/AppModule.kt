@@ -1,7 +1,5 @@
 package org.galio.bussantiago.di
 
-import org.galio.bussantiago.framework.FavoriteDataSourceImpl
-import org.galio.bussantiago.framework.NetworkHandlerImpl
 import org.galio.bussantiago.data.BusStopFavoriteRepositoryImpl
 import org.galio.bussantiago.data.BusStopRemainingTimesRepositoryImpl
 import org.galio.bussantiago.data.LineDetailsRepositoryImpl
@@ -12,15 +10,15 @@ import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.cache.LineDetailsCache
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.data.mapper.BusStopMapper
-import org.galio.bussantiago.data.mapper.CoordinatesMapper
-import org.galio.bussantiago.data.mapper.LineMapper
-import org.galio.bussantiago.data.mapper.RouteMapper
-import org.galio.bussantiago.data.mapper.IncidenceMapper
-import org.galio.bussantiago.data.mapper.LineDetailsMapper
-import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
+import org.galio.bussantiago.data.mapper.CoordinatesMapper
+import org.galio.bussantiago.data.mapper.IncidenceMapper
+import org.galio.bussantiago.data.mapper.LineDetailsMapper
+import org.galio.bussantiago.data.mapper.LineMapper
+import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
 import org.galio.bussantiago.data.mapper.LineSearchMapper
+import org.galio.bussantiago.data.mapper.RouteMapper
 import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
@@ -28,6 +26,8 @@ import org.galio.bussantiago.domain.repository.LineRepository
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.galio.bussantiago.executor.AsyncInteractorExecutor
 import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.framework.FavoriteDataSourceImpl
+import org.galio.bussantiago.framework.NetworkHandlerImpl
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.galio.bussantiago.framework.SettingsPreferences
 import org.koin.android.ext.koin.androidContext

@@ -43,8 +43,10 @@ class WidgetProvider : AppWidgetProvider() {
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
       }
-      val refreshPIntent = PendingIntent.getBroadcast(context, 0,
-        refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+      val refreshPIntent = PendingIntent.getBroadcast(
+        context, 0,
+        refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      )
       remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
       // Declare an explicit deep link to launch TimesFragment

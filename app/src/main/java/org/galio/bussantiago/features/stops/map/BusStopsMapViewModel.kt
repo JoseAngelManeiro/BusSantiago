@@ -26,7 +26,8 @@ class BusStopsMapViewModel(
       onSuccess = { lineDetails ->
         _lineMapModel.value = Resource.success(
           lineMapModelFactory.createLineMapModelFactory(
-            busStopsArgs.routeName, lineDetails)
+            busStopsArgs.routeName, lineDetails
+          )
         )
       },
       onError = {

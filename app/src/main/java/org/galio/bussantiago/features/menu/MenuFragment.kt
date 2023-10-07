@@ -1,11 +1,12 @@
 package org.galio.bussantiago.features.menu
 
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.menu_fragment.*
+import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.menu_fragment.menuOptionsRecyclerView
+import kotlinx.android.synthetic.main.menu_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
@@ -74,13 +75,18 @@ class MenuFragment : DialogFragment() {
   private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
     when (menuOptionModel.menuType) {
       MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE -> {
-        navigateSafe(R.id.actionShowBusStops,
+        navigateSafe(
+          R.id.actionShowBusStops,
           BusStopsContainerFragment.createArguments(
-            BusStopsArgs(lineId = lineId, routeName = menuOptionModel.title!!)))
+            BusStopsArgs(lineId = lineId, routeName = menuOptionModel.title!!)
+          )
+        )
       }
+
       MenuType.INFORMATION -> {
         navigateSafe(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
       }
+
       MenuType.INCIDENCES -> {
         navigateSafe(R.id.actionShowIncidences, IncidencesFragment.createArguments(lineId))
       }

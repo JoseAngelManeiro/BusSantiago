@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.android.synthetic.main.search_fragment.codeEditText
+import kotlinx.android.synthetic.main.search_fragment.errorTextView
+import kotlinx.android.synthetic.main.search_fragment.progressBar
+import kotlinx.android.synthetic.main.search_fragment.searchButton
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard

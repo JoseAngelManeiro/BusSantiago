@@ -5,7 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.widget_activity.*
+import kotlinx.android.synthetic.main.widget_activity.favoritesRecyclerView
+import kotlinx.android.synthetic.main.widget_activity.noFavoritesTextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
