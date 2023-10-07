@@ -7,14 +7,14 @@ import org.mockito.Mockito.verify
 
 class GetLinesTest {
 
-    private val lineRepository = mock(LineRepository::class.java)
-    private val getLines =
-      GetLines(lineRepository)
+  private val lineRepository = mock(LineRepository::class.java)
+  private val getLines =
+    GetLines(lineRepository)
 
-    @Test
-    fun `invokes the line repository`() {
-        getLines(Unit)
+  @Test
+  fun `invokes the line repository`() {
+    getLines(Unit)
 
-        verify(lineRepository).getLines()
-    }
+    verify(lineRepository).getLines()
+  }
 }

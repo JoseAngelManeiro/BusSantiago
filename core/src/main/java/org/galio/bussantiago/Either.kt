@@ -12,15 +12,17 @@ sealed class Either<out L, out R> {
   val isLeft get() = this is Left
   val isRight get() = this is Right
 
-  val leftValue: L get() = when (this) {
-    is Left -> this.a
-    is Right -> throw NoSuchElementException()
-  }
+  val leftValue: L
+    get() = when (this) {
+      is Left -> this.a
+      is Right -> throw NoSuchElementException()
+    }
 
-  val rightValue: R get() = when (this) {
-    is Left -> throw NoSuchElementException()
-    is Right -> this.b
-  }
+  val rightValue: R
+    get() = when (this) {
+      is Left -> throw NoSuchElementException()
+      is Right -> this.b
+    }
 
   fun <T> fold(leftOp: (L) -> T, rightOp: (R) -> T): T = when (this) {
     is Left -> leftOp(this.leftValue)

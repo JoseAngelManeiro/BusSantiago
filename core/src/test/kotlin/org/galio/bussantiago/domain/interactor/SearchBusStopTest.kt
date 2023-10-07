@@ -1,16 +1,16 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
-import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.NullBusStopSearch
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.galio.bussantiago.exception.ServiceException
 import org.galio.bussantiago.util.mock
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsInstanceOf.instanceOf
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
