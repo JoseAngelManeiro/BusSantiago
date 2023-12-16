@@ -6,6 +6,7 @@ import org.galio.bussantiago.data.LineDetailsRepositoryImpl
 import org.galio.bussantiago.data.LineRepositoryImpl
 import org.galio.bussantiago.data.SearchBusStopRepositoryImpl
 import org.galio.bussantiago.data.api.ApiClient
+import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.cache.LineDetailsCache
 import org.galio.bussantiago.data.local.FavoriteDataSource
@@ -65,6 +66,7 @@ val appModule = module {
   // Cache factories
   factory { LineDetailsCache() }
   factory { LineCache() }
+  factory { BusStopSearchCache() }
 
   // Repositories
   single<LineRepository> {
@@ -80,7 +82,7 @@ val appModule = module {
     BusStopFavoriteRepositoryImpl(favoriteDataSource = get())
   }
   single<SearchBusStopRepository> {
-    SearchBusStopRepositoryImpl(apiClient = get(), mapper = get())
+    SearchBusStopRepositoryImpl(apiClient = get(), mapper = get(), cache = get())
   }
 
   // Executor
