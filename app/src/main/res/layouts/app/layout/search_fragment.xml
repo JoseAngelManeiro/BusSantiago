@@ -1,63 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  android:padding="@dimen/default_padding"
   tools:context="org.galio.bussantiago.features.search.SearchFragment">
-
-  <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="@dimen/default_text_size"
-    android:textStyle="bold"
-    android:gravity="center"
-    android:text="@string/type_bus_stop_code" />
-
-  <EditText
-    android:id="@+id/codeEditText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center"
-    android:minEms="4"
-    android:maxLength="4"
-    android:hint="@string/placeholder_search_box"
-    android:imeOptions="actionSearch"
-    android:inputType="number"
-    android:textSize="@dimen/large_text_size"
-    android:importantForAutofill="no" />
 
   <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/default_padding"
+    android:paddingEnd="@dimen/default_padding"
+    android:paddingTop="@dimen/small_padding"
+    android:paddingBottom="@dimen/small_padding">
 
-    <TextView
-      android:id="@+id/errorTextView"
+    <AutoCompleteTextView
+      android:id="@+id/searchAutocompleteTextView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
-      android:layout_gravity="center"
-      android:lines="2"
-      android:textColor="@android:color/holo_red_dark"
-      tools:text="@string/bus_stop_not_exist" />
+      android:imeOptions="actionDone"
+      android:inputType="text"
+      android:completionThreshold="1"
+      android:textSize="@dimen/default_text_size"
+      android:paddingEnd="24dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:hint="Buscar parada por código o nombre"/>
 
-    <ProgressBar
-      android:id="@+id/progressBar"
+    <ImageView
+      android:id="@+id/closeButtonImageView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:visibility="invisible"
-      tools:visibility="visible" />
+      android:src="@drawable/ic_close"
+      android:layout_gravity="center_vertical|end"
+      app:tint="@android:color/black" />
 
   </FrameLayout>
 
-  <Button
-    android:id="@+id/searchButton"
+  <ProgressBar
+    style="?android:attr/progressBarStyleLarge"
+    android:id="@+id/progressBar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/search"
-    android:layout_gravity="center_horizontal" />
+    android:layout_gravity="center"
+    android:visibility="invisible"
+    tools:visibility="visible" />
 
 </LinearLayout>

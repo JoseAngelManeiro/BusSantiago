@@ -7,4 +7,8 @@ open class BusStopSearch(
   val zone: String?,
   val coordinates: Coordinates,
   val lines: List<LineSearch>
-)
+) {
+  override fun toString(): String {
+    return "$code $name"
+  }
+}

@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.domain.interactor.SearchBusStop
 import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.domain.model.Coordinates
 import org.galio.bussantiago.domain.model.NullBusStopSearch

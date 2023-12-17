@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.search_fragment.codeEditText
-import kotlinx.android.synthetic.main.search_fragment.errorTextView
+import kotlinx.android.synthetic.main.search_fragment.closeButtonImageView
 import kotlinx.android.synthetic.main.search_fragment.progressBar
-import kotlinx.android.synthetic.main.search_fragment.searchButton
+import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
+import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.common.showKeyboard
+import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,61 +36,52 @@ class SearchFragment : Fragment() {
 
     initActionBar(title = getString(R.string.search_bus_stop), backEnabled = true)
 
-    setUpCodeEditText()
-    setUpSearchButton()
-
-    viewModel.busStopModel.observe(viewLifecycleOwner) { resource ->
+    viewModel.busStops.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          errorTextView.text = ""
           progressBar.visibility = View.VISIBLE
+          searchAutocompleteTextView.isEnabled = false
+          closeButtonImageView.visibility = View.GONE
         },
         onError = {
-          progressBar.visibility = View.INVISIBLE
-          handleException(it) { search() }
+          progressBar.visibility = View.GONE
+          handleException(it) { viewModel.loadBusStops() }
         },
-        onSuccess = { busStopModel ->
-          progressBar.visibility = View.INVISIBLE
-          if (busStopModel.isNotValid()) {
-            errorTextView.text = getString(R.string.bus_stop_not_exist)
-          } else {
-            navigateSafe(
-              R.id.actionShowTimesFromSearch,
-              TimesFragment.createArguments(busStopModel.copy())
-            )
-          }
+        onSuccess = { busStops ->
+          progressBar.visibility = View.GONE
+          setUpAutocompleteTextView(busStops)
+          setUpCloseButtonImageView()
         }
       )
     }
+
+    viewModel.loadBusStops()
   }
 
-  private fun setUpCodeEditText() {
-    codeEditText.setOnEditorActionListener { _, actionId, _ ->
-      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-        search()
-        true
-      } else {
-        false
-      }
+  private fun setUpAutocompleteTextView(busStops: List<BusStopSearch>) {
+    val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
+    searchAutocompleteTextView.setAdapter(adapter)
+    searchAutocompleteTextView.setOnItemClickListener { _, _, _, _ ->
+      hideKeyboard()
+      searchAutocompleteTextView.clearFocus()
+    }
+    searchAutocompleteTextView.isEnabled = true
+  }
+
+  private fun setUpCloseButtonImageView() {
+    closeButtonImageView.visibility = View.VISIBLE
+    closeButtonImageView.setOnClickListener {
+      searchAutocompleteTextView.setText("")
+      searchAutocompleteTextView.showKeyboard()
     }
   }
 
-  private fun setUpSearchButton() {
-    searchButton.setOnClickListener { search() }
-  }
-
-  private fun search() {
-    codeEditText.text.let {
-      if (it.isNullOrEmpty()) {
-        Toast.makeText(
-          context,
-          getString(R.string.must_type_code),
-          Toast.LENGTH_LONG
-        ).show()
-      } else {
-        viewModel.search(it.toString().toInt())
-      }
-    }
+  // TODO: Invoke when bubble map marker is clicked
+  private fun navigateToTimesScreen(busStopModel: BusStopModel) {
+    navigateSafe(
+      R.id.actionShowTimesFromSearch,
+      TimesFragment.createArguments(busStopModel.copy())
+    )
   }
 
   override fun onDestroyView() {

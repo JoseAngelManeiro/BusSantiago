@@ -22,7 +22,6 @@
   <string name="what_want_to_do">¿Que desea hacer?</string>
   <string name="bus_stop_not_exist">Parece que la parada buscada no existe</string>
   <string name="type_bus_stop_code">Introduzca el código de la parada</string>
-  <string name="placeholder_search_box">000</string>
   <string name="search">Buscar</string>
   <string name="must_type_code">Debe introducir el código de la parada</string>
   <string name="search_bus_stop">Buscar parada</string>

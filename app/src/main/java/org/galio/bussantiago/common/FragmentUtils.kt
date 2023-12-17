@@ -3,6 +3,7 @@ package org.galio.bussantiago.common
 import android.app.Activity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -55,4 +56,11 @@ fun Fragment.hideKeyboard() {
   val inputMethodManager = activity
     ?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
   inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+}
+
+fun EditText.showKeyboard() {
+  requestFocus()
+  val inputMethodManager = this.context
+    ?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+  inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
