@@ -1,10 +1,25 @@
 package org.galio.bussantiago.features.search
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.search_fragment.closeButtonImageView
 import kotlinx.android.synthetic.main.search_fragment.progressBar
 import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
@@ -19,16 +34,43 @@ import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val DEFAULT_ZOOM = 18f
+
 class SearchFragment : Fragment() {
 
   private val viewModel: SearchViewModel by viewModel()
+
+  private var mapView: MapView? = null
+  private var googleMap: GoogleMap? = null
+  private var markerMap = mutableMapOf<Int, Marker>()
+  private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+  private lateinit var fusedLocationClient: FusedLocationProviderClient
+  // The default location is the center of the city (Santiago de Compostela)
+  private val defaultLocation = LatLng(42.877295815283944, -8.544272857240758)
+
+  override fun onCreate(bundle: Bundle?) {
+    super.onCreate(bundle)
+
+    requestPermissionLauncher =
+      registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) enableMyLocation()
+      }
+
+    fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.search_fragment, container, false)
+    val rootView = inflater.inflate(R.layout.search_fragment, container, false)
+
+    mapView = rootView.findViewById(R.id.mapView)
+    mapView?.onCreate(savedInstanceState)
+    mapView?.getMapAsync { setUpMap(it) }
+
+    return rootView
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,12 +78,20 @@ class SearchFragment : Fragment() {
 
     initActionBar(title = getString(R.string.search_bus_stop), backEnabled = true)
 
+    viewModel.searchEvent.observe(viewLifecycleOwner) { event ->
+      when(event) {
+        SearchEvent.ClearSearchText -> clearSearchText()
+        is SearchEvent.NavigateToTimes -> navigateToTimesScreen(event.busStopModel)
+        is SearchEvent.ShowMapInfoWindow -> showMapInfoWindow(event.busStopSearch)
+      }
+    }
+
     viewModel.busStops.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
           progressBar.visibility = View.VISIBLE
           searchAutocompleteTextView.isEnabled = false
-          closeButtonImageView.visibility = View.GONE
+          closeButtonImageView.isEnabled = false
         },
         onError = {
           progressBar.visibility = View.GONE
@@ -51,6 +101,7 @@ class SearchFragment : Fragment() {
           progressBar.visibility = View.GONE
           setUpAutocompleteTextView(busStops)
           setUpCloseButtonImageView()
+          addBusStopMarkers(busStops)
         }
       )
     }
@@ -58,25 +109,82 @@ class SearchFragment : Fragment() {
     viewModel.loadBusStops()
   }
 
+  private fun setUpMap(map: GoogleMap) {
+    googleMap = map
+    googleMap?.setOnInfoWindowClickListener {
+      viewModel.onMapInfoWindowClicked(BusStopModel(it.title, it.snippet))
+    }
+    // We set the camera first in the default location
+    googleMap?.moveToLatLng(defaultLocation)
+    checkForLocationPermission()
+  }
+
+  private fun checkForLocationPermission() {
+    if (ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_FINE_LOCATION
+      ) == PackageManager.PERMISSION_GRANTED
+    ) {
+      enableMyLocation()
+    } else {
+      requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+  }
+
+  @SuppressLint("MissingPermission")
+  private fun enableMyLocation() {
+    googleMap?.isMyLocationEnabled = true
+
+    val locationResult = fusedLocationClient.lastLocation
+    locationResult.addOnCompleteListener(requireActivity()) { task ->
+      if (task.isSuccessful) {
+        // Set the map's camera position to the current location of the device.
+        val lastKnownLocation = task.result
+        if (lastKnownLocation != null) {
+          googleMap?.moveToLatLng(LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude))
+        }
+      }
+    }
+  }
+
   private fun setUpAutocompleteTextView(busStops: List<BusStopSearch>) {
     val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
     searchAutocompleteTextView.setAdapter(adapter)
-    searchAutocompleteTextView.setOnItemClickListener { _, _, _, _ ->
+    searchAutocompleteTextView.setOnItemClickListener { _, _, position, _ ->
       hideKeyboard()
       searchAutocompleteTextView.clearFocus()
+      adapter.getItem(position)?.let { viewModel.onSuggestionItemClicked(it) }
     }
     searchAutocompleteTextView.isEnabled = true
   }
 
   private fun setUpCloseButtonImageView() {
-    closeButtonImageView.visibility = View.VISIBLE
+    closeButtonImageView.isEnabled = true
     closeButtonImageView.setOnClickListener {
-      searchAutocompleteTextView.setText("")
-      searchAutocompleteTextView.showKeyboard()
+      viewModel.onClearTextButtonClicked()
     }
   }
 
-  // TODO: Invoke when bubble map marker is clicked
+  private fun addBusStopMarkers(busStops: List<BusStopSearch>) {
+    busStops.forEach { busStop ->
+      val latLng = LatLng(busStop.coordinates.latitude, busStop.coordinates.longitude)
+
+      googleMap?.addMarker(
+        MarkerOptions()
+          .position(latLng)
+          .title(busStop.code)
+          .snippet(busStop.name)
+      )?.let { markerMap[busStop.id] = it }
+    }
+  }
+
+  private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
+    markerMap[busStopSearch.id]?.showInfoWindow()
+    googleMap?.animateToLatLng(
+      LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude)
+    )
+  }
+
   private fun navigateToTimesScreen(busStopModel: BusStopModel) {
     navigateSafe(
       R.id.actionShowTimesFromSearch,
@@ -84,8 +192,39 @@ class SearchFragment : Fragment() {
     )
   }
 
+  private fun clearSearchText() {
+    searchAutocompleteTextView.setText("")
+    searchAutocompleteTextView.showKeyboard()
+  }
+
+  private fun GoogleMap.moveToLatLng(latLng: LatLng) {
+    moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
+  }
+
+  private fun GoogleMap.animateToLatLng(latLng: LatLng) {
+    animateCamera(
+      CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, DEFAULT_ZOOM))
+    )
+  }
+
+  override fun onResume() {
+    super.onResume()
+    mapView?.onResume()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    mapView?.onPause()
+  }
+
+  override fun onLowMemory() {
+    super.onLowMemory()
+    mapView?.onLowMemory()
+  }
+
   override fun onDestroyView() {
     hideKeyboard()
     super.onDestroyView()
+    mapView?.onDestroy()
   }
 }

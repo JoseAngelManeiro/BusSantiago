@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -62,12 +61,12 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     getMapAsync(this)
 
-    viewModel.lineMapModel.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.lineMapModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onError = { handleException(it) },
         onSuccess = { setUpMap(it) }
       )
-    })
+    }
   }
 
   override fun onMapReady(googleMap: GoogleMap?) {

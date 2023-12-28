@@ -1,42 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context="org.galio.bussantiago.features.search.SearchFragment">
 
-  <FrameLayout
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="@dimen/default_padding"
-    android:paddingEnd="@dimen/default_padding"
-    android:paddingTop="@dimen/small_padding"
-    android:paddingBottom="@dimen/small_padding">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <AutoCompleteTextView
-      android:id="@+id/searchAutocompleteTextView"
+    <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:imeOptions="actionDone"
-      android:inputType="text"
-      android:completionThreshold="1"
-      android:textSize="@dimen/default_text_size"
-      android:paddingEnd="24dp"
-      android:maxLines="1"
-      android:ellipsize="end"
-      android:hint="Buscar parada por código o nombre"/>
+      android:paddingStart="@dimen/default_padding"
+      android:paddingEnd="@dimen/default_padding"
+      android:paddingTop="@dimen/small_padding"
+      android:paddingBottom="@dimen/small_padding">
 
-    <ImageView
-      android:id="@+id/closeButtonImageView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/ic_close"
-      android:layout_gravity="center_vertical|end"
-      app:tint="@android:color/black" />
+      <AutoCompleteTextView
+        android:id="@+id/searchAutocompleteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:completionThreshold="1"
+        android:textSize="@dimen/default_text_size"
+        android:paddingEnd="24dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:hint="@string/search_bus_stop"
+        android:backgroundTint="@android:color/transparent"
+        tools:ignore="RtlSymmetry" />
 
-  </FrameLayout>
+      <ImageView
+        android:id="@+id/closeButtonImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="center_vertical|end"
+        android:contentDescription="@string/remove_search_text"
+        app:tint="@android:color/tertiary_text_dark" />
+
+    </FrameLayout>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="4dp"
+      android:background="@drawable/shadow_divider"/>
+
+    <com.google.android.gms.maps.MapView
+      android:id="@+id/mapView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+  </LinearLayout>
 
   <ProgressBar
     style="?android:attr/progressBarStyleLarge"
@@ -47,4 +67,5 @@
     android:visibility="invisible"
     tools:visibility="visible" />
 
-</LinearLayout>
+</FrameLayout>
+
