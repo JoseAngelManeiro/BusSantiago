@@ -48,5 +48,6 @@
   <string name="favorite_screen_settings_option_subtitle">Si tenemos alguna guardada</string>
   <string name="lines_screen_settings_option_title">Mostrar siempre la lista de líneas</string>
   <string name="remove_search_text">Borrar texto de búsqueda</string>
+  <string name="favorite_bus_stops">Paradas favoritas</string>
 </resources>
 

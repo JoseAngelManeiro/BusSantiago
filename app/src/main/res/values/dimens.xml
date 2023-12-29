@@ -16,4 +16,5 @@
   <dimen name="busStopCode_text_size">18dp</dimen>
   <dimen name="busStopCode_width">44dp</dimen>
   <dimen name="line_incident_icon_size">14dp</dimen>
+  <item name="dim_amount" type="dimen" format="float">0.3f</item>
 </resources>

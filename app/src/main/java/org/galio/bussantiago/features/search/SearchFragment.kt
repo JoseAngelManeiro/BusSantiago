@@ -5,11 +5,16 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -31,6 +36,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -77,6 +83,8 @@ class SearchFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
 
     initActionBar(title = getString(R.string.search_bus_stop), backEnabled = true)
+
+    setUpMenu()
 
     viewModel.searchEvent.observe(viewLifecycleOwner) { event ->
       when(event) {
@@ -205,6 +213,27 @@ class SearchFragment : Fragment() {
     animateCamera(
       CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, DEFAULT_ZOOM))
     )
+  }
+
+  private fun setUpMenu() {
+    val menuHost: MenuHost = requireActivity()
+
+    menuHost.addMenuProvider(object : MenuProvider {
+      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.search_menu, menu)
+      }
+
+      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+          R.id.show_favorites_action -> {
+            FavoritesDialogFragment()
+              .show(requireActivity().supportFragmentManager, "FavoritesDialogFragment")
+            true
+          }
+          else -> false
+        }
+      }
+    }, viewLifecycleOwner)
   }
 
   override fun onResume() {
