@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    initActionBar(title = getString(R.string.search_bus_stop), backEnabled = true)
+    initActionBar(title = getString(R.string.app_name))
 
     setUpMenu()
 
@@ -194,10 +194,7 @@ class SearchFragment : Fragment() {
   }
 
   private fun navigateToTimesScreen(busStopModel: BusStopModel) {
-    navigateSafe(
-      R.id.actionShowTimesFromSearch,
-      TimesFragment.createArguments(busStopModel.copy())
-    )
+    navigateSafe(R.id.actionShowTimesFragment, TimesFragment.createArguments(busStopModel))
   }
 
   private fun clearSearchText() {
@@ -226,8 +223,15 @@ class SearchFragment : Fragment() {
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
           R.id.show_favorites_action -> {
-            FavoritesDialogFragment()
-              .show(requireActivity().supportFragmentManager, "FavoritesDialogFragment")
+            navigateSafe(R.id.actionShowFavorites)
+            true
+          }
+          R.id.lines_action -> {
+            navigateSafe(R.id.actionShowLines)
+            true
+          }
+          R.id.about_action -> {
+            navigateSafe(R.id.actionShowAbout)
             true
           }
           else -> false

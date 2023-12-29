@@ -3,7 +3,6 @@ package org.galio.bussantiago
 import android.app.Application
 import org.galio.bussantiago.di.appModule
 import org.galio.bussantiago.di.busStopsModule
-import org.galio.bussantiago.di.favoritesModule
 import org.galio.bussantiago.di.incidencesModule
 import org.galio.bussantiago.di.informationModule
 import org.galio.bussantiago.di.linesModule
@@ -31,7 +30,6 @@ class BusSantiagoApp : Application() {
           incidencesModule,
           busStopsModule,
           timesModule,
-          favoritesModule,
           searchModule
         )
       )
