@@ -14,7 +14,7 @@ class BusStopFavoritesAdapter(
 ) : RecyclerView.Adapter<BusStopFavoritesAdapter.ItemViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-    val itemViewHolder = parent.inflate(R.layout.favorite_item)
+    val itemViewHolder = parent.inflate(R.layout.busstop_item)
     return ItemViewHolder(itemViewHolder)
   }
 
