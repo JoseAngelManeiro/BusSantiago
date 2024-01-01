@@ -9,5 +9,5 @@ class LineCache(private val lines: MutableList<Line> = mutableListOf()) {
     this.lines.addAll(lines)
   }
 
-  fun getAll(): List<Line> = lines
+  fun getAll(): List<Line> = lines.toList()
 }

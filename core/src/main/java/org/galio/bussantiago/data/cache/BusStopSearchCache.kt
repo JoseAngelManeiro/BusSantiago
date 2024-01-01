@@ -9,5 +9,5 @@ class BusStopSearchCache(private val busStops: MutableList<BusStopSearch> = muta
     this.busStops.addAll(busStops)
   }
 
-  fun getAll(): List<BusStopSearch> = busStops
+  fun getAll(): List<BusStopSearch> = busStops.toList()
 }
