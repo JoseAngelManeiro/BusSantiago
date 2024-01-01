@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.search_fragment.closeButtonImageView
+import kotlinx.android.synthetic.main.search_fragment.myLocationFAB
 import kotlinx.android.synthetic.main.search_fragment.progressBar
 import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
 import org.galio.bussantiago.R
@@ -36,7 +37,6 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.domain.model.BusStopSearch
-import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -91,6 +91,7 @@ class SearchFragment : Fragment() {
         SearchEvent.ClearSearchText -> clearSearchText()
         is SearchEvent.NavigateToTimes -> navigateToTimesScreen(event.busStopModel)
         is SearchEvent.ShowMapInfoWindow -> showMapInfoWindow(event.busStopSearch)
+        SearchEvent.ShowMapMyLocation -> centerInMyLocation()
       }
     }
 
@@ -119,11 +120,16 @@ class SearchFragment : Fragment() {
 
   private fun setUpMap(map: GoogleMap) {
     googleMap = map
-    googleMap?.setOnInfoWindowClickListener {
-      viewModel.onMapInfoWindowClicked(BusStopModel(it.title, it.snippet))
+    googleMap?.run {
+      // Disable map buttons
+      uiSettings.isMyLocationButtonEnabled = false
+      uiSettings.isMapToolbarEnabled = false
+      // We set the camera first in the default location
+      moveToLatLng(defaultLocation)
+      setOnInfoWindowClickListener {
+        viewModel.onMapInfoWindowClicked(BusStopModel(it.title, it.snippet))
+      }
     }
-    // We set the camera first in the default location
-    googleMap?.moveToLatLng(defaultLocation)
     checkForLocationPermission()
   }
 
@@ -142,14 +148,24 @@ class SearchFragment : Fragment() {
   @SuppressLint("MissingPermission")
   private fun enableMyLocation() {
     googleMap?.isMyLocationEnabled = true
+    myLocationFAB.visibility = View.VISIBLE
+    myLocationFAB.setOnClickListener {
+      viewModel.onMyLocationButtonClicked()
+    }
+    centerInMyLocation()
+  }
 
+  @SuppressLint("MissingPermission")
+  private fun centerInMyLocation() {
     val locationResult = fusedLocationClient.lastLocation
     locationResult.addOnCompleteListener(requireActivity()) { task ->
       if (task.isSuccessful) {
         // Set the map's camera position to the current location of the device.
         val lastKnownLocation = task.result
         if (lastKnownLocation != null) {
-          googleMap?.moveToLatLng(LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude))
+          googleMap?.animateToLatLng(
+            LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+          )
         }
       }
     }

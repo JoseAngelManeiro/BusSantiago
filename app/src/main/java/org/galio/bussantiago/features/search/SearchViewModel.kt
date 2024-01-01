@@ -49,4 +49,8 @@ class SearchViewModel(
   fun onClearTextButtonClicked() {
     _searchEvent.value = SearchEvent.ClearSearchText
   }
+
+  fun onMyLocationButtonClicked() {
+    _searchEvent.value = SearchEvent.ShowMapMyLocation
+  }
 }
