@@ -36,7 +36,7 @@
         android:inputType="text"
         android:completionThreshold="1"
         android:textSize="17sp"
-        android:paddingEnd="24dp"
+        android:paddingEnd="30dp"
         android:maxLines="1"
         android:ellipsize="end"
         android:hint="@string/search_bus_stop"
