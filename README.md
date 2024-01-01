@@ -2,9 +2,7 @@
 
 This project contains the code of [Bus Santiago][bus-santiago], a personal app published in Google Play Store.
 
-
-![ApplicationVideo][application-video]
-
+<img src="./art/ApplicationVideo.gif" width="400" alt="Bus Santiago"/>
 
 ## Architecture
 
@@ -48,7 +46,6 @@ You can execute them all with this command: `./gradlew runUnitTests`
 
 
 [bus-santiago]: https://play.google.com/store/apps/details?id=org.galio.bussantiago&hl=es
-[application-video]: ./art/ApplicationVideo.gif
 [architecture]: https://developer.android.com/topic/libraries/architecture
 [koin]: https://insert-koin.io/
 [viewmodel]: https://developer.android.com/topic/libraries/architecture/viewmodel
