@@ -2,7 +2,7 @@
 
 This project contains the code of [Bus Santiago][bus-santiago], a personal app published in Google Play Store.
 
-<img src="./art/ApplicationVideo.gif" width="400" alt="Bus Santiago"/>
+<img src="./art/ApplicationVideo.gif" width="300" alt="Bus Santiago"/>
 
 ## Architecture
 
