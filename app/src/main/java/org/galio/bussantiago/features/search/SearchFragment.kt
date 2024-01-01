@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -203,6 +204,20 @@ class SearchFragment : Fragment() {
   }
 
   private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
+    // Set the text truncated in the edit text
+    val width: Int = searchAutocompleteTextView.measuredWidth -
+      (searchAutocompleteTextView.paddingLeft + searchAutocompleteTextView.paddingRight)
+
+    val truncatedText = TextUtils.ellipsize(
+      busStopSearch.toString(),
+      searchAutocompleteTextView.paint,
+      width.toFloat(),
+      TextUtils.TruncateAt.END
+    )
+    if (truncatedText.isNotEmpty()) {
+      searchAutocompleteTextView.setText(truncatedText)
+    }
+
     markerMap[busStopSearch.id]?.showInfoWindow()
     googleMap?.animateToLatLng(
       LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude)

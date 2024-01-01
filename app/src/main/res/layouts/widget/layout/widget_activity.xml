@@ -12,7 +12,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/favorite_item" />
+    tools:listitem="@layout/busstop_item" />
 
   <TextView
     android:id="@+id/noFavoritesTextView"
