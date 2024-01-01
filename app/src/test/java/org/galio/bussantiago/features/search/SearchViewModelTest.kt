@@ -5,9 +5,8 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.domain.interactor.SearchAllBusStops
 import org.galio.bussantiago.domain.model.BusStopSearch
-import org.galio.bussantiago.domain.model.Coordinates
-import org.galio.bussantiago.domain.model.NullBusStopSearch
 import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -24,66 +23,69 @@ class SearchViewModelTest {
   var rule: TestRule = InstantTaskExecutorRule()
 
   private val executor = TestInteractorExecutor()
-  private val searchBusStop = mock<SearchBusStop>()
-  private val observer = mock<Observer<Resource<BusStopModel>>>()
+  private val searchAllBusStops = mock<SearchAllBusStops>()
+  private val busStopsObserver = mock<Observer<Resource<List<BusStopSearch>>>>()
+  private val searchEventObserver = mock<Observer<SearchEvent>>()
 
-  private lateinit var searchViewModel: SearchViewModel
-
-  private val busStopCode = "228"
+  private val searchViewModel = SearchViewModel(executor, searchAllBusStops)
 
   @Before
   fun setUp() {
-    searchViewModel = SearchViewModel(executor, searchBusStop)
-    searchViewModel.busStopModel.observeForever(observer)
+    searchViewModel.busStops.observeForever(busStopsObserver)
+    searchViewModel.searchEvent.observeForever(searchEventObserver)
   }
 
   @Test
-  fun `load a bus stop when interactor finds a value`() {
-    val busStopSearchStub = createSearchBusStop(
-      code = busStopCode,
-      name = "Ensinanza"
-    )
-    given(searchBusStop(busStopCode)).willReturn(Either.right(busStopSearchStub))
+  fun `load all bus stops successfully should return the data received`() {
+    val busStops = listOf<BusStopSearch>(mock())
+    given(searchAllBusStops(Unit)).willReturn(Either.right(busStops))
 
-    searchViewModel.search(busStopCode.toInt())
+    searchViewModel.loadBusStops()
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(
-      Resource.success(
-        BusStopModel(busStopCode, "Ensinanza")
-      )
-    )
+    verify(busStopsObserver).onChanged(Resource.loading())
+    verify(busStopsObserver).onChanged(Resource.success(busStops))
   }
 
   @Test
-  fun `load null when interactor doesn't find a value`() {
-    given(searchBusStop(busStopCode))
-      .willReturn(Either.right(NullBusStopSearch()))
-
-    searchViewModel.search(busStopCode.toInt())
-
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(BusStopModel("", "")))
-  }
-
-  @Test
-  fun `fire the exception received`() {
+  fun `when load all bus stops fails should return the exception`() {
     val exception = NetworkConnectionException()
-    given(searchBusStop(busStopCode)).willReturn(Either.left(exception))
+    given(searchAllBusStops(Unit)).willReturn(Either.left(exception))
 
-    searchViewModel.search(busStopCode.toInt())
+    searchViewModel.loadBusStops()
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(busStopsObserver).onChanged(Resource.loading())
+    verify(busStopsObserver).onChanged(Resource.error(exception))
   }
 
-  private fun createSearchBusStop(code: String, name: String) =
-    BusStopSearch(
-      id = 1,
-      code = code,
-      name = name,
-      zone = null,
-      coordinates = Coordinates(44.5, 11.2),
-      lines = mock()
-    )
+  @Test
+  fun `when onMapInfoWindowClicked should navigate with model received`() {
+    val busStopModel = mock<BusStopModel>()
+
+    searchViewModel.onMapInfoWindowClicked(busStopModel)
+
+    verify(searchEventObserver).onChanged(SearchEvent.NavigateToTimes(busStopModel))
+  }
+
+  @Test
+  fun `when onSuggestionItemClicked should show info window with model received`() {
+    val busStopSearch = mock<BusStopSearch>()
+
+    searchViewModel.onSuggestionItemClicked(busStopSearch)
+
+    verify(searchEventObserver).onChanged(SearchEvent.ShowMapInfoWindow(busStopSearch))
+  }
+
+  @Test
+  fun `when onClearTextButtonClicked should clear the search text`() {
+    searchViewModel.onClearTextButtonClicked()
+
+    verify(searchEventObserver).onChanged(SearchEvent.ClearSearchText)
+  }
+
+  @Test
+  fun `when onMyLocationButtonClicked should show my location`() {
+    searchViewModel.onMyLocationButtonClicked()
+
+    verify(searchEventObserver).onChanged(SearchEvent.ShowMapMyLocation)
+  }
 }
