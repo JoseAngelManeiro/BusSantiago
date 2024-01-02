@@ -11,13 +11,13 @@ import kotlinx.android.synthetic.main.favorites_dialog_fragment.favoritesRecycle
 import kotlinx.android.synthetic.main.favorites_dialog_fragment.noFavoritesTextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
-import org.galio.bussantiago.features.times.TimesFragment
 import org.koin.android.ext.android.inject
 
-class FavoritesDialogFragment : BottomSheetDialogFragment() {
+class FavoritesDialogFragment(
+  private val onBusStopClicked: (BusStopModel) -> Unit
+) : BottomSheetDialogFragment() {
 
   private val favoriteDataSource: FavoriteDataSource by inject()
 
@@ -58,9 +58,6 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
 
   private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
     dismiss()
-    navigateSafe(
-      R.id.actionShowTimesFragment,
-      TimesFragment.createArguments(BusStopModel(busStopFavorite.code, busStopFavorite.name))
-    )
+    onBusStopClicked(BusStopModel(busStopFavorite.code, busStopFavorite.name))
   }
 }
