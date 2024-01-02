@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import kotlinx.android.synthetic.main.incidences_fragment.*
+import kotlinx.android.synthetic.main.incidences_fragment.incidencesRecyclerView
 import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException

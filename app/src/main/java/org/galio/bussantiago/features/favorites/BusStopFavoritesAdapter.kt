@@ -1,9 +1,9 @@
 package org.galio.bussantiago.features.favorites
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
 import org.galio.bussantiago.domain.model.BusStopFavorite
@@ -14,7 +14,7 @@ class BusStopFavoritesAdapter(
 ) : RecyclerView.Adapter<BusStopFavoritesAdapter.ItemViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-    val itemViewHolder = parent.inflate(R.layout.favorite_item)
+    val itemViewHolder = parent.inflate(R.layout.busstop_item)
     return ItemViewHolder(itemViewHolder)
   }
 

@@ -6,6 +6,9 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+
+    <!-- Apply to all dialogs the same opacity level of the parent shadow behind dialog -->
+    <item name="android:backgroundDimAmount">@dimen/dim_amount</item>
   </style>
 
   <style name="Synoptic">

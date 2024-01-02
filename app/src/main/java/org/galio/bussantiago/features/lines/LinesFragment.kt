@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.lines_fragment.*
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.lines_fragment.linesRecyclerView
+import kotlinx.android.synthetic.main.lines_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.navigateSafe
-import org.galio.bussantiago.features.BaseHomeFragment
 import org.galio.bussantiago.features.menu.MenuFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LinesFragment : BaseHomeFragment() {
+class LinesFragment : Fragment() {
 
   private val viewModel: LinesViewModel by viewModel()
 
@@ -28,7 +29,7 @@ class LinesFragment : BaseHomeFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    initActionBar(title = getString(R.string.lines))
+    initActionBar(title = getString(R.string.lines), backEnabled = true)
 
     viewModel.lineModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(

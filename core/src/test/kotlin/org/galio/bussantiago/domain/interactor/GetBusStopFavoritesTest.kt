@@ -7,16 +7,16 @@ import org.mockito.Mockito.verify
 
 class GetBusStopFavoritesTest {
 
-    private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-    private val getBusStopFavorites =
-      GetBusStopFavorites(
-        busStopFavoriteRepository
-      )
+  private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
+  private val getBusStopFavorites =
+    GetBusStopFavorites(
+      busStopFavoriteRepository
+    )
 
-    @Test
-    fun `invokes the repository`() {
-        getBusStopFavorites(Unit)
+  @Test
+  fun `invokes the repository`() {
+    getBusStopFavorites(Unit)
 
-        verify(busStopFavoriteRepository).getBusStopFavorites()
-    }
+    verify(busStopFavoriteRepository).getBusStopFavorites()
+  }
 }

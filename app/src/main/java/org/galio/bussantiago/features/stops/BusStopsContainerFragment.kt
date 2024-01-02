@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.busstopscontainer_fragment.*
+import kotlinx.android.synthetic.main.busstopscontainer_fragment.stops_tabLayout
+import kotlinx.android.synthetic.main.busstopscontainer_fragment.stops_viewPager
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
 

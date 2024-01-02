@@ -4,31 +4,53 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.domain.interactor.SearchBusStop
+import org.galio.bussantiago.domain.interactor.SearchAllBusStops
+import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class SearchViewModel(
   private val executor: InteractorExecutor,
-  private val searchBusStop: SearchBusStop
+  private val searchAllBusStops: SearchAllBusStops
 ) : BaseViewModel(executor) {
 
-  private val _busStopModel = MutableLiveData<Resource<BusStopModel>>()
+  private val _searchEvent = SingleLiveEvent<SearchEvent>()
+  private val _busStops = MutableLiveData<Resource<List<BusStopSearch>>>()
 
-  val busStopModel: LiveData<Resource<BusStopModel>>
-    get() = _busStopModel
+  val busStops: LiveData<Resource<List<BusStopSearch>>>
+    get() = _busStops
 
-  fun search(busStopCode: Int) {
-    _busStopModel.value = Resource.loading()
+  val searchEvent: LiveData<SearchEvent>
+    get() = _searchEvent
+
+  fun loadBusStops() {
+    _busStops.value = Resource.loading()
     executor(
-      interactor = searchBusStop,
-      request = busStopCode.toString(),
+      interactor = searchAllBusStops,
+      request = Unit,
       onSuccess = {
-        _busStopModel.value = Resource.success(BusStopModel(code = it.code, name = it.name))
+        _busStops.value = Resource.success(it)
       },
       onError = {
-        _busStopModel.value = Resource.error(it)
+        _busStops.value = Resource.error(it)
       }
     )
+  }
+
+  fun onMapInfoWindowClicked(busStopModel: BusStopModel) {
+    _searchEvent.value = SearchEvent.NavigateToTimes(busStopModel)
+  }
+
+  fun onSuggestionItemClicked(busStopSearch: BusStopSearch) {
+    _searchEvent.value = SearchEvent.ShowMapInfoWindow(busStopSearch)
+  }
+
+  fun onClearTextButtonClicked() {
+    _searchEvent.value = SearchEvent.ClearSearchText
+  }
+
+  fun onMyLocationButtonClicked() {
+    _searchEvent.value = SearchEvent.ShowMapMyLocation
   }
 }

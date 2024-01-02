@@ -7,19 +7,19 @@ import org.mockito.Mockito.verify
 
 class GetBusStopRemainingTimesTest {
 
-    private val busStopRemainingTimesRepository =
-      Mockito.mock(BusStopRemainingTimesRepository::class.java)
-    private val getBusStopRemainingTimes =
-      GetBusStopRemainingTimes(
-        busStopRemainingTimesRepository
-      )
+  private val busStopRemainingTimesRepository =
+    Mockito.mock(BusStopRemainingTimesRepository::class.java)
+  private val getBusStopRemainingTimes =
+    GetBusStopRemainingTimes(
+      busStopRemainingTimesRepository
+    )
 
-    @Test
-    fun `invokes the repository with the correct request`() {
-        val busStopCode = "1234"
+  @Test
+  fun `invokes the repository with the correct request`() {
+    val busStopCode = "1234"
 
-        getBusStopRemainingTimes(busStopCode)
+    getBusStopRemainingTimes(busStopCode)
 
-        verify(busStopRemainingTimesRepository).getBusStopRemainingTimes(busStopCode)
-    }
+    verify(busStopRemainingTimesRepository).getBusStopRemainingTimes(busStopCode)
+  }
 }

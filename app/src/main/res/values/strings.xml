@@ -20,14 +20,8 @@
   <string name="cancel">Cancelar</string>
   <string name="retry">Reintentar</string>
   <string name="what_want_to_do">¿Que desea hacer?</string>
-  <string name="bus_stop_not_exist">Parece que la parada buscada no existe</string>
-  <string name="type_bus_stop_code">Introduzca el código de la parada</string>
-  <string name="placeholder_search_box">000</string>
-  <string name="search">Buscar</string>
-  <string name="must_type_code">Debe introducir el código de la parada</string>
   <string name="search_bus_stop">Buscar parada</string>
   <string name="about">Acerca de</string>
-  <string name="settings">Ajustes</string>
   <string name="author" tools:ignore="Typos">Autor</string>
   <string name="author_name">José Ángel Maneiro González</string>
   <string name="author_email">joseangelmaneiro@yahoo.es</string>
@@ -44,9 +38,8 @@
   usuario es el de ubicación, con la finalidad de que el usuario pueda visualizar en el mapa
   aquellas paradas que se encuentren más cerca de su posición. La aplicación podrá funcionar
   perfectamente en caso de que el permiso no sea aceptado.</string>
-  <string name="home_screen_settings_header_title">Pantalla de inicio</string>
-  <string name="favorite_screen_settings_option_title">Ver mis paradas favoritas</string>
-  <string name="favorite_screen_settings_option_subtitle">Si tenemos alguna guardada</string>
-  <string name="lines_screen_settings_option_title">Mostrar siempre la lista de líneas</string>
+  <string name="remove_search_text">Borrar texto de búsqueda</string>
+  <string name="favorite_bus_stops">Paradas favoritas</string>
+  <string name="center_my_position_in_map">Centrar mi posición en el mapa</string>
 </resources>
 

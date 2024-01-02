@@ -2,9 +2,9 @@ package org.galio.bussantiago.data.api
 
 import org.galio.bussantiago.data.entity.BusStopRemainingTimesEntity
 import org.galio.bussantiago.data.entity.BusStopRequest
+import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import org.galio.bussantiago.data.entity.LineDetailsEntity
 import org.galio.bussantiago.data.entity.LineEntity
-import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

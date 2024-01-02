@@ -11,7 +11,7 @@
     android:id="@+id/stops_viewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:swipeable="false" >
+    app:swipeable="false">
 
     <com.google.android.material.tabs.TabLayout
       android:id="@+id/stops_tabLayout"

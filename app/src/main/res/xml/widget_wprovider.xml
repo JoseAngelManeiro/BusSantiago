@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appwidget-provider
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
   android:initialLayout="@layout/app_widget"
   android:minWidth="130dp"
   android:minHeight="130dp"
@@ -10,8 +9,7 @@
   android:previewImage="@drawable/preview_app_widget"
   android:resizeMode="horizontal|vertical"
   android:configure="widget.WidgetActivity"
-  android:updatePeriodMillis="0"/>
-  <!--
+  android:updatePeriodMillis="0" /><!--
    updatePeriodMillis -> By setting 0 as a parameter,
                           we're saying that we don't want the widget to update itself.
    previewImage       -> This image should be saved in the drawable-nodpi folder.

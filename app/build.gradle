@@ -14,6 +14,7 @@ def getApiKeyDebug() {
     }
     return apiKeyDebug
 }
+
 def getApiKeyRelease() {
     def apiKeyRelease = System.getenv("API_KEY_RELEASE")
     if (apiKeyRelease == null || apiKeyRelease.length() == 0) {
@@ -31,8 +32,8 @@ android {
         applicationId "org.galio.bussantiago"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 47
-        versionName "4.0.5"
+        versionCode 48
+        versionName "4.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue "string", "app_version", "v${defaultConfig.versionName}"
     }

@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -62,12 +61,12 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     getMapAsync(this)
 
-    viewModel.lineMapModel.observe(viewLifecycleOwner, Observer { resource ->
+    viewModel.lineMapModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onError = { handleException(it) },
         onSuccess = { setUpMap(it) }
       )
-    })
+    }
   }
 
   override fun onMapReady(googleMap: GoogleMap?) {
@@ -75,8 +74,10 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
       mGoogleMap = googleMap
       enableMyLocation()
       mGoogleMap.setOnInfoWindowClickListener {
-        navigateSafe(R.id.actionShowTimesFragment,
-          TimesFragment.createArguments(BusStopModel(it.title, it.snippet)))
+        navigateSafe(
+          R.id.actionShowTimesFragment,
+          TimesFragment.createArguments(BusStopModel(it.title, it.snippet))
+        )
       }
       viewModel.load(busStopsArgs)
     }
@@ -93,15 +94,19 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         hue = BitmapDescriptorFactory.HUE_BLUE
       }
 
-      val latLng = LatLng(busStopMapModel.coordinates.latitude,
-        busStopMapModel.coordinates.longitude)
+      val latLng = LatLng(
+        busStopMapModel.coordinates.latitude,
+        busStopMapModel.coordinates.longitude
+      )
 
       polylineOptions.add(latLng)
 
-      mGoogleMap.addMarker(MarkerOptions()
-        .position(latLng)
-        .title(busStopMapModel.code)
-        .snippet(busStopMapModel.name))
+      mGoogleMap.addMarker(
+        MarkerOptions()
+          .position(latLng)
+          .title(busStopMapModel.code)
+          .snippet(busStopMapModel.name)
+      )
         .setIcon(BitmapDescriptorFactory.defaultMarker(hue))
     }
 
@@ -110,14 +115,19 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     mGoogleMap.addPolyline(polylineOptions)
 
     val firstBusStopMapModel = lineMapModel.busStopMapModels.first()
-    val firstLatLng = LatLng(firstBusStopMapModel.coordinates.latitude,
-      firstBusStopMapModel.coordinates.longitude)
+    val firstLatLng = LatLng(
+      firstBusStopMapModel.coordinates.latitude,
+      firstBusStopMapModel.coordinates.longitude
+    )
     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
   }
 
   private fun enableMyLocation() {
-    if (ContextCompat.checkSelfPermission(requireContext(),
-        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    if (ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_FINE_LOCATION
+      ) == PackageManager.PERMISSION_GRANTED
+    ) {
       mGoogleMap.isMyLocationEnabled = true
     } else {
       requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)

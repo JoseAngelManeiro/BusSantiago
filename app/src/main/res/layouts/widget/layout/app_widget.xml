@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:orientation="vertical"
   android:layout_width="match_parent"
@@ -45,7 +44,7 @@
         android:textColor="@android:color/white"
         android:padding="1dp"
         tools:ignore="SpUsage"
-        tools:text="Hospital Clínico T"/>
+        tools:text="Hospital Clínico T" />
 
     </LinearLayout>
 
@@ -95,7 +94,7 @@
           android:layout_marginLeft="4dp"
           android:layout_marginRight="4dp"
           tools:ignore="SpUsage"
-          tools:text="22:00"/>
+          tools:text="22:00" />
 
       </LinearLayout>
 
@@ -112,7 +111,7 @@
   <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white">
 
     <ListView
       android:id="@+id/times_listview"

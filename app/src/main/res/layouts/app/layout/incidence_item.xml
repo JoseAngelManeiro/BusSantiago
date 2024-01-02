@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/incidenceTextView"
   android:layout_width="match_parent"
@@ -9,4 +8,4 @@
   android:padding="@dimen/default_padding"
   android:clickable="false"
   tools:context="org.galio.bussantiago.features.incidences.IncidencesAdapter"
-  tools:text="Desvío en la línea 7 por corte de tráfico en la calle Castrón Douro (a partir del lunes 20/8/2018)"/>
+  tools:text="Desvío en la línea 7 por corte de tráfico en la calle Castrón Douro (a partir del lunes 20/8/2018)" />

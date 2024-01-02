@@ -15,7 +15,6 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
-import java.lang.Exception
 
 class BusStopsMapViewModelTest {
 

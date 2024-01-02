@@ -11,7 +11,9 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
-import kotlinx.android.synthetic.main.times_fragment.*
+import kotlinx.android.synthetic.main.times_fragment.favoriteFAB
+import kotlinx.android.synthetic.main.times_fragment.noInfoTextView
+import kotlinx.android.synthetic.main.times_fragment.timesRecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
@@ -119,6 +121,7 @@ class TimesFragment : Fragment() {
             if (!timesAreLoading()) viewModel.loadTimes()
             return true
           }
+
           else ->
             return false
         }

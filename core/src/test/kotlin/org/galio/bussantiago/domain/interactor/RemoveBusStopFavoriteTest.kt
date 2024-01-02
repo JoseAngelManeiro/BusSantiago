@@ -7,18 +7,18 @@ import org.mockito.Mockito
 
 class RemoveBusStopFavoriteTest {
 
-    private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-    private val removeBusStopFavorite =
-      RemoveBusStopFavorite(
-        busStopFavoriteRepository
-      )
+  private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
+  private val removeBusStopFavorite =
+    RemoveBusStopFavorite(
+      busStopFavoriteRepository
+    )
 
-    @Test
-    fun `invokes the repository with the correct request`() {
-        val request = BusStopFavorite("1234", "Name")
+  @Test
+  fun `invokes the repository with the correct request`() {
+    val request = BusStopFavorite("1234", "Name")
 
-        removeBusStopFavorite(request)
+    removeBusStopFavorite(request)
 
-        Mockito.verify(busStopFavoriteRepository).remove(request)
-    }
+    Mockito.verify(busStopFavoriteRepository).remove(request)
+  }
 }

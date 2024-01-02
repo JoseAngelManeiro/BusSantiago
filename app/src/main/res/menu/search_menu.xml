@@ -4,24 +4,20 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/nav_action"
+    android:id="@+id/show_favorites_action"
     android:title="@string/favorites"
+    android:icon="@drawable/ic_menu_favorite"
     app:showAsAction="always"
     tools:ignore="AlwaysShowAction" />
 
   <item
-    android:id="@+id/search_action"
-    android:title="@string/search_bus_stop"
-    app:showAsAction="never"/>
-
-  <item
-    android:id="@+id/settings_action"
-    android:title="@string/settings"
-    app:showAsAction="never"/>
+    android:id="@+id/lines_action"
+    android:title="@string/lines"
+    app:showAsAction="never" />
 
   <item
     android:id="@+id/about_action"
     android:title="@string/about"
-    app:showAsAction="never"/>
+    app:showAsAction="never" />
 
 </menu>

@@ -6,4 +6,6 @@
   <color name="colorAccent">#FF6E40</color>//Deep Orange A200
 
   <color name="ic_launcher_background">#FFFFFF</color>
+
+  <color name="tap_element">#c1c7d0</color>
 </resources>
