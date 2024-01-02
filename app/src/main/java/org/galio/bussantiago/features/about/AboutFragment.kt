@@ -39,7 +39,7 @@ class AboutFragment : DialogFragment() {
 
   private fun setUpToolbar() {
     toolbar.title = getString(R.string.about)
-    toolbar.setNavigationIcon(R.drawable.ic_close)
+    toolbar.setNavigationIcon(R.drawable.ic_back_button)
     toolbar.setNavigationOnClickListener { dismiss() }
   }
 }

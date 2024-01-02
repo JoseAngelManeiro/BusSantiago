@@ -2,27 +2,22 @@ package org.galio.bussantiago.features.times
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
-import kotlinx.android.synthetic.main.times_fragment.favoriteFAB
-import kotlinx.android.synthetic.main.times_fragment.noInfoTextView
-import kotlinx.android.synthetic.main.times_fragment.timesRecyclerView
+import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.times_dialog_fragment.favoriteFAB
+import kotlinx.android.synthetic.main.times_dialog_fragment.noInfoTextView
+import kotlinx.android.synthetic.main.times_dialog_fragment.progressBar
+import kotlinx.android.synthetic.main.times_dialog_fragment.timesRecyclerView
+import kotlinx.android.synthetic.main.times_dialog_fragment.toolbar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TimesFragment : Fragment() {
+class TimesDialogFragment : DialogFragment() {
 
   private val viewModel: TimesViewModel by viewModel()
   private lateinit var busStopModel: BusStopModel
@@ -38,26 +33,34 @@ class TimesFragment : Fragment() {
     }
   }
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
+  }
+
+  override fun onStart() {
+    super.onStart()
+    dialog?.let { dialog ->
+      val width = ViewGroup.LayoutParams.MATCH_PARENT
+      val height = ViewGroup.LayoutParams.MATCH_PARENT
+      dialog.window?.setLayout(width, height)
+    }
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.times_fragment, container, false)
+    return inflater.inflate(R.layout.times_dialog_fragment, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    setUpMenu()
-
     busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
 
-    initActionBar(
-      title = busStopModel.code,
-      subTitle = busStopModel.name,
-      backEnabled = true
-    )
+    setUpToolbar(busStopModel)
 
     setUpFavoriteButton()
 
@@ -101,32 +104,28 @@ class TimesFragment : Fragment() {
     viewModel.validateBusStop()
   }
 
+  private fun setUpToolbar(busStopModel: BusStopModel) {
+    toolbar.run {
+      title = busStopModel.code
+      subtitle = busStopModel.name
+      setNavigationIcon(R.drawable.ic_back_button)
+      setNavigationOnClickListener { dismiss() }
+      inflateMenu(R.menu.times_menu)
+      setOnMenuItemClickListener {
+        if (it.itemId == R.id.sync_action) {
+          if (!timesAreLoading()) viewModel.loadTimes()
+          true
+        } else {
+          false
+        }
+      }
+    }
+  }
+
   private fun setUpFavoriteButton() {
     favoriteFAB.setOnClickListener {
       viewModel.changeFavoriteState()
     }
-  }
-
-  private fun setUpMenu() {
-    val menuHost: MenuHost = requireActivity()
-
-    menuHost.addMenuProvider(object : MenuProvider {
-      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.times_menu, menu)
-      }
-
-      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-          R.id.sync_action -> {
-            if (!timesAreLoading()) viewModel.loadTimes()
-            return true
-          }
-
-          else ->
-            return false
-        }
-      }
-    }, viewLifecycleOwner)
   }
 
   private fun timesAreLoading(): Boolean {

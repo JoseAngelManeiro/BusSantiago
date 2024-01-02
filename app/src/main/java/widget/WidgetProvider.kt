@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import androidx.navigation.NavDeepLinkBuilder
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.features.times.TimesFragment
+import org.galio.bussantiago.features.times.TimesDialogFragment
 
 class WidgetProvider : AppWidgetProvider() {
 
@@ -52,8 +52,8 @@ class WidgetProvider : AppWidgetProvider() {
       // Declare an explicit deep link to launch TimesFragment
       val navPIntent = NavDeepLinkBuilder(context)
         .setGraph(R.navigation.nav_graph)
-        .setDestination(R.id.timesFragment)
-        .setArguments(TimesFragment.createArguments(BusStopModel(code, name)))
+        .setDestination(R.id.timesDialogFragment)
+        .setArguments(TimesDialogFragment.createArguments(BusStopModel(code, name)))
         .createPendingIntent()
       remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)
 

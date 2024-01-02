@@ -21,7 +21,7 @@ import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.stops.BusStopsArgs
-import org.galio.bussantiago.features.times.TimesFragment
+import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
@@ -75,8 +75,8 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
       enableMyLocation()
       mGoogleMap.setOnInfoWindowClickListener {
         navigateSafe(
-          R.id.actionShowTimesFragment,
-          TimesFragment.createArguments(BusStopModel(it.title, it.snippet))
+          R.id.actionShowTimes,
+          TimesDialogFragment.createArguments(BusStopModel(it.title, it.snippet))
         )
       }
       viewModel.load(busStopsArgs)

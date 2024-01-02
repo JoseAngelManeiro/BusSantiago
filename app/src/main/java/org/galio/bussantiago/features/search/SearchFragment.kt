@@ -38,7 +38,8 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.domain.model.BusStopSearch
-import org.galio.bussantiago.features.times.TimesFragment
+import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
+import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val DEFAULT_ZOOM = 18f
@@ -225,7 +226,7 @@ class SearchFragment : Fragment() {
   }
 
   private fun navigateToTimesScreen(busStopModel: BusStopModel) {
-    navigateSafe(R.id.actionShowTimesFragment, TimesFragment.createArguments(busStopModel))
+    navigateSafe(R.id.actionShowTimes, TimesDialogFragment.createArguments(busStopModel))
   }
 
   private fun clearSearchText() {
@@ -254,7 +255,8 @@ class SearchFragment : Fragment() {
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
           R.id.show_favorites_action -> {
-            navigateSafe(R.id.actionShowFavorites)
+            FavoritesDialogFragment(::navigateToTimesScreen)
+              .show(childFragmentManager, "FavoritesDialogFragment")
             true
           }
           R.id.lines_action -> {
