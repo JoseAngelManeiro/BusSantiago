@@ -29,7 +29,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   private val viewModel: BusStopsMapViewModel by viewModel()
 
   private lateinit var busStopsArgs: BusStopsArgs
-  private lateinit var mGoogleMap: GoogleMap
+  private var mGoogleMap: GoogleMap? = null
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
   companion object {
@@ -73,7 +73,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     if (googleMap != null) {
       mGoogleMap = googleMap
       enableMyLocation()
-      mGoogleMap.setOnInfoWindowClickListener {
+      mGoogleMap?.setOnInfoWindowClickListener {
         navigateSafe(
           R.id.actionShowTimes,
           TimesDialogFragment.createArguments(BusStopModel(it.title, it.snippet))
@@ -101,25 +101,24 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
       polylineOptions.add(latLng)
 
-      mGoogleMap.addMarker(
+      mGoogleMap?.addMarker(
         MarkerOptions()
           .position(latLng)
           .title(busStopMapModel.code)
           .snippet(busStopMapModel.name)
-      )
-        .setIcon(BitmapDescriptorFactory.defaultMarker(hue))
+      )?.setIcon(BitmapDescriptorFactory.defaultMarker(hue))
     }
 
     polylineOptions.color(Color.parseColor(lineMapModel.lineStyle))
 
-    mGoogleMap.addPolyline(polylineOptions)
+    mGoogleMap?.addPolyline(polylineOptions)
 
     val firstBusStopMapModel = lineMapModel.busStopMapModels.first()
     val firstLatLng = LatLng(
       firstBusStopMapModel.coordinates.latitude,
       firstBusStopMapModel.coordinates.longitude
     )
-    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
+    mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
   }
 
   private fun enableMyLocation() {
@@ -128,7 +127,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         Manifest.permission.ACCESS_FINE_LOCATION
       ) == PackageManager.PERMISSION_GRANTED
     ) {
-      mGoogleMap.isMyLocationEnabled = true
+      mGoogleMap?.isMyLocationEnabled = true
     } else {
       requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }

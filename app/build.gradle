@@ -32,7 +32,7 @@ android {
         applicationId "org.galio.bussantiago"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 49
+        versionCode 50
         versionName "4.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue "string", "app_version", "v${defaultConfig.versionName}"
