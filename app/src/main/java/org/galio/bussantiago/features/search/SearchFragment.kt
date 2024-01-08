@@ -11,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -58,6 +59,15 @@ class SearchFragment : Fragment() {
 
   override fun onCreate(bundle: Bundle?) {
     super.onCreate(bundle)
+
+    // Listener to intercept back button clicks
+    activity?.onBackPressedDispatcher?.addCallback(this,
+      object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+          activity?.finish()
+        }
+      }
+    )
 
     requestPermissionLauncher =
       registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
