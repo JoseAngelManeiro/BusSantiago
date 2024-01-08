@@ -8,8 +8,7 @@ workflows:
             - build_test
           filters:
             branches:
-              only: master
-
+              only: release
 
 jobs:
   build_test:
