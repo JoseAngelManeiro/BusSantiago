@@ -20,10 +20,8 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -32,10 +30,13 @@ import kotlinx.android.synthetic.main.search_fragment.myLocationFAB
 import kotlinx.android.synthetic.main.search_fragment.progressBar
 import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
 import org.galio.bussantiago.R
+import org.galio.bussantiago.common.animateToLatLng
+import org.galio.bussantiago.common.clearText
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.domain.model.BusStopSearch
@@ -43,7 +44,7 @@ import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private const val DEFAULT_ZOOM = 18f
+private const val MAP_ZOOM = 18f
 
 class SearchFragment : Fragment() {
 
@@ -137,7 +138,7 @@ class SearchFragment : Fragment() {
       uiSettings.isMyLocationButtonEnabled = false
       uiSettings.isMapToolbarEnabled = false
       // We set the camera first in the default location
-      moveToLatLng(defaultLocation)
+      moveToLatLng(defaultLocation, MAP_ZOOM)
       setOnInfoWindowClickListener {
         viewModel.onMapInfoWindowClicked(BusStopModel(it.title, it.snippet))
       }
@@ -176,7 +177,8 @@ class SearchFragment : Fragment() {
         val lastKnownLocation = task.result
         if (lastKnownLocation != null) {
           googleMap?.animateToLatLng(
-            LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
+            latLng = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude),
+            zoom = MAP_ZOOM
           )
         }
       }
@@ -185,19 +187,23 @@ class SearchFragment : Fragment() {
 
   private fun setUpAutocompleteTextView(busStops: List<BusStopSearch>) {
     val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
-    searchAutocompleteTextView.setAdapter(adapter)
-    searchAutocompleteTextView.setOnItemClickListener { _, _, position, _ ->
-      hideKeyboard()
-      searchAutocompleteTextView.clearFocus()
-      adapter.getItem(position)?.let { viewModel.onSuggestionItemClicked(it) }
+    searchAutocompleteTextView.run {
+      setAdapter(adapter)
+      setOnItemClickListener { _, _, position, _ ->
+        hideKeyboard()
+        searchAutocompleteTextView.clearFocus()
+        adapter.getItem(position)?.let { viewModel.onSuggestionItemClicked(it) }
+      }
+      isEnabled = true
+      clearText()
+      clearFocus()
     }
-    searchAutocompleteTextView.isEnabled = true
   }
 
   private fun setUpCloseButtonImageView() {
-    closeButtonImageView.isEnabled = true
-    closeButtonImageView.setOnClickListener {
-      viewModel.onClearTextButtonClicked()
+    closeButtonImageView.run {
+      isEnabled = true
+      setOnClickListener { viewModel.onClearTextButtonClicked() }
     }
   }
 
@@ -231,7 +237,8 @@ class SearchFragment : Fragment() {
 
     markerMap[busStopSearch.id]?.showInfoWindow()
     googleMap?.animateToLatLng(
-      LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude)
+      latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
+      zoom = MAP_ZOOM
     )
   }
 
@@ -240,18 +247,10 @@ class SearchFragment : Fragment() {
   }
 
   private fun clearSearchText() {
-    searchAutocompleteTextView.setText("")
-    searchAutocompleteTextView.showKeyboard()
-  }
-
-  private fun GoogleMap.moveToLatLng(latLng: LatLng) {
-    moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
-  }
-
-  private fun GoogleMap.animateToLatLng(latLng: LatLng) {
-    animateCamera(
-      CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, DEFAULT_ZOOM))
-    )
+    searchAutocompleteTextView.run {
+      clearText()
+      showKeyboard()
+    }
   }
 
   private fun setUpMenu() {
