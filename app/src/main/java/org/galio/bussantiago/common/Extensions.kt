@@ -26,3 +26,10 @@ fun GoogleMap.animateToLatLng(latLng: LatLng, zoom: Float) {
 fun AutoCompleteTextView.clearText() {
   setText("")
 }
+
+fun GoogleMap.disableMapButtons() {
+  uiSettings.isMyLocationButtonEnabled = false
+  uiSettings.isMapToolbarEnabled = false
+  uiSettings.isCompassEnabled = false
+  uiSettings.isIndoorLevelPickerEnabled = false
+}

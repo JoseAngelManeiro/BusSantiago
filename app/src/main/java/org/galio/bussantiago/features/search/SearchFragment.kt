@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.animateToLatLng
 import org.galio.bussantiago.common.clearText
+import org.galio.bussantiago.common.disableMapButtons
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
@@ -134,9 +135,7 @@ class SearchFragment : Fragment() {
   private fun setUpMap(map: GoogleMap) {
     googleMap = map
     googleMap?.run {
-      // Disable map buttons
-      uiSettings.isMyLocationButtonEnabled = false
-      uiSettings.isMapToolbarEnabled = false
+      disableMapButtons()
       // We set the camera first in the default location
       moveToLatLng(defaultLocation, MAP_ZOOM)
       setOnInfoWindowClickListener {
