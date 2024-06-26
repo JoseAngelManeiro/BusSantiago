@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import kotlinx.android.synthetic.main.incidences_fragment.incidencesRecyclerView
-import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
+import org.galio.bussantiago.databinding.IncidencesFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IncidencesFragment : Fragment() {
+
+  private var _binding: IncidencesFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: IncidencesViewModel by viewModel()
 
@@ -31,8 +33,10 @@ class IncidencesFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.incidences_fragment, container, false)
+  ): View {
+    _binding = IncidencesFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,30 +44,35 @@ class IncidencesFragment : Fragment() {
 
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
 
-    val lineId = arguments?.get(ID_KEY) as Int
+    val lineId: Int = arguments?.getInt(ID_KEY) ?: 0
     viewModel.setArgs(lineId)
 
     viewModel.incidences.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
+          binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           handleException(it) { viewModel.loadIncidences() }
         },
         onSuccess = {
-          progressBar.visibility = View.GONE
-          incidencesRecyclerView.adapter = IncidencesAdapter(it)
+          binding.progressBar.visibility = View.GONE
+          binding.incidencesRecyclerView.adapter = IncidencesAdapter(it)
           val itemDecoration = DividerItemDecoration(
-            incidencesRecyclerView.context,
+            binding.incidencesRecyclerView.context,
             LinearLayout.VERTICAL
           )
-          incidencesRecyclerView.addItemDecoration(itemDecoration)
+          binding.incidencesRecyclerView.addItemDecoration(itemDecoration)
         }
       )
     }
 
     viewModel.loadIncidences()
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

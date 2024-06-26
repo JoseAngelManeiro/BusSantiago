@@ -23,5 +23,5 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
-sourceCompatibility = "7"
-targetCompatibility = "7"
+sourceCompatibility JavaVersion.VERSION_17
+targetCompatibility JavaVersion.VERSION_17

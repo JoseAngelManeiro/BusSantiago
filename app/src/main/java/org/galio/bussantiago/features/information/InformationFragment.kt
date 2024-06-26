@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.information_fragment.informationTextView
-import kotlinx.android.synthetic.main.information_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
+import org.galio.bussantiago.databinding.InformationFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class InformationFragment : Fragment() {
+
+  private var _binding: InformationFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: InformationViewModel by viewModel()
 
@@ -30,8 +32,10 @@ class InformationFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.information_fragment, container, false)
+  ): View {
+    _binding = InformationFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,25 +43,30 @@ class InformationFragment : Fragment() {
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
-    val lineId = arguments?.get(ID_KEY) as Int
+    val lineId = arguments?.getInt(ID_KEY) ?: 0
     viewModel.setArgs(lineId)
 
     viewModel.information.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
+          binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           handleException(it) { viewModel.loadLineInformation() }
         },
         onSuccess = {
-          progressBar.visibility = View.GONE
-          informationTextView.text = it.fromHtml()
+          binding.progressBar.visibility = View.GONE
+          binding.informationTextView.text = it.fromHtml()
         }
       )
     }
 
     viewModel.loadLineInformation()
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

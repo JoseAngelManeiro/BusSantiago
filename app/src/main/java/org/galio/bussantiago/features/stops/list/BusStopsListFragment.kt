@@ -5,17 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.busstopslist_fragment.busStopsRecyclerView
-import kotlinx.android.synthetic.main.busstopslist_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.databinding.BusstopslistFragmentBinding
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BusStopsListFragment : Fragment() {
+
+  private var _binding: BusstopslistFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: BusStopsListViewModel by viewModel()
 
@@ -34,8 +36,10 @@ class BusStopsListFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.busstopslist_fragment, container, false)
+  ): View {
+    _binding = BusstopslistFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +52,7 @@ class BusStopsListFragment : Fragment() {
     viewModel.busStopModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
+          binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
           hideProgressBarIfNecessary()
@@ -56,7 +60,7 @@ class BusStopsListFragment : Fragment() {
         },
         onSuccess = { busStopModels ->
           hideProgressBarIfNecessary()
-          busStopsRecyclerView.adapter =
+          binding.busStopsRecyclerView.adapter =
             BusStopsListAdapter(busStopModels) { onBusStopClick(it) }
         }
       )
@@ -66,12 +70,17 @@ class BusStopsListFragment : Fragment() {
   }
 
   private fun hideProgressBarIfNecessary() {
-    if (progressBar.visibility == View.VISIBLE) {
-      progressBar.visibility = View.GONE
+    if (binding.progressBar.visibility == View.VISIBLE) {
+      binding.progressBar.visibility = View.GONE
     }
   }
 
   private fun onBusStopClick(busStopModel: BusStopModel) {
     navigateSafe(R.id.actionShowTimes, TimesDialogFragment.createArguments(busStopModel))
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

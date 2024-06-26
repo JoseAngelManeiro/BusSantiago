@@ -69,18 +69,18 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     }
   }
 
-  override fun onMapReady(googleMap: GoogleMap?) {
-    if (googleMap != null) {
-      mGoogleMap = googleMap
-      enableMyLocation()
-      mGoogleMap?.setOnInfoWindowClickListener {
+  override fun onMapReady(googleMap: GoogleMap) {
+    mGoogleMap = googleMap
+    enableMyLocation()
+    mGoogleMap?.setOnInfoWindowClickListener { marker ->
+      if (marker.title != null && marker.snippet != null) {
         navigateSafe(
           R.id.actionShowTimes,
-          TimesDialogFragment.createArguments(BusStopModel(it.title, it.snippet))
+          TimesDialogFragment.createArguments(BusStopModel(marker.title!!, marker.snippet!!))
         )
       }
-      viewModel.load(busStopsArgs)
     }
+    viewModel.load(busStopsArgs)
   }
 
   private fun setUpMap(lineMapModel: LineMapModel) {

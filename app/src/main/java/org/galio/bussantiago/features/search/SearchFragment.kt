@@ -25,10 +25,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.search_fragment.closeButtonImageView
-import kotlinx.android.synthetic.main.search_fragment.myLocationFAB
-import kotlinx.android.synthetic.main.search_fragment.progressBar
-import kotlinx.android.synthetic.main.search_fragment.searchAutocompleteTextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.animateToLatLng
 import org.galio.bussantiago.common.clearText
@@ -40,6 +36,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
+import org.galio.bussantiago.databinding.SearchFragmentBinding
 import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesDialogFragment
@@ -48,6 +45,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 private const val MAP_ZOOM = 18f
 
 class SearchFragment : Fragment() {
+
+  private var _binding: SearchFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: SearchViewModel by viewModel()
 
@@ -83,14 +83,15 @@ class SearchFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    val rootView = inflater.inflate(R.layout.search_fragment, container, false)
+  ): View {
+    _binding = SearchFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
 
-    mapView = rootView.findViewById(R.id.mapView)
+    mapView = view.findViewById(R.id.mapView)
     mapView?.onCreate(savedInstanceState)
     mapView?.getMapAsync { setUpMap(it) }
 
-    return rootView
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,16 +113,16 @@ class SearchFragment : Fragment() {
     viewModel.busStops.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
-          searchAutocompleteTextView.isEnabled = false
-          closeButtonImageView.isEnabled = false
+          binding.progressBar.visibility = View.VISIBLE
+          binding.searchAutocompleteTextView.isEnabled = false
+          binding.closeButtonImageView.isEnabled = false
         },
         onError = {
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           handleException(it) { viewModel.loadBusStops() }
         },
         onSuccess = { busStops ->
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           setUpAutocompleteTextView(busStops)
           setUpCloseButtonImageView()
           addBusStopMarkers(busStops)
@@ -138,8 +139,10 @@ class SearchFragment : Fragment() {
       disableMapButtons()
       // We set the camera first in the default location
       moveToLatLng(defaultLocation, MAP_ZOOM)
-      setOnInfoWindowClickListener {
-        viewModel.onMapInfoWindowClicked(BusStopModel(it.title, it.snippet))
+      setOnInfoWindowClickListener { marker ->
+        if (marker.title != null && marker.snippet != null) {
+          viewModel.onMapInfoWindowClicked(BusStopModel(marker.title!!, marker.snippet!!))
+        }
       }
     }
     checkForLocationPermission()
@@ -160,8 +163,8 @@ class SearchFragment : Fragment() {
   @SuppressLint("MissingPermission")
   private fun enableMyLocation() {
     googleMap?.isMyLocationEnabled = true
-    myLocationFAB.visibility = View.VISIBLE
-    myLocationFAB.setOnClickListener {
+    binding.myLocationFAB.visibility = View.VISIBLE
+    binding.myLocationFAB.setOnClickListener {
       viewModel.onMyLocationButtonClicked()
     }
     centerInMyLocation()
@@ -185,22 +188,24 @@ class SearchFragment : Fragment() {
   }
 
   private fun setUpAutocompleteTextView(busStops: List<BusStopSearch>) {
-    val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
-    searchAutocompleteTextView.run {
-      setAdapter(adapter)
-      setOnItemClickListener { _, _, position, _ ->
-        hideKeyboard()
-        searchAutocompleteTextView.clearFocus()
-        adapter.getItem(position)?.let { viewModel.onSuggestionItemClicked(it) }
+    with(binding) {
+      val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
+      searchAutocompleteTextView.run {
+        setAdapter(adapter)
+        setOnItemClickListener { _, _, position, _ ->
+          hideKeyboard()
+          searchAutocompleteTextView.clearFocus()
+          adapter.getItem(position)?.let { viewModel.onSuggestionItemClicked(it) }
+        }
+        isEnabled = true
+        clearText()
+        clearFocus()
       }
-      isEnabled = true
-      clearText()
-      clearFocus()
     }
   }
 
   private fun setUpCloseButtonImageView() {
-    closeButtonImageView.run {
+    binding.closeButtonImageView.run {
       isEnabled = true
       setOnClickListener { viewModel.onClearTextButtonClicked() }
     }
@@ -221,17 +226,18 @@ class SearchFragment : Fragment() {
 
   private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
     // Set the text truncated in the edit text
-    val width: Int = searchAutocompleteTextView.measuredWidth -
-      (searchAutocompleteTextView.paddingLeft + searchAutocompleteTextView.paddingRight)
+    val searchTextView = binding.searchAutocompleteTextView
+    val width: Int = searchTextView.measuredWidth -
+      (searchTextView.paddingLeft + searchTextView.paddingRight)
 
     val truncatedText = TextUtils.ellipsize(
       busStopSearch.toString(),
-      searchAutocompleteTextView.paint,
+      searchTextView.paint,
       width.toFloat(),
       TextUtils.TruncateAt.END
     )
     if (truncatedText.isNotEmpty()) {
-      searchAutocompleteTextView.setText(truncatedText)
+      binding.searchAutocompleteTextView.setText(truncatedText)
     }
 
     markerMap[busStopSearch.id]?.showInfoWindow()
@@ -246,7 +252,7 @@ class SearchFragment : Fragment() {
   }
 
   private fun clearSearchText() {
-    searchAutocompleteTextView.run {
+    binding.searchAutocompleteTextView.run {
       clearText()
       showKeyboard()
     }
@@ -300,5 +306,6 @@ class SearchFragment : Fragment() {
     hideKeyboard()
     super.onDestroyView()
     mapView?.onDestroy()
+    _binding = null
   }
 }
