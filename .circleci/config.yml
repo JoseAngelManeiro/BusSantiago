@@ -63,6 +63,18 @@ jobs:
       - image: cimg/android:2022.09
     steps:
       - checkout
+      - run:
+          name: Install JDK 17
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y openjdk-17-jdk
+            sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
+            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+            export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+            java -version
+      - run:
+          name: Set JAVA_HOME
+          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
       - run:
