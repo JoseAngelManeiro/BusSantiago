@@ -10,8 +10,8 @@ class TimesFactory {
   ): List<LineRemainingTimeModel> {
     return busStopRemainingTimes.lineRemainingTimes.map {
       LineRemainingTimeModel(
-        SynopticModel(it.synoptic, it.style),
-        it.minutesUntilNextArrival
+        synopticModel = SynopticModel(it.synoptic, it.style),
+        minutesUntilNextArrival = it.minutesUntilNextArrival
       )
     }
   }

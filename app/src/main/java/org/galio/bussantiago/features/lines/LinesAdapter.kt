@@ -26,9 +26,9 @@ class LinesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val synopticView = itemView.findViewById(R.id.synopticView) as SynopticView
-    private val nameView = itemView.findViewById(R.id.nameTextView) as TextView
-    private val incidentsImageView = itemView.findViewById(R.id.incidentsImageView) as ImageView
+    private val synopticView: SynopticView = itemView.findViewById(R.id.synopticView)
+    private val nameView: TextView = itemView.findViewById(R.id.nameTextView)
+    private val incidentsImageView: ImageView = itemView.findViewById(R.id.incidentsImageView)
 
     init {
       itemView.setOnClickListener {

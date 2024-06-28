@@ -5,15 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.widget_activity.favoritesRecyclerView
-import kotlinx.android.synthetic.main.widget_activity.noFavoritesTextView
-import org.galio.bussantiago.R
 import org.galio.bussantiago.data.local.FavoriteDataSource
+import org.galio.bussantiago.databinding.WidgetActivityBinding
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.features.favorites.BusStopFavoritesAdapter
 import org.koin.android.ext.android.inject
 
 class WidgetActivity : AppCompatActivity() {
+
+  private lateinit var binding: WidgetActivityBinding
 
   private val favoriteDataSource: FavoriteDataSource by inject()
 
@@ -21,7 +21,9 @@ class WidgetActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.widget_activity)
+    binding = WidgetActivityBinding.inflate(layoutInflater)
+    val view = binding.root
+    setContentView(view)
 
     // First we set a default value
     setResult(RESULT_CANCELED)
@@ -36,9 +38,9 @@ class WidgetActivity : AppCompatActivity() {
       if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
         val busStopFavorites = favoriteDataSource.getAll()
         if (busStopFavorites.isEmpty()) {
-          noFavoritesTextView.visibility = View.VISIBLE
+          binding.noFavoritesTextView.visibility = View.VISIBLE
         } else {
-          favoritesRecyclerView.adapter =
+          binding.favoritesRecyclerView.adapter =
             BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
         }
       } else {

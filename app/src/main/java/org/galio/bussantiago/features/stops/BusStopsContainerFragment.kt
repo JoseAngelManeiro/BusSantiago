@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.busstopscontainer_fragment.stops_tabLayout
-import kotlinx.android.synthetic.main.busstopscontainer_fragment.stops_viewPager
-import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
+import org.galio.bussantiago.databinding.BusstopscontainerFragmentBinding
 
 class BusStopsContainerFragment : Fragment() {
+
+  private var _binding: BusstopscontainerFragmentBinding? = null
+  private val binding get() = _binding!!
 
   companion object {
     private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
@@ -25,8 +26,10 @@ class BusStopsContainerFragment : Fragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.busstopscontainer_fragment, container, false)
+  ): View {
+    _binding = BusstopscontainerFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,9 +39,14 @@ class BusStopsContainerFragment : Fragment() {
 
     initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
-    stops_viewPager.adapter = BusStopsPagerAdapter(
+    binding.stopsViewPager.adapter = BusStopsPagerAdapter(
       busStopsArgs, requireContext(), childFragmentManager
     )
-    stops_tabLayout.setupWithViewPager(stops_viewPager)
+    binding.stopsTabLayout.setupWithViewPager(binding.stopsViewPager)
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

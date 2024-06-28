@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.about_fragment.toolbar
 import org.galio.bussantiago.R
+import org.galio.bussantiago.databinding.AboutFragmentBinding
 
 class AboutFragment : DialogFragment() {
+
+  private var _binding: AboutFragmentBinding? = null
+  private val binding get() = _binding!!
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -28,8 +31,10 @@ class AboutFragment : DialogFragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.about_fragment, container, false)
+  ): View {
+    _binding = AboutFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,8 +43,15 @@ class AboutFragment : DialogFragment() {
   }
 
   private fun setUpToolbar() {
-    toolbar.title = getString(R.string.about)
-    toolbar.setNavigationIcon(R.drawable.ic_back_button)
-    toolbar.setNavigationOnClickListener { dismiss() }
+    with(binding) {
+      toolbar.title = getString(R.string.about)
+      toolbar.setNavigationIcon(R.drawable.ic_back_button)
+      toolbar.setNavigationOnClickListener { dismiss() }
+    }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

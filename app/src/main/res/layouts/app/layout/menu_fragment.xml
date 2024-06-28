@@ -6,14 +6,34 @@
   android:layout_height="match_parent"
   tools:context="org.galio.bussantiago.features.menu.MenuFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/menuOptionsRecyclerView"
-    android:layout_width="@dimen/dialog_size"
-    android:layout_height="match_parent"
+  <LinearLayout
+    android:id="@+id/menuOptionsContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:visibility="gone"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:visibility="visible"
-    tools:listitem="@layout/menu_item" />
+    tools:visibility="visible">
+
+    <TextView
+      android:id="@+id/menuOptionsTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/small_text_size"
+      android:layout_marginTop="12dp"
+      android:layout_marginBottom="4dp"
+      android:layout_gravity="center_horizontal"
+      android:textStyle="bold"
+      android:textColor="#000000"
+      tools:text="Línea C6"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/menuOptionsRecyclerView"
+      android:layout_width="@dimen/dialog_size"
+      android:layout_height="match_parent"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/menu_item" />
+
+  </LinearLayout>
 
   <ProgressBar
     android:id="@+id/progressBar"

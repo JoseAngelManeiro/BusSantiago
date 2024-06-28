@@ -1,6 +1,8 @@
 package org.galio.bussantiago.features.menu
 
+import org.galio.bussantiago.common.model.SynopticModel
+
 data class MenuModel(
-  val lineId: Int,
+  val synopticModel: SynopticModel,
   val options: List<MenuOptionModel>
 )

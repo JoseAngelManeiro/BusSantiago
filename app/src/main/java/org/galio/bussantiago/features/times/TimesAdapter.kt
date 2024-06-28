@@ -24,8 +24,8 @@ class TimesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val synopticView = itemView.findViewById(R.id.synopticView) as SynopticView
-    private val timeView = itemView.findViewById(R.id.timeTextView) as TextView
+    private val synopticView: SynopticView = itemView.findViewById(R.id.synopticView)
+    private val timeView: TextView = itemView.findViewById(R.id.timeTextView)
 
     fun bind(lineRemainingTimeModel: LineRemainingTimeModel) {
       synopticView.render(lineRemainingTimeModel.synopticModel)

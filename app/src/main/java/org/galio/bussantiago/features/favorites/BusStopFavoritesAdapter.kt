@@ -25,8 +25,8 @@ class BusStopFavoritesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val codeView = itemView.findViewById(R.id.codeTextView) as TextView
-    private val nameView = itemView.findViewById(R.id.nameTextView) as TextView
+    private val codeView: TextView = itemView.findViewById(R.id.codeTextView)
+    private val nameView: TextView = itemView.findViewById(R.id.nameTextView)
 
     init {
       itemView.setOnClickListener {

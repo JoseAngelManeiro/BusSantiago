@@ -5,19 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.times_dialog_fragment.favoriteFAB
-import kotlinx.android.synthetic.main.times_dialog_fragment.noInfoTextView
-import kotlinx.android.synthetic.main.times_dialog_fragment.progressBar
-import kotlinx.android.synthetic.main.times_dialog_fragment.timesRecyclerView
-import kotlinx.android.synthetic.main.times_dialog_fragment.toolbar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TimesDialogFragment : DialogFragment() {
+
+  private var _binding: TimesDialogFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: TimesViewModel by viewModel()
   private lateinit var busStopModel: BusStopModel
@@ -51,8 +50,10 @@ class TimesDialogFragment : DialogFragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.times_dialog_fragment, container, false)
+  ): View {
+    _binding = TimesDialogFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,34 +70,38 @@ class TimesDialogFragment : DialogFragment() {
     viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
+          binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           handleException(it) { viewModel.loadTimes() }
         },
         onSuccess = { times ->
-          progressBar.visibility = View.GONE
-          if (times.isEmpty()) {
-            timesRecyclerView.visibility = View.GONE
-            noInfoTextView.visibility = View.VISIBLE
-          } else {
-            noInfoTextView.visibility = View.GONE
-            timesRecyclerView.visibility = View.VISIBLE
-            timesRecyclerView.adapter = TimesAdapter(times)
-            reviewsHelper.launchReviews(requireActivity())
+          with(binding) {
+            progressBar.visibility = View.GONE
+            if (times.isEmpty()) {
+              timesRecyclerView.visibility = View.GONE
+              noInfoTextView.visibility = View.VISIBLE
+            } else {
+              noInfoTextView.visibility = View.GONE
+              timesRecyclerView.visibility = View.VISIBLE
+              timesRecyclerView.adapter = TimesAdapter(times)
+              reviewsHelper.launchReviews(requireActivity())
+            }
           }
         }
       )
     }
 
     viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
-      if (isFavorite) {
-        favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
-        favoriteFAB.contentDescription = getString(R.string.favorite_stop)
-      } else {
-        favoriteFAB.setImageResource(R.drawable.ic_fab_favorite_border)
-        favoriteFAB.contentDescription = getString(R.string.no_favorite_stop)
+      with(binding) {
+        if (isFavorite) {
+          favoriteFAB.setImageResource(R.drawable.ic_fab_favorite)
+          favoriteFAB.contentDescription = getString(R.string.favorite_stop)
+        } else {
+          favoriteFAB.setImageResource(R.drawable.ic_fab_favorite_border)
+          favoriteFAB.contentDescription = getString(R.string.no_favorite_stop)
+        }
       }
     }
 
@@ -105,30 +110,37 @@ class TimesDialogFragment : DialogFragment() {
   }
 
   private fun setUpToolbar(busStopModel: BusStopModel) {
-    toolbar.run {
-      title = busStopModel.code
-      subtitle = busStopModel.name
-      setNavigationIcon(R.drawable.ic_back_button)
-      setNavigationOnClickListener { dismiss() }
-      inflateMenu(R.menu.times_menu)
-      setOnMenuItemClickListener {
-        if (it.itemId == R.id.sync_action) {
-          if (!timesAreLoading()) viewModel.loadTimes()
-          true
-        } else {
-          false
+    with(binding) {
+      toolbar.run {
+        title = busStopModel.code
+        subtitle = busStopModel.name
+        setNavigationIcon(R.drawable.ic_back_button)
+        setNavigationOnClickListener { dismiss() }
+        inflateMenu(R.menu.times_menu)
+        setOnMenuItemClickListener {
+          if (it.itemId == R.id.sync_action) {
+            if (!timesAreLoading()) viewModel.loadTimes()
+            true
+          } else {
+            false
+          }
         }
       }
     }
   }
 
   private fun setUpFavoriteButton() {
-    favoriteFAB.setOnClickListener {
+    binding.favoriteFAB.setOnClickListener {
       viewModel.changeFavoriteState()
     }
   }
 
   private fun timesAreLoading(): Boolean {
-    return progressBar.visibility == View.VISIBLE
+    return binding.progressBar.visibility == View.VISIBLE
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

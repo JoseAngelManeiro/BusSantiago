@@ -94,7 +94,7 @@ class TimesViewsFactory(
 
         setTextViewText(
           R.id.lineWidgetTextView,
-          lineRemainingTimeModel.synopticModel.synoptic.removePrefix("L")
+          lineRemainingTimeModel.synopticModel.getSynopticFormatted()
         )
 
         setTextViewText(

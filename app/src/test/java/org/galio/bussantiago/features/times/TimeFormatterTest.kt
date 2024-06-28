@@ -6,17 +6,17 @@ import org.junit.Test
 class TimeFormatterTest {
 
   @Test
-  fun `if there are 0 mins until next arrival, the literal "llegando" is returned`() {
+  fun `if there are 0 mins until next arrival, the literal 'llegando' is returned`() {
     assertEquals("llegando", getDescriptionByMinutes(0))
   }
 
   @Test
-  fun `if there are -1 mins until next arrival, the literal "1 min" is returned`() {
+  fun `if there are -1 mins until next arrival, the literal '1 min' is returned`() {
     assertEquals("<1 min", getDescriptionByMinutes(-1))
   }
 
   @Test
-  fun `if there are -2 mins until next arrival, the literal "en parada" is returned`() {
+  fun `if there are -2 mins until next arrival, the literal 'en parada' is returned`() {
     assertEquals("en parada", getDescriptionByMinutes(-2))
   }
 

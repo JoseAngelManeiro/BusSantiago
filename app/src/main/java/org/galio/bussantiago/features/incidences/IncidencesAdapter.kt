@@ -24,7 +24,7 @@ class IncidencesAdapter(
   }
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val incidenceView = itemView.findViewById(R.id.incidenceTextView) as TextView
+    private val incidenceView: TextView = itemView.findViewById(R.id.incidenceTextView)
 
     fun bind(incidence: String) {
       incidenceView.text = incidence.fromHtml()

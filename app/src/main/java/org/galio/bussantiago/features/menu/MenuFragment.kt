@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.menu_fragment.menuOptionsRecyclerView
-import kotlinx.android.synthetic.main.menu_fragment.progressBar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.navigateSafe
+import org.galio.bussantiago.databinding.MenuFragmentBinding
 import org.galio.bussantiago.features.incidences.IncidencesFragment
 import org.galio.bussantiago.features.information.InformationFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
@@ -17,6 +16,9 @@ import org.galio.bussantiago.features.stops.BusStopsContainerFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment : DialogFragment() {
+
+  private var _binding: MenuFragmentBinding? = null
+  private val binding get() = _binding!!
 
   private val viewModel: MenuViewModel by viewModel()
   private var lineId: Int = 0
@@ -34,23 +36,25 @@ class MenuFragment : DialogFragment() {
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.menu_fragment, container, false)
+  ): View {
+    _binding = MenuFragmentBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    lineId = arguments?.get(ID_KEY) as Int
+    lineId = arguments?.getInt(ID_KEY) ?: 0
     viewModel.setArgs(lineId)
 
     viewModel.menuModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          progressBar.visibility = View.VISIBLE
+          binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
-          progressBar.visibility = View.GONE
+          binding.progressBar.visibility = View.GONE
           handleException(
             it,
             cancel = { dismiss() },
@@ -58,8 +62,8 @@ class MenuFragment : DialogFragment() {
           )
         },
         onSuccess = {
-          progressBar.visibility = View.GONE
-          setUpRecyclerView(it.options)
+          binding.progressBar.visibility = View.GONE
+          setUpView(it)
         }
       )
     }
@@ -67,9 +71,15 @@ class MenuFragment : DialogFragment() {
     viewModel.loadLineDetails()
   }
 
-  private fun setUpRecyclerView(menuOptionModels: List<MenuOptionModel>) {
-    menuOptionsRecyclerView.visibility = View.VISIBLE
-    menuOptionsRecyclerView.adapter = MenuAdapter(menuOptionModels) { onMenuOptionClicked(it) }
+  private fun setUpView(menuModel: MenuModel) {
+    with(binding) {
+      menuOptionsContainer.visibility = View.VISIBLE
+      menuOptionsTextView.text =
+        getString(R.string.line_name, menuModel.synopticModel.getSynopticFormatted())
+      menuOptionsRecyclerView.adapter = MenuAdapter(menuModel.options) {
+        onMenuOptionClicked(it)
+      }
+    }
   }
 
   private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
@@ -91,5 +101,10 @@ class MenuFragment : DialogFragment() {
         navigateSafe(R.id.actionShowIncidences, IncidencesFragment.createArguments(lineId))
       }
     }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

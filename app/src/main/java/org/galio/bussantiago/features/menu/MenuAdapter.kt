@@ -27,8 +27,8 @@ class MenuAdapter(
 
   inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val context = itemView.context
-    private val iconView = itemView.findViewById(R.id.iconImageView) as ImageView
-    private val nameView = itemView.findViewById(R.id.titleTextView) as TextView
+    private val iconView: ImageView = itemView.findViewById(R.id.iconImageView)
+    private val nameView: TextView = itemView.findViewById(R.id.titleTextView)
 
     init {
       itemView.setOnClickListener {
