@@ -63,7 +63,7 @@ class MenuFragment : DialogFragment() {
         },
         onSuccess = {
           binding.progressBar.visibility = View.GONE
-          setUpRecyclerView(it.options)
+          setUpView(it)
         }
       )
     }
@@ -71,10 +71,14 @@ class MenuFragment : DialogFragment() {
     viewModel.loadLineDetails()
   }
 
-  private fun setUpRecyclerView(menuOptionModels: List<MenuOptionModel>) {
-    binding.menuOptionsRecyclerView.visibility = View.VISIBLE
-    binding.menuOptionsRecyclerView.adapter = MenuAdapter(menuOptionModels) {
-      onMenuOptionClicked(it)
+  private fun setUpView(menuModel: MenuModel) {
+    with(binding) {
+      menuOptionsContainer.visibility = View.VISIBLE
+      menuOptionsTextView.text =
+        getString(R.string.line_name, menuModel.synopticModel.getSynopticFormatted())
+      menuOptionsRecyclerView.adapter = MenuAdapter(menuModel.options) {
+        onMenuOptionClicked(it)
+      }
     }
   }
 

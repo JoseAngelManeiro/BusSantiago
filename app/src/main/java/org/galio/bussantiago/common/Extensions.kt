@@ -10,8 +10,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 
-private const val ANIMATION_DURATION = 1500 // milliseconds
-
 fun ViewGroup.inflate(itemHolder: Int): View =
   LayoutInflater.from(context).inflate(itemHolder, this, false)
 
@@ -22,11 +20,7 @@ fun GoogleMap.moveToLatLng(latLng: LatLng, zoom: Float) {
 }
 
 fun GoogleMap.animateToLatLng(latLng: LatLng, zoom: Float) {
-  animateCamera(
-    CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, zoom)),
-    ANIMATION_DURATION,
-    null
-  )
+  animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, zoom)))
 }
 
 fun AutoCompleteTextView.clearText() {

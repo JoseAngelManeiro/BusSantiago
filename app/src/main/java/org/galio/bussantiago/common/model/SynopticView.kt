@@ -16,6 +16,6 @@ class SynopticView(
   fun render(synopticModel: SynopticModel) {
     val synopticBackground = this.background as GradientDrawable
     synopticBackground.setColor(Color.parseColor(synopticModel.style))
-    this.text = synopticModel.synoptic.removePrefix("L")
+    this.text = synopticModel.getSynopticFormatted()
   }
 }

@@ -41,5 +41,6 @@
   <string name="remove_search_text">Borrar texto de búsqueda</string>
   <string name="favorite_bus_stops">Paradas favoritas</string>
   <string name="center_my_position_in_map">Centrar mi posición en el mapa</string>
+  <string name="line_name">Línea %s</string>
 </resources>
 

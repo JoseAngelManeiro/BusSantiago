@@ -1,5 +1,6 @@
 package org.galio.bussantiago.features.menu
 
+import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.domain.model.Incidence
 import org.galio.bussantiago.domain.model.LineDetails
 import org.galio.bussantiago.domain.model.Route
@@ -19,8 +20,8 @@ class MenuFactoryTest {
     private const val OUTWARD_NAME = "Outward route"
     private const val RETURN_NAME = "Return route"
 
-    private val outwardRoute = Route(OUTWARD_NAME, "Any Direction", mock())
-    private val returnRoute = Route(RETURN_NAME, "Any Direction", mock())
+    private val outwardRoute = Route(OUTWARD_NAME, "Any direction", mock())
+    private val returnRoute = Route(RETURN_NAME, "Any direction", mock())
   }
 
   private val menuFactory = MenuFactory()
@@ -59,8 +60,8 @@ class MenuFactoryTest {
   fun `if there are incidences, the option appears`() {
     val incidenceStub = Incidence(
       id = 1,
-      title = "Any Incidence",
-      description = "Any Desc",
+      title = "Any incidence",
+      description = "Any desc",
       startDate = Calendar.getInstance().time,
       endDate = null
     )
@@ -72,6 +73,13 @@ class MenuFactoryTest {
     assertNotNull(result.findByMenuType(INCIDENCES))
   }
 
+  @Test
+  fun `when the menu model is created should include the synoptic model`() {
+    val result = menuFactory.createMenu(createLineDetails())
+
+    assertEquals(SynopticModel("Any synoptic", "Any style"), result.synopticModel)
+  }
+
   private fun createLineDetails(
     routes: List<Route> = emptyList(),
     incidences: List<Incidence> = emptyList()
@@ -79,10 +87,10 @@ class MenuFactoryTest {
     return LineDetails(
       id = 1,
       code = "Any code",
-      synoptic = "Any Synoptic",
+      synoptic = "Any synoptic",
       name = "Any name",
-      information = "Any Information",
-      style = "Any color",
+      information = "Any information",
+      style = "Any style",
       routes = routes,
       incidences = incidences
     )

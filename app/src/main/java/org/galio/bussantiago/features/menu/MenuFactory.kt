@@ -1,5 +1,6 @@
 package org.galio.bussantiago.features.menu
 
+import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.domain.model.LineDetails
 
 class MenuFactory {
@@ -20,6 +21,9 @@ class MenuFactory {
       menuOptionModels.add(MenuOptionModel(MenuType.INCIDENCES))
     }
 
-    return MenuModel(lineDetails.id, menuOptionModels)
+    return MenuModel(
+      synopticModel = SynopticModel(lineDetails.synoptic, lineDetails.style),
+      options = menuOptionModels
+    )
   }
 }
