@@ -20,12 +20,34 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Retrofit 2.X
+# Retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
--keepattributes Signature
+
+# OkHttp
+-keep class okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# Retrofit with Gson converter
+-keep class retrofit2.converter.gson.** { *; }
+-dontwarn retrofit2.converter.gson.**
+
+# Retrofit API interface
+-keep interface org.galio.bussantiago.data.api.ApiService
+
+# Keep models used in API calls
+-keep class org.galio.bussantiago.data.entity.** { *; }
+
+# Preserve Retrofit annotations
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
+
+# Keep methods with Retrofit annotations (e.g., GET, POST)
+-keepclassmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
 -keepattributes Exceptions
--keepclassmembers class org.galio.bussantiago.data.entity.** { <fields>; }
+
 -dontwarn org.conscrypt.Conscrypt$Version
 -dontwarn org.conscrypt.Conscrypt
 -dontwarn org.conscrypt.ConscryptHostnameVerifier
