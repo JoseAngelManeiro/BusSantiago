@@ -1,7 +1,9 @@
 package org.galio.bussantiago.common
 
 import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -63,4 +65,13 @@ fun EditText.showKeyboard() {
   val inputMethodManager = this.context
     ?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
   inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+}
+
+inline fun <reified T : Parcelable> Fragment.getArgument(key: String): T? {
+  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    arguments?.getParcelable(key, T::class.java)
+  } else {
+    @Suppress("DEPRECATION")
+    arguments?.getParcelable(key)
+  }
 }

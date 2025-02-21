@@ -1,11 +1,13 @@
 package org.galio.bussantiago.features.times
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
+import org.galio.bussantiago.common.getArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
@@ -17,10 +19,7 @@ class TimesDialogFragment : DialogFragment() {
 
   private var _binding: TimesDialogFragmentBinding? = null
   private val binding get() = _binding!!
-
   private val viewModel: TimesViewModel by viewModel()
-  private lateinit var busStopModel: BusStopModel
-
   private val reviewsHelper: ReviewsHelper by inject()
 
   companion object {
@@ -59,14 +58,47 @@ class TimesDialogFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    busStopModel = arguments?.get(BUS_STOP_KEY) as BusStopModel
+    getArgument<BusStopModel>(BUS_STOP_KEY)?.let { busStopModel ->
+      setUpToolbar(busStopModel)
 
-    setUpToolbar(busStopModel)
+      setUpFavoriteButton()
 
-    setUpFavoriteButton()
+      viewModel.setArgs(busStopModel.code, busStopModel.name)
 
-    viewModel.setArgs(busStopModel.code, busStopModel.name)
+      setUpObservers()
 
+      viewModel.loadTimes()
+      viewModel.validateBusStop()
+    } ?: Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
+  }
+
+  private fun setUpToolbar(busStopModel: BusStopModel) {
+    with(binding) {
+      toolbar.run {
+        title = busStopModel.code
+        subtitle = busStopModel.name
+        setNavigationIcon(R.drawable.ic_back_button)
+        setNavigationOnClickListener { dismiss() }
+        inflateMenu(R.menu.times_menu)
+        setOnMenuItemClickListener {
+          if (it.itemId == R.id.sync_action) {
+            if (!timesAreLoading()) viewModel.loadTimes()
+            true
+          } else {
+            false
+          }
+        }
+      }
+    }
+  }
+
+  private fun setUpFavoriteButton() {
+    binding.favoriteFAB.setOnClickListener {
+      viewModel.changeFavoriteState()
+    }
+  }
+
+  private fun setUpObservers() {
     viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
@@ -103,35 +135,6 @@ class TimesDialogFragment : DialogFragment() {
           favoriteFAB.contentDescription = getString(R.string.no_favorite_stop)
         }
       }
-    }
-
-    viewModel.loadTimes()
-    viewModel.validateBusStop()
-  }
-
-  private fun setUpToolbar(busStopModel: BusStopModel) {
-    with(binding) {
-      toolbar.run {
-        title = busStopModel.code
-        subtitle = busStopModel.name
-        setNavigationIcon(R.drawable.ic_back_button)
-        setNavigationOnClickListener { dismiss() }
-        inflateMenu(R.menu.times_menu)
-        setOnMenuItemClickListener {
-          if (it.itemId == R.id.sync_action) {
-            if (!timesAreLoading()) viewModel.loadTimes()
-            true
-          } else {
-            false
-          }
-        }
-      }
-    }
-  }
-
-  private fun setUpFavoriteButton() {
-    binding.favoriteFAB.setOnClickListener {
-      viewModel.changeFavoriteState()
     }
   }
 

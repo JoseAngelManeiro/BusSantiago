@@ -89,12 +89,12 @@ open class MockWebServerTest {
   }
 
   private fun getContentFromFile(fileName: String? = null): String {
-    if (fileName == null) {
+    val fileResource = javaClass.getResource("/$fileName")?.file
+    if (fileName == null || fileResource == null) {
       return ""
     }
 
-    val file = File(javaClass.getResource("/$fileName").file)
-    val lines = FileUtils.readLines(file, FILE_ENCODING)
+    val lines = FileUtils.readLines(File(fileResource), FILE_ENCODING)
     val stringBuilder = StringBuilder()
     for (line in lines) {
       stringBuilder.append(line)

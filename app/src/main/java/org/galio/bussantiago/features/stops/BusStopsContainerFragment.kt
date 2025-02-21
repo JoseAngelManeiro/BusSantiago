@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.galio.bussantiago.common.getArgument
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.databinding.BusstopscontainerFragmentBinding
 
@@ -35,14 +36,17 @@ class BusStopsContainerFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
+    getArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)?.let { busStopsArgs ->
+      initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
-    initActionBar(title = busStopsArgs.routeName, backEnabled = true)
+      binding.stopsViewPager.adapter = BusStopsPagerAdapter(
+        busStopsArgs,
+        requireContext(),
+        childFragmentManager
+      )
 
-    binding.stopsViewPager.adapter = BusStopsPagerAdapter(
-      busStopsArgs, requireContext(), childFragmentManager
-    )
-    binding.stopsTabLayout.setupWithViewPager(binding.stopsViewPager)
+      binding.stopsTabLayout.setupWithViewPager(binding.stopsViewPager)
+    }
   }
 
   override fun onDestroyView() {

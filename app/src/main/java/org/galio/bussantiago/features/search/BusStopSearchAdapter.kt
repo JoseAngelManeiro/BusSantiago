@@ -56,8 +56,9 @@ class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
 
       override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
         clear()
-        if (results != null && results.count > 0) {
-          addAll(results.values as List<BusStopSearch>)
+        val filteredList = (results?.values as? List<*>)?.filterIsInstance<BusStopSearch>()
+        if (!filteredList.isNullOrEmpty()) {
+          addAll(filteredList)
           notifyDataSetChanged()
         }
       }

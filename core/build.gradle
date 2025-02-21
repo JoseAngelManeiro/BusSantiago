@@ -21,7 +21,7 @@ dependencies {
 
     // Bytebuddy (necessary for Mockito inline)
     implementation 'net.bytebuddy:byte-buddy:1.15.11'
-    testImplementation 'net.bytebuddy:byte-buddy-agent:1.1.15.11'
+    testImplementation 'net.bytebuddy:byte-buddy-agent:1.15.11'
 
     // MockWebServer
     testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
