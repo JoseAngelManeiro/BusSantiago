@@ -1,10 +1,13 @@
 package org.galio.bussantiago.features.stops
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
+import org.galio.bussantiago.R
 import org.galio.bussantiago.common.getArgument
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.databinding.BusstopscontainerFragmentBinding
@@ -39,14 +42,22 @@ class BusStopsContainerFragment : Fragment() {
     getArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)?.let { busStopsArgs ->
       initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
-      binding.stopsViewPager.adapter = BusStopsPagerAdapter(
-        busStopsArgs,
-        requireContext(),
-        childFragmentManager
-      )
+      with(binding) {
+        stopsViewPager.adapter = BusStopsPagerAdapter(requireActivity(), busStopsArgs)
+        stopsViewPager.isUserInputEnabled = false // Disable swipe gestures
 
-      binding.stopsTabLayout.setupWithViewPager(binding.stopsViewPager)
-    }
+        TabLayoutMediator(stopsTabLayout, stopsViewPager) { tab, position ->
+          tab.text = when (position) {
+            0 -> getString(R.string.map)
+            1 -> getString(R.string.list)
+            else -> null
+          }
+        }.attach()
+      }
+    } ?: Log.w(
+      "BusStopsContainerFragment",
+      "Argument BusStopsArgs was not sent correctly."
+    )
   }
 
   override fun onDestroyView() {

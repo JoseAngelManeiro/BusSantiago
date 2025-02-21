@@ -1,20 +1,17 @@
 package org.galio.bussantiago.features.stops
 
-import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import org.galio.bussantiago.R
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import org.galio.bussantiago.features.stops.list.BusStopsListFragment
 import org.galio.bussantiago.features.stops.map.BusStopsMapFragment
 
 class BusStopsPagerAdapter(
-  private val busStopsArgs: BusStopsArgs,
-  private val context: Context,
-  fragmentManager: FragmentManager
-) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+  fragmentActivity: FragmentActivity,
+  private val busStopsArgs: BusStopsArgs
+) : FragmentStateAdapter(fragmentActivity) {
 
-  override fun getItem(position: Int): Fragment {
+  override fun createFragment(position: Int): Fragment {
     return if (position == 0) {
       BusStopsMapFragment.newInstance(busStopsArgs)
     } else {
@@ -22,13 +19,5 @@ class BusStopsPagerAdapter(
     }
   }
 
-  override fun getCount() = 2
-
-  override fun getPageTitle(position: Int): CharSequence? {
-    return when (position) {
-      0 -> context.getString(R.string.map)
-      1 -> context.getString(R.string.list)
-      else -> null
-    }
-  }
+  override fun getItemCount() = 2
 }
