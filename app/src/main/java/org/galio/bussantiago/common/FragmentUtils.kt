@@ -67,7 +67,7 @@ fun EditText.showKeyboard() {
   inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
-inline fun <reified T : Parcelable> Fragment.getArgument(key: String): T? {
+inline fun <reified T : Parcelable> Fragment.getParcelableArgument(key: String): T? {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
     arguments?.getParcelable(key, T::class.java)
   } else {

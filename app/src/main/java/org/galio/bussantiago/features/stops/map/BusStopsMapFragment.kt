@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.getArgument
+import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
@@ -59,7 +59,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    busStopsArgs = getArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)
+    busStopsArgs = getParcelableArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)
 
     getMapAsync(this)
 

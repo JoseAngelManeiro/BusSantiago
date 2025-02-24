@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.getArgument
+import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
@@ -58,7 +58,7 @@ class TimesDialogFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    getArgument<BusStopModel>(BUS_STOP_KEY)?.let { busStopModel ->
+    getParcelableArgument<BusStopModel>(BUS_STOP_KEY)?.let { busStopModel ->
       setUpToolbar(busStopModel)
 
       setUpFavoriteButton()

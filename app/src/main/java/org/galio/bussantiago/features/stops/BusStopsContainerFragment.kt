@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.getArgument
+import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.databinding.BusstopscontainerFragmentBinding
 
@@ -39,7 +39,7 @@ class BusStopsContainerFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    getArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)?.let { busStopsArgs ->
+    getParcelableArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)?.let { busStopsArgs ->
       initActionBar(title = busStopsArgs.routeName, backEnabled = true)
 
       with(binding) {
