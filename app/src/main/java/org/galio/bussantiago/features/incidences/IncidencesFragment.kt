@@ -56,22 +56,32 @@ class IncidencesFragment : Fragment() {
     viewModel.incidences.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
+          updateProgressBarStatus(visible = true)
         },
-        onError = {
-          binding.progressBar.visibility = View.GONE
-          handleException(it) { viewModel.loadIncidences(lineId) }
+        onError = { exception ->
+          updateProgressBarStatus(visible = false)
+          handleException(exception, retry = { viewModel.loadIncidences(lineId) })
         },
-        onSuccess = {
-          binding.progressBar.visibility = View.GONE
-          binding.incidencesRecyclerView.adapter = IncidencesAdapter(it)
-          val itemDecoration = DividerItemDecoration(
-            binding.incidencesRecyclerView.context,
-            LinearLayout.VERTICAL
-          )
-          binding.incidencesRecyclerView.addItemDecoration(itemDecoration)
+        onSuccess = { incidences ->
+          updateProgressBarStatus(visible = false)
+          setUpIncidencesAdapter(incidences)
         }
       )
+    }
+  }
+
+  private fun updateProgressBarStatus(visible: Boolean) {
+    binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
+  }
+
+  private fun setUpIncidencesAdapter(incidences: List<String>) {
+    with(binding) {
+      incidencesRecyclerView.adapter = IncidencesAdapter(incidences)
+      val itemDecoration = DividerItemDecoration(
+        incidencesRecyclerView.context,
+        LinearLayout.VERTICAL
+      )
+      incidencesRecyclerView.addItemDecoration(itemDecoration)
     }
   }
 
