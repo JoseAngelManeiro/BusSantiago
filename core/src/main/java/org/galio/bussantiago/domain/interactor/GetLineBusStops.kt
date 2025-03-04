@@ -8,8 +8,7 @@ import org.galio.bussantiago.domain.repository.LineDetailsRepository
 
 class GetLineBusStops(
   private val lineDetailsRepository: LineDetailsRepository
-) :
-  Interactor<GetLineBusStops.Request, List<BusStop>> {
+) : Interactor<GetLineBusStops.Request, List<BusStop>> {
 
   data class Request(
     val lineId: Int,

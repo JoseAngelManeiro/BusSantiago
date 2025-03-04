@@ -6,8 +6,7 @@ import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 
 class GetBusStopRemainingTimes(
   private val busStopRemainingTimesRepository: BusStopRemainingTimesRepository
-) :
-  Interactor<String, BusStopRemainingTimes> {
+) : Interactor<String, BusStopRemainingTimes> {
 
   override fun invoke(request: String): Either<Exception, BusStopRemainingTimes> {
     return busStopRemainingTimesRepository.getBusStopRemainingTimes(request)

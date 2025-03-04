@@ -32,7 +32,6 @@ class IncidencesViewModelTest {
   @Before
   fun setUp() {
     viewModel = IncidencesViewModel(executor, getLineIncidences)
-    viewModel.setArgs(lineId)
     viewModel.incidences.observeForever(observer)
   }
 
@@ -45,7 +44,7 @@ class IncidencesViewModelTest {
     )
     `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
 
-    viewModel.loadIncidences()
+    viewModel.loadIncidences(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(
@@ -58,7 +57,7 @@ class IncidencesViewModelTest {
     val exception = Exception("Fake exception")
     `when`(getLineIncidences(lineId)).thenReturn(Either.Left(exception))
 
-    viewModel.loadIncidences()
+    viewModel.loadIncidences(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))
