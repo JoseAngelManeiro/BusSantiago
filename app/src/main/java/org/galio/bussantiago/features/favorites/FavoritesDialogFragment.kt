@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
 import org.galio.bussantiago.domain.model.BusStopFavorite
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesDialogFragment(
   private val onBusStopClicked: (BusStopModel) -> Unit
@@ -20,7 +19,7 @@ class FavoritesDialogFragment(
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val favoriteDataSource: FavoriteDataSource by inject()
+  private val viewModel: FavoritesViewModel by viewModel()
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return super.onCreateDialog(savedInstanceState).apply {
@@ -50,15 +49,20 @@ class FavoritesDialogFragment(
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val busStopFavorites = favoriteDataSource.getAll()
-    with(binding) {
-      if (busStopFavorites.isEmpty()) {
-        noFavoritesTextView.visibility = View.VISIBLE
-      } else {
-        favoritesRecyclerView.adapter =
-          BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+    viewModel.favoriteModels.observe(viewLifecycleOwner) { resource ->
+      resource.fold { busStopFavorites ->
+        with(binding) {
+          if (busStopFavorites.isEmpty()) {
+            noFavoritesTextView.visibility = View.VISIBLE
+          } else {
+            favoritesRecyclerView.adapter =
+              BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+          }
+        }
       }
     }
+
+    viewModel.loadFavorites()
   }
 
   private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
