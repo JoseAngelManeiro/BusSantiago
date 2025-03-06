@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class LineRemainingTimeMapper : Mapper<LineRemainingTimeEntity, LineRemainingTime> {
+internal class LineRemainingTimeMapper : Mapper<LineRemainingTimeEntity, LineRemainingTime> {
 
   override fun toDomain(dataModel: LineRemainingTimeEntity): LineRemainingTime {
     return LineRemainingTime(
@@ -19,7 +19,7 @@ class LineRemainingTimeMapper : Mapper<LineRemainingTimeEntity, LineRemainingTim
     )
   }
 
-  private fun getDate(stringDate: String): Date {
+  private fun getDate(stringDate: String): Date? {
     val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
     return formatter.parse(stringDate)
   }

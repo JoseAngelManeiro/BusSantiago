@@ -5,13 +5,10 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class GetLineDetailsTest {
+class GetLineDetailsImplTest {
 
   private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
-  private val getLineDetails =
-    GetLineDetails(
-      lineDetailsRepository
-    )
+  private val getLineDetails = GetLineDetailsImpl(lineDetailsRepository)
 
   @Test
   fun `invokes the line details repository`() {

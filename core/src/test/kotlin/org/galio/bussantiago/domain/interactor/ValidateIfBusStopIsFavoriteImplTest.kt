@@ -8,13 +8,11 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 
-class ValidateIfBusStopIsFavoriteTest {
+class ValidateIfBusStopIsFavoriteImplTest {
 
   private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
   private val validateIfBusStopIsFavorite =
-    ValidateIfBusStopIsFavorite(
-      busStopFavoriteRepository
-    )
+    ValidateIfBusStopIsFavoriteImpl(busStopFavoriteRepository)
 
   @Test
   fun `returns false if the received list is empty`() {

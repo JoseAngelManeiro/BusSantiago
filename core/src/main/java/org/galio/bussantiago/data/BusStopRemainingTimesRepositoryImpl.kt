@@ -8,7 +8,7 @@ import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
 import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 
-class BusStopRemainingTimesRepositoryImpl(
+internal class BusStopRemainingTimesRepositoryImpl(
   private val apiClient: ApiClient,
   private val mapper: BusStopRemainingTimesMapper
 ) : BusStopRemainingTimesRepository {

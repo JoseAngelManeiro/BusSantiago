@@ -5,13 +5,10 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class GetBusStopFavoritesTest {
+class GetBusStopFavoritesImplTest {
 
   private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-  private val getBusStopFavorites =
-    GetBusStopFavorites(
-      busStopFavoriteRepository
-    )
+  private val getBusStopFavorites = GetBusStopFavoritesImpl(busStopFavoriteRepository)
 
   @Test
   fun `invokes the repository`() {

@@ -3,19 +3,15 @@ package org.galio.bussantiago.domain.interactor
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.domain.model.BusStop
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 
-class GetLineBusStops(
+internal class GetLineBusStopsImpl(
   private val lineDetailsRepository: LineDetailsRepository
-) : Interactor<GetLineBusStops.Request, List<BusStop>> {
+) : GetLineBusStops {
 
-  data class Request(
-    val lineId: Int,
-    val routeName: String
-  )
-
-  override fun invoke(request: Request): Either<Exception, List<BusStop>> {
+  override fun invoke(request: GetLineBusStops.Request): Either<Exception, List<BusStop>> {
     val response = lineDetailsRepository.getLineDetails(request.lineId)
     return if (response.isRight) {
       val routeByName = response.rightValue.routes.find { it.name == request.routeName }!!

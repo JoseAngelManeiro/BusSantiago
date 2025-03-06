@@ -5,13 +5,10 @@ import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 import org.junit.Test
 import org.mockito.Mockito
 
-class RemoveBusStopFavoriteTest {
+class RemoveBusStopFavoriteImplTest {
 
   private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-  private val removeBusStopFavorite =
-    RemoveBusStopFavorite(
-      busStopFavoriteRepository
-    )
+  private val removeBusStopFavorite = RemoveBusStopFavoriteImpl(busStopFavoriteRepository)
 
   @Test
   fun `invokes the repository with the correct request`() {

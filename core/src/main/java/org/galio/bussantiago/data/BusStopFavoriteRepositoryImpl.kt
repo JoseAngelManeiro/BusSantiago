@@ -6,7 +6,7 @@ import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 
-class BusStopFavoriteRepositoryImpl(
+internal class BusStopFavoriteRepositoryImpl(
   private val favoriteDataSource: FavoriteDataSource
 ) : BusStopFavoriteRepository {
 

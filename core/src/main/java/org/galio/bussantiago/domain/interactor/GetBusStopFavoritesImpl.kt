@@ -1,14 +1,15 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 
-class AddBusStopFavorite(
+internal class GetBusStopFavoritesImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository
-) : Interactor<BusStopFavorite, Unit> {
+) : GetBusStopFavorites {
 
-  override fun invoke(request: BusStopFavorite): Either<Exception, Unit> {
-    return busStopFavoriteRepository.add(request)
+  override fun invoke(request: Unit): Either<Exception, List<BusStopFavorite>> {
+    return busStopFavoriteRepository.getBusStopFavorites()
   }
 }

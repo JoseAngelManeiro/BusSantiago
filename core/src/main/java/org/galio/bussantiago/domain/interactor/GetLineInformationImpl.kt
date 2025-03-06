@@ -3,11 +3,12 @@ package org.galio.bussantiago.domain.interactor
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 
-class GetLineInformation(
+internal class GetLineInformationImpl(
   private val lineDetailsRepository: LineDetailsRepository
-) : Interactor<Int, String> {
+) : GetLineInformation {
 
   override fun invoke(request: Int): Either<Exception, String> {
     val response = lineDetailsRepository.getLineDetails(request)

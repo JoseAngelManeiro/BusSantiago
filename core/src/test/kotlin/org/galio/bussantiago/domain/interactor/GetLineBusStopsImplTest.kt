@@ -1,6 +1,7 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.domain.model.BusStop
 import org.galio.bussantiago.domain.model.LineDetails
 import org.galio.bussantiago.domain.model.Route
@@ -14,13 +15,10 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class GetLineBusStopsTest {
+class GetLineBusStopsImplTest {
 
   private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
-  private val getLineBusStops =
-    GetLineBusStops(
-      lineDetailsRepository
-    )
+  private val getLineBusStops = GetLineBusStopsImpl(lineDetailsRepository)
 
   @Test
   fun `invokes repository and returns the bus stops of the correct route`() {

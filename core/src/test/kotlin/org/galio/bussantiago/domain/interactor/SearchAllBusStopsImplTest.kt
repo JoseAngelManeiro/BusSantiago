@@ -10,10 +10,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.BDDMockito.given
 
-class SearchAllBusStopsTest {
+class SearchAllBusStopsImplTest {
 
   private val searchBusStopRepository = mock<SearchBusStopRepository>()
-  private val searchAllBusStops = SearchAllBusStops(searchBusStopRepository)
+  private val searchAllBusStops = SearchAllBusStopsImpl(searchBusStopRepository)
 
   @Test
   fun `invokes repository and returns the list received`() {

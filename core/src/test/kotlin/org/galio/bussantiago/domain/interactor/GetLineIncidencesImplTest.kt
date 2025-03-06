@@ -13,21 +13,17 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class GetLineIncidencesTest {
+class GetLineIncidencesImplTest {
 
   private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
-  private val getLineIncidences =
-    GetLineIncidences(
-      lineDetailsRepository
-    )
+  private val getLineIncidences = GetLineIncidencesImpl(lineDetailsRepository)
 
   @Test
   fun `invokes repository and returns the incidences`() {
     val lineId = 123
     val incidences = mock<List<Incidence>>()
     val lineDetailsStub = createLineDetails(incidences)
-    given(lineDetailsRepository.getLineDetails(lineId))
-      .willReturn(Either.Right(lineDetailsStub))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Right(lineDetailsStub))
 
     val result = getLineIncidences(lineId)
 
@@ -40,8 +36,7 @@ class GetLineIncidencesTest {
   fun `if the repository fails, returns the exception received`() {
     val lineId = 123
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(lineId))
-      .willReturn(Either.Left(exception))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Left(exception))
 
     val result = getLineIncidences(lineId)
 

@@ -1,11 +1,12 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 
-class ValidateIfBusStopIsFavorite(
+internal class ValidateIfBusStopIsFavoriteImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository
-) : Interactor<String, Boolean> {
+) : ValidateIfBusStopIsFavorite {
 
   override fun invoke(request: String): Either<Exception, Boolean> {
     val response = busStopFavoriteRepository.getBusStopFavorites()

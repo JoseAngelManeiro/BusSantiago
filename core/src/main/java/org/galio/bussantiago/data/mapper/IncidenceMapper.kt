@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class IncidenceMapper : Mapper<IncidenceEntity, Incidence> {
+internal class IncidenceMapper : Mapper<IncidenceEntity, Incidence> {
 
   override fun toDomain(dataModel: IncidenceEntity): Incidence {
     return Incidence(

@@ -3,7 +3,7 @@ package org.galio.bussantiago.data.mapper
 import org.galio.bussantiago.data.entity.BusStopEntity
 import org.galio.bussantiago.domain.model.BusStop
 
-class BusStopMapper(
+internal class BusStopMapper(
   private val coordinatesMapper: CoordinatesMapper
 ) : Mapper<BusStopEntity, BusStop> {
 

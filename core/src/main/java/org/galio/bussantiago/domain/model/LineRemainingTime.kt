@@ -7,6 +7,6 @@ data class LineRemainingTime(
   val synoptic: String,
   val name: String,
   val style: String,
-  val nextArrival: Date,
+  val nextArrival: Date?,
   val minutesUntilNextArrival: Int
 )

@@ -9,7 +9,7 @@ import org.galio.bussantiago.data.mapper.LineDetailsMapper
 import org.galio.bussantiago.domain.model.LineDetails
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 
-class LineDetailsRepositoryImpl(
+internal class LineDetailsRepositoryImpl(
   private val apiClient: ApiClient,
   private val mapper: LineDetailsMapper,
   private val cache: LineDetailsCache

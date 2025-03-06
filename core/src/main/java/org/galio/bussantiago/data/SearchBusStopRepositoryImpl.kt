@@ -8,7 +8,7 @@ import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 
-class SearchBusStopRepositoryImpl(
+internal class SearchBusStopRepositoryImpl(
   private val apiClient: ApiClient,
   private val mapper: BusStopSearchMapper,
   private val cache: BusStopSearchCache

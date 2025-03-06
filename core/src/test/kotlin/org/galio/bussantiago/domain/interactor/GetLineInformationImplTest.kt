@@ -11,21 +11,17 @@ import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
 import org.mockito.Mockito
 
-class GetLineInformationTest {
+class GetLineInformationImplTest {
 
   private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
-  private val getLineInformation =
-    GetLineInformation(
-      lineDetailsRepository
-    )
+  private val getLineInformation = GetLineInformationImpl(lineDetailsRepository)
 
   @Test
   fun `invokes repository and returns the information field`() {
     val lineId = 123
     val information = "Any Information"
     val lineDetailsStub = createLineDetails(information)
-    given(lineDetailsRepository.getLineDetails(lineId))
-      .willReturn(Either.Right(lineDetailsStub))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Right(lineDetailsStub))
 
     val result = getLineInformation(lineId)
 
@@ -38,8 +34,7 @@ class GetLineInformationTest {
   fun `if the repository fails, returns the exception received`() {
     val lineId = 123
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(lineId))
-      .willReturn(Either.Left(exception))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Left(exception))
 
     val result = getLineInformation(lineId)
 

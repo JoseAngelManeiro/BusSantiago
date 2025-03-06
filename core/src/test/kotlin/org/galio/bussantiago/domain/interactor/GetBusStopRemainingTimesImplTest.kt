@@ -5,14 +5,12 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class GetBusStopRemainingTimesTest {
+class GetBusStopRemainingTimesImplTest {
 
   private val busStopRemainingTimesRepository =
     Mockito.mock(BusStopRemainingTimesRepository::class.java)
   private val getBusStopRemainingTimes =
-    GetBusStopRemainingTimes(
-      busStopRemainingTimesRepository
-    )
+    GetBusStopRemainingTimesImpl(busStopRemainingTimesRepository)
 
   @Test
   fun `invokes the repository with the correct request`() {

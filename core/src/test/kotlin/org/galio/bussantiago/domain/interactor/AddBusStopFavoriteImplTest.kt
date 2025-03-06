@@ -6,13 +6,10 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-class AddBusStopFavoriteTest {
+class AddBusStopFavoriteImplTest {
 
   private val busStopFavoriteRepository = Mockito.mock(BusStopFavoriteRepository::class.java)
-  private val addBusStopFavorite =
-    AddBusStopFavorite(
-      busStopFavoriteRepository
-    )
+  private val addBusStopFavorite = AddBusStopFavoriteImpl(busStopFavoriteRepository)
 
   @Test
   fun `invokes the repository with the correct request`() {

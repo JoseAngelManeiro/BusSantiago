@@ -3,7 +3,7 @@ package org.galio.bussantiago.data.mapper
 import org.galio.bussantiago.data.entity.LineDetailsEntity
 import org.galio.bussantiago.domain.model.LineDetails
 
-class LineDetailsMapper(
+internal class LineDetailsMapper(
   private val routeMapper: RouteMapper,
   private val incidenceMapper: IncidenceMapper
 ) : Mapper<LineDetailsEntity, LineDetails> {
