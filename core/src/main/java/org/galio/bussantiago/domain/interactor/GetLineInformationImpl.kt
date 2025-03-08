@@ -4,7 +4,7 @@ import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.core.GetLineInformation
-import org.galio.bussantiago.domain.repository.LineDetailsRepository
+import org.galio.bussantiago.data.repository.LineDetailsRepository
 
 internal class GetLineInformationImpl(
   private val lineDetailsRepository: LineDetailsRepository

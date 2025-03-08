@@ -2,7 +2,7 @@ package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
-import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
+import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
 
 internal class ValidateIfBusStopIsFavoriteImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository

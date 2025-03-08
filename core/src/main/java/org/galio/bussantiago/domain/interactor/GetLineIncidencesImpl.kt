@@ -4,8 +4,8 @@ import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.core.GetLineIncidences
+import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.domain.model.Incidence
-import org.galio.bussantiago.domain.repository.LineDetailsRepository
 
 internal class GetLineIncidencesImpl(
   private val lineDetailsRepository: LineDetailsRepository

@@ -1,6 +1,6 @@
 package org.galio.bussantiago.domain.interactor
 
-import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
+import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.verify

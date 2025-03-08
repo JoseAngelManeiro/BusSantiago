@@ -1,4 +1,4 @@
-package org.galio.bussantiago.data
+package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.data.api.ApiClient
@@ -11,13 +11,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.BDDMockito.given
 
-class LineDetailsRepositoryImplTest {
+class LineDetailsRepositoryTest {
 
   private val apiClient = mock<ApiClient>()
   private val mapper = mock<LineDetailsMapper>()
   private val cache = LineDetailsCache()
 
-  private val repository = LineDetailsRepositoryImpl(apiClient, mapper, cache)
+  private val repository = LineDetailsRepository(apiClient, mapper, cache)
 
   @Test
   fun `when cache data is valid should return that data directly`() {

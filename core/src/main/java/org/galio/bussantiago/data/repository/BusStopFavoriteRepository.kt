@@ -1,24 +1,23 @@
-package org.galio.bussantiago.data
+package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
-import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
 
-internal class BusStopFavoriteRepositoryImpl(
+internal class BusStopFavoriteRepository(
   private val favoriteDataSource: FavoriteDataSource
-) : BusStopFavoriteRepository {
+) {
 
-  override fun getBusStopFavorites(): Either<Exception, List<BusStopFavorite>> {
+  fun getBusStopFavorites(): Either<Exception, List<BusStopFavorite>> {
     return Right(favoriteDataSource.getAll())
   }
 
-  override fun remove(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
+  fun remove(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
     return Right(favoriteDataSource.remove(busStopFavorite))
   }
 
-  override fun add(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
+  fun add(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
     return Right(favoriteDataSource.save(busStopFavorite))
   }
 }

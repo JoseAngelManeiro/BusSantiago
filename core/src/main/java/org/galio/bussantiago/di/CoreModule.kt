@@ -1,10 +1,10 @@
 package org.galio.bussantiago.di
 
-import org.galio.bussantiago.data.BusStopFavoriteRepositoryImpl
-import org.galio.bussantiago.data.BusStopRemainingTimesRepositoryImpl
-import org.galio.bussantiago.data.LineDetailsRepositoryImpl
-import org.galio.bussantiago.data.LineRepositoryImpl
-import org.galio.bussantiago.data.SearchBusStopRepositoryImpl
+import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
+import org.galio.bussantiago.data.repository.BusStopRemainingTimesRepository
+import org.galio.bussantiago.data.repository.LineDetailsRepository
+import org.galio.bussantiago.data.repository.LineRepository
+import org.galio.bussantiago.data.repository.SearchBusStopRepository
 import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.cache.LineDetailsCache
@@ -43,11 +43,6 @@ import org.galio.bussantiago.domain.interactor.GetLineDetailsImpl
 import org.galio.bussantiago.domain.interactor.GetLineIncidencesImpl
 import org.galio.bussantiago.domain.interactor.GetLineInformationImpl
 import org.galio.bussantiago.domain.interactor.SearchAllBusStopsImpl
-import org.galio.bussantiago.domain.repository.BusStopFavoriteRepository
-import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
-import org.galio.bussantiago.domain.repository.LineDetailsRepository
-import org.galio.bussantiago.domain.repository.LineRepository
-import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -80,20 +75,20 @@ val coreModule = module {
   factory { BusStopSearchCache() }
 
   // Repositories
-  single<LineRepository> {
-    LineRepositoryImpl(apiClient = get(), mapper = get(), cache = get())
+  single {
+    LineRepository(apiClient = get(), mapper = get(), cache = get())
   }
-  single<LineDetailsRepository> {
-    LineDetailsRepositoryImpl(apiClient = get(), mapper = get(), cache = get())
+  single {
+    LineDetailsRepository(apiClient = get(), mapper = get(), cache = get())
   }
-  single<BusStopRemainingTimesRepository> {
-    BusStopRemainingTimesRepositoryImpl(apiClient = get(), mapper = get())
+  single {
+    BusStopRemainingTimesRepository(apiClient = get(), mapper = get())
   }
-  single<BusStopFavoriteRepository> {
-    BusStopFavoriteRepositoryImpl(favoriteDataSource = get())
+  single {
+    BusStopFavoriteRepository(favoriteDataSource = get())
   }
-  single<SearchBusStopRepository> {
-    SearchBusStopRepositoryImpl(apiClient = get(), mapper = get(), cache = get())
+  single {
+    SearchBusStopRepository(apiClient = get(), mapper = get(), cache = get())
   }
 
   // UseCases

@@ -1,8 +1,8 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.domain.model.LineDetails
-import org.galio.bussantiago.domain.repository.LineDetailsRepository
 import org.galio.bussantiago.exception.ServiceException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

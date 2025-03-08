@@ -1,4 +1,4 @@
-package org.galio.bussantiago.data
+package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
@@ -7,15 +7,14 @@ import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.mapper.LineMapper
 import org.galio.bussantiago.domain.model.Line
-import org.galio.bussantiago.domain.repository.LineRepository
 
-internal class LineRepositoryImpl(
+internal class LineRepository(
   private val apiClient: ApiClient,
   private val mapper: LineMapper,
   private val cache: LineCache
-) : LineRepository {
+) {
 
-  override fun getLines(): Either<Exception, List<Line>> {
+  fun getLines(): Either<Exception, List<Line>> {
     val localData = cache.getAll()
     return if (localData.isNotEmpty()) {
       Right(localData)

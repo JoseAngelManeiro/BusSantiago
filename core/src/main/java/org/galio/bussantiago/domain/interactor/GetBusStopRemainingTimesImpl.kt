@@ -2,8 +2,8 @@ package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.core.GetBusStopRemainingTimes
+import org.galio.bussantiago.data.repository.BusStopRemainingTimesRepository
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
-import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 
 internal class GetBusStopRemainingTimesImpl(
   private val busStopRemainingTimesRepository: BusStopRemainingTimesRepository

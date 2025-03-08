@@ -1,8 +1,8 @@
 package org.galio.bussantiago.domain.interactor
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.data.repository.SearchBusStopRepository
 import org.galio.bussantiago.domain.model.BusStopSearch
-import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.galio.bussantiago.exception.ServiceException
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
