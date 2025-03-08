@@ -7,29 +7,23 @@ import org.galio.bussantiago.data.entity.LineDetailsEntity
 import org.galio.bussantiago.data.entity.LineEntity
 import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.exception.ServiceException
-import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.BDDMockito.given
 
 class ApiClientTest : MockWebServerTest() {
-
-  private val networkHandler = mock<NetworkHandler>()
 
   private lateinit var apiClient: ApiClient
 
   @Before
   override fun setUp() {
     super.setUp()
-    val mockWebServerEndpoint = baseEndpoint
-    apiClient = ApiClient(networkHandler = networkHandler, baseEndpoint = mockWebServerEndpoint)
+    apiClient = ApiClient(baseEndpoint)
   }
 
   @Test
   fun `sends get all lines request to the correct endpoint`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200)
 
     apiClient.getLines()
@@ -39,7 +33,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `parses LineEntity list properly getting all the lines`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200, "linesResponse.json")
 
     val lineEntities = apiClient.getLines().rightValue
@@ -50,7 +43,7 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws NetworkConnectionException if there is no connection`() {
-    givenAnInternetConnection(valid = false)
+    shutDownServer()
 
     val error = apiClient.getLines().leftValue
 
@@ -59,7 +52,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws ServiceException if there is any error getting all the lines`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(400)
 
     val error = apiClient.getLines().leftValue
@@ -69,7 +61,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `sends line details request to the correct endpoint`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200)
 
     apiClient.getLineDetails(id = 15)
@@ -79,7 +70,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `parses LineDetailsEntity properly getting the line details`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200, "lineDetailsResponse.json")
 
     val lineDetailsEntity = apiClient.getLineDetails(id = 15).rightValue
@@ -89,7 +79,7 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws NetworkConnectionException if there is no connection getting the line details`() {
-    givenAnInternetConnection(valid = false)
+    shutDownServer()
 
     val error = apiClient.getLineDetails(id = 15).leftValue
 
@@ -98,7 +88,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws ServiceException if there is any error getting the line details`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(400)
 
     val error = apiClient.getLineDetails(id = 15).leftValue
@@ -108,7 +97,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `sends remaining times request to the correct endpoint`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200)
 
     apiClient.getBusStopRemainingTimes("662")
@@ -118,7 +106,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `parses BusStopRemainingTimesEntity properly getting the bus stop remaining times`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200, "remainingTimesResponse.json")
 
     val busStopRemainingTimesEntity = apiClient.getBusStopRemainingTimes("662").rightValue
@@ -128,7 +115,7 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws NetworkConnectionException if there is no connection getting the remaining times`() {
-    givenAnInternetConnection(valid = false)
+    shutDownServer()
 
     val error = apiClient.getBusStopRemainingTimes("662").leftValue
 
@@ -137,7 +124,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws ServiceException if there is any error getting the bus stop remaining times`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(400)
 
     val error = apiClient.getBusStopRemainingTimes("662").leftValue
@@ -147,8 +133,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `sends Content Type Header searching a bus stop`() {
-    givenAnInternetConnection(valid = true)
-
     apiClient.searchBusStop(BusStopRequest(nombre = "345"))
 
     assertRequestContainsHeader(
@@ -159,7 +143,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `sends search a bus stop request to the correct endpoint`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200)
 
     apiClient.searchBusStop(BusStopRequest(nombre = "345"))
@@ -169,7 +152,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `sends expected body searching a bus stop`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200)
 
     apiClient.searchBusStop(BusStopRequest(nombre = "345"))
@@ -179,7 +161,6 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `parses BusStopSearchEntity properly searching a bus stop`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(200, "busStopSearchResponse.json")
 
     val busStopSearchEntity = apiClient.searchBusStop(BusStopRequest(nombre = "345")).rightValue
@@ -189,7 +170,7 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws NetworkConnectionException if there is no connection searching a bus stop`() {
-    givenAnInternetConnection(valid = false)
+    shutDownServer()
 
     val error = apiClient.searchBusStop(BusStopRequest(nombre = "345")).leftValue
 
@@ -198,16 +179,11 @@ class ApiClientTest : MockWebServerTest() {
 
   @Test
   fun `throws ServiceException if there is any error searching a bus stop`() {
-    givenAnInternetConnection(valid = true)
     enqueueMockResponse(400)
 
     val error = apiClient.searchBusStop(BusStopRequest(nombre = "345")).leftValue
 
     assertTrue(error is ServiceException)
-  }
-
-  private fun givenAnInternetConnection(valid: Boolean) {
-    given(networkHandler.isConnected()).willReturn(valid)
   }
 
   private fun assertLineEntityContainsExpectedValues(lineEntity: LineEntity?) {

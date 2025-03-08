@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.net.ConnectException
 import java.net.UnknownHostException
 
 private const val BASE_URL = "https://app.tussa.org/tussa/api/"
@@ -60,11 +61,9 @@ internal class ApiClient(baseEndpoint: String = BASE_URL) {
         Left(ServiceException())
       }
     } catch (exception: IOException) {
-      if (exception is UnknownHostException) {
-        // No internet connection or DNS resolution issue
-        Left(NetworkConnectionException())
-      } else {
-        Left(ServiceException())
+      when (exception) {
+        is UnknownHostException, is ConnectException -> Left(NetworkConnectionException())
+        else ->Left(ServiceException())
       }
     }
   }

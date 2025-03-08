@@ -37,6 +37,11 @@ open class MockWebServerTest {
     server.enqueue(mockResponse)
   }
 
+  fun shutDownServer() {
+    // Stop the server to simulate a DNS failure
+    server.shutdown()
+  }
+
   protected fun assertRequestSentTo(url: String) {
     val request = server.takeRequest()
     assertEquals(url, request.path)

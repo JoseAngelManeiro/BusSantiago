@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.GetLineDetails
+import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.domain.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.util.TestInteractorExecutor

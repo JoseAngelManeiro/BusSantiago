@@ -4,10 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.AddBusStopFavorite
-import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimes
-import org.galio.bussantiago.domain.interactor.RemoveBusStopFavorite
-import org.galio.bussantiago.domain.interactor.ValidateIfBusStopIsFavorite
+import org.galio.bussantiago.core.AddBusStopFavorite
+import org.galio.bussantiago.core.GetBusStopRemainingTimes
+import org.galio.bussantiago.core.RemoveBusStopFavorite
+import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.domain.model.BusStopRemainingTimes
 import org.galio.bussantiago.exception.NetworkConnectionException

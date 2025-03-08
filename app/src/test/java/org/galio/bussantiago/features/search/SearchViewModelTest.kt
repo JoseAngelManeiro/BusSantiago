@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.domain.interactor.SearchAllBusStops
+import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
