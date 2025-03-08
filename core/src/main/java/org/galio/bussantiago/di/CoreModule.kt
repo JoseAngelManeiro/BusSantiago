@@ -35,6 +35,8 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.data.api.ApiClient
+import org.galio.bussantiago.data.local.FavoriteDataSource
+import org.galio.bussantiago.data.local.FavoriteDataSourceImpl
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimesImpl
 import org.galio.bussantiago.domain.interactor.GetLineBusStopsImpl
 import org.galio.bussantiago.domain.interactor.GetLineDetailsImpl
@@ -46,12 +48,16 @@ import org.galio.bussantiago.domain.repository.BusStopRemainingTimesRepository
 import org.galio.bussantiago.domain.repository.LineDetailsRepository
 import org.galio.bussantiago.domain.repository.LineRepository
 import org.galio.bussantiago.domain.repository.SearchBusStopRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val coreModule = module {
 
   single {
     ApiClient()
+  }
+  single<FavoriteDataSource> {
+    FavoriteDataSourceImpl(androidContext())
   }
 
   // Mappers factories

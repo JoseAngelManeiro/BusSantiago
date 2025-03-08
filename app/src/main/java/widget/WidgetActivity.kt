@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import org.galio.bussantiago.data.local.FavoriteDataSource
+import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.databinding.WidgetActivityBinding
 import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.features.favorites.BusStopFavoritesAdapter
@@ -15,7 +15,7 @@ class WidgetActivity : AppCompatActivity() {
 
   private lateinit var binding: WidgetActivityBinding
 
-  private val favoriteDataSource: FavoriteDataSource by inject()
+  private val getBusStopFavorites: GetBusStopFavorites by inject()
 
   private var widgetId: Int = 0
 
@@ -36,13 +36,20 @@ class WidgetActivity : AppCompatActivity() {
         AppWidgetManager.INVALID_APPWIDGET_ID
       )
       if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-        val busStopFavorites = favoriteDataSource.getAll()
-        if (busStopFavorites.isEmpty()) {
-          binding.noFavoritesTextView.visibility = View.VISIBLE
-        } else {
-          binding.favoritesRecyclerView.adapter =
-            BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
-        }
+        getBusStopFavorites(Unit).fold(
+          leftOp = {
+            // When the use case fails we show nothing
+            binding.noFavoritesTextView.visibility = View.VISIBLE
+          },
+          rightOp = { busStopFavorites ->
+            if (busStopFavorites.isEmpty()) {
+              binding.noFavoritesTextView.visibility = View.VISIBLE
+            } else {
+              binding.favoritesRecyclerView.adapter =
+                BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+            }
+          }
+        )
       } else {
         throw IllegalArgumentException(this::class.java.simpleName + ": Invalid App Widget ID")
       }

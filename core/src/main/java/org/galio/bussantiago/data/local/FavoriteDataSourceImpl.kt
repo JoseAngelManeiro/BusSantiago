@@ -1,4 +1,4 @@
-package org.galio.bussantiago.framework
+package org.galio.bussantiago.data.local
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,13 +6,12 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.domain.model.BusStopFavorite
 
 private const val DATABASE_NAME = "stops.db"
 private const val DATABASE_VERSION = 2
 
-class FavoriteDataSourceImpl(
+internal class FavoriteDataSourceImpl(
   context: Context
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
   FavoriteDataSource {

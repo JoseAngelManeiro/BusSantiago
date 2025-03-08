@@ -1,6 +1,6 @@
-package org.galio.bussantiago.framework
+package org.galio.bussantiago.data.local
 
-object Tables {
+internal object Tables {
   const val FAVOURITE = "favourite"
 
   // deprecated tables
