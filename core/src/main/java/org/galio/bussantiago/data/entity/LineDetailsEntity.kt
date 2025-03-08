@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.entity
 
-data class LineDetailsEntity(
+internal data class LineDetailsEntity(
   val id: Int,
   val codigo: String,
   val sinoptico: String,

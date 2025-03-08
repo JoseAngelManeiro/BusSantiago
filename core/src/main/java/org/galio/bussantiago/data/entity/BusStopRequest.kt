@@ -1,5 +1,5 @@
 package org.galio.bussantiago.data.entity
 
-data class BusStopRequest(
+internal data class BusStopRequest(
   val nombre: String
 )

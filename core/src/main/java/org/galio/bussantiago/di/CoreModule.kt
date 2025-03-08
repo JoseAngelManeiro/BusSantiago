@@ -34,6 +34,7 @@ import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
+import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.domain.interactor.GetBusStopRemainingTimesImpl
 import org.galio.bussantiago.domain.interactor.GetLineBusStopsImpl
 import org.galio.bussantiago.domain.interactor.GetLineDetailsImpl
@@ -48,6 +49,10 @@ import org.galio.bussantiago.domain.repository.SearchBusStopRepository
 import org.koin.dsl.module
 
 val coreModule = module {
+
+  single {
+    ApiClient()
+  }
 
   // Mappers factories
   factory { LineMapper() }
