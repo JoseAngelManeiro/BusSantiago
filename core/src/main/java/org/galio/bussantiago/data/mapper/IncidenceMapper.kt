@@ -18,7 +18,7 @@ internal class IncidenceMapper : Mapper<IncidenceEntity, Incidence> {
     )
   }
 
-  private fun getDate(stringDate: String): Date {
+  private fun getDate(stringDate: String): Date? {
     val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
     return formatter.parse(stringDate)
   }

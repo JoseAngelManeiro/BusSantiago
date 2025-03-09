@@ -10,7 +10,6 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
-import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -71,14 +70,14 @@ class TimesViewModelTest {
 
   @Test
   fun `fire the exception received when load times fail`() {
-    val exceptionStub = NetworkConnectionException()
-    `when`(getBusStopRemainingTimes(busStopCode)).thenReturn(Either.Left(exceptionStub))
+    val exception = mock<Exception>()
+    `when`(getBusStopRemainingTimes(busStopCode)).thenReturn(Either.Left(exception))
     viewModel.lineRemainingTimeModels.observeForever(timesObserver)
 
     viewModel.loadTimes()
 
     verify(timesObserver).onChanged(Resource.loading())
-    verify(timesObserver).onChanged(Resource.error(exceptionStub))
+    verify(timesObserver).onChanged(Resource.error(exception))
   }
 
   @Test

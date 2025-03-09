@@ -3,7 +3,7 @@ package org.galio.bussantiago.domain
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.repository.SearchBusStopRepository
-import org.galio.bussantiago.exception.ServiceException
+import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

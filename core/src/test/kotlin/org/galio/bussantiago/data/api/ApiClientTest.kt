@@ -5,8 +5,8 @@ import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import org.galio.bussantiago.data.entity.LineDetailsEntity
 import org.galio.bussantiago.data.entity.LineEntity
-import org.galio.bussantiago.exception.NetworkConnectionException
-import org.galio.bussantiago.exception.ServiceException
+import org.galio.bussantiago.data.exception.NetworkConnectionException
+import org.galio.bussantiago.data.exception.ServiceException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before

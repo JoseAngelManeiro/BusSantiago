@@ -6,8 +6,8 @@ import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
 import org.galio.bussantiago.data.entity.BusStopRequest
-import org.galio.bussantiago.exception.NetworkConnectionException
-import org.galio.bussantiago.exception.ServiceException
+import org.galio.bussantiago.data.exception.NetworkConnectionException
+import org.galio.bussantiago.data.exception.ServiceException
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
