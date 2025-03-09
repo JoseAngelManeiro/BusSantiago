@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.cache
 
-import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.core.model.BusStopSearch
 
 internal class BusStopSearchCache(
   private val busStops: MutableList<BusStopSearch> = mutableListOf()

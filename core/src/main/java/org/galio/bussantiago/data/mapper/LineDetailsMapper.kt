@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.data.entity.LineDetailsEntity
-import org.galio.bussantiago.domain.model.LineDetails
 
 internal class LineDetailsMapper(
   private val routeMapper: RouteMapper,

@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.entity.BusStopSearchEntity
-import org.galio.bussantiago.domain.model.BusStopSearch
 
 internal class BusStopSearchMapper(
   private val coordinatesMapper: CoordinatesMapper,

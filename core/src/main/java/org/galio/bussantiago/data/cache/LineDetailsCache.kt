@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.cache
 
-import org.galio.bussantiago.domain.model.LineDetails
+import org.galio.bussantiago.core.model.LineDetails
 
 internal class LineDetailsCache(
   private val linesDetails: MutableMap<Int, LineDetails> = mutableMapOf()

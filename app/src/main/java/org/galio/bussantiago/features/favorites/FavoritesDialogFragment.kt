@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
-import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesDialogFragment(

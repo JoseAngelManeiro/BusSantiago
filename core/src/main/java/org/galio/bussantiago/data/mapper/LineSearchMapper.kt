@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.LineSearch
 import org.galio.bussantiago.data.entity.LineSearchEntity
-import org.galio.bussantiago.domain.model.LineSearch
 
 internal class LineSearchMapper : Mapper<LineSearchEntity, LineSearch> {
 

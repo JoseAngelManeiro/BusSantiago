@@ -1,12 +1,12 @@
 package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
-import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Test

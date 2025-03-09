@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.Route
 import org.galio.bussantiago.data.entity.RouteEntity
-import org.galio.bussantiago.domain.model.Route
 
 internal class RouteMapper(
   private val busStopMapper: BusStopMapper

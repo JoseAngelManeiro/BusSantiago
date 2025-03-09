@@ -6,7 +6,7 @@ import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.core.GetLines
-import org.galio.bussantiago.domain.model.Line
+import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before

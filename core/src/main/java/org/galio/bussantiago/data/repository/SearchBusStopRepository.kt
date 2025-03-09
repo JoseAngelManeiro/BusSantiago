@@ -1,11 +1,11 @@
 package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
-import org.galio.bussantiago.domain.model.BusStopSearch
 
 internal class SearchBusStopRepository(
   private val apiClient: ApiClient,

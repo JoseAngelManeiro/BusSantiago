@@ -3,7 +3,7 @@ package org.galio.bussantiago.executor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.galio.bussantiago.domain.interactor.Interactor
+import org.galio.bussantiago.core.Interactor
 
 class AsyncInteractorExecutor : InteractorExecutor() {
 

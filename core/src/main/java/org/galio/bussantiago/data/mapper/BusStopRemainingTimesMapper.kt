@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.data.entity.BusStopRemainingTimesEntity
-import org.galio.bussantiago.domain.model.BusStopRemainingTimes
 
 internal class BusStopRemainingTimesMapper(
   private val coordinatesMapper: CoordinatesMapper,

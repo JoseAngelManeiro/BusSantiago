@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.LineRemainingTime
 import org.galio.bussantiago.data.entity.LineRemainingTimeEntity
-import org.galio.bussantiago.domain.model.LineRemainingTime
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

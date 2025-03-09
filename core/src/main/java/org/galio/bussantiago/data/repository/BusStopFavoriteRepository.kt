@@ -2,8 +2,8 @@ package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.data.local.FavoriteDataSource
-import org.galio.bussantiago.domain.model.BusStopFavorite
 
 internal class BusStopFavoriteRepository(
   private val favoriteDataSource: FavoriteDataSource

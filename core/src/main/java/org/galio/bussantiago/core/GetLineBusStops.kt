@@ -1,7 +1,6 @@
 package org.galio.bussantiago.core
 
-import org.galio.bussantiago.domain.interactor.Interactor
-import org.galio.bussantiago.domain.model.BusStop
+import org.galio.bussantiago.core.model.BusStop
 
 interface GetLineBusStops : Interactor<GetLineBusStops.Request, List<BusStop>> {
 

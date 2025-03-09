@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.cache
 
-import org.galio.bussantiago.domain.model.Line
+import org.galio.bussantiago.core.model.Line
 
 internal class LineCache(
   private val lines: MutableList<Line> = mutableListOf()

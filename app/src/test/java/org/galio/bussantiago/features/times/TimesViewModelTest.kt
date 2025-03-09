@@ -8,8 +8,8 @@ import org.galio.bussantiago.core.AddBusStopFavorite
 import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
-import org.galio.bussantiago.domain.model.BusStopFavorite
-import org.galio.bussantiago.domain.model.BusStopRemainingTimes
+import org.galio.bussantiago.core.model.BusStopFavorite
+import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.exception.NetworkConnectionException
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock

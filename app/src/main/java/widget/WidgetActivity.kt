@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.galio.bussantiago.core.GetBusStopFavorites
+import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.databinding.WidgetActivityBinding
-import org.galio.bussantiago.domain.model.BusStopFavorite
 import org.galio.bussantiago.features.favorites.BusStopFavoritesAdapter
 import org.koin.android.ext.android.inject
 

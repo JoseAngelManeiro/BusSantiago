@@ -1,6 +1,5 @@
 package org.galio.bussantiago.core
 
-import org.galio.bussantiago.domain.interactor.Interactor
-import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.core.model.BusStopFavorite
 
 interface RemoveBusStopFavorite : Interactor<BusStopFavorite, Unit>

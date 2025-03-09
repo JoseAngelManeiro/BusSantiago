@@ -8,7 +8,7 @@ import org.galio.bussantiago.core.AddBusStopFavorite
 import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
-import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class TimesViewModel(

@@ -1,7 +1,7 @@
 package org.galio.bussantiago.features.times
 
 import org.galio.bussantiago.common.model.SynopticModel
-import org.galio.bussantiago.domain.model.BusStopRemainingTimes
+import org.galio.bussantiago.core.model.BusStopRemainingTimes
 
 class TimesFactory {
 

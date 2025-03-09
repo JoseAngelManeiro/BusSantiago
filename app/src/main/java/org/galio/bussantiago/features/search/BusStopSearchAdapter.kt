@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import org.galio.bussantiago.R
-import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.core.model.BusStopSearch
 import java.text.Normalizer
 
 class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :

@@ -4,7 +4,7 @@
   <solid android:color="@android:color/background_light" />
   <stroke
     android:color="@color/tap_element"
-    android:width="1dp"/>
+    android:width="1dp" />
   <corners
     android:bottomLeftRadius="15dp"
     android:bottomRightRadius="15dp"

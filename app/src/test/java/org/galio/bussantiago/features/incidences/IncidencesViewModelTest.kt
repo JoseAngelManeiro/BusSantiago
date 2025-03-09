@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
-import org.galio.bussantiago.domain.model.Incidence
+import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before

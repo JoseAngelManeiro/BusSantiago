@@ -1,11 +1,11 @@
 package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.entity.LineEntity
 import org.galio.bussantiago.data.mapper.LineMapper
-import org.galio.bussantiago.domain.model.Line
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Test

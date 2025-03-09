@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.Coordinates
 import org.galio.bussantiago.data.entity.CoordinatesEntity
-import org.galio.bussantiago.domain.model.Coordinates
 
 internal class CoordinatesMapper : Mapper<CoordinatesEntity, Coordinates> {
 

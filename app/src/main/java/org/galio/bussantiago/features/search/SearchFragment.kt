@@ -36,8 +36,8 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
-import org.galio.bussantiago.domain.model.BusStopSearch
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -56,6 +56,7 @@ class SearchFragment : Fragment() {
   private var markerMap = mutableMapOf<Int, Marker>()
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
   private lateinit var fusedLocationClient: FusedLocationProviderClient
+
   // The default location is the center of the city (Santiago de Compostela)
   private val defaultLocation = LatLng(42.877295815283944, -8.544272857240758)
 
@@ -63,7 +64,8 @@ class SearchFragment : Fragment() {
     super.onCreate(bundle)
 
     // Listener to intercept back button clicks
-    activity?.onBackPressedDispatcher?.addCallback(this,
+    activity?.onBackPressedDispatcher?.addCallback(
+      this,
       object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
           activity?.finish()
@@ -102,7 +104,7 @@ class SearchFragment : Fragment() {
     setUpMenu()
 
     viewModel.searchEvent.observe(viewLifecycleOwner) { event ->
-      when(event) {
+      when (event) {
         SearchEvent.ClearSearchText -> clearSearchText()
         is SearchEvent.NavigateToTimes -> navigateToTimesScreen(event.busStopModel)
         is SearchEvent.ShowMapInfoWindow -> showMapInfoWindow(event.busStopSearch)
@@ -273,14 +275,17 @@ class SearchFragment : Fragment() {
               .show(childFragmentManager, "FavoritesDialogFragment")
             true
           }
+
           R.id.lines_action -> {
             navigateSafe(R.id.actionShowLines)
             true
           }
+
           R.id.about_action -> {
             navigateSafe(R.id.actionShowAbout)
             true
           }
+
           else -> false
         }
       }

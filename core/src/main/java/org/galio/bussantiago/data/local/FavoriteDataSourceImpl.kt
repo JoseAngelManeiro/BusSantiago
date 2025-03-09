@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.core.model.BusStopFavorite
 
 private const val DATABASE_NAME = "stops.db"
 private const val DATABASE_VERSION = 2

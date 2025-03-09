@@ -3,10 +3,10 @@ package org.galio.bussantiago.data.repository
 import org.galio.bussantiago.Either
 import org.galio.bussantiago.Either.Left
 import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.mapper.LineMapper
-import org.galio.bussantiago.domain.model.Line
 
 internal class LineRepository(
   private val apiClient: ApiClient,

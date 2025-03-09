@@ -1,7 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.data.entity.IncidenceEntity
-import org.galio.bussantiago.domain.model.Incidence
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

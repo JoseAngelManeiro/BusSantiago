@@ -63,7 +63,7 @@ internal class ApiClient(baseEndpoint: String = BASE_URL) {
     } catch (exception: IOException) {
       when (exception) {
         is UnknownHostException, is ConnectException -> Left(NetworkConnectionException())
-        else ->Left(ServiceException())
+        else -> Left(ServiceException())
       }
     }
   }
