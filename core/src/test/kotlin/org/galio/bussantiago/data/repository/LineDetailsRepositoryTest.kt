@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.repository
 
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineDetailsCache

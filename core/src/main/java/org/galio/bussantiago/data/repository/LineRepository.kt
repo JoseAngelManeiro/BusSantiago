@@ -1,8 +1,8 @@
 package org.galio.bussantiago.data.repository
 
-import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Left
-import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.Either
+import org.galio.bussantiago.core.Either.Left
+import org.galio.bussantiago.core.Either.Right
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache

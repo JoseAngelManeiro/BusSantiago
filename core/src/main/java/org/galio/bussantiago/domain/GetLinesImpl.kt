@@ -1,6 +1,6 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.repository.LineRepository

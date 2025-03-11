@@ -1,6 +1,6 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.core.model.LineDetails

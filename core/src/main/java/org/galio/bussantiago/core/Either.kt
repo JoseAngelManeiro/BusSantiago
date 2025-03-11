@@ -1,4 +1,4 @@
-package org.galio.bussantiago
+package org.galio.bussantiago.core
 
 sealed class Either<out L, out R> {
   data class Left<out L>(val a: L) : Either<L, Nothing>()

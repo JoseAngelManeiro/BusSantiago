@@ -1,6 +1,6 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
 import org.junit.Assert.assertEquals

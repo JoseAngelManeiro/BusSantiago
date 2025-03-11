@@ -1,6 +1,6 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.repository.SearchBusStopRepository
 import org.galio.bussantiago.data.exception.ServiceException

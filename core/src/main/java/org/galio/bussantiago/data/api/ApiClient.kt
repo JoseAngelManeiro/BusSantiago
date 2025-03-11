@@ -2,9 +2,9 @@ package org.galio.bussantiago.data.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Left
-import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.Either
+import org.galio.bussantiago.core.Either.Left
+import org.galio.bussantiago.core.Either.Right
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.exception.NetworkConnectionException
 import org.galio.bussantiago.data.exception.ServiceException

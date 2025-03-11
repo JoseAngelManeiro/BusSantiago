@@ -2,7 +2,7 @@ package org.galio.bussantiago.features.times
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.AddBusStopFavorite
 import org.galio.bussantiago.core.GetBusStopRemainingTimes

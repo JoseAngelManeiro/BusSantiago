@@ -1,8 +1,8 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Left
-import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.Either
+import org.galio.bussantiago.core.Either.Left
+import org.galio.bussantiago.core.Either.Right
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.data.repository.LineDetailsRepository
