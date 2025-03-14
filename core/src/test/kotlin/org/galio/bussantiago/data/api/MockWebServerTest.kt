@@ -42,11 +42,6 @@ open class MockWebServerTest {
     server.shutdown()
   }
 
-  protected fun assertRequestSentTo(url: String) {
-    val request = server.takeRequest()
-    assertEquals(url, request.path)
-  }
-
   protected fun assertGetRequestSentTo(url: String) {
     val request = server.takeRequest()
     assertEquals(url, request.path)
