@@ -76,7 +76,7 @@ open class MockWebServerTest {
 
   fun assertRequestContainsHeader(key: String, expectedValue: String, requestIndex: Int = 0) {
     val recordedRequest = getRecordedRequestAtIndex(requestIndex)
-    val value = recordedRequest!!.getHeader(key)
+    val value = recordedRequest.getHeader(key)
     assertEquals(expectedValue, value)
   }
 
@@ -102,6 +102,6 @@ open class MockWebServerTest {
     return stringBuilder.toString()
   }
 
-  private fun getRecordedRequestAtIndex(requestIndex: Int): RecordedRequest? =
+  private fun getRecordedRequestAtIndex(requestIndex: Int): RecordedRequest =
     (0..requestIndex).map { server.takeRequest() }.last()
 }

@@ -1,6 +1,6 @@
 package org.galio.bussantiago.core.model
 
-open class BusStopSearch(
+data class BusStopSearch(
   val id: Int,
   val code: String,
   val name: String,

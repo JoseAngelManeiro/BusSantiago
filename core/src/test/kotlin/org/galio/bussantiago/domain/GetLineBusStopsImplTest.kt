@@ -5,8 +5,8 @@ import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.core.model.Route
-import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.data.exception.ServiceException
+import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

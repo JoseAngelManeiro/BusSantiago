@@ -21,6 +21,7 @@ import org.galio.bussantiago.data.mapper.BusStopMapper
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.data.mapper.CoordinatesMapper
+import org.galio.bussantiago.data.mapper.DateMapper
 import org.galio.bussantiago.data.mapper.IncidenceMapper
 import org.galio.bussantiago.data.mapper.LineDetailsMapper
 import org.galio.bussantiago.data.mapper.LineMapper
@@ -56,13 +57,14 @@ val coreModule = module {
   }
 
   // Mappers factories
+  factory { DateMapper() }
   factory { LineMapper() }
   factory { CoordinatesMapper() }
   factory { BusStopMapper(coordinatesMapper = get()) }
   factory { RouteMapper(busStopMapper = get()) }
-  factory { IncidenceMapper() }
+  factory { IncidenceMapper(dateMapper = get()) }
   factory { LineDetailsMapper(routeMapper = get(), incidenceMapper = get()) }
-  factory { LineRemainingTimeMapper() }
+  factory { LineRemainingTimeMapper(dateMapper = get()) }
   factory {
     BusStopRemainingTimesMapper(coordinatesMapper = get(), lineRemainingTimeMapper = get())
   }

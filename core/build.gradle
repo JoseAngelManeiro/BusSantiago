@@ -30,6 +30,7 @@ dependencies {
 
     // Mockito
     testImplementation 'org.mockito:mockito-core:5.0.0'
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
     // Mockito (final classes)
     testImplementation 'org.mockito:mockito-inline:5.0.0'
 

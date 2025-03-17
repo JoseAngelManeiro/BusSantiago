@@ -3,8 +3,8 @@ package org.galio.bussantiago.domain
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.core.model.LineDetails
-import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.data.exception.ServiceException
+import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

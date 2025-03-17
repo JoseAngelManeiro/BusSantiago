@@ -40,4 +40,4 @@ class BusStopSearchCacheTest {
     busStopSearchCache.save(newBusStops)
     assertEquals(newBusStops, busStopSearchCache.getAll())
   }
- }
+}
