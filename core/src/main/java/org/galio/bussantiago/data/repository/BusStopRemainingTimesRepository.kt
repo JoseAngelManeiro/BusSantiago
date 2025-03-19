@@ -12,9 +12,7 @@ internal class BusStopRemainingTimesRepository(
   private val mapper: BusStopRemainingTimesMapper
 ) {
 
-  fun getBusStopRemainingTimes(
-    busStopCode: String
-  ): Either<Exception, BusStopRemainingTimes> {
+  fun getBusStopRemainingTimes(busStopCode: String): Either<Exception, BusStopRemainingTimes> {
     val response = apiClient.getBusStopRemainingTimes(busStopCode)
     return if (response.isRight) {
       Right(mapper.toDomain(response.rightValue))
