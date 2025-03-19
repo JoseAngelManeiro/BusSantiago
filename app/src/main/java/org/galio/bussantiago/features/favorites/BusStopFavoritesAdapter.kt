@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
-import org.galio.bussantiago.domain.model.BusStopFavorite
+import org.galio.bussantiago.core.model.BusStopFavorite
 
 class BusStopFavoritesAdapter(
   private val items: List<BusStopFavorite>,

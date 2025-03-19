@@ -2,23 +2,22 @@ package org.galio.bussantiago.data.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.galio.bussantiago.Either
-import org.galio.bussantiago.Either.Left
-import org.galio.bussantiago.Either.Right
+import org.galio.bussantiago.core.Either
+import org.galio.bussantiago.core.Either.Left
+import org.galio.bussantiago.core.Either.Right
 import org.galio.bussantiago.data.entity.BusStopRequest
-import org.galio.bussantiago.exception.NetworkConnectionException
-import org.galio.bussantiago.exception.ServiceException
+import org.galio.bussantiago.data.exception.NetworkConnectionException
+import org.galio.bussantiago.data.exception.ServiceException
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 private const val BASE_URL = "https://app.tussa.org/tussa/api/"
 
-class ApiClient(
-  private val networkHandler: NetworkHandler,
-  baseEndpoint: String = BASE_URL
-) {
+internal class ApiClient(baseEndpoint: String = BASE_URL) {
 
   private val service: ApiService
 
@@ -53,20 +52,19 @@ class ApiClient(
   }
 
   private fun <T> callService(callback: () -> Call<T>): Either<Exception, T> {
-    return if (networkHandler.isConnected()) {
-      try {
-        val response = callback().execute()
-        val responseBody = response.body()
-        if (response.isSuccessful && responseBody != null) {
-          Right(responseBody)
-        } else {
-          Left(ServiceException())
-        }
-      } catch (exception: IOException) {
+    return try {
+      val response = callback().execute()
+      val responseBody = response.body()
+      if (response.isSuccessful && responseBody != null) {
+        Right(responseBody)
+      } else {
         Left(ServiceException())
       }
-    } else {
-      Left(NetworkConnectionException())
+    } catch (exception: IOException) {
+      when (exception) {
+        is UnknownHostException, is ConnectException -> Left(NetworkConnectionException())
+        else -> Left(ServiceException())
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 package org.galio.bussantiago.features.stops.map
 
-import org.galio.bussantiago.domain.model.LineDetails
+import org.galio.bussantiago.core.model.LineDetails
 
 class LineMapModelFactory {
 

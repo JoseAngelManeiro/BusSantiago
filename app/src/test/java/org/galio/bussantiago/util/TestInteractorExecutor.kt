@@ -1,6 +1,6 @@
 package org.galio.bussantiago.util
 
-import org.galio.bussantiago.domain.interactor.Interactor
+import org.galio.bussantiago.core.Interactor
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class TestInteractorExecutor : InteractorExecutor() {

@@ -1,6 +1,7 @@
 package org.galio.bussantiago.features.incidences
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,31 +45,44 @@ class IncidencesFragment : Fragment() {
 
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
 
-    val lineId: Int = arguments?.getInt(ID_KEY) ?: 0
-    viewModel.setArgs(lineId)
+    arguments?.getInt(ID_KEY)?.let { lineId ->
+      setUpObservers(lineId)
 
+      viewModel.loadIncidences(lineId)
+    } ?: Log.w("IncidencesFragment", "Argument line id was not sent correctly.")
+  }
+
+  private fun setUpObservers(lineId: Int) {
     viewModel.incidences.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
+          updateProgressBarStatus(visible = true)
         },
-        onError = {
-          binding.progressBar.visibility = View.GONE
-          handleException(it) { viewModel.loadIncidences() }
+        onError = { exception ->
+          updateProgressBarStatus(visible = false)
+          handleException(exception, retry = { viewModel.loadIncidences(lineId) })
         },
-        onSuccess = {
-          binding.progressBar.visibility = View.GONE
-          binding.incidencesRecyclerView.adapter = IncidencesAdapter(it)
-          val itemDecoration = DividerItemDecoration(
-            binding.incidencesRecyclerView.context,
-            LinearLayout.VERTICAL
-          )
-          binding.incidencesRecyclerView.addItemDecoration(itemDecoration)
+        onSuccess = { incidences ->
+          updateProgressBarStatus(visible = false)
+          setUpIncidencesAdapter(incidences)
         }
       )
     }
+  }
 
-    viewModel.loadIncidences()
+  private fun updateProgressBarStatus(visible: Boolean) {
+    binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
+  }
+
+  private fun setUpIncidencesAdapter(incidences: List<String>) {
+    with(binding) {
+      incidencesRecyclerView.adapter = IncidencesAdapter(incidences)
+      val itemDecoration = DividerItemDecoration(
+        incidencesRecyclerView.context,
+        LinearLayout.VERTICAL
+      )
+      incidencesRecyclerView.addItemDecoration(itemDecoration)
+    }
   }
 
   override fun onDestroyView() {

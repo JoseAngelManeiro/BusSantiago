@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.entity
 
-data class BusStopSearchEntity(
+internal data class BusStopSearchEntity(
   val id: Int,
   val codigo: String,
   val nombre: String,

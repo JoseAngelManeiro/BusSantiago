@@ -2,12 +2,11 @@ package org.galio.bussantiago.features.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.domain.interactor.SearchAllBusStops
-import org.galio.bussantiago.domain.model.BusStopSearch
-import org.galio.bussantiago.exception.NetworkConnectionException
+import org.galio.bussantiago.core.SearchAllBusStops
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -48,7 +47,7 @@ class SearchViewModelTest {
 
   @Test
   fun `when load all bus stops fails should return the exception`() {
-    val exception = NetworkConnectionException()
+    val exception = mock<Exception>()
     given(searchAllBusStops(Unit)).willReturn(Either.left(exception))
 
     searchViewModel.loadBusStops()

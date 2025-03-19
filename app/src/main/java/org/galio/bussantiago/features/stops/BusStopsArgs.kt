@@ -7,4 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class BusStopsArgs(
   val lineId: Int,
   val routeName: String
-): Parcelable
+) : Parcelable

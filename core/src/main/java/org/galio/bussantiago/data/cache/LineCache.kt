@@ -1,8 +1,10 @@
 package org.galio.bussantiago.data.cache
 
-import org.galio.bussantiago.domain.model.Line
+import org.galio.bussantiago.core.model.Line
 
-class LineCache(private val lines: MutableList<Line> = mutableListOf()) {
+internal class LineCache(
+  private val lines: MutableList<Line> = mutableListOf()
+) {
 
   fun save(lines: List<Line>) {
     this.lines.clear()

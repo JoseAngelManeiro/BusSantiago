@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.SynopticModel
-import org.galio.bussantiago.domain.interactor.GetLines
+import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class LinesViewModel(

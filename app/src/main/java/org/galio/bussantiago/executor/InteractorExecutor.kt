@@ -1,7 +1,7 @@
 package org.galio.bussantiago.executor
 
 import kotlinx.coroutines.CoroutineScope
-import org.galio.bussantiago.domain.interactor.Interactor
+import org.galio.bussantiago.core.Interactor
 
 abstract class InteractorExecutor {
 

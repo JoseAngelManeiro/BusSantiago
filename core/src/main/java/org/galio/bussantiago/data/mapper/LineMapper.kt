@@ -1,9 +1,9 @@
 package org.galio.bussantiago.data.mapper
 
+import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.entity.LineEntity
-import org.galio.bussantiago.domain.model.Line
 
-class LineMapper : Mapper<LineEntity, Line> {
+internal class LineMapper : Mapper<LineEntity, Line> {
 
   override fun toDomain(dataModel: LineEntity): Line {
     return Line(

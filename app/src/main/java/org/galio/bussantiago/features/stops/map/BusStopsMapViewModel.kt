@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.GetLineDetails
+import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.features.stops.BusStopsArgs
 

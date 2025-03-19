@@ -6,8 +6,8 @@ import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.domain.interactor.SearchAllBusStops
-import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.core.SearchAllBusStops
+import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class SearchViewModel(

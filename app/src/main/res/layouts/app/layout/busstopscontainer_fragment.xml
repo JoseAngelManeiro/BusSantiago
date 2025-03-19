@@ -7,19 +7,16 @@
   android:orientation="vertical"
   tools:context="org.galio.bussantiago.features.stops.BusStopsContainerFragment">
 
-  <org.galio.bussantiago.common.custom.SwipeableViewPager
+  <com.google.android.material.tabs.TabLayout
+    android:id="@+id/stops_tabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    app:tabTextColor="@android:color/white" />
+
+  <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/stops_viewPager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:swipeable="false">
-
-    <com.google.android.material.tabs.TabLayout
-      android:id="@+id/stops_tabLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@color/colorPrimary"
-      app:tabTextColor="@android:color/white" />
-
-  </org.galio.bussantiago.common.custom.SwipeableViewPager>
+    android:layout_height="match_parent" />
 
 </LinearLayout>

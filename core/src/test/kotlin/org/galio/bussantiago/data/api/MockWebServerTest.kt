@@ -37,9 +37,9 @@ open class MockWebServerTest {
     server.enqueue(mockResponse)
   }
 
-  protected fun assertRequestSentTo(url: String) {
-    val request = server.takeRequest()
-    assertEquals(url, request.path)
+  fun shutDownServer() {
+    // Stop the server to simulate a DNS failure
+    server.shutdown()
   }
 
   protected fun assertGetRequestSentTo(url: String) {
@@ -76,7 +76,7 @@ open class MockWebServerTest {
 
   fun assertRequestContainsHeader(key: String, expectedValue: String, requestIndex: Int = 0) {
     val recordedRequest = getRecordedRequestAtIndex(requestIndex)
-    val value = recordedRequest!!.getHeader(key)
+    val value = recordedRequest.getHeader(key)
     assertEquals(expectedValue, value)
   }
 
@@ -89,12 +89,12 @@ open class MockWebServerTest {
   }
 
   private fun getContentFromFile(fileName: String? = null): String {
-    if (fileName == null) {
+    val fileResource = javaClass.getResource("/$fileName")?.file
+    if (fileName == null || fileResource == null) {
       return ""
     }
 
-    val file = File(javaClass.getResource("/$fileName").file)
-    val lines = FileUtils.readLines(file, FILE_ENCODING)
+    val lines = FileUtils.readLines(File(fileResource), FILE_ENCODING)
     val stringBuilder = StringBuilder()
     for (line in lines) {
       stringBuilder.append(line)
@@ -102,6 +102,6 @@ open class MockWebServerTest {
     return stringBuilder.toString()
   }
 
-  private fun getRecordedRequestAtIndex(requestIndex: Int): RecordedRequest? =
+  private fun getRecordedRequestAtIndex(requestIndex: Int): RecordedRequest =
     (0..requestIndex).map { server.takeRequest() }.last()
 }

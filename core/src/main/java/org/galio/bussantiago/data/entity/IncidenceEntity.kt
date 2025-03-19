@@ -1,6 +1,6 @@
 package org.galio.bussantiago.data.entity
 
-data class IncidenceEntity(
+internal data class IncidenceEntity(
   val id: Int,
   val titulo: String,
   val descripcion: String,

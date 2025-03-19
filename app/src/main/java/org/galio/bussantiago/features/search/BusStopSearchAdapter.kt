@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
 import org.galio.bussantiago.R
-import org.galio.bussantiago.domain.model.BusStopSearch
+import org.galio.bussantiago.core.model.BusStopSearch
 import java.text.Normalizer
 
 class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
@@ -56,8 +56,9 @@ class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
 
       override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
         clear()
-        if (results != null && results.count > 0) {
-          addAll(results.values as List<BusStopSearch>)
+        val filteredList = (results?.values as? List<*>)?.filterIsInstance<BusStopSearch>()
+        if (!filteredList.isNullOrEmpty()) {
+          addAll(filteredList)
           notifyDataSetChanged()
         }
       }

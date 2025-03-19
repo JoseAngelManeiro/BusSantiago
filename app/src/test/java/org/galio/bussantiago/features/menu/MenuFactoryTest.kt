@@ -1,9 +1,9 @@
 package org.galio.bussantiago.features.menu
 
 import org.galio.bussantiago.common.model.SynopticModel
-import org.galio.bussantiago.domain.model.Incidence
-import org.galio.bussantiago.domain.model.LineDetails
-import org.galio.bussantiago.domain.model.Route
+import org.galio.bussantiago.core.model.Incidence
+import org.galio.bussantiago.core.model.LineDetails
+import org.galio.bussantiago.core.model.Route
 import org.galio.bussantiago.features.menu.MenuType.INCIDENCES
 import org.galio.bussantiago.features.menu.MenuType.OUTWARD_ROUTE
 import org.galio.bussantiago.features.menu.MenuType.RETURN_ROUTE

@@ -2,33 +2,22 @@ package org.galio.bussantiago.features.information
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.GetLineInformation
+import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.executor.InteractorExecutor
 
 class InformationViewModel(
   private val executor: InteractorExecutor,
   private val getLineInformation: GetLineInformation
-) : ViewModel() {
-
-  private var lineId: Int = 0
+) : BaseViewModel(executor) {
 
   private val _information = MutableLiveData<Resource<String>>()
 
   val information: LiveData<Resource<String>>
     get() = _information
 
-  init {
-    executor.setViewModelScope(viewModelScope)
-  }
-
-  fun setArgs(lineId: Int) {
-    this.lineId = lineId
-  }
-
-  fun loadLineInformation() {
+  fun loadLineInformation(lineId: Int) {
     _information.value = Resource.loading()
     executor(
       interactor = getLineInformation,

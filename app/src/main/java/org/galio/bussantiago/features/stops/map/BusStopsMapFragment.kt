@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import org.galio.bussantiago.R
+import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
@@ -28,7 +30,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
   private val viewModel: BusStopsMapViewModel by viewModel()
 
-  private lateinit var busStopsArgs: BusStopsArgs
+  private var busStopsArgs: BusStopsArgs? = null
   private var mGoogleMap: GoogleMap? = null
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
@@ -57,7 +59,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
+    busStopsArgs = getParcelableArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)
 
     getMapAsync(this)
 
@@ -80,7 +82,9 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         )
       }
     }
-    viewModel.load(busStopsArgs)
+
+    busStopsArgs?.let { viewModel.load(it) }
+      ?: Log.w("BusStopsMapFragment", "Argument BusStopsArgs was not sent correctly.")
   }
 
   private fun setUpMap(lineMapModel: LineMapModel) {

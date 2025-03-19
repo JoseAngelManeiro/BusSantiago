@@ -1,11 +1,13 @@
 package org.galio.bussantiago.features.stops.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.galio.bussantiago.R
+import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.navigateSafe
@@ -45,28 +47,28 @@ class BusStopsListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val busStopsArgs = arguments?.get(BUS_STOPS_ARGS_KEY) as BusStopsArgs
+    getParcelableArgument<BusStopsArgs>(BUS_STOPS_ARGS_KEY)?.let { busStopsArgs ->
+      viewModel.setArgs(busStopsArgs)
 
-    viewModel.setArgs(busStopsArgs)
+      viewModel.busStopModels.observe(viewLifecycleOwner) { resource ->
+        resource.fold(
+          onLoading = {
+            binding.progressBar.visibility = View.VISIBLE
+          },
+          onError = {
+            hideProgressBarIfNecessary()
+            handleException(it) { viewModel.loadBusStops() }
+          },
+          onSuccess = { busStopModels ->
+            hideProgressBarIfNecessary()
+            binding.busStopsRecyclerView.adapter =
+              BusStopsListAdapter(busStopModels) { onBusStopClick(it) }
+          }
+        )
+      }
 
-    viewModel.busStopModels.observe(viewLifecycleOwner) { resource ->
-      resource.fold(
-        onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
-        },
-        onError = {
-          hideProgressBarIfNecessary()
-          handleException(it) { viewModel.loadBusStops() }
-        },
-        onSuccess = { busStopModels ->
-          hideProgressBarIfNecessary()
-          binding.busStopsRecyclerView.adapter =
-            BusStopsListAdapter(busStopModels) { onBusStopClick(it) }
-        }
-      )
-    }
-
-    viewModel.loadBusStops()
+      viewModel.loadBusStops()
+    } ?: Log.w("BusStopsListFragment", "Argument BusStopsArgs was not sent correctly.")
   }
 
   private fun hideProgressBarIfNecessary() {

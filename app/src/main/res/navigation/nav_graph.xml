@@ -53,27 +53,27 @@
   <fragment
     android:id="@+id/informationFragment"
     android:name="org.galio.bussantiago.features.information.InformationFragment"
-    tools:layout="@layout/information_fragment"/>
+    tools:layout="@layout/information_fragment" />
 
   <fragment
     android:id="@+id/incidencesFragment"
     android:name="org.galio.bussantiago.features.incidences.IncidencesFragment"
-    tools:layout="@layout/incidences_fragment"/>
+    tools:layout="@layout/incidences_fragment" />
 
   <fragment
     android:id="@+id/busStopsFragment"
     android:name="org.galio.bussantiago.features.stops.BusStopsContainerFragment"
-    tools:layout="@layout/busstopscontainer_fragment"/>
+    tools:layout="@layout/busstopscontainer_fragment" />
 
   <dialog
     android:id="@+id/aboutFragment"
     android:name="org.galio.bussantiago.features.about.AboutFragment"
-    tools:layout="@layout/about_fragment"/>
+    tools:layout="@layout/about_fragment" />
 
   <dialog
     android:id="@+id/timesDialogFragment"
     android:name="org.galio.bussantiago.features.times.TimesDialogFragment"
-    tools:layout="@layout/times_dialog_fragment"/>
+    tools:layout="@layout/times_dialog_fragment" />
 
   <action
     android:id="@+id/actionShowTimes"

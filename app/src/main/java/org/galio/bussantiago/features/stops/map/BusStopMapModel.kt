@@ -1,6 +1,6 @@
 package org.galio.bussantiago.features.stops.map
 
-import org.galio.bussantiago.domain.model.Coordinates
+import org.galio.bussantiago.core.model.Coordinates
 
 data class BusStopMapModel(
   val code: String,

@@ -38,15 +38,15 @@ class LinesFragment : Fragment() {
     viewModel.lineModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
+          updateProgressBarStatus(visible = true)
         },
-        onError = {
-          hideProgressBarIfNecessary()
-          handleException(it) { viewModel.loadLines() }
+        onError = { exception ->
+          updateProgressBarStatus(visible = false)
+          handleException(exception, retry = { viewModel.loadLines() })
         },
-        onSuccess = {
-          hideProgressBarIfNecessary()
-          setUpRecyclerView(it)
+        onSuccess = { lines ->
+          updateProgressBarStatus(visible = false)
+          setUpLinesAdapter(lines)
         }
       )
     }
@@ -54,13 +54,11 @@ class LinesFragment : Fragment() {
     viewModel.loadLines()
   }
 
-  private fun hideProgressBarIfNecessary() {
-    if (binding.progressBar.visibility == View.VISIBLE) {
-      binding.progressBar.visibility = View.GONE
-    }
+  private fun updateProgressBarStatus(visible: Boolean) {
+    binding.progressBar.visibility = if (visible) View.VISIBLE else View.GONE
   }
 
-  private fun setUpRecyclerView(lines: List<LineModel>) {
+  private fun setUpLinesAdapter(lines: List<LineModel>) {
     binding.linesRecyclerView.adapter = LinesAdapter(lines) { onLineClicked(it) }
   }
 

@@ -1,9 +1,9 @@
 package org.galio.bussantiago.features.stops.map
 
-import org.galio.bussantiago.domain.model.BusStop
-import org.galio.bussantiago.domain.model.Coordinates
-import org.galio.bussantiago.domain.model.LineDetails
-import org.galio.bussantiago.domain.model.Route
+import org.galio.bussantiago.core.model.BusStop
+import org.galio.bussantiago.core.model.Coordinates
+import org.galio.bussantiago.core.model.LineDetails
+import org.galio.bussantiago.core.model.Route
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

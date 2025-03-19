@@ -2,9 +2,9 @@ package org.galio.bussantiago.features.information
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.GetLineInformation
+import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -30,7 +30,6 @@ class InformationViewModelTest {
   @Before
   fun setUp() {
     viewModel = InformationViewModel(executor, getLineInformation)
-    viewModel.setArgs(lineId)
     viewModel.information.observeForever(observer)
   }
 
@@ -39,7 +38,7 @@ class InformationViewModelTest {
     val lineInformationStub = "Any Information"
     `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
 
-    viewModel.loadLineInformation()
+    viewModel.loadLineInformation(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.success("Any Information"))
@@ -50,7 +49,7 @@ class InformationViewModelTest {
     val exception = Exception("Fake exception")
     `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
 
-    viewModel.loadLineInformation()
+    viewModel.loadLineInformation(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))

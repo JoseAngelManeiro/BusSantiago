@@ -12,7 +12,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface ApiService {
+internal interface ApiService {
 
   @GET("lineas")
   fun getLines(): Call<List<LineEntity>>

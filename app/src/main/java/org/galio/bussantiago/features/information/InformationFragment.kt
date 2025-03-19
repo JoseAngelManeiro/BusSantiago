@@ -1,6 +1,7 @@
 package org.galio.bussantiago.features.information
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,26 +44,25 @@ class InformationFragment : Fragment() {
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
-    val lineId = arguments?.getInt(ID_KEY) ?: 0
-    viewModel.setArgs(lineId)
+    arguments?.getInt(ID_KEY)?.let { lineId ->
+      viewModel.information.observe(viewLifecycleOwner) { resource ->
+        resource.fold(
+          onLoading = {
+            binding.progressBar.visibility = View.VISIBLE
+          },
+          onError = {
+            binding.progressBar.visibility = View.GONE
+            handleException(it) { viewModel.loadLineInformation(lineId) }
+          },
+          onSuccess = {
+            binding.progressBar.visibility = View.GONE
+            binding.informationTextView.text = it.fromHtml()
+          }
+        )
+      }
 
-    viewModel.information.observe(viewLifecycleOwner) { resource ->
-      resource.fold(
-        onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
-        },
-        onError = {
-          binding.progressBar.visibility = View.GONE
-          handleException(it) { viewModel.loadLineInformation() }
-        },
-        onSuccess = {
-          binding.progressBar.visibility = View.GONE
-          binding.informationTextView.text = it.fromHtml()
-        }
-      )
-    }
-
-    viewModel.loadLineInformation()
+      viewModel.loadLineInformation(lineId)
+    } ?: Log.w("InformationFragment", "Argument line id was not sent correctly.")
   }
 
   override fun onDestroyView() {

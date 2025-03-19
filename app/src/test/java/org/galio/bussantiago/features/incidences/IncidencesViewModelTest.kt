@@ -2,10 +2,10 @@ package org.galio.bussantiago.features.incidences
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.Either
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.domain.interactor.GetLineIncidences
-import org.galio.bussantiago.domain.model.Incidence
+import org.galio.bussantiago.core.GetLineIncidences
+import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -32,7 +32,6 @@ class IncidencesViewModelTest {
   @Before
   fun setUp() {
     viewModel = IncidencesViewModel(executor, getLineIncidences)
-    viewModel.setArgs(lineId)
     viewModel.incidences.observeForever(observer)
   }
 
@@ -45,7 +44,7 @@ class IncidencesViewModelTest {
     )
     `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
 
-    viewModel.loadIncidences()
+    viewModel.loadIncidences(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(
@@ -58,7 +57,7 @@ class IncidencesViewModelTest {
     val exception = Exception("Fake exception")
     `when`(getLineIncidences(lineId)).thenReturn(Either.Left(exception))
 
-    viewModel.loadIncidences()
+    viewModel.loadIncidences(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))
