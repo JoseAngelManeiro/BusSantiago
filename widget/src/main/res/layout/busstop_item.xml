@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:padding="@dimen/default_padding"
+  android:gravity="center_vertical"
+  android:background="?attr/selectableItemBackground"
+  tools:context="org.galio.bussantiago.widget.BusStopFavoritesAdapter">
+
+  <TextView
+    android:id="@+id/codeTextView"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:textSize="17dp"
+    android:textStyle="bold"
+    android:textColor="@android:color/darker_gray"
+    android:textAlignment="center"
+    tools:text="650"
+    tools:ignore="SpUsage" />
+
+  <TextView
+    android:id="@+id/nameTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="17sp"
+    android:layout_marginStart="10dp"
+    tools:text="Rúa de Sandino (fr. nº 62A) " />
+
+</LinearLayout>

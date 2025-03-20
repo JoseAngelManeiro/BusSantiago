@@ -1,4 +1,4 @@
-package widget
+package org.galio.bussantiago.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,10 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
-import androidx.navigation.NavDeepLinkBuilder
-import org.galio.bussantiago.R
-import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.features.times.TimesDialogFragment
+import androidx.core.net.toUri
 
 class WidgetProvider : AppWidgetProvider() {
 
@@ -26,7 +23,7 @@ class WidgetProvider : AppWidgetProvider() {
       // Connect the service that will load the times with our listView
       val widgetServiceIntent = Intent(context, WidgetService::class.java).apply {
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+        data = toUri(Intent.URI_INTENT_SCHEME).toUri()
       }
       remoteViews.setRemoteAdapter(R.id.times_listview, widgetServiceIntent)
       // Define the view to be shown when there are no items
@@ -41,21 +38,24 @@ class WidgetProvider : AppWidgetProvider() {
       val refreshIntent = Intent(context, WidgetProvider::class.java).apply {
         action = context.getString(R.string.action_refresh_widget)
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+        data = toUri(Intent.URI_INTENT_SCHEME).toUri()
       }
       val refreshPIntent = PendingIntent.getBroadcast(
-        context, 0,
-        refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        context,
+        0,
+        refreshIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
       )
       remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
+      // TODO: Invoke fragment in traditional way to avoid importing nav graph
       // Declare an explicit deep link to launch TimesFragment
-      val navPIntent = NavDeepLinkBuilder(context)
+      /*val navPIntent = NavDeepLinkBuilder(context)
         .setGraph(R.navigation.nav_graph)
         .setDestination(R.id.timesDialogFragment)
         .setArguments(TimesDialogFragment.createArguments(BusStopModel(code, name)))
         .createPendingIntent()
-      remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)
+      remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)*/
 
       // Instruct the widget manager to update the widget
       appWidgetManager.updateAppWidget(widgetId, remoteViews)
@@ -63,9 +63,9 @@ class WidgetProvider : AppWidgetProvider() {
   }
 
   override fun onUpdate(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetIds: IntArray
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      appWidgetIds: IntArray
   ) {
     appWidgetIds.forEach {
       updateWidget(context, appWidgetManager, it)
@@ -77,8 +77,8 @@ class WidgetProvider : AppWidgetProvider() {
     val appWidgetManager = AppWidgetManager.getInstance(context)
     if (intent.action == context.getString(R.string.action_refresh_widget)) {
       val widgetId = intent.getIntExtra(
-        AppWidgetManager.EXTRA_APPWIDGET_ID,
-        AppWidgetManager.INVALID_APPWIDGET_ID
+          AppWidgetManager.EXTRA_APPWIDGET_ID,
+          AppWidgetManager.INVALID_APPWIDGET_ID
       )
       if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.times_listview)

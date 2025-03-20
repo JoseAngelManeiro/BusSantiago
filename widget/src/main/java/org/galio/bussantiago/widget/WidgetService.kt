@@ -1,4 +1,4 @@
-package widget
+package org.galio.bussantiago.widget
 
 import android.content.Intent
 import android.widget.RemoteViewsService

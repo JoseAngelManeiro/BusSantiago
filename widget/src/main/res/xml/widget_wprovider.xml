@@ -8,7 +8,7 @@
   android:label="@string/favorite_stop"
   android:previewImage="@drawable/preview_app_widget"
   android:resizeMode="horizontal|vertical"
-  android:configure="widget.WidgetActivity"
+  android:configure="org.galio.bussantiago.widget.WidgetActivity"
   android:updatePeriodMillis="0" /><!--
    updatePeriodMillis -> By setting 0 as a parameter,
                           we're saying that we don't want the widget to update itself.
