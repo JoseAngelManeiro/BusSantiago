@@ -43,7 +43,7 @@
 
         <!-- Scheme and host that matches the deep link URI -->
         <!-- TODO: Move the scheme and host to shared module -->
-        <data android:scheme="myapp" android:host="timesDialogFragment" />
+        <data android:scheme="myapp" android:host="times" />
       </intent-filter>
     </activity>
 

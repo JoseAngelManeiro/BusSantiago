@@ -14,6 +14,7 @@ import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.view.isVisible
 
 class TimesDialogFragment : DialogFragment() {
 
@@ -155,7 +156,7 @@ class TimesDialogFragment : DialogFragment() {
   }
 
   private fun timesAreLoading(): Boolean {
-    return binding.progressBar.visibility == View.VISIBLE
+    return binding.progressBar.isVisible
   }
 
   override fun onDestroyView() {

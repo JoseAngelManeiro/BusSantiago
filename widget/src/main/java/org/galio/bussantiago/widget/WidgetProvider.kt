@@ -49,7 +49,7 @@ class WidgetProvider : AppWidgetProvider() {
       remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
       // TODO: Move the uri deeplink name to shared module
-      val uri = "myapp://timesDialogFragment/$code/$name".toUri()
+      val uri = "myapp://times/$code/$name".toUri()
       val intent = Intent(Intent.ACTION_VIEW, uri).apply {
         `package` = context.packageName // Ensure it opens in this app
       }
