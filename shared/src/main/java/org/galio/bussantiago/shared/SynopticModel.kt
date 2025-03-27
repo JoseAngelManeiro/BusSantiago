@@ -1,4 +1,4 @@
-package org.galio.bussantiago.common.model
+package org.galio.bussantiago.shared
 
 data class SynopticModel(
   val synoptic: String,

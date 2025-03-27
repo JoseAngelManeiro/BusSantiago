@@ -2,9 +2,9 @@ package org.galio.bussantiago.features.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.util.TestInteractorExecutor

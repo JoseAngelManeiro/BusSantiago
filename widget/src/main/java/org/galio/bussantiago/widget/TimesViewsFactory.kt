@@ -11,6 +11,9 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.SynopticModel
+import org.galio.bussantiago.shared.getDescriptionByMinutes
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -18,13 +21,13 @@ import java.util.Calendar
 import java.util.Locale
 
 class TimesViewsFactory(
-    private val context: Context,
-    intent: Intent
+  private val context: Context,
+  intent: Intent
 ) : RemoteViewsService.RemoteViewsFactory {
 
   private val widgetId = intent.getIntExtra(
-      AppWidgetManager.EXTRA_APPWIDGET_ID,
-      AppWidgetManager.INVALID_APPWIDGET_ID
+    AppWidgetManager.EXTRA_APPWIDGET_ID,
+    AppWidgetManager.INVALID_APPWIDGET_ID
   )
   private val widgetPrefsHelper = WidgetPrefsHelper(context)
   private val stopCode = widgetPrefsHelper.getCode(widgetId)

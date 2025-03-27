@@ -1,12 +1,12 @@
 package org.galio.bussantiago.features.menu
 
-import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.core.model.Route
 import org.galio.bussantiago.features.menu.MenuType.INCIDENCES
 import org.galio.bussantiago.features.menu.MenuType.OUTWARD_ROUTE
 import org.galio.bussantiago.features.menu.MenuType.RETURN_ROUTE
+import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

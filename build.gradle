@@ -25,6 +25,13 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task runUnitTests(dependsOn: [':app:testDebugUnitTest', ':core:test']) {
+task runUnitTests(
+        dependsOn: [
+                ':app:testDebugUnitTest',
+                ':core:test',
+                ':widget:test',
+                ':shared:test'
+        ]
+) {
     description 'Run all unit tests'
 }

@@ -1,7 +1,7 @@
 package org.galio.bussantiago.features.menu
 
-import org.galio.bussantiago.common.model.SynopticModel
 import org.galio.bussantiago.core.model.LineDetails
+import org.galio.bussantiago.shared.SynopticModel
 
 class MenuFactory {
 

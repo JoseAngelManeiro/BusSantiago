@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.RemoteViews
 import androidx.core.net.toUri
 
@@ -67,9 +66,9 @@ class WidgetProvider : AppWidgetProvider() {
   }
 
   override fun onUpdate(
-      context: Context,
-      appWidgetManager: AppWidgetManager,
-      appWidgetIds: IntArray
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray
   ) {
     appWidgetIds.forEach {
       updateWidget(context, appWidgetManager, it)
@@ -81,8 +80,8 @@ class WidgetProvider : AppWidgetProvider() {
     val appWidgetManager = AppWidgetManager.getInstance(context)
     if (intent.action == context.getString(R.string.action_refresh_widget)) {
       val widgetId = intent.getIntExtra(
-          AppWidgetManager.EXTRA_APPWIDGET_ID,
-          AppWidgetManager.INVALID_APPWIDGET_ID
+        AppWidgetManager.EXTRA_APPWIDGET_ID,
+        AppWidgetManager.INVALID_APPWIDGET_ID
       )
       if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.times_listview)

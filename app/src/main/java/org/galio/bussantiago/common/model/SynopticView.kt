@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatTextView
 import org.galio.bussantiago.R
+import org.galio.bussantiago.shared.SynopticModel
 
 class SynopticView(
   context: Context,

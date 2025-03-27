@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package org.galio.bussantiago.shared
 
 data class LineRemainingTimeModel(
   val synopticModel: SynopticModel,

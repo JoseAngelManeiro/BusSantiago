@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.getParcelableArgument
@@ -14,7 +15,6 @@ import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.view.isVisible
 
 class TimesDialogFragment : DialogFragment() {
 

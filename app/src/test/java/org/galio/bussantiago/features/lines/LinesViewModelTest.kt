@@ -2,11 +2,11 @@ package org.galio.bussantiago.features.lines
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.model.SynopticModel
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
+import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before

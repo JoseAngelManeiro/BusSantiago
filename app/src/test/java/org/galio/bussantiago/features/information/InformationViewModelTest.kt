@@ -2,8 +2,8 @@ package org.galio.bussantiago.features.information
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock

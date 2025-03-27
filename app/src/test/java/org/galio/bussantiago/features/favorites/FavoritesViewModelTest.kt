@@ -2,8 +2,8 @@ package org.galio.bussantiago.features.favorites
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.util.TestInteractorExecutor

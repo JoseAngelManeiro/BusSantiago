@@ -7,7 +7,7 @@
   android:padding="@dimen/default_padding"
   android:gravity="center_vertical"
   android:background="?attr/selectableItemBackground"
-  tools:context="org.galio.bussantiago.widget.BusStopFavoritesAdapter">
+  tools:context="org.galio.bussantiago.shared.BusStopFavoritesAdapter">
 
   <TextView
     android:id="@+id/codeTextView"

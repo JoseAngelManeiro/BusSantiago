@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package org.galio.bussantiago.shared
 
 import android.view.LayoutInflater
 import android.view.View

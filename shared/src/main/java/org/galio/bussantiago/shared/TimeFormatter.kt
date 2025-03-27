@@ -1,4 +1,4 @@
-package org.galio.bussantiago.widget
+package org.galio.bussantiago.shared
 
 fun getDescriptionByMinutes(minutesUntilNextArrival: Int): String {
   return when {

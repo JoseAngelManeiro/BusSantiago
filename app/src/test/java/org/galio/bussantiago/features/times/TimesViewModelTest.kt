@@ -2,14 +2,15 @@ package org.galio.bussantiago.features.times
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.AddBusStopFavorite
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
+import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before

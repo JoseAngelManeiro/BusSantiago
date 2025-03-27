@@ -10,6 +10,7 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.shared.LineRemainingTimeModel
 
 class TimesViewModel(
   private val executor: InteractorExecutor,

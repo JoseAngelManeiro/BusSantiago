@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
+import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.galio.bussantiago.widget.databinding.WidgetActivityBinding
 import org.koin.android.ext.android.inject
 
@@ -31,8 +32,8 @@ class WidgetActivity : AppCompatActivity() {
     if (params != null) {
       // Get the ID of the widget that is being configured
       widgetId = params.getInt(
-          AppWidgetManager.EXTRA_APPWIDGET_ID,
-          AppWidgetManager.INVALID_APPWIDGET_ID
+        AppWidgetManager.EXTRA_APPWIDGET_ID,
+        AppWidgetManager.INVALID_APPWIDGET_ID
       )
       if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
         getBusStopFavorites(Unit).fold(

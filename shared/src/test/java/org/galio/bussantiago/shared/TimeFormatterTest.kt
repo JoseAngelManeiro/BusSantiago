@@ -1,4 +1,4 @@
-package org.galio.bussantiago.features.times
+package org.galio.bussantiago.shared
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

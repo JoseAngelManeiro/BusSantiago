@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
 import org.galio.bussantiago.common.model.SynopticView
+import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.getDescriptionByMinutes
 
 class TimesAdapter(
   private val items: List<LineRemainingTimeModel>
