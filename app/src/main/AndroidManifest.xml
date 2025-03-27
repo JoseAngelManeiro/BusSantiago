@@ -36,6 +36,14 @@
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
+
+        <!-- This allows the app to handle deep links -->
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+
+        <!-- Scheme and host that matches the deep link URI -->
+        <!-- TODO: Move the scheme and host to shared module -->
+        <data android:scheme="myapp" android:host="timesDialogFragment" />
       </intent-filter>
     </activity>
 

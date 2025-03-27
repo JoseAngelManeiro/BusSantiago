@@ -58,7 +58,11 @@ class TimesDialogFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    getParcelableArgument<BusStopModel>(BUS_STOP_KEY)?.let { busStopModel ->
+    // Arguments can be passed through the constructor or the deeplink
+    val busStopModel: BusStopModel? =
+      getParcelableArgument<BusStopModel>(BUS_STOP_KEY) ?: getDeeplinkInfo()
+
+    busStopModel?.let {
       setUpToolbar(busStopModel)
 
       setUpFavoriteButton()
@@ -70,6 +74,18 @@ class TimesDialogFragment : DialogFragment() {
       viewModel.loadTimes()
       viewModel.validateBusStop()
     } ?: Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
+  }
+
+  // TODO: Move the key arguments to shared module
+  private fun getDeeplinkInfo(): BusStopModel? {
+    try {
+      val args = requireArguments()
+      val busStopCode = args.getString("bus_stop_code", "")
+      val busStopName = args.getString("bus_stop_name", "")
+      return BusStopModel(busStopCode, busStopName)
+    } catch (e: Exception) {
+      return null
+    }
   }
 
   private fun setUpToolbar(busStopModel: BusStopModel) {

@@ -48,14 +48,18 @@ class WidgetProvider : AppWidgetProvider() {
       )
       remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
-      // TODO: Invoke fragment in traditional way to avoid importing nav graph
-      // Declare an explicit deep link to launch TimesFragment
-      /*val navPIntent = NavDeepLinkBuilder(context)
-        .setGraph(R.navigation.nav_graph)
-        .setDestination(R.id.timesDialogFragment)
-        .setArguments(TimesDialogFragment.createArguments(BusStopModel(code, name)))
-        .createPendingIntent()
-      remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)*/
+      // TODO: Move the uri deeplink name to shared module
+      val uri = "myapp://timesDialogFragment/$code/$name".toUri()
+      val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+        `package` = context.packageName // Ensure it opens in this app
+      }
+      val navPIntent = PendingIntent.getActivity(
+        context,
+        0,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      )
+      remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)
 
       // Instruct the widget manager to update the widget
       appWidgetManager.updateAppWidget(widgetId, remoteViews)
