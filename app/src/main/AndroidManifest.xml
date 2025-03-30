@@ -41,10 +41,9 @@
         <category android:name="android.intent.category.DEFAULT" />
 
         <!-- Scheme and host that matches the deep link URI -->
-        <!-- TODO: Move the scheme and host to shared module -->
         <data
-          android:scheme="myapp"
-          android:host="times" />
+          android:scheme="@string/app_scheme"
+          android:host="@string/times_host" />
       </intent-filter>
     </activity>
 

@@ -2,5 +2,8 @@
   <string name="no_information">Sin información</string>
   <string name="no_favorites">No hay paradas favoritas</string>
   <string name="select_stop">Seleccionar parada</string>
+  <string name="app_scheme">bussantiago</string>
+  <string name="times_host">times</string>
+  <string name="times_deeplink_pattern">bussantiago://times/{bus_stop_code}/{bus_stop_name}</string>
 </resources>
 

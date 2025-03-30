@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import androidx.core.net.toUri
+import org.galio.bussantiago.shared.DeeplinkHelper
 
 class WidgetProvider : AppWidgetProvider() {
 
@@ -47,9 +48,8 @@ class WidgetProvider : AppWidgetProvider() {
       )
       remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
 
-      // TODO: Move the uri deeplink name to shared module
-      val uri = "myapp://times/$code/$name".toUri()
-      val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+      val deeplink = DeeplinkHelper.getTimesDeeplink(context, code, name)
+      val intent = Intent(Intent.ACTION_VIEW, deeplink.toUri()).apply {
         `package` = context.packageName // Ensure it opens in this app
       }
       val navPIntent = PendingIntent.getActivity(

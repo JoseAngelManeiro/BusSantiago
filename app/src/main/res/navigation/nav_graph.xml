@@ -75,8 +75,7 @@
     android:name="org.galio.bussantiago.features.times.TimesDialogFragment"
     tools:layout="@layout/times_dialog_fragment">
 
-    <!-- TODO: Define a proper deep link pattern in shared module -->
-    <deepLink app:uri="myapp://times/{bus_stop_code}/{bus_stop_name}" />
+    <deepLink app:uri="@string/times_deeplink_pattern" />
   </dialog>
 
   <action

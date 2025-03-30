@@ -13,6 +13,7 @@ import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
+import org.galio.bussantiago.shared.DeeplinkHelper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -77,12 +78,11 @@ class TimesDialogFragment : DialogFragment() {
     } ?: Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
   }
 
-  // TODO: Move the key arguments to shared module
   private fun getDeeplinkInfo(): BusStopModel? {
     try {
       val args = requireArguments()
-      val busStopCode = args.getString("bus_stop_code", "")
-      val busStopName = args.getString("bus_stop_name", "")
+      val busStopCode = args.getString(DeeplinkHelper.BUS_STOP_CODE_KEY, "")
+      val busStopName = args.getString(DeeplinkHelper.BUS_STOP_NAME_KEY, "")
       return BusStopModel(busStopCode, busStopName)
     } catch (e: Exception) {
       return null
