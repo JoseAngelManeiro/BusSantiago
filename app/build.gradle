@@ -57,21 +57,10 @@ android {
 
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
 
             signingConfig signingConfigs.release
-        }
-    }
-
-    sourceSets {
-        main {
-            res.srcDirs =
-                    ['src/main/res/layouts/app',
-                     'src/main/res/layouts/widget',
-                     'src/main/res/layouts',
-                     'src/main/res']
         }
     }
 
@@ -80,7 +69,6 @@ android {
         abortOnError true
         ignoreWarnings false
         htmlReport true
-        htmlOutput file("$rootDir/app/lint-results.html")
     }
 
     compileOptions {
