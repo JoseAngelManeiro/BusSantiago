@@ -3,22 +3,19 @@ package org.galio.bussantiago.widget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.toColorInt
 import org.galio.bussantiago.shared.LineRemainingTimeModel
-import org.galio.bussantiago.shared.SynopticModel
-import org.galio.bussantiago.shared.getDescriptionByMinutes
-import org.json.JSONException
-import org.json.JSONObject
+import org.galio.bussantiago.shared.TimeFormatter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import org.galio.bussantiago.shared.R as sharedR
 
 class TimesViewsFactory(
   private val context: Context,
@@ -31,6 +28,8 @@ class TimesViewsFactory(
   )
   private val widgetPrefsHelper = WidgetPrefsHelper(context)
   private val stopCode = widgetPrefsHelper.getCode(widgetId)
+
+  private val timeFormatter = TimeFormatter()
 
   private lateinit var lineRemainingTimeModels: MutableList<LineRemainingTimeModel>
 
@@ -49,10 +48,12 @@ class TimesViewsFactory(
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
 
     // Obtain times from service
+    val timesRemoteDatasource = ObtainJson()
+    val timesMapper = JsonParser()
     val tempList = mutableListOf<LineRemainingTimeModel>()
-    val result = ObtainJson().call(stopCode)
+    val result = timesRemoteDatasource.call(stopCode)
     if (result != null) {
-      tempList.addAll(parseToItemWidgets(result))
+      tempList.addAll(timesMapper.toRemainingTimeModels(result))
     }
 
     // Finish loading mode
@@ -79,14 +80,16 @@ class TimesViewsFactory(
     return RemoteViews(context.packageName, R.layout.time_item_widget).apply {
       // Validation that prevents IndexOutOfBoundsException
       lineRemainingTimeModels.getOrNull(position)?.let { lineRemainingTimeModel ->
-        val circleSizePx = dpToPixel(40) // synoptic_size = 40dp
-        val bitmap = Bitmap.createBitmap(circleSizePx, circleSizePx, Bitmap.Config.ARGB_8888)
+        val circleSizePx = context.resources.getDimensionPixelSize(sharedR.dimen.synoptic_size)
+        val bitmap = createBitmap(circleSizePx, circleSizePx)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val canvas = Canvas(bitmap)
-        paint.color = Color.parseColor(lineRemainingTimeModel.synopticModel.style)
+        paint.color = lineRemainingTimeModel.synopticModel.style.toColorInt()
         canvas.drawCircle(
-          circleSizePx.toFloat() / 2, circleSizePx.toFloat() / 2,
-          (circleSizePx.toFloat() / 2) - 1, paint
+          circleSizePx.toFloat() / 2,
+          circleSizePx.toFloat() / 2,
+          (circleSizePx.toFloat() / 2) - 1,
+          paint
         )
 
         setImageViewBitmap(R.id.lineWidgetImageView, bitmap)
@@ -98,40 +101,10 @@ class TimesViewsFactory(
 
         setTextViewText(
           R.id.timeWidgetTextView,
-          getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival)
+          timeFormatter.getDescription(lineRemainingTimeModel.minutesUntilNextArrival)
         )
       }
     }
-  }
-
-  private fun dpToPixel(dp: Int): Int {
-    return dp * (context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
-  }
-
-  private fun parseToItemWidgets(jsonString: String): List<LineRemainingTimeModel> {
-    val arrayListTimes = mutableListOf<LineRemainingTimeModel>()
-
-    try {
-      val jsonObjectResult = JSONObject(jsonString)
-      val jsonArrayLines = jsonObjectResult.getJSONArray("lineas")
-      var jsonObjectLine: JSONObject
-      var lineRemainingTimeModel: LineRemainingTimeModel
-      for (i in 0 until jsonArrayLines.length()) {
-        jsonObjectLine = jsonArrayLines[i] as JSONObject
-        lineRemainingTimeModel = LineRemainingTimeModel(
-          SynopticModel(
-            jsonObjectLine.getString("sinoptico"),
-            jsonObjectLine.getString("estilo")
-          ),
-          jsonObjectLine.getInt("minutosProximoPaso")
-        )
-        arrayListTimes.add(lineRemainingTimeModel)
-      }
-    } catch (e: JSONException) {
-      // If there is an exception, simply return the empty list
-    }
-
-    return arrayListTimes
   }
 
   override fun getCount() = lineRemainingTimeModels.size

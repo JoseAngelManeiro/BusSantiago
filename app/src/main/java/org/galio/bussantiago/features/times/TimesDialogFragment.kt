@@ -14,6 +14,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.galio.bussantiago.shared.DeeplinkHelper
+import org.galio.bussantiago.shared.TimeFormatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,6 +24,7 @@ class TimesDialogFragment : DialogFragment() {
   private val binding get() = _binding!!
   private val viewModel: TimesViewModel by viewModel()
   private val reviewsHelper: ReviewsHelper by inject()
+  private val timeFormatter: TimeFormatter by inject()
 
   companion object {
     private const val BUS_STOP_KEY = "bus_stop_key"
@@ -134,7 +136,7 @@ class TimesDialogFragment : DialogFragment() {
             } else {
               noInfoTextView.visibility = View.GONE
               timesRecyclerView.visibility = View.VISIBLE
-              timesRecyclerView.adapter = TimesAdapter(times)
+              timesRecyclerView.adapter = TimesAdapter(times, timeFormatter)
               reviewsHelper.launchReviews(requireActivity())
             }
           }
