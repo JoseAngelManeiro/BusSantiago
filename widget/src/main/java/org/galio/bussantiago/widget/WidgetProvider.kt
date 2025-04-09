@@ -9,7 +9,7 @@ import android.widget.RemoteViews
 import androidx.core.net.toUri
 import org.galio.bussantiago.shared.DeeplinkHelper
 
-class WidgetProvider : AppWidgetProvider() {
+internal class WidgetProvider : AppWidgetProvider() {
 
   companion object {
     fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
@@ -79,11 +79,9 @@ class WidgetProvider : AppWidgetProvider() {
   override fun onReceive(context: Context, intent: Intent) {
     val appWidgetManager = AppWidgetManager.getInstance(context)
     if (intent.action == context.getString(R.string.action_refresh_widget)) {
-      val widgetId = intent.getIntExtra(
-        AppWidgetManager.EXTRA_APPWIDGET_ID,
-        AppWidgetManager.INVALID_APPWIDGET_ID
-      )
-      if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+      val widgetIdHelper = WidgetIdHelper()
+      val widgetId = widgetIdHelper.getWidgetId(intent)
+      if (widgetIdHelper.isWidgetIdValid(widgetId)) {
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.times_listview)
       }
     }
@@ -92,8 +90,9 @@ class WidgetProvider : AppWidgetProvider() {
 
   override fun onDeleted(context: Context, appWidgetIds: IntArray) {
     val prefs = WidgetPrefsHelper(context)
+    val widgetIdHelper = WidgetIdHelper()
     appWidgetIds.forEach { widgetId ->
-      if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+      if (widgetIdHelper.isWidgetIdValid(widgetId)) {
         prefs.remove(widgetId)
       }
     }

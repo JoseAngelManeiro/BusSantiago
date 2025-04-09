@@ -10,26 +10,28 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toColorInt
+import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.shared.TimeFormatter
+import org.galio.bussantiago.shared.TimesFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import org.galio.bussantiago.shared.R as sharedR
 
-class TimesViewsFactory(
+internal class TimesViewsFactory(
   private val context: Context,
+  private val getBusStopRemainingTimes: GetBusStopRemainingTimes,
   intent: Intent
 ) : RemoteViewsService.RemoteViewsFactory {
 
-  private val widgetId = intent.getIntExtra(
-    AppWidgetManager.EXTRA_APPWIDGET_ID,
-    AppWidgetManager.INVALID_APPWIDGET_ID
-  )
+  private val widgetIdHelper = WidgetIdHelper()
+  private val widgetId = widgetIdHelper.getWidgetId(intent)
   private val widgetPrefsHelper = WidgetPrefsHelper(context)
   private val stopCode = widgetPrefsHelper.getCode(widgetId)
 
   private val timeFormatter = TimeFormatter()
+  private val timesFactory = TimesFactory()
 
   private lateinit var lineRemainingTimeModels: MutableList<LineRemainingTimeModel>
 
@@ -48,12 +50,10 @@ class TimesViewsFactory(
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
 
     // Obtain times from service
-    val timesRemoteDatasource = ObtainJson()
-    val timesMapper = JsonParser()
     val tempList = mutableListOf<LineRemainingTimeModel>()
-    val result = timesRemoteDatasource.call(stopCode)
-    if (result != null) {
-      tempList.addAll(timesMapper.toRemainingTimeModels(result))
+    val result = getBusStopRemainingTimes(stopCode)
+    if (result.isRight) {
+      tempList.addAll(timesFactory.createLineRemainingTimeModels(result.rightValue))
     }
 
     // Finish loading mode
@@ -111,9 +111,7 @@ class TimesViewsFactory(
 
   override fun getViewTypeCount() = 1
 
-  override fun onDestroy() {
-    lineRemainingTimeModels.clear()
-  }
+  override fun onDestroy() = lineRemainingTimeModels.clear()
 
   override fun getLoadingView(): RemoteViews? = null
 

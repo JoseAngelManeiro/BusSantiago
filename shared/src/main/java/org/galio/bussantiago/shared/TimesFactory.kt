@@ -1,8 +1,6 @@
-package org.galio.bussantiago.features.times
+package org.galio.bussantiago.shared
 
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
-import org.galio.bussantiago.shared.LineRemainingTimeModel
-import org.galio.bussantiago.shared.SynopticModel
 
 class TimesFactory {
 

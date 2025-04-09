@@ -1,6 +1,6 @@
 package org.galio.bussantiago.di
 
-import org.galio.bussantiago.features.times.TimesFactory
+import org.galio.bussantiago.shared.TimesFactory
 import org.galio.bussantiago.features.times.TimesViewModel
 import org.galio.bussantiago.shared.TimeFormatter
 import org.koin.androidx.viewmodel.dsl.viewModel

@@ -5,7 +5,7 @@ import androidx.core.content.edit
 
 private const val WIDGET_PREFERENCES = "WidgetPrefs"
 
-class WidgetPrefsHelper(context: Context) {
+internal class WidgetPrefsHelper(context: Context) {
 
   private val prefs = context.getSharedPreferences(WIDGET_PREFERENCES, Context.MODE_PRIVATE)
 

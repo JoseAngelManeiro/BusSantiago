@@ -11,6 +11,7 @@ import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.TimesFactory
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before

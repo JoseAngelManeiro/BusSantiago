@@ -3,6 +3,7 @@ package org.galio.bussantiago.widget
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.galio.bussantiago.core.GetBusStopFavorites
@@ -11,13 +12,10 @@ import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.galio.bussantiago.widget.databinding.WidgetActivityBinding
 import org.koin.android.ext.android.inject
 
-class WidgetActivity : AppCompatActivity() {
+internal class WidgetActivity : AppCompatActivity() {
 
   private lateinit var binding: WidgetActivityBinding
-
   private val getBusStopFavorites: GetBusStopFavorites by inject()
-
-  private var widgetId: Int = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -28,14 +26,11 @@ class WidgetActivity : AppCompatActivity() {
     // First we set a default value
     setResult(RESULT_CANCELED)
 
-    val params = intent.extras
-    if (params != null) {
+    intent.extras?.let {
       // Get the ID of the widget that is being configured
-      widgetId = params.getInt(
-        AppWidgetManager.EXTRA_APPWIDGET_ID,
-        AppWidgetManager.INVALID_APPWIDGET_ID
-      )
-      if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+      val widgetIdHelper = WidgetIdHelper()
+      val widgetId = widgetIdHelper.getWidgetId(intent)
+      if (widgetIdHelper.isWidgetIdValid(widgetId)) {
         getBusStopFavorites(Unit).fold(
           leftOp = {
             // When the use case fails we show nothing
@@ -46,19 +41,19 @@ class WidgetActivity : AppCompatActivity() {
               binding.noFavoritesTextView.visibility = View.VISIBLE
             } else {
               binding.favoritesRecyclerView.adapter =
-                BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+                BusStopFavoritesAdapter(busStopFavorites) {
+                  onBusStopFavoriteClick(it, widgetId)
+                }
             }
           }
         )
       } else {
-        throw IllegalArgumentException(this::class.java.simpleName + ": Invalid App Widget ID")
+        Log.w("WidgetActivity", "Invalid app widget id.")
       }
-    } else {
-      throw NullPointerException(this::class.java.simpleName + ": Null Intent params")
-    }
+    } ?: Log.w("WidgetActivity", "Intent extra params are null.")
   }
 
-  private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
+  private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite, widgetId: Int) {
     val widgetPrefsHelper = WidgetPrefsHelper(this)
     // Save stop code and name in preferences linked to widget id
     widgetPrefsHelper.save(
