@@ -27,7 +27,7 @@ class LineDetailsRepositoryTest {
 
     val result = repository.getLineDetails(id)
 
-    assertEquals(lineDetails, result.rightValue)
+    assertEquals(lineDetails, result.successValue)
   }
 
   @Test
@@ -35,23 +35,23 @@ class LineDetailsRepositoryTest {
     val id = 123
     val lineDetails = mock<LineDetails>()
     val lineDetailsEntity = mock<LineDetailsEntity>()
-    given(apiClient.getLineDetails(id)).willReturn(Either.right(lineDetailsEntity))
+    given(apiClient.getLineDetails(id)).willReturn(Either.success(lineDetailsEntity))
     given(mapper.toDomain(lineDetailsEntity)).willReturn(lineDetails)
 
     val result = repository.getLineDetails(id)
 
     assertEquals(lineDetails, cache.get(id))
-    assertEquals(lineDetails, result.rightValue)
+    assertEquals(lineDetails, result.successValue)
   }
 
   @Test
   fun `when cache data is not valid and service fails should return the exception`() {
     val id = 123
     val exception = mock<Exception>()
-    given(apiClient.getLineDetails(id)).willReturn(Either.left(exception))
+    given(apiClient.getLineDetails(id)).willReturn(Either.error(exception))
 
     val result = repository.getLineDetails(id)
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 }

@@ -35,7 +35,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case is invoked successfully should load data as expected`() {
     val favorites = listOf(mock<BusStopFavorite>())
-    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Right(favorites))
+    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Success(favorites))
 
     viewModel.loadFavorites()
 
@@ -45,7 +45,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case fails should return exception receivedf`() {
     val exception = Exception("Fake exception")
-    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Left(exception))
+    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Error(exception))
 
     viewModel.loadFavorites()
 

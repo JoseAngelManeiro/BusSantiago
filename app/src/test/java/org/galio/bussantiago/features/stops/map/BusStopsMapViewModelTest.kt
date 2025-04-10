@@ -39,7 +39,7 @@ class BusStopsMapViewModelTest {
     val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
     val lineDetailsStub = mock<LineDetails>()
     given(getLineDetails.invoke(123))
-      .willReturn(Either.Right(lineDetailsStub))
+      .willReturn(Either.Success(lineDetailsStub))
     val lineMapModelStub = mock<LineMapModel>()
     given(lineMapModelFactory.createLineMapModelFactory("Route 1", lineDetailsStub))
       .willReturn(lineMapModelStub)
@@ -54,7 +54,7 @@ class BusStopsMapViewModelTest {
     val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
     val exceptionStub = mock<Exception>()
     given(getLineDetails.invoke(123))
-      .willReturn(Either.Left(exceptionStub))
+      .willReturn(Either.Error(exceptionStub))
 
     viewModel.load(busStopsArgs)
 

@@ -12,10 +12,10 @@ class TestInteractorExecutor : InteractorExecutor() {
     onSuccess: (Response) -> Unit
   ) {
     val response = interactor(request)
-    if (response.isRight) {
-      onSuccess(response.rightValue)
+    if (response.isSuccess) {
+      onSuccess(response.successValue)
     } else {
-      onError(response.leftValue)
+      onError(response.errorValue)
     }
   }
 }

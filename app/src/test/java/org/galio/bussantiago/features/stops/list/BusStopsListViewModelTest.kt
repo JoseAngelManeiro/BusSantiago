@@ -41,7 +41,7 @@ class BusStopsListViewModelTest {
   fun `if all goes well, the bus stop models are mapped and loaded correctly`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val busStopsStub = listOf(createBusStop(code = "1234", name = "Bus Stop 1"))
-    `when`(getLineBusStops(request)).thenReturn(Either.Right(busStopsStub))
+    `when`(getLineBusStops(request)).thenReturn(Either.Success(busStopsStub))
 
     viewModel.loadBusStops()
 
@@ -55,7 +55,7 @@ class BusStopsListViewModelTest {
   fun `fire the exception received`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val exception = Exception("Fake exception")
-    `when`(getLineBusStops(request)).thenReturn(Either.Left(exception))
+    `when`(getLineBusStops(request)).thenReturn(Either.Error(exception))
 
     viewModel.loadBusStops()
 

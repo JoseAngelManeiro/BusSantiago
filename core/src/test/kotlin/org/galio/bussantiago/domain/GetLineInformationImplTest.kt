@@ -21,26 +21,26 @@ class GetLineInformationImplTest {
     val lineId = 123
     val information = "Any Information"
     val lineDetailsStub = createLineDetails(information)
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Right(lineDetailsStub))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Success(lineDetailsStub))
 
     val result = getLineInformation(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
-    assertTrue(result.isRight)
-    assertEquals("Any Information", result.rightValue)
+    assertTrue(result.isSuccess)
+    assertEquals("Any Information", result.successValue)
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val lineId = 123
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Left(exception))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Error(exception))
 
     val result = getLineInformation(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
-    assertTrue(result.isLeft)
-    assertEquals(exception, result.leftValue)
+    assertTrue(result.isError)
+    assertEquals(exception, result.errorValue)
   }
 
   private fun createLineDetails(information: String): LineDetails {

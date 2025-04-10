@@ -27,7 +27,7 @@ class SearchBusStopRepositoryTest {
 
     val result = repository.searchAllBusStops()
 
-    assertEquals(busStops, result.rightValue)
+    assertEquals(busStops, result.successValue)
   }
 
   @Test
@@ -37,23 +37,23 @@ class SearchBusStopRepositoryTest {
     val busStops = listOf(busStop)
     val busStopEntities = listOf(busStopEntity)
     given(apiClient.searchBusStop(BusStopRequest("")))
-      .willReturn(Either.right(busStopEntities))
+      .willReturn(Either.success(busStopEntities))
     given(mapper.toDomain(busStopEntity))
       .willReturn(busStop)
 
     val result = repository.searchAllBusStops()
 
     assertEquals(busStops, cache.getAll())
-    assertEquals(busStops, result.rightValue)
+    assertEquals(busStops, result.successValue)
   }
 
   @Test
   fun `when cache data is not valid and service fails should return the exception`() {
     val exception = mock<Exception>()
-    given(apiClient.searchBusStop(BusStopRequest(""))).willReturn(Either.left(exception))
+    given(apiClient.searchBusStop(BusStopRequest(""))).willReturn(Either.error(exception))
 
     val result = repository.searchAllBusStops()
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 }

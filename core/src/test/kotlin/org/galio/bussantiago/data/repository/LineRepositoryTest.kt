@@ -27,7 +27,7 @@ class LineRepositoryTest {
 
     val result = repository.getLines()
 
-    assertEquals(lines, result.rightValue)
+    assertEquals(lines, result.successValue)
   }
 
   @Test
@@ -36,22 +36,22 @@ class LineRepositoryTest {
     val lineEntity = mock<LineEntity>()
     val lines = listOf(line)
     val lineEntities = listOf(lineEntity)
-    given(apiClient.getLines()).willReturn(Either.right(lineEntities))
+    given(apiClient.getLines()).willReturn(Either.success(lineEntities))
     given(mapper.toDomain(lineEntity)).willReturn(line)
 
     val result = repository.getLines()
 
     assertEquals(lines, cache.getAll())
-    assertEquals(lines, result.rightValue)
+    assertEquals(lines, result.successValue)
   }
 
   @Test
   fun `when cache data is not valid and service fails should return the exception`() {
     val exception = mock<Exception>()
-    given(apiClient.getLines()).willReturn(Either.left(exception))
+    given(apiClient.getLines()).willReturn(Either.error(exception))
 
     val result = repository.getLines()
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 }

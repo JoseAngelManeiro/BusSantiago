@@ -32,11 +32,11 @@ internal class WidgetActivity : AppCompatActivity() {
       val widgetId = widgetIdHelper.getWidgetId(intent)
       if (widgetIdHelper.isWidgetIdValid(widgetId)) {
         getBusStopFavorites(Unit).fold(
-          leftOp = {
+          onError = {
             // When the use case fails we show nothing
             binding.noFavoritesTextView.visibility = View.VISIBLE
           },
-          rightOp = { busStopFavorites ->
+          onSuccess = { busStopFavorites ->
             if (busStopFavorites.isEmpty()) {
               binding.noFavoritesTextView.visibility = View.VISIBLE
             } else {

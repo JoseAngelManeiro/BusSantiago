@@ -36,7 +36,7 @@ class LinesViewModelTest {
   @Test
   fun `load the expected list of lines`() {
     val linesStub = listOf(createLineStub())
-    `when`(getLines(Unit)).thenReturn(Either.Right(linesStub))
+    `when`(getLines(Unit)).thenReturn(Either.Success(linesStub))
 
     linesViewModel.loadLines()
 
@@ -48,7 +48,7 @@ class LinesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLines(Unit)).thenReturn(Either.Left(exception))
+    `when`(getLines(Unit)).thenReturn(Either.Error(exception))
 
     linesViewModel.loadLines()
 

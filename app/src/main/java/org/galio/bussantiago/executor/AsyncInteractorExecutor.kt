@@ -16,10 +16,10 @@ class AsyncInteractorExecutor : InteractorExecutor() {
     getViewModelScope()?.launch(Dispatchers.IO) {
       val response = interactor(request)
       withContext(Dispatchers.Main) {
-        if (response.isRight) {
-          onSuccess(response.rightValue)
+        if (response.isSuccess) {
+          onSuccess(response.successValue)
         } else {
-          onError(response.leftValue)
+          onError(response.errorValue)
         }
       }
     } ?: throw IllegalStateException("InteractorExecutor's scope is not initialized")

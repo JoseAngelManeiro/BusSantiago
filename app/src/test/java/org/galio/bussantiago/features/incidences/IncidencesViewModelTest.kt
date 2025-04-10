@@ -42,7 +42,7 @@ class IncidencesViewModelTest {
       createIncidence(description = "Incidence 2"),
       createIncidence(description = "Incidence 3")
     )
-    `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
+    `when`(getLineIncidences(lineId)).thenReturn(Either.Success(incidencesStub))
 
     viewModel.loadIncidences(lineId)
 
@@ -55,7 +55,7 @@ class IncidencesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLineIncidences(lineId)).thenReturn(Either.Left(exception))
+    `when`(getLineIncidences(lineId)).thenReturn(Either.Error(exception))
 
     viewModel.loadIncidences(lineId)
 

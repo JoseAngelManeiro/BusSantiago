@@ -37,7 +37,7 @@ class SearchViewModelTest {
   @Test
   fun `load all bus stops successfully should return the data received`() {
     val busStops = listOf<BusStopSearch>(mock())
-    given(searchAllBusStops(Unit)).willReturn(Either.right(busStops))
+    given(searchAllBusStops(Unit)).willReturn(Either.success(busStops))
 
     searchViewModel.loadBusStops()
 
@@ -48,7 +48,7 @@ class SearchViewModelTest {
   @Test
   fun `when load all bus stops fails should return the exception`() {
     val exception = mock<Exception>()
-    given(searchAllBusStops(Unit)).willReturn(Either.left(exception))
+    given(searchAllBusStops(Unit)).willReturn(Either.error(exception))
 
     searchViewModel.loadBusStops()
 

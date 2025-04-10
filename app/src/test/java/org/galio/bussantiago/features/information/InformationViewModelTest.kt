@@ -36,7 +36,7 @@ class InformationViewModelTest {
   @Test
   fun `if all goes well, the data is loaded correctly`() {
     val lineInformationStub = "Any Information"
-    `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
+    `when`(getLineInformation(lineId)).thenReturn(Either.Success(lineInformationStub))
 
     viewModel.loadLineInformation(lineId)
 
@@ -47,7 +47,7 @@ class InformationViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
+    `when`(getLineInformation(lineId)).thenReturn(Either.Error(exception))
 
     viewModel.loadLineInformation(lineId)
 

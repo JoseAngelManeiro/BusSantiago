@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Left
-import org.galio.bussantiago.core.Either.Right
+import org.galio.bussantiago.core.Either.Error
+import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.data.exception.DatabaseException
 
@@ -55,9 +55,9 @@ internal class FavoriteDataSourceImpl(
           busStopFavorites.add(readBusStopFavorite(cursor))
         }
       }
-      Right(busStopFavorites)
+      Success(busStopFavorites)
     } catch (e: Exception) {
-      Left(DatabaseException())
+      Error(DatabaseException())
     }
   }
 
@@ -66,9 +66,9 @@ internal class FavoriteDataSourceImpl(
       val whereClause = FavouriteColumns.CODE + "=? AND " + FavouriteColumns.NAME + "=?"
       val whereArgs = arrayOf(busStopFavorite.code, busStopFavorite.name)
       database.delete(Tables.FAVOURITE, whereClause, whereArgs)
-      Right(Unit)
+      Success(Unit)
     } catch (e: Exception) {
-      Left(DatabaseException())
+      Error(DatabaseException())
     }
   }
 
@@ -79,9 +79,9 @@ internal class FavoriteDataSourceImpl(
         put(FavouriteColumns.NAME, busStopFavorite.name)
       }
       database.insert(Tables.FAVOURITE, null, values)
-      Right(Unit)
+      Success(Unit)
     } catch (e: Exception) {
-      Left(DatabaseException())
+      Error(DatabaseException())
     }
   }
 

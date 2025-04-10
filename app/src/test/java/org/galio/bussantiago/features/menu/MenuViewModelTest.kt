@@ -40,7 +40,7 @@ class MenuViewModelTest {
   fun `if all goes well, the data is loaded correctly`() {
     val lineDetailsStub = mock<LineDetails>()
     val menuModelStub = mock<MenuModel>()
-    `when`(getLineDetails(lineId)).thenReturn(Either.Right(lineDetailsStub))
+    `when`(getLineDetails(lineId)).thenReturn(Either.Success(lineDetailsStub))
     `when`(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
     viewModel.loadLineDetails()
@@ -52,7 +52,7 @@ class MenuViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLineDetails(lineId)).thenReturn(Either.Left(exception))
+    `when`(getLineDetails(lineId)).thenReturn(Either.Error(exception))
 
     viewModel.loadLineDetails()
 

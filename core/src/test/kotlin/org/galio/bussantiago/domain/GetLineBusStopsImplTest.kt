@@ -27,13 +27,13 @@ class GetLineBusStopsImplTest {
     val route2 = createRoute("Route 2", mock())
     val lineDetailsStub = createLineDetails(listOf(route1, route2))
     given(lineDetailsRepository.getLineDetails(request.lineId))
-      .willReturn(Either.Right(lineDetailsStub))
+      .willReturn(Either.Success(lineDetailsStub))
 
     val result = getLineBusStops(request)
 
     verify(lineDetailsRepository).getLineDetails(request.lineId)
-    assertTrue(result.isRight)
-    assertEquals(route1.busStops, result.rightValue)
+    assertTrue(result.isSuccess)
+    assertEquals(route1.busStops, result.successValue)
   }
 
   @Test
@@ -41,13 +41,13 @@ class GetLineBusStopsImplTest {
     val request = GetLineBusStops.Request(123, "Any name")
     val exception = ServiceException()
     given(lineDetailsRepository.getLineDetails(request.lineId))
-      .willReturn(Either.Left(exception))
+      .willReturn(Either.Error(exception))
 
     val result = getLineBusStops(request)
 
     verify(lineDetailsRepository).getLineDetails(request.lineId)
-    assertTrue(result.isLeft)
-    assertEquals(exception, result.leftValue)
+    assertTrue(result.isError)
+    assertEquals(exception, result.errorValue)
   }
 
   private fun createRoute(name: String, busStops: List<BusStop>): Route {
