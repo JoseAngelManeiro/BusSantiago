@@ -50,6 +50,9 @@ jobs:
       - run:
           name: Run Unit tests
           command: ./gradlew lint test
+      - run: # Only for debugging purposes, remove after that
+          name: Check Available System Images
+          command: sdkmanager --list | grep "system-images"
       - run:
           name: Install ARM system image
           command: sdkmanager "system-images;android-30;google_apis_playstore;armeabi-v7a"
@@ -65,9 +68,6 @@ jobs:
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
-      - run: # Only for debugging purposes, remove after that
-          name: Check Available System Images
-          command: sdkmanager --list | grep "system-images"
       - run:
           name: Run Instrumented Tests
           command: ./gradlew connectedAndroidTest
