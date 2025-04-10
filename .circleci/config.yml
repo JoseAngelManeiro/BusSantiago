@@ -52,24 +52,15 @@ jobs:
           command: ./gradlew lint test
       - run:
           name: Install system image
-          command: sdkmanager "system-images;android-30;google_apis;x86"
+          command: sdkmanager "system-images;android-30;google_apis;armeabi-v7a"
       - run:
           name: Create AVD
-          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --device "pixel"
+          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;armeabi-v7a" --device "pixel"
       - run:
           name: Start emulator
           command: |
-            # Start emulator in the background
-            emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect &
-            
-            # Wait for the emulator to fully boot
-            echo "Waiting for emulator to boot..."
+            nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect &
             adb wait-for-device
-            
-            # Optional: Confirm the emulator is recognized by adb
-            adb devices
-            
-            # Disable animations to speed up the tests
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
