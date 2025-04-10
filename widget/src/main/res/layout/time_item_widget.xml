@@ -7,7 +7,7 @@
   android:padding="@dimen/small_padding"
   android:gravity="center_vertical"
   android:background="@android:color/white"
-  tools:context=".widget.TimesViewsFactory">
+  tools:context="TimesViewsFactory">
 
   <FrameLayout
     android:layout_width="wrap_content"
