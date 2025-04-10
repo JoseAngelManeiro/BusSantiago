@@ -66,6 +66,9 @@ jobs:
             echo "Waiting for emulator to boot..."
             adb wait-for-device
             
+            # Optional: Confirm the emulator is recognized by adb
+            adb devices
+            
             # Disable animations to speed up the tests
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
