@@ -54,17 +54,22 @@ jobs:
           name: Check Available System Images
           command: sdkmanager --list | grep "system-images"
       - run:
-          name: Install ARM system image
-          command: sdkmanager "system-images;android-30;google_apis_playstore;armeabi-v7a"
+          name: Install ARM64 System Image
+          command: sdkmanager "system-images;android-30;google_apis;arm64-v8a"
       - run:
           name: Create AVD
-          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis_playstore;armeabi-v7a" --device "pixel"
+          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel"
       - run:
           name: Start Emulator
           command: |
-            nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect &
-            echo "Waiting for emulator..."
+            nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect -accel off &
+            echo "Waiting for emulator to boot..."
             adb wait-for-device
+            
+            # Verify emulator is running
+            adb devices
+            
+            # Optional: Disable animations to speed up tests
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
