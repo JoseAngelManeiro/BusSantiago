@@ -51,19 +51,23 @@ jobs:
           name: Run Unit tests
           command: ./gradlew lint test
       - run:
-          name: Install system image
-          command: sdkmanager "system-images;android-30;google_apis;armeabi-v7a"
+          name: Install ARM system image
+          command: sdkmanager "system-images;android-30;google_apis_playstore;armeabi-v7a"
       - run:
           name: Create AVD
-          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;armeabi-v7a" --device "pixel"
+          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis_playstore;armeabi-v7a" --device "pixel"
       - run:
-          name: Start emulator
+          name: Start Emulator
           command: |
             nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect &
+            echo "Waiting for emulator..."
             adb wait-for-device
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
+      - run: # Only for debugging purposes, remove after that
+          name: Check Available System Images
+          command: sdkmanager --list | grep "system-images"
       - run:
           name: Run Instrumented Tests
           command: ./gradlew connectedAndroidTest
