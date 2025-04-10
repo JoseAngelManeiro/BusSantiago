@@ -59,8 +59,14 @@ jobs:
       - run:
           name: Start emulator
           command: |
-            emulator -avd test -no-audio -no-window -no-boot-anim -accel on &
-            circle-android wait-for-boot
+            # Start emulator in the background
+            emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect &
+            
+            # Wait for the emulator to fully boot
+            echo "Waiting for emulator to boot..."
+            adb wait-for-device
+            
+            # Disable animations to speed up the tests
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
