@@ -1,3 +1,5 @@
+version: 2.1
+
 workflows:
   version: 2
   workflow:
@@ -10,14 +12,18 @@ workflows:
             branches:
               only: release
 
-jobs:
-  build_test:
-    working_directory: ~/code
+executors:
+  android-executor:
     docker:
       - image: cimg/android:2022.09
     environment:
       JVM_OPTS: -Xmx3200m
       CIRCLE_JDK_VERSION: openjdk21
+
+jobs:
+  build_test:
+    working_directory: ~/code
+    executor: android-executor
     steps:
       - checkout
       - run:
@@ -44,6 +50,23 @@ jobs:
       - run:
           name: Run Unit tests
           command: ./gradlew lint test
+      - run:
+          name: Install system image
+          command: sdkmanager "system-images;android-30;google_apis;x86"
+      - run:
+          name: Create AVD
+          command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --device "pixel"
+      - run:
+          name: Start emulator
+          command: |
+            emulator -avd test -no-audio -no-window -no-boot-anim -accel on &
+            circle-android wait-for-boot
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+      - run:
+          name: Run Instrumented Tests
+          command: ./gradlew connectedAndroidTest
       - store_artifacts:
           path: app/build/reports/lint-results-debug.html
           destination: app_lint_report
@@ -59,6 +82,8 @@ jobs:
           destination: shared_lint_report
       - store_test_results:
           path: shared/build/test-results/testDebugUnitTest
+      - store_test_results:
+          path: shared/build/outputs/androidTest-results/connected/debug
       - store_artifacts:
           path: widget/build/reports/lint-results-debug.html
           destination: widget_lint_report
@@ -66,8 +91,7 @@ jobs:
           path: widget/build/test-results/testDebugUnitTest
 
   deploy:
-    docker:
-      - image: cimg/android:2022.09
+    executor: android-executor
     steps:
       - checkout
       - run:
