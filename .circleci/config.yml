@@ -54,6 +54,9 @@ jobs:
           name: Check Available System Images
           command: sdkmanager --list | grep "system-images"
       - run:
+          name: Accept SDK Licenses
+          command: yes | sdkmanager --licenses
+      - run:
           name: Install ARM64 System Image
           command: sdkmanager "system-images;android-30;google_apis;arm64-v8a"
       - run:
