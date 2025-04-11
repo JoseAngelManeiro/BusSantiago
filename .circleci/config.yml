@@ -50,9 +50,9 @@ jobs:
       - run:
           name: Run Unit tests
           command: ./gradlew lint test
-      - run: # Only for debugging purposes, remove after that
-          name: Check Available System Images
-          command: sdkmanager --list | grep "system-images"
+      - run:
+          name: Ensure SDK tools are installed
+          command: sdkmanager "tools" "platform-tools"
       - run:
           name: Accept SDK Licenses
           command: yes | sdkmanager --licenses
