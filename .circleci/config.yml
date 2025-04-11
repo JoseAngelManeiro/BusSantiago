@@ -1,5 +1,13 @@
 version: 2.1
 
+executors:
+  android-executor:
+    docker:
+      - image: cimg/android:2022.09
+    environment:
+      JVM_OPTS: -Xmx3200m
+      CIRCLE_JDK_VERSION: openjdk11  # Use Java 11 to support sdkmanager
+
 workflows:
   version: 2
   workflow:
@@ -12,126 +20,99 @@ workflows:
             branches:
               only: release
 
-executors:
-  android-executor:
-    docker:
-      - image: cimg/android:2022.09
-    environment:
-      JVM_OPTS: -Xmx3200m
-      CIRCLE_JDK_VERSION: openjdk21
-
 jobs:
   build_test:
     working_directory: ~/code
     executor: android-executor
     steps:
       - checkout
-      - run:
-          name: Install JDK 21
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y openjdk-21-jdk
-            sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 1
-            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
-            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
-            java -version
-      - run:
-          name: Set JAVA_HOME
-          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Run Unit tests
-          command: ./gradlew lint test
-      - run:
-          name: Ensure SDK tools are installed
-          command: sdkmanager "tools" "platform-tools"
-      - run:
-          name: Set ANDROID_HOME and accept SDK Licenses
-          command: |
-            export ANDROID_SDK_ROOT=$HOME/android-sdk
-            export ANDROID_HOME=$ANDROID_SDK_ROOT
-            export PATH=$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
-            # Install and accept licenses
-            yes | sdkmanager --licenses
+      - run:
+          name: Run Unit Tests & Lint
+          command: ./gradlew lint test
+
+      - run:
+          name: Accept SDK Licenses
+          command: yes | sdkmanager --licenses
+
       - run:
           name: Install ARM64 System Image
           command: sdkmanager "system-images;android-30;google_apis;arm64-v8a"
+
       - run:
           name: Create AVD
           command: echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel"
+
       - run:
           name: Start Emulator
           command: |
             nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect -accel off &
             echo "Waiting for emulator to boot..."
             adb wait-for-device
-            
-            # Verify emulator is running
-            adb devices
-            
-            # Optional: Disable animations to speed up tests
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
+
       - run:
           name: Run Instrumented Tests
           command: ./gradlew connectedAndroidTest
+
+      - store_test_results:
+          path: app/build/test-results/testDebugUnitTest
+
+      - store_test_results:
+          path: shared/build/test-results/testDebugUnitTest
+
+      - store_test_results:
+          path: widget/build/test-results/testDebugUnitTest
+
+      - store_test_results:
+          path: shared/build/outputs/androidTest-results/connected/debug
+
       - store_artifacts:
           path: app/build/reports/lint-results-debug.html
           destination: app_lint_report
-      - store_test_results:
-          path: app/build/test-results/testDebugUnitTest
+
       - store_artifacts:
           path: core/build/reports/lint-results-debug.html
           destination: core_lint_report
-      - store_test_results:
-          path: core/build/test-results/testDebugUnitTest
+
       - store_artifacts:
           path: shared/build/reports/lint-results-debug.html
           destination: shared_lint_report
-      - store_test_results:
-          path: shared/build/test-results/testDebugUnitTest
-      - store_test_results:
-          path: shared/build/outputs/androidTest-results/connected/debug
+
       - store_artifacts:
           path: widget/build/reports/lint-results-debug.html
           destination: widget_lint_report
-      - store_test_results:
-          path: widget/build/test-results/testDebugUnitTest
 
   deploy:
     executor: android-executor
     steps:
       - checkout
-      - run:
-          name: Install JDK 21
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y openjdk-21-jdk
-            sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 1
-            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
-            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
-            java -version
-      - run:
-          name: Set JAVA_HOME
-          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
+
       - run:
           name: Build Release
           command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+
       - store_artifacts:
           path: app/build/outputs/apk/release
           destination: distribution
+
       - store_artifacts:
           path: app/build/outputs/mapping
           destination: distribution
