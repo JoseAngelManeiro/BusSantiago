@@ -60,6 +60,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Set JAVA_HOME
+          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+      - run:
           name: Run unit tests
           command: ./gradlew lint test
       - store_artifacts:
@@ -85,7 +88,7 @@ jobs:
 
   instrumented_tests:
     machine:
-      image: android:202102-01
+      image: android:default
     resource_class: large
     steps:
       - checkout
