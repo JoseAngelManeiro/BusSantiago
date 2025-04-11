@@ -1,79 +1,35 @@
 version: 2.1
 
-# Import the Android orb
-orbs:
-  android: circleci/android@2.2.0
-
 workflows:
-  version: 2
   workflow:
     jobs:
-      - build_test
+      - build
+      - unit_tests:
+          requires:
+            - build
+      - instrumented_tests:
+          requires:
+            - build
       - deploy:
           requires:
-            - build_test
+            - unit_tests
+            - instrumented_tests
           filters:
             branches:
               only: release
 
+executors:
+  android-executor:
+    docker:
+      - image: cimg/android:2022.09
+    environment:
+      JVM_OPTS: -Xmx3200m
+      CIRCLE_JDK_VERSION: openjdk21
+
 jobs:
-  build_test:
-    docker:
-      - image: cimg/android:2022.09
+  build:
     working_directory: ~/code
-    steps:
-      - checkout
-
-      # Use the Android orb to set up the SDK
-      - android/setup:
-          sdk-version: "34"
-          build-tools-version: "34.0.0"
-          target: "android-30"
-          # You can add more options for system images or platform tools if needed
-
-      # Run unit tests (lint and unit tests)
-      - run:
-          name: Run Unit tests
-          command: ./gradlew lint test
-
-      # Start the emulator
-      - android/start-emulator:
-          api-level: 30
-          force-avd-creation: true
-          emulator-options: "-no-window -gpu swiftshader_indirect -accel off"
-
-      # Run Instrumented Tests on the Emulator
-      - run:
-          name: Run Instrumented Tests
-          command: ./gradlew connectedAndroidTest
-
-      # Store test results and lint reports
-      - store_test_results:
-          path: app/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: app/build/reports/lint-results-debug.html
-          destination: app_lint_report
-      - store_test_results:
-          path: core/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: core/build/reports/lint-results-debug.html
-          destination: core_lint_report
-      - store_test_results:
-          path: shared/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: shared/build/reports/lint-results-debug.html
-          destination: shared_lint_report
-      - store_test_results:
-          path: shared/build/outputs/androidTest-results/connected/debug
-      - store_artifacts:
-          path: widget/build/reports/lint-results-debug.html
-          destination: widget_lint_report
-      - store_test_results:
-          path: widget/build/test-results/testDebugUnitTest
-
-  deploy:
-    docker:
-      - image: cimg/android:2022.09
+    executor: android-executor
     steps:
       - checkout
       - run:
@@ -88,10 +44,120 @@ jobs:
       - run:
           name: Set JAVA_HOME
           command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
+  unit_tests:
+    working_directory: ~/code
+    executor: android-executor
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          command: ./gradlew lint test
+      - store_artifacts:
+          path: app/build/reports/lint-results-debug.html
+          destination: app_lint_report
+      - store_test_results:
+          path: app/build/test-results/testDebugUnitTest
+      - store_artifacts:
+          path: core/build/reports/lint-results-debug.html
+          destination: core_lint_report
+      - store_test_results:
+          path: core/build/test-results/testDebugUnitTest
+      - store_artifacts:
+          path: shared/build/reports/lint-results-debug.html
+          destination: shared_lint_report
+      - store_test_results:
+          path: shared/build/test-results/testDebugUnitTest
+      - store_artifacts:
+          path: widget/build/reports/lint-results-debug.html
+          destination: widget_lint_report
+      - store_test_results:
+          path: widget/build/test-results/testDebugUnitTest
+
+  instrumented_tests:
+    executor:
+      name: android/android-machine
+      tag: "202102-01"
+      resource-class: large
+    steps:
+      - checkout
+      - run:
+          name: Create avd
+          command: |
+            SYSTEM_IMAGES="system-images;android-29;default;x86"
+            sdkmanager "$SYSTEM_IMAGES"
+            echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+      - run:
+          name: Launch emulator
+          command: |
+            emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          background: true
+      - run:
+          name: Generate cache key
+          command: |
+            find . -name 'build.gradle' | sort | xargs cat |
+            shasum | awk '{print $1}' > /tmp/gradle_cache_seed
+      - restore_cache:
+          key: gradle-v1-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
+      - run:
+          # run in parallel with the emulator starting up, to optimize build time
+          name: Run compileDemoBasicDebugJavaWithJavac task
+          command: |
+            ./gradlew compileDemoBasicDebugJavaWithJavac
+      - run:
+          name: Wait for emulator to start
+          command: |
+            circle-android wait-for-boot
+      - run:
+          name: Disable emulator animations
+          command: |
+            adb shell settings put global window_animation_scale 0.0
+            adb shell settings put global transition_animation_scale 0.0
+            adb shell settings put global animator_duration_scale 0.0
+      - run:
+          name: Run UI tests (with retry)
+          command: |
+            MAX_TRIES=2
+            run_with_retry() {
+               n=1
+               until [ $n -gt $MAX_TRIES ]
+               do
+                  echo "Starting test attempt $n"
+                  ./gradlew connectedAndroidTest && break
+                  n=$[$n+1]
+                  sleep 5
+               done
+               if [ $n -gt $MAX_TRIES ]; then
+                 echo "Max tries reached ($MAX_TRIES)"
+                 exit 1
+               fi
+            }
+            run_with_retry
+      - save_cache:
+          key: gradle-v1-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+      - store_test_results:
+          path: shared/build/outputs/androidTest-results/connected/debug
+
+  deploy:
+    executor: android-executor
+    steps:
+      - checkout
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
       - run:
-          name: Build Release APK
+          name: Build Release
           command: ./gradlew clean assembleRelease --no-daemon --stacktrace
       - store_artifacts:
           path: app/build/outputs/apk/release
