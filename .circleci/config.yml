@@ -1,5 +1,13 @@
 version: 2.1
 
+executors:
+  android-executor:
+    docker:
+      - image: cimg/android:2022.09
+    environment:
+      JVM_OPTS: -Xmx3200m
+      CIRCLE_JDK_VERSION: openjdk21
+
 workflows:
   version: 2
   workflow:
@@ -12,20 +20,13 @@ workflows:
             branches:
               only: release
 
-executors:
-  android-executor:
-    docker:
-      - image: cimg/android:2022.09
-    environment:
-      JVM_OPTS: -Xmx3200m
-      CIRCLE_JDK_VERSION: openjdk21
-
 jobs:
   build_test:
     working_directory: ~/code
     executor: android-executor
     steps:
       - checkout
+
       - run:
           name: Install JDK 21
           command: |
@@ -35,75 +36,102 @@ jobs:
             sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
             export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
             java -version
+
       - run:
           name: Set JAVA_HOME
           command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+
       - save_cache:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
       - run:
           name: Run Unit tests
           command: ./gradlew lint test
+
       - run:
-          name: Install Java 11 for SDK tools
-          command: sudo apt-get install -y openjdk-11-jdk
-      - run:
-          name: Accept SDK Licenses
+          name: Install SDK tools and accept licenses
           command: |
-            export JAVA11_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-            export PATH=$JAVA11_HOME/bin:$PATH
+            export ANDROID_SDK_ROOT=$ANDROID_HOME
+            export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
+
+            # Install Java 11 for sdkmanager compatibility
+            sudo apt-get update
+            sudo apt-get install -y openjdk-11-jdk
+            export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+            export PATH=$JAVA_HOME/bin:$PATH
+            java -version
+
+            # Accept all SDK licenses
             yes | sdkmanager --licenses
-      - run:
-          name: Install ARM64 System Image
-          command: |
-            export JAVA11_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-            export PATH=$JAVA11_HOME/bin:$PATH
-            sdkmanager "system-images;android-30;google_apis;arm64-v8a"
-      - run:
-          name: Create AVD
-          command: |
-            export JAVA11_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-            export PATH=$JAVA11_HOME/bin:$PATH
-            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel"
+
+            # Install system image for emulator
+            sdkmanager "system-images;android-30;google_apis;x86_64"
+
+            # Create AVD
+            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86_64" --device "pixel"
+
       - run:
           name: Start Emulator
           command: |
+            export ANDROID_SDK_ROOT=$ANDROID_HOME
             nohup emulator -avd test -no-audio -no-window -no-boot-anim -gpu swiftshader_indirect -accel off &
             echo "Waiting for emulator to boot..."
             adb wait-for-device
-            adb devices
+            adb shell getprop sys.boot_completed | grep -m 1 '1'
+
+            # Optional: Disable animations
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
+
+      - run:
+          name: Switch back to Java 21 for Gradle
+          command: |
+            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+            java -version
+
       - run:
           name: Run Instrumented Tests
           command: ./gradlew connectedAndroidTest
+
       - store_artifacts:
           path: app/build/reports/lint-results-debug.html
           destination: app_lint_report
+
       - store_test_results:
           path: app/build/test-results/testDebugUnitTest
+
       - store_artifacts:
           path: core/build/reports/lint-results-debug.html
           destination: core_lint_report
+
       - store_test_results:
           path: core/build/test-results/testDebugUnitTest
+
       - store_artifacts:
           path: shared/build/reports/lint-results-debug.html
           destination: shared_lint_report
+
       - store_test_results:
           path: shared/build/test-results/testDebugUnitTest
+
       - store_test_results:
           path: shared/build/outputs/androidTest-results/connected/debug
+
       - store_artifacts:
           path: widget/build/reports/lint-results-debug.html
           destination: widget_lint_report
+
       - store_test_results:
           path: widget/build/test-results/testDebugUnitTest
 
@@ -111,6 +139,7 @@ jobs:
     executor: android-executor
     steps:
       - checkout
+
       - run:
           name: Install JDK 21
           command: |
@@ -120,17 +149,22 @@ jobs:
             sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
             export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
             java -version
+
       - run:
           name: Set JAVA_HOME
           command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
+
       - run:
           name: Build Release
           command: ./gradlew clean assembleRelease --no-daemon --stacktrace
+
       - store_artifacts:
           path: app/build/outputs/apk/release
           destination: distribution
+
       - store_artifacts:
           path: app/build/outputs/mapping
           destination: distribution
