@@ -14,9 +14,9 @@ workflows:
           requires:
             - unit_tests
             - instrumented_tests
-          filters:
-            branches:
-              only: release
+#          filters:
+#            branches:
+#              only: release
 
 executors:
   android-executor:
@@ -42,6 +42,9 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Build project
+          command: ./gradlew clean assemble
 
   unit_tests:
     working_directory: ~/code
@@ -79,11 +82,11 @@ jobs:
             shasum | awk '{print $1}' > /tmp/gradle_cache_seed
       - restore_cache:
           key: gradle-v1-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
-#      - run:
-#          # run in parallel with the emulator starting up, to optimize build time
-#          name: Run compileDemoBasicDebugJavaWithJavac task
-#          command: |
-#            ./gradlew compileDemoBasicDebugJavaWithJavac
+      - run:
+          # run in parallel with the emulator starting up, to optimize build time
+          name: Run assembleDebugAndroidTest task
+          command: |
+            ./gradlew assembleDebugAndroidTest
       - run:
           name: Wait for emulator to start
           command: |
