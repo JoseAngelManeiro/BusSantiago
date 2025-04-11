@@ -54,8 +54,14 @@ jobs:
           name: Ensure SDK tools are installed
           command: sdkmanager "tools" "platform-tools"
       - run:
-          name: Accept SDK Licenses
-          command: yes | sdkmanager --sdk_root=/opt/android/sdk --licenses
+          name: Set ANDROID_HOME and accept SDK Licenses
+          command: |
+            export ANDROID_SDK_ROOT=$HOME/android-sdk
+            export ANDROID_HOME=$ANDROID_SDK_ROOT
+            export PATH=$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+
+            # Install and accept licenses
+            yes | sdkmanager --licenses
       - run:
           name: Install ARM64 System Image
           command: sdkmanager "system-images;android-30;google_apis;arm64-v8a"
