@@ -84,10 +84,9 @@ jobs:
           path: widget/build/test-results/testDebugUnitTest
 
   instrumented_tests:
-    executor:
-      name: android/android-machine
-      tag: "202102-01"
-      resource-class: large
+    machine:
+      image: android:202102-01
+    resource_class: large
     steps:
       - checkout
       - run:
