@@ -32,18 +32,7 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - run:
-          name: Install JDK 21
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y openjdk-21-jdk
-            sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 1
-            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
-            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
-            java -version
-      - run:
-          name: Set JAVA_HOME
-          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+      - install_jdk
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -59,36 +48,12 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - run:
-          name: Ensure Java 21 is set
-          command: |
-            echo "Setting JAVA_HOME to Java 21"
-            export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-            export PATH=$JAVA_HOME/bin:$PATH
-            java -version
+      - install_jdk
       - run:
           name: Run unit tests
           command: ./gradlew lint test
-      - store_artifacts:
-          path: app/build/reports/lint-results-debug.html
-          destination: app_lint_report
-      - store_test_results:
-          path: app/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: core/build/reports/lint-results-debug.html
-          destination: core_lint_report
-      - store_test_results:
-          path: core/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: shared/build/reports/lint-results-debug.html
-          destination: shared_lint_report
-      - store_test_results:
-          path: shared/build/test-results/testDebugUnitTest
-      - store_artifacts:
-          path: widget/build/reports/lint-results-debug.html
-          destination: widget_lint_report
-      - store_test_results:
-          path: widget/build/test-results/testDebugUnitTest
+      - store_lint_artifacts
+      - store_unit_test_results
 
   instrumented_tests:
     machine:
@@ -153,8 +118,7 @@ jobs:
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
-      - store_test_results:
-          path: shared/build/outputs/androidTest-results/connected/debug
+      - store_android_test_results
 
   deploy:
     executor: android-executor
@@ -171,3 +135,54 @@ jobs:
       - store_artifacts:
           path: app/build/outputs/mapping
           destination: distribution
+
+commands:
+  install_jdk:
+    description: "Install JDK 21"
+    steps:
+      - run:
+          name: Install JDK 21
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y openjdk-21-jdk
+            sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 1
+            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+            export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+            java -version
+      - run:
+          name: Set JAVA_HOME
+          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+
+  store_lint_artifacts:
+    description: "Store Lint artifacts"
+    steps:
+      - store_artifacts:
+          path: app/build/reports/lint-results-debug.html
+          destination: app_lint_report
+      - store_artifacts:
+          path: core/build/reports/lint-results-debug.html
+          destination: core_lint_report
+      - store_artifacts:
+          path: shared/build/reports/lint-results-debug.html
+          destination: shared_lint_report
+      - store_artifacts:
+          path: widget/build/reports/lint-results-debug.html
+          destination: widget_lint_report
+
+  store_unit_test_results:
+    description: "Store Unit Test results"
+    steps:
+      - store_test_results:
+          path: app/build/test-results/testDebugUnitTest
+      - store_test_results:
+          path: core/build/test-results/testDebugUnitTest
+      - store_test_results:
+          path: shared/build/test-results/testDebugUnitTest
+      - store_test_results:
+          path: widget/build/test-results/testDebugUnitTest
+
+  store_android_test_results:
+    description: "Store Android Test results"
+    steps:
+      - store_test_results:
+          path: shared/build/outputs/androidTest-results/connected/debug
