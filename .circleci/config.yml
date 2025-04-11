@@ -60,8 +60,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Set JAVA_HOME
-          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64' >> $BASH_ENV
+          name: Ensure Java 21 is set
+          command: |
+            echo "Setting JAVA_HOME to Java 21"
+            export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+            export PATH=$JAVA_HOME/bin:$PATH
+            java -version
       - run:
           name: Run unit tests
           command: ./gradlew lint test
@@ -110,11 +114,11 @@ jobs:
             shasum | awk '{print $1}' > /tmp/gradle_cache_seed
       - restore_cache:
           key: gradle-v1-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
-      - run:
-          # run in parallel with the emulator starting up, to optimize build time
-          name: Run compileDemoBasicDebugJavaWithJavac task
-          command: |
-            ./gradlew compileDemoBasicDebugJavaWithJavac
+#      - run:
+#          # run in parallel with the emulator starting up, to optimize build time
+#          name: Run compileDemoBasicDebugJavaWithJavac task
+#          command: |
+#            ./gradlew compileDemoBasicDebugJavaWithJavac
       - run:
           name: Wait for emulator to start
           command: |
