@@ -68,6 +68,11 @@ jobs:
             sdkmanager "$SYSTEM_IMAGES"
             echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
       - run:
+          name: Start ADB server
+          command: |
+            adb start-server
+            adb devices
+      - run:
           name: Launch emulator
           command: |
             emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
