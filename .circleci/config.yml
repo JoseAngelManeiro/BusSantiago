@@ -14,9 +14,9 @@ workflows:
           requires:
             - unit_tests
             - instrumented_tests
-#          filters:
-#            branches:
-#              only: release
+          filters:
+            branches:
+              only: release
 
 executors:
   android-executor:
@@ -44,7 +44,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Build project
-          command: ./gradlew clean assemble
+          command: ./gradlew build
 
   unit_tests:
     working_directory: ~/code
