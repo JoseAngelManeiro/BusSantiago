@@ -42,12 +42,11 @@ internal class TimesViewsFactory(
   override fun onDataSetChanged() {
     val appWidgetManager = AppWidgetManager.getInstance(context)
 
-    val remoteViews = RemoteViews(context.packageName, R.layout.app_widget)
-
     // Init loading mode
-    remoteViews.setViewVisibility(R.id.refresh_button, View.GONE)
-    remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
-    appWidgetManager.updateAppWidget(widgetId, remoteViews)
+    val loadingViews = RemoteViews(context.packageName, R.layout.app_widget)
+    loadingViews.setViewVisibility(R.id.refresh_button, View.GONE)
+    loadingViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
+    appWidgetManager.updateAppWidget(widgetId, loadingViews)
 
     // Obtain times from service
     val tempList = mutableListOf<LineRemainingTimeModel>()
@@ -57,12 +56,13 @@ internal class TimesViewsFactory(
     }
 
     // Finish loading mode
-    remoteViews.setViewVisibility(R.id.progressBar, View.GONE)
-    remoteViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
+    val resultViews = RemoteViews(context.packageName, R.layout.app_widget)
+    resultViews.setViewVisibility(R.id.progressBar, View.GONE)
+    resultViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
     val formatter = SimpleDateFormat("HH:mm", Locale.US)
     val hour = formatter.format(Calendar.getInstance().timeInMillis)
-    remoteViews.setTextViewText(R.id.hourSync_textview, hour)
-    appWidgetManager.updateAppWidget(widgetId, remoteViews)
+    resultViews.setTextViewText(R.id.hourSync_textview, hour)
+    appWidgetManager.updateAppWidget(widgetId, resultViews)
 
     // Save sync hour in preferences
     widgetPrefsHelper.save(hour = hour, widgetId = widgetId)

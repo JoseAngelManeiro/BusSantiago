@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.net.toUri
 import org.galio.bussantiago.shared.DeeplinkHelper
@@ -33,6 +34,10 @@ internal class WidgetProvider : AppWidgetProvider() {
       remoteViews.setTextViewText(R.id.codeStop_textview, code)
       remoteViews.setTextViewText(R.id.nameStop_textview, name)
       remoteViews.setTextViewText(R.id.hourSync_textview, hour)
+
+      // Restore default visibility values
+      remoteViews.setViewVisibility(R.id.progressBar, View.GONE)
+      remoteViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
 
       // Declare the Intent to manage the manual data refresh
       val refreshIntent = Intent(context, WidgetProvider::class.java).apply {
