@@ -4,6 +4,9 @@ workflows:
   workflow:
     jobs:
       - build
+      - lint:
+          requires:
+            - build
       - unit_tests:
           requires:
             - build
@@ -12,6 +15,7 @@ workflows:
             - build
       - deploy:
           requires:
+            - lint
             - unit_tests
             - instrumented_tests
           filters:
@@ -43,6 +47,17 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
+  lint:
+    working_directory: ~/code
+    executor: android-executor
+    steps:
+      - checkout
+      - install_jdk
+      - run:
+          name: Run Lint
+          command: ./gradlew lint
+      - store_lint_artifacts
+
   unit_tests:
     working_directory: ~/code
     executor: android-executor
@@ -51,8 +66,7 @@ jobs:
       - install_jdk
       - run:
           name: Run unit tests
-          command: ./gradlew lint test
-      - store_lint_artifacts
+          command: ./gradlew test
       - store_unit_test_results
 
   instrumented_tests:
