@@ -191,3 +191,5 @@ commands:
     steps:
       - store_test_results:
           path: shared/build/outputs/androidTest-results/connected/debug
+      - store_test_results:
+          path: app/build/outputs/androidTest-results/connected/debug
