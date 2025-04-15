@@ -40,10 +40,10 @@ dependencies {
     // Commons IO
     testImplementation 'commons-io:commons-io:2.6'
 
-    // ApplicationProvider.getApplicationContext()
-    implementation 'androidx.test:core-ktx:1.6.1'
-    // Roboelectric (necessary to provide a mock Android environment for the database)
-    testImplementation 'org.robolectric:robolectric:4.10.3'
+    // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
+    testImplementation(libs.test.core)
+    // Provides a mock Android environment for the database)
+    testImplementation(libs.roboelectric)
 
     testImplementation(libs.junit)
 }

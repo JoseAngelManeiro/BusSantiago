@@ -3,9 +3,17 @@ koin = "3.0.1"
 junit = "4.13.2"
 appcompat = "1.7.0"
 mockito = "5.0.0"
+material = "1.12.0"
+test-core = "1.6.1"
+roboelectric = "4.10.3"
+test-runner = "1.5.2"
 
 [libraries]
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+test-core = { module = "androidx.test:core-ktx", version.ref = "test-core" }
+roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
+test-runner = { module = "androidx.test:runner", version.ref = "test-runner" }
