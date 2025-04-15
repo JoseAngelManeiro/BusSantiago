@@ -104,32 +104,27 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Navigation
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.fragment)
 
     // Koin
     implementation(libs.koin)
-
-    // Gson
-    implementation 'com.google.code.gson:gson:2.10.1'
 
     // Maps & Location
     implementation 'com.google.android.gms:play-services-maps:19.0.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 
     // Play Core (In-app reviews)
-    implementation 'com.google.android.play:review:2.0.1'
-    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation(libs.play.review.core)
+    implementation(libs.play.review.ktx)
 
     // Compose
-    implementation "androidx.compose.runtime:runtime:1.1.1"
-    implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "androidx.compose.foundation:foundation:1.1.1"
-    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
-    implementation "androidx.compose.material:material:1.1.1"
-    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
-    implementation "androidx.compose.ui:ui-tooling:1.1.1"
-    implementation "com.google.android.material:compose-theme-adapter:1.1.1"
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
+    implementation(libs.compose.runtime.livedata)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.theme.adapter)
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")

@@ -20,8 +20,8 @@ dependencies {
     implementation(libs.appcompat)
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
     implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
 
     // Koin
@@ -29,10 +29,6 @@ dependencies {
 
     // Mockito
     testImplementation(libs.mockito)
-
-    // Bytebuddy (necessary for Mockito inline)
-    implementation 'net.bytebuddy:byte-buddy:1.15.11'
-    testImplementation 'net.bytebuddy:byte-buddy-agent:1.15.11'
 
     // MockWebServer
     testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")

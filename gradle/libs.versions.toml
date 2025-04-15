@@ -6,7 +6,12 @@ mockito = "5.0.0"
 material = "1.12.0"
 test-core = "1.6.1"
 roboelectric = "4.10.3"
-test-runner = "1.5.2"
+test-runner = "1.6.2"
+retrofit = "2.4.0"
+compose = "1.1.1"
+compose-theme-adapter = "1.1.1"
+play-review = "2.0.2"
+navigation = "2.8.9"
 
 [libraries]
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -14,6 +19,29 @@ junit = { module = "junit:junit", version.ref = "junit" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# Instrumented tests
 test-core = { module = "androidx.test:core-ktx", version.ref = "test-core" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 test-runner = { module = "androidx.test:runner", version.ref = "test-runner" }
+
+# Retrofit
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+# Compose libraries
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "compose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter", version.ref = "compose-theme-adapter" }
+
+# In-app reviews
+play-review-core = { module = "com.google.android.play:review", version.ref = "play-review" }
+play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "play-review" }
+
+# Navigation
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+
