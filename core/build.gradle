@@ -28,10 +28,7 @@ dependencies {
     implementation(libs.koin)
 
     // Mockito
-    testImplementation 'org.mockito:mockito-core:5.0.0'
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
-    // Mockito (final classes)
-    testImplementation 'org.mockito:mockito-inline:5.0.0'
+    testImplementation(libs.mockito)
 
     // Bytebuddy (necessary for Mockito inline)
     implementation 'net.bytebuddy:byte-buddy:1.15.11'

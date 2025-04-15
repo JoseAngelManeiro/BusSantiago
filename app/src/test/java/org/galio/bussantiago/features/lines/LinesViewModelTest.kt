@@ -14,7 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 
 class LinesViewModelTest {
 
@@ -36,7 +36,7 @@ class LinesViewModelTest {
   @Test
   fun `load the expected list of lines`() {
     val linesStub = listOf(createLineStub())
-    `when`(getLines(Unit)).thenReturn(Either.Success(linesStub))
+    whenever(getLines(Unit)).thenReturn(Either.Success(linesStub))
 
     linesViewModel.loadLines()
 
@@ -48,7 +48,7 @@ class LinesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLines(Unit)).thenReturn(Either.Error(exception))
+    whenever(getLines(Unit)).thenReturn(Either.Error(exception))
 
     linesViewModel.loadLines()
 

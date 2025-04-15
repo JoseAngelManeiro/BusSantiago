@@ -15,7 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 
 class BusStopsListViewModelTest {
 
@@ -41,7 +41,7 @@ class BusStopsListViewModelTest {
   fun `if all goes well, the bus stop models are mapped and loaded correctly`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val busStopsStub = listOf(createBusStop(code = "1234", name = "Bus Stop 1"))
-    `when`(getLineBusStops(request)).thenReturn(Either.Success(busStopsStub))
+    whenever(getLineBusStops(request)).thenReturn(Either.Success(busStopsStub))
 
     viewModel.loadBusStops()
 
@@ -55,7 +55,7 @@ class BusStopsListViewModelTest {
   fun `fire the exception received`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val exception = Exception("Fake exception")
-    `when`(getLineBusStops(request)).thenReturn(Either.Error(exception))
+    whenever(getLineBusStops(request)).thenReturn(Either.Error(exception))
 
     viewModel.loadBusStops()
 
