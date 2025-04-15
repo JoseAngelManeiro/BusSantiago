@@ -31,7 +31,7 @@ dependencies {
     implementation(libs.koin)
 
     // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
-    testImplementation(libs.test.core)
+    implementation(libs.test.core)
     // Provide a mock Android environment for the preferences
     testImplementation(libs.roboelectric)
 

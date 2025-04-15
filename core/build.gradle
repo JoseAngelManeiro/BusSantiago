@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'commons-io:commons-io:2.6'
 
     // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
-    testImplementation(libs.test.core)
+    implementation(libs.test.core)
     // Provides a mock Android environment for the database)
     testImplementation(libs.roboelectric)
 

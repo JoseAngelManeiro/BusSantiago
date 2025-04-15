@@ -29,9 +29,9 @@ dependencies {
     implementation(libs.material)
 
     // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
-    testImplementation(libs.test.core)
+    implementation(libs.test.core)
     // JUnit-specific helpers for Android tests (test rules...)
-    testImplementation 'androidx.test.ext:junit-ktx:1.2.1'
+    implementation 'androidx.test.ext:junit-ktx:1.2.1'
     // Provides a mock Android environment for the preferences)
     testImplementation(libs.roboelectric)
 
