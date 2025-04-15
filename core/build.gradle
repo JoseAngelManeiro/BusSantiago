@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android'
 android {
     defaultConfig {
         namespace "org.galio.bussantiago.core"
-        compileSdk 34
-        minSdkVersion 26
-        targetSdkVersion 34
+        compileSdk rootProject.ext.compileSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
     }
 
     compileOptions {
