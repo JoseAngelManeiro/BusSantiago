@@ -97,11 +97,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation(libs.appcompat)
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation(libs.constraintlayout)
     implementation(libs.material)
 
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation(libs.viewmodel)
 
     // Navigation
     implementation(libs.navigation.ui)
@@ -111,8 +111,8 @@ dependencies {
     implementation(libs.koin)
 
     // Maps & Location
-    implementation 'com.google.android.gms:play-services-maps:19.0.0'
-    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     // Play Core (In-app reviews)
     implementation(libs.play.review.core)
@@ -127,21 +127,21 @@ dependencies {
     implementation(libs.compose.theme.adapter)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation(libs.coroutines)
 
     // Core Library Desugaring
-    implementation "com.android.tools:desugar_jdk_libs:2.0.4"
+    implementation(libs.desugaring)
 
     // Mockito
     testImplementation(libs.mockito)
 
     testImplementation(libs.junit)
 
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation(libs.arch.core.testing)
 
     androidTestImplementation(libs.test.runner)
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
     // For GrantPermissionRule
-    androidTestImplementation "androidx.test:rules:1.3.0"
+    androidTestImplementation(libs.test.rules)
 }

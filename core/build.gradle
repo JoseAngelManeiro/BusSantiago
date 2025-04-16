@@ -22,7 +22,7 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
-    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation(libs.retrofit.interceptor)
 
     // Koin
     implementation(libs.koin)
@@ -31,10 +31,10 @@ dependencies {
     testImplementation(libs.mockito)
 
     // MockWebServer
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
+    testImplementation(libs.mockwebserver)
 
     // Commons IO
-    testImplementation 'commons-io:commons-io:2.6'
+    testImplementation(libs.commons.io)
 
     // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
     implementation(libs.test.core)
