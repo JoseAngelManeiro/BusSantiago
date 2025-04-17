@@ -40,6 +40,7 @@ import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.times.TimesDialogFragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val MAP_ZOOM = 18f
@@ -50,6 +51,7 @@ class SearchFragment : Fragment() {
   private val binding get() = _binding!!
 
   private val viewModel: SearchViewModel by viewModel()
+  private val searchUtils: SearchUtils by inject()
 
   private var mapView: MapView? = null
   private var googleMap: GoogleMap? = null
@@ -191,7 +193,11 @@ class SearchFragment : Fragment() {
 
   private fun setUpAutocompleteTextView(busStops: List<BusStopSearch>) {
     with(binding) {
-      val adapter = BusStopSearchAdapter(context = requireContext(), busStops = busStops)
+      val adapter = BusStopSearchAdapter(
+        context = requireContext(),
+        busStops = busStops,
+        searchUtils = searchUtils
+      )
       searchAutocompleteTextView.run {
         setAdapter(adapter)
         setOnItemClickListener { _, _, position, _ ->
