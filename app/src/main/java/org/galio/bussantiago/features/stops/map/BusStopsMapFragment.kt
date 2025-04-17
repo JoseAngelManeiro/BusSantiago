@@ -2,7 +2,6 @@ package org.galio.bussantiago.features.stops.map
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -25,6 +24,7 @@ import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.graphics.toColorInt
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
@@ -113,7 +113,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
       )?.setIcon(BitmapDescriptorFactory.defaultMarker(hue))
     }
 
-    polylineOptions.color(Color.parseColor(lineMapModel.lineStyle))
+    polylineOptions.color(lineMapModel.lineStyle.toColorInt())
 
     mGoogleMap?.addPolyline(polylineOptions)
 
