@@ -1,5 +1,5 @@
 [versions]
-gradle = "8.3.2" # AGP
+gradle = "8.9.1" # AGP version
 kotlin-gradle-plugin = "1.9.21" # Kotlin version
 koin = "3.0.1"
 junit = "4.13.2"
