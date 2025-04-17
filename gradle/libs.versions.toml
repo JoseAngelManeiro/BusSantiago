@@ -1,4 +1,6 @@
 [versions]
+gradle = "8.3.2" # AGP
+kotlin-gradle-plugin = "1.9.21" # Kotlin version
 koin = "3.0.1"
 junit = "4.13.2"
 appcompat = "1.7.0"
@@ -27,6 +29,10 @@ espresso = "3.6.1"
 test-rules = "1.6.1"
 
 [libraries]
+# Root Gradle
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
+
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
