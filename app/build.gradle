@@ -64,11 +64,14 @@ android {
         }
     }
 
-    lintOptions {
-        lintConfig file("$rootDir/app/lint-rules.xml")
+    lint {
         abortOnError true
+        checkAllWarnings true
         ignoreWarnings false
         htmlReport true
+        // Disable the check for invalid references like java.adapter due to
+        // "Invalid package reference in com.android.tools:desugar_jdk_libs_configuration" error
+        disable 'InvalidPackage'
     }
 
     compileOptions {
