@@ -3,21 +3,21 @@
 
 This project contains the code of [Bus Santiago][bus-santiago], a personal app published in Google Play Store which is used to know the arrival times of city buses in real time.
 
+<p>
 <kbd>
 <img src="./art/ApplicationVideo.gif" width="280" alt="Bus Santiago"/>
 </kbd>
-
-<br>
+</p>
 
 ## Architecture
 
 This app uses [Android Architecture components][architecture] with [Koin][koin].
 
-<kbd>
-<img src="./art/app_architecture.png" width="545" alt="App Architecture"/>
+<p>
+<kbd>  
+<img src="./art/app_architecture.png" width="540" alt="App Architecture"/>  
 </kbd>
-
-<br>
+</p>
 
 The architecture of the app is composed of 4 modules:
 
