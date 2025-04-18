@@ -4,7 +4,7 @@
   <string name="information">Información</string>
   <string name="incidences">Incidencias</string>
   <string name="lines">Líneas</string>
-  <string name="one_way_route_stops">Paradas</string>
+  <string name="roundtrip_route_stops">Paradas</string>
   <string name="outward_route_stops">Paradas ida</string>
   <string name="return_route_stops">Paradas vuelta</string>
   <string name="favorite_stop">Parada favorita</string>

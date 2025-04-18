@@ -11,12 +11,18 @@ class MenuFactory {
     lineDetails.routes.forEachIndexed { index, route ->
       menuOptionModels.add(
         MenuOptionModel(
-          menuType = if (index == 0) MenuType.OUTWARD_ROUTE else MenuType.RETURN_ROUTE,
+          menuType = when {
+            lineDetails.routes.size == 1 -> MenuType.ROUNDTRIP_ROUTE
+            index == 0 -> MenuType.OUTWARD_ROUTE
+            else -> MenuType.RETURN_ROUTE
+          },
           title = route.name
         )
       )
     }
+
     menuOptionModels.add(MenuOptionModel(MenuType.INFORMATION))
+
     if (lineDetails.incidences.isNotEmpty()) {
       menuOptionModels.add(MenuOptionModel(MenuType.INCIDENCES))
     }

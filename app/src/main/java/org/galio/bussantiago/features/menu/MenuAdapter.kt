@@ -47,6 +47,7 @@ class MenuAdapter(
     return when (menuType) {
       MenuType.OUTWARD_ROUTE -> R.drawable.ic_outward_route
       MenuType.RETURN_ROUTE -> R.drawable.ic_return_route
+      MenuType.ROUNDTRIP_ROUTE -> R.drawable.ic_roundtrip_route
       MenuType.INFORMATION -> R.drawable.ic_information
       MenuType.INCIDENCES -> R.drawable.ic_incidences
     }
@@ -54,16 +55,11 @@ class MenuAdapter(
 
   private fun getContentDescription(context: Context, menuType: MenuType): String {
     return when (menuType) {
-      MenuType.OUTWARD_ROUTE -> {
-        if (items.find { it.menuType == MenuType.RETURN_ROUTE } != null) {
-          context.getString(R.string.outward_route_stops)
-        } else {
-          context.getString(R.string.one_way_route_stops)
-        }
-      }
-
+      MenuType.OUTWARD_ROUTE -> context.getString(R.string.outward_route_stops)
       MenuType.RETURN_ROUTE -> context.getString(R.string.return_route_stops)
-      else -> ""
+      MenuType.ROUNDTRIP_ROUTE -> context.getString(R.string.roundtrip_route_stops)
+      MenuType.INFORMATION -> context.getString(R.string.information)
+      MenuType.INCIDENCES -> context.getString(R.string.incidences)
     }
   }
 

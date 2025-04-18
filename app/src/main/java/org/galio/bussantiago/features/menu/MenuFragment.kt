@@ -84,7 +84,7 @@ class MenuFragment : DialogFragment() {
 
   private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
     when (menuOptionModel.menuType) {
-      MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE -> {
+      MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE, MenuType.ROUNDTRIP_ROUTE -> {
         navigateSafe(
           R.id.actionShowBusStops,
           BusStopsContainerFragment.createArguments(
