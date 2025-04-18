@@ -10,7 +10,9 @@ This project contains the code of [Bus Santiago][bus-santiago], a personal app p
 This app uses [Android Architecture components][architecture] with [Koin][koin].
 
 <p align="center">
-<img src="./art/app_architecture.png" width="500" alt="App Architecture" style="border: 1px solid #ccc; border-radius: 3px;"/> 
+<kbd>
+<img src="./art/app_architecture.png" width="530" alt="App Architecture" />
+</kbd>
 </p>
 
 The architecture of the app is composed of 4 modules:
