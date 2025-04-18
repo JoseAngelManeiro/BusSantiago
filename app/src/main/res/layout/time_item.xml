@@ -9,7 +9,8 @@
   android:paddingTop="@dimen/small_padding"
   android:paddingBottom="@dimen/small_padding"
   android:gravity="center_vertical"
-  tools:context="org.galio.bussantiago.features.times.TimesAdapter">
+  tools:context="org.galio.bussantiago.features.times.TimesAdapter"
+  tools:ignore="SelectableText">
 
   <org.galio.bussantiago.common.model.SynopticView
     android:id="@+id/synopticView"

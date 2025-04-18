@@ -10,7 +10,8 @@
   android:paddingBottom="@dimen/small_padding"
   android:gravity="center_vertical"
   android:background="?attr/selectableItemBackground"
-  tools:context="org.galio.bussantiago.features.lines.LinesAdapter">
+  tools:context="org.galio.bussantiago.features.lines.LinesAdapter"
+  tools:ignore="SelectableText">
 
   <FrameLayout
     android:layout_width="wrap_content"

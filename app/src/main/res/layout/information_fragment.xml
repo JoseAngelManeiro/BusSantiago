@@ -14,7 +14,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="@dimen/default_padding"
-      android:textSize="@dimen/default_text_size" />
+      android:textSize="@dimen/default_text_size"
+      android:textIsSelectable="true" />
 
   </ScrollView>
 
