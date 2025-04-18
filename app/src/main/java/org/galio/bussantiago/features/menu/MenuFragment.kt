@@ -13,6 +13,7 @@ import org.galio.bussantiago.features.incidences.IncidencesFragment
 import org.galio.bussantiago.features.information.InformationFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment : DialogFragment() {
@@ -21,6 +22,7 @@ class MenuFragment : DialogFragment() {
   private val binding get() = _binding!!
 
   private val viewModel: MenuViewModel by viewModel()
+  private val menuTextUtils: MenuTextUtils by inject()
   private var lineId: Int = 0
 
   companion object {
@@ -76,9 +78,10 @@ class MenuFragment : DialogFragment() {
       menuOptionsContainer.visibility = View.VISIBLE
       menuOptionsTextView.text =
         getString(R.string.line_name, menuModel.synopticModel.getSynopticFormatted())
-      menuOptionsRecyclerView.adapter = MenuAdapter(menuModel.options) {
-        onMenuOptionClicked(it)
-      }
+      menuOptionsRecyclerView.adapter =
+        MenuAdapter(items = menuModel.options, menuTextUtils = menuTextUtils) {
+          onMenuOptionClicked(it)
+        }
     }
   }
 

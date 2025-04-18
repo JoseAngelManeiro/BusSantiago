@@ -1,6 +1,5 @@
 package org.galio.bussantiago.features.menu
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,6 +10,7 @@ import org.galio.bussantiago.common.inflate
 
 class MenuAdapter(
   private val items: List<MenuOptionModel>,
+  private val menuTextUtils: MenuTextUtils,
   private val listener: (MenuOptionModel) -> Unit
 ) : RecyclerView.Adapter<MenuAdapter.ItemViewHolder>() {
 
@@ -37,37 +37,10 @@ class MenuAdapter(
     }
 
     fun bind(menuOptionModel: MenuOptionModel) {
-      iconView.setImageResource(getIconResource(menuOptionModel.menuType))
-      iconView.contentDescription = getContentDescription(context, menuOptionModel.menuType)
-      nameView.text = getTitle(context, menuOptionModel)
-    }
-  }
-
-  private fun getIconResource(menuType: MenuType): Int {
-    return when (menuType) {
-      MenuType.OUTWARD_ROUTE -> R.drawable.ic_outward_route
-      MenuType.RETURN_ROUTE -> R.drawable.ic_return_route
-      MenuType.ROUNDTRIP_ROUTE -> R.drawable.ic_roundtrip_route
-      MenuType.INFORMATION -> R.drawable.ic_information
-      MenuType.INCIDENCES -> R.drawable.ic_incidences
-    }
-  }
-
-  private fun getContentDescription(context: Context, menuType: MenuType): String {
-    return when (menuType) {
-      MenuType.OUTWARD_ROUTE -> context.getString(R.string.outward_route_stops)
-      MenuType.RETURN_ROUTE -> context.getString(R.string.return_route_stops)
-      MenuType.ROUNDTRIP_ROUTE -> context.getString(R.string.roundtrip_route_stops)
-      MenuType.INFORMATION -> context.getString(R.string.information)
-      MenuType.INCIDENCES -> context.getString(R.string.incidences)
-    }
-  }
-
-  private fun getTitle(context: Context, menuOptionModel: MenuOptionModel): String {
-    return when (menuOptionModel.menuType) {
-      MenuType.INFORMATION -> context.getString(R.string.information)
-      MenuType.INCIDENCES -> context.getString(R.string.incidences)
-      else -> menuOptionModel.title.orEmpty()
+      iconView.setImageResource(menuTextUtils.getIconResource(menuOptionModel.menuType))
+      iconView.contentDescription =
+        menuTextUtils.getContentDescription(context, menuOptionModel.menuType)
+      nameView.text = menuTextUtils.getTitle(context, menuOptionModel)
     }
   }
 }
