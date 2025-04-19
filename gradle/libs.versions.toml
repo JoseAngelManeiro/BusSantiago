@@ -23,7 +23,6 @@ viewmodel = "2.2.0"
 play-services-maps = "19.2.0"
 play-services-location = "21.3.0"
 coroutines = "1.8.0"
-desugaring = "2.1.5"
 arch-core-testing = "2.2.0"
 espresso = "3.6.1"
 test-rules = "1.6.1"
@@ -44,7 +43,6 @@ commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 viewmodel = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "viewmodel" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "arch-core-testing" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 test-rules = { module = "androidx.test:rules", version.ref = "test-rules" }

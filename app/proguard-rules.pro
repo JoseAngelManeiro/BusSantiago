@@ -20,33 +20,35 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Retrofit
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
+# === General Android Support ===
+-keep class androidx.lifecycle.** { *; }
+-keep class androidx.activity.ComponentActivity { *; }
+-keep class androidx.fragment.app.Fragment { *; }
 
-# OkHttp
--keep class okhttp3.** { *; }
--dontwarn okhttp3.**
-
-# Retrofit with Gson converter
--keep class retrofit2.converter.gson.** { *; }
--dontwarn retrofit2.converter.gson.**
-
-# Retrofit API interface
--keep interface org.galio.bussantiago.data.api.ApiService
-
-# Keep models used in API calls
--keep class org.galio.bussantiago.data.entity.** { *; }
-
-# Preserve Retrofit annotations
--keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
-
-# Keep methods with Retrofit annotations (e.g., GET, POST)
--keepclassmembers class * {
-    @retrofit2.http.* <methods>;
+# Keep ViewModel if using SavedStateHandle, etc.
+-keep class androidx.lifecycle.ViewModel { *; }
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    <init>(...);
 }
 
+# === Koin (DI) ===
+# Keep Koin modules and factories
+-keep class org.koin.** { *; }
+
+-keepclassmembers class * {
+    @org.koin.core.annotation.* <methods>;
+}
+-keepattributes *Annotation*
+
+# === Tests Only ===
+# Robolectric can be ignored during production minification
+-dontwarn org.robolectric.**
+
+# === Useful for debugging exceptions ===
 -keepattributes Exceptions
+
+# === Optional: Keep all annotations for debugging, reflection, or DI ===
+-keepattributes RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations
 
 -dontwarn org.conscrypt.Conscrypt$Version
 -dontwarn org.conscrypt.Conscrypt

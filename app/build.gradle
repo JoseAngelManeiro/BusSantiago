@@ -26,6 +26,13 @@ def getApiKeyRelease() {
     return apiKeyRelease
 }
 
+// Load keystore properties file for local builds
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     defaultConfig {
         applicationId "org.galio.bussantiago"
@@ -41,10 +48,11 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv("KEYSTORE") ?: "keystore.jks")
-            storePassword System.getenv("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
+            // Check if keystore.properties exists and use its values, otherwise fallback to CI environment variables
+            storeFile file(keystorePropertiesFile.exists() ? keystoreProperties['storeFile'] : (System.getenv("KEYSTORE") ?: "keystore.jks"))
+            storePassword keystorePropertiesFile.exists() ? keystoreProperties['storePassword'] : System.getenv("STORE_PASSWORD")
+            keyAlias keystorePropertiesFile.exists() ? keystoreProperties['keyAlias'] : System.getenv("KEY_ALIAS")
+            keyPassword keystorePropertiesFile.exists() ? keystoreProperties['keyPassword'] : System.getenv("KEY_PASSWORD")
         }
     }
 
@@ -130,9 +138,6 @@ dependencies {
 
     // Coroutines
     implementation(libs.coroutines)
-
-    // Core Library Desugaring
-    implementation(libs.desugaring)
 
     // Mockito
     testImplementation(libs.mockito)
