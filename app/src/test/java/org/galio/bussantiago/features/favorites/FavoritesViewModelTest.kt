@@ -2,8 +2,8 @@ package org.galio.bussantiago.features.favorites
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.util.TestInteractorExecutor
@@ -13,7 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 
 class FavoritesViewModelTest {
 
@@ -35,7 +35,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case is invoked successfully should load data as expected`() {
     val favorites = listOf(mock<BusStopFavorite>())
-    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Right(favorites))
+    whenever(getBusStopFavorites(Unit)).thenReturn(Either.Success(favorites))
 
     viewModel.loadFavorites()
 
@@ -45,7 +45,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case fails should return exception receivedf`() {
     val exception = Exception("Fake exception")
-    `when`(getBusStopFavorites(Unit)).thenReturn(Either.Left(exception))
+    whenever(getBusStopFavorites(Unit)).thenReturn(Either.Error(exception))
 
     viewModel.loadFavorites()
 

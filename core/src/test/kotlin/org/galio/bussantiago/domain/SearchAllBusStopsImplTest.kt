@@ -18,22 +18,22 @@ class SearchAllBusStopsImplTest {
   @Test
   fun `invokes repository and returns the list received`() {
     val busStops = listOf(mock<BusStopSearch>())
-    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.right(busStops))
+    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.success(busStops))
 
     val result = searchAllBusStops(Unit)
 
-    assertTrue(result.isRight)
-    assertEquals(busStops, result.rightValue)
+    assertTrue(result.isSuccess)
+    assertEquals(busStops, result.successValue)
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val exception = ServiceException()
-    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.left(exception))
+    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.error(exception))
 
     val result = searchAllBusStops(Unit)
 
-    assertTrue(result.isLeft)
-    assertEquals(exception, result.leftValue)
+    assertTrue(result.isError)
+    assertEquals(exception, result.errorValue)
   }
 }

@@ -15,6 +15,7 @@ import org.galio.bussantiago.databinding.BusstopslistFragmentBinding
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.view.isVisible
 
 class BusStopsListFragment : Fragment() {
 
@@ -72,7 +73,7 @@ class BusStopsListFragment : Fragment() {
   }
 
   private fun hideProgressBarIfNecessary() {
-    if (binding.progressBar.visibility == View.VISIBLE) {
+    if (binding.progressBar.isVisible) {
       binding.progressBar.visibility = View.GONE
     }
   }

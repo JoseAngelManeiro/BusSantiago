@@ -17,62 +17,62 @@ class BusStopFavoriteRepositoryTest {
   @Test
   fun `when getBusStopFavorites should return the data source result`() {
     val favorites = listOf(mock<BusStopFavorite>())
-    whenever(favoriteDataSource.getAll()).thenReturn(Either.Right(favorites))
+    whenever(favoriteDataSource.getAll()).thenReturn(Either.Success(favorites))
 
     val result = busStopFavoriteRepository.getBusStopFavorites()
 
-    assertEquals(favorites, result.rightValue)
+    assertEquals(favorites, result.successValue)
   }
 
   @Test
   fun `when getBusStopFavorites should return the data source exception`() {
     val exception = DatabaseException()
-    whenever(favoriteDataSource.getAll()).thenReturn(Either.Left(exception))
+    whenever(favoriteDataSource.getAll()).thenReturn(Either.Error(exception))
 
     val result = busStopFavoriteRepository.getBusStopFavorites()
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 
   @Test
   fun `when remove a favorite successfully should return Unit`() {
     val busStopFavorite = mock<BusStopFavorite>()
-    whenever(favoriteDataSource.remove(busStopFavorite)).thenReturn(Either.Right(Unit))
+    whenever(favoriteDataSource.remove(busStopFavorite)).thenReturn(Either.Success(Unit))
 
     val result = busStopFavoriteRepository.remove(busStopFavorite)
 
-    assertEquals(Unit, result.rightValue)
+    assertEquals(Unit, result.successValue)
   }
 
   @Test
   fun `when remove a favorite fails should return data source exception`() {
     val exception = DatabaseException()
     val busStopFavorite = mock<BusStopFavorite>()
-    whenever(favoriteDataSource.remove(busStopFavorite)).thenReturn(Either.Left(exception))
+    whenever(favoriteDataSource.remove(busStopFavorite)).thenReturn(Either.Error(exception))
 
     val result = busStopFavoriteRepository.remove(busStopFavorite)
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 
   @Test
   fun `when add a favorite successfully should return Unit`() {
     val busStopFavorite = mock<BusStopFavorite>()
-    whenever(favoriteDataSource.save(busStopFavorite)).thenReturn(Either.Right(Unit))
+    whenever(favoriteDataSource.save(busStopFavorite)).thenReturn(Either.Success(Unit))
 
     val result = busStopFavoriteRepository.add(busStopFavorite)
 
-    assertEquals(Unit, result.rightValue)
+    assertEquals(Unit, result.successValue)
   }
 
   @Test
   fun `when add a favorite fails should return data source exception`() {
     val exception = DatabaseException()
     val busStopFavorite = mock<BusStopFavorite>()
-    whenever(favoriteDataSource.save(busStopFavorite)).thenReturn(Either.Left(exception))
+    whenever(favoriteDataSource.save(busStopFavorite)).thenReturn(Either.Error(exception))
 
     val result = busStopFavoriteRepository.add(busStopFavorite)
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 }

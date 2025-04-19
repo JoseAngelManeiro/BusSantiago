@@ -9,10 +9,12 @@ import android.widget.Filter
 import android.widget.TextView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.core.model.BusStopSearch
-import java.text.Normalizer
 
-class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
-  ArrayAdapter<BusStopSearch>(context, 0, busStops) {
+class BusStopSearchAdapter(
+  context: Context,
+  busStops: List<BusStopSearch>,
+  private val searchUtils: SearchUtils
+) : ArrayAdapter<BusStopSearch>(context, 0, busStops) {
 
   private val originalData: List<BusStopSearch> = ArrayList(busStops)
 
@@ -36,17 +38,10 @@ class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
     return object : Filter() {
       override fun performFiltering(constraint: CharSequence?): FilterResults {
         val results = FilterResults()
-        val filteredList = ArrayList<BusStopSearch>()
-
-        // Your filtering logic
-        if (!constraint.isNullOrBlank()) {
-          val searchTerm = removeAccents(constraint.toString().lowercase())
-          for (item in originalData) {
-            val itemText = removeAccents("${item.code} ${item.name}".lowercase())
-            if (itemText.contains(searchTerm)) {
-              filteredList.add(item)
-            }
-          }
+        val filteredList = if (!constraint.isNullOrBlank()) {
+          searchUtils.filterBusStops(originalData, constraint.toString())
+        } else {
+          emptyList()
         }
 
         results.values = filteredList
@@ -63,10 +58,5 @@ class BusStopSearchAdapter(context: Context, busStops: List<BusStopSearch>) :
         }
       }
     }
-  }
-
-  private fun removeAccents(input: String): String {
-    val normalized = Normalizer.normalize(input, Normalizer.Form.NFD)
-    return normalized.replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
   }
 }

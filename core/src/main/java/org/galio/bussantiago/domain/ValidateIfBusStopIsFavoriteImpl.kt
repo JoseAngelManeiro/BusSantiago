@@ -10,17 +10,17 @@ internal class ValidateIfBusStopIsFavoriteImpl(
 
   override fun invoke(request: String): Either<Exception, Boolean> {
     val response = busStopFavoriteRepository.getBusStopFavorites()
-    return if (response.isRight) {
-      val busStopFavorites = response.rightValue
+    return if (response.isSuccess) {
+      val busStopFavorites = response.successValue
       if (busStopFavorites.isEmpty() ||
         busStopFavorites.find { it.code == request } == null
       ) {
-        Either.Right(false)
+        Either.Success(false)
       } else {
-        Either.Right(true)
+        Either.Success(true)
       }
     } else {
-      Either.Left(response.leftValue)
+      Either.Error(response.errorValue)
     }
   }
 }

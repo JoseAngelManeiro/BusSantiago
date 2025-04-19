@@ -1,8 +1,8 @@
 package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Left
-import org.galio.bussantiago.core.Either.Right
+import org.galio.bussantiago.core.Either.Error
+import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
@@ -14,10 +14,10 @@ internal class BusStopRemainingTimesRepository(
 
   fun getBusStopRemainingTimes(busStopCode: String): Either<Exception, BusStopRemainingTimes> {
     val response = apiClient.getBusStopRemainingTimes(busStopCode)
-    return if (response.isRight) {
-      Right(mapper.toDomain(response.rightValue))
+    return if (response.isSuccess) {
+      Success(mapper.toDomain(response.successValue))
     } else {
-      Left(response.leftValue)
+      Error(response.errorValue)
     }
   }
 }

@@ -1,8 +1,8 @@
 package org.galio.bussantiago.domain
 
 import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Left
-import org.galio.bussantiago.core.Either.Right
+import org.galio.bussantiago.core.Either.Error
+import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.data.repository.LineDetailsRepository
 
@@ -12,10 +12,10 @@ internal class GetLineInformationImpl(
 
   override fun invoke(request: Int): Either<Exception, String> {
     val response = lineDetailsRepository.getLineDetails(request)
-    return if (response.isRight) {
-      Right(response.rightValue.information)
+    return if (response.isSuccess) {
+      Success(response.successValue.information)
     } else {
-      Left(response.leftValue)
+      Error(response.errorValue)
     }
   }
 }

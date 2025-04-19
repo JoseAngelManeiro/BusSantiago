@@ -16,15 +16,15 @@ internal class SearchBusStopRepository(
   fun searchAllBusStops(): Either<Exception, List<BusStopSearch>> {
     val localData = cache.getAll()
     return if (localData.isNotEmpty()) {
-      Either.Right(localData)
+      Either.Success(localData)
     } else {
       val serviceResult = apiClient.searchBusStop(BusStopRequest(""))
-      if (serviceResult.isRight) {
-        val busStops = serviceResult.rightValue.map { mapper.toDomain(it) }
+      if (serviceResult.isSuccess) {
+        val busStops = serviceResult.successValue.map { mapper.toDomain(it) }
         cache.save(busStops)
-        Either.Right(busStops)
+        Either.Success(busStops)
       } else {
-        Either.Left(serviceResult.leftValue)
+        Either.Error(serviceResult.errorValue)
       }
     }
   }

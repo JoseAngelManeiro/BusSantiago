@@ -4,9 +4,11 @@ apply plugin: 'kotlin-android'
 android {
     defaultConfig {
         namespace "org.galio.bussantiago.core"
-        compileSdk 34
-        minSdkVersion 26
-        targetSdkVersion 34
+        compileSdk rootProject.ext.compileSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        consumerProguardFiles 'consumer-rules.pro'
     }
 
     compileOptions {
@@ -16,38 +18,29 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation(libs.appcompat)
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.interceptor)
 
     // Koin
-    implementation 'io.insert-koin:koin-core:3.0.1'
-    implementation 'io.insert-koin:koin-android:3.0.1'
+    implementation(libs.koin)
 
     // Mockito
-    testImplementation 'org.mockito:mockito-core:5.0.0'
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
-    // Mockito (final classes)
-    testImplementation 'org.mockito:mockito-inline:5.0.0'
-
-    // Bytebuddy (necessary for Mockito inline)
-    implementation 'net.bytebuddy:byte-buddy:1.15.11'
-    testImplementation 'net.bytebuddy:byte-buddy-agent:1.15.11'
+    testImplementation(libs.mockito)
 
     // MockWebServer
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
+    testImplementation(libs.mockwebserver)
 
     // Commons IO
-    testImplementation 'commons-io:commons-io:2.6'
+    testImplementation(libs.commons.io)
 
-    // ApplicationProvider.getApplicationContext()
-    implementation 'androidx.test:core-ktx:1.6.1'
-    // Roboelectric (necessary to provide a mock Android environment for the database)
-    testImplementation 'org.robolectric:robolectric:4.10.3'
+    // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
+    implementation(libs.test.core)
+    // Provides a mock Android environment for the database)
+    testImplementation(libs.roboelectric)
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation(libs.junit)
 }

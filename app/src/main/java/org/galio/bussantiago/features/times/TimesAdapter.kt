@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.inflate
 import org.galio.bussantiago.common.model.SynopticView
+import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.TimeFormatter
 
 class TimesAdapter(
-  private val items: List<LineRemainingTimeModel>
+  private val items: List<LineRemainingTimeModel>,
+  private val timesFormatter: TimeFormatter
 ) : RecyclerView.Adapter<TimesAdapter.ItemViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -29,7 +32,7 @@ class TimesAdapter(
 
     fun bind(lineRemainingTimeModel: LineRemainingTimeModel) {
       synopticView.render(lineRemainingTimeModel.synopticModel)
-      timeView.text = getDescriptionByMinutes(lineRemainingTimeModel.minutesUntilNextArrival)
+      timeView.text = timesFormatter.getDescription(lineRemainingTimeModel.minutesUntilNextArrival)
     }
   }
 }

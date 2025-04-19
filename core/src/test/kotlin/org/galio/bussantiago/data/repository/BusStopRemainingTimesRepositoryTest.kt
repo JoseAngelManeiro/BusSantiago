@@ -24,13 +24,13 @@ class BusStopRemainingTimesRepositoryTest {
     val busStopRemainingTimesEntity = mock<BusStopRemainingTimesEntity>()
     val busStopRemainingTimes = mock<BusStopRemainingTimes>()
     whenever(apiClient.getBusStopRemainingTimes(busCode))
-      .thenReturn(Either.right(busStopRemainingTimesEntity))
+      .thenReturn(Either.success(busStopRemainingTimesEntity))
     whenever(mapper.toDomain(busStopRemainingTimesEntity))
       .thenReturn(busStopRemainingTimes)
 
     val result = repository.getBusStopRemainingTimes(busCode)
 
-    assertEquals(busStopRemainingTimes, result.rightValue)
+    assertEquals(busStopRemainingTimes, result.successValue)
   }
 
   @Test
@@ -38,10 +38,10 @@ class BusStopRemainingTimesRepositoryTest {
     val busCode = "123"
     val exception = ServiceException()
     whenever(apiClient.getBusStopRemainingTimes(busCode))
-      .thenReturn(Either.left(exception))
+      .thenReturn(Either.error(exception))
 
     val result = repository.getBusStopRemainingTimes(busCode)
 
-    assertEquals(exception, result.leftValue)
+    assertEquals(exception, result.errorValue)
   }
 }

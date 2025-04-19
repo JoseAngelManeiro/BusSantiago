@@ -2,8 +2,8 @@ package org.galio.bussantiago.features.information
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -12,7 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 
 class InformationViewModelTest {
 
@@ -36,7 +36,7 @@ class InformationViewModelTest {
   @Test
   fun `if all goes well, the data is loaded correctly`() {
     val lineInformationStub = "Any Information"
-    `when`(getLineInformation(lineId)).thenReturn(Either.Right(lineInformationStub))
+    whenever(getLineInformation(lineId)).thenReturn(Either.Success(lineInformationStub))
 
     viewModel.loadLineInformation(lineId)
 
@@ -47,7 +47,7 @@ class InformationViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLineInformation(lineId)).thenReturn(Either.Left(exception))
+    whenever(getLineInformation(lineId)).thenReturn(Either.Error(exception))
 
     viewModel.loadLineInformation(lineId)
 

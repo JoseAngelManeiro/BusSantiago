@@ -18,11 +18,11 @@ class ValidateIfBusStopIsFavoriteImplTest {
   fun `returns false if the received list is empty`() {
     val busStopFavoritesStub = emptyList<BusStopFavorite>()
     `when`(busStopFavoriteRepository.getBusStopFavorites())
-      .thenReturn(Either.Right(busStopFavoritesStub))
+      .thenReturn(Either.Success(busStopFavoritesStub))
 
     val result = validateIfBusStopIsFavorite("1234")
 
-    assertEquals(false, result.rightValue)
+    assertEquals(false, result.successValue)
   }
 
   @Test
@@ -32,11 +32,11 @@ class ValidateIfBusStopIsFavoriteImplTest {
       BusStopFavorite("222", "Any")
     )
     `when`(busStopFavoriteRepository.getBusStopFavorites())
-      .thenReturn(Either.Right(busStopFavoritesStub))
+      .thenReturn(Either.Success(busStopFavoritesStub))
 
     val result = validateIfBusStopIsFavorite("1234")
 
-    assertEquals(false, result.rightValue)
+    assertEquals(false, result.successValue)
   }
 
   @Test
@@ -46,21 +46,21 @@ class ValidateIfBusStopIsFavoriteImplTest {
       BusStopFavorite("222", "Any")
     )
     `when`(busStopFavoriteRepository.getBusStopFavorites())
-      .thenReturn(Either.Right(busStopFavoritesStub))
+      .thenReturn(Either.Success(busStopFavoritesStub))
 
     val result = validateIfBusStopIsFavorite("111")
 
-    assertEquals(true, result.rightValue)
+    assertEquals(true, result.successValue)
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val exceptionStub = Exception()
     `when`(busStopFavoriteRepository.getBusStopFavorites())
-      .thenReturn(Either.Left(exceptionStub))
+      .thenReturn(Either.Error(exceptionStub))
 
     val result = validateIfBusStopIsFavorite("1234")
 
-    assertEquals(exceptionStub, result.leftValue)
+    assertEquals(exceptionStub, result.errorValue)
   }
 }

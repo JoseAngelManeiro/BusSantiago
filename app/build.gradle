@@ -26,13 +26,20 @@ def getApiKeyRelease() {
     return apiKeyRelease
 }
 
+// Load keystore properties file for local builds
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     defaultConfig {
         applicationId "org.galio.bussantiago"
         namespace "org.galio.bussantiago"
-        compileSdk 34
-        minSdkVersion 26
-        targetSdkVersion 34
+        compileSdk rootProject.ext.compileSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 53
         versionName "4.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,10 +48,11 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv("KEYSTORE") ?: "keystore.jks")
-            storePassword System.getenv("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
+            // Check if keystore.properties exists and use its values, otherwise fallback to CI environment variables
+            storeFile file(keystorePropertiesFile.exists() ? keystoreProperties['storeFile'] : (System.getenv("KEYSTORE") ?: "keystore.jks"))
+            storePassword keystorePropertiesFile.exists() ? keystoreProperties['storePassword'] : System.getenv("STORE_PASSWORD")
+            keyAlias keystorePropertiesFile.exists() ? keystoreProperties['keyAlias'] : System.getenv("KEY_ALIAS")
+            keyPassword keystorePropertiesFile.exists() ? keystoreProperties['keyPassword'] : System.getenv("KEY_PASSWORD")
         }
     }
 
@@ -57,30 +65,21 @@ android {
 
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
 
             signingConfig signingConfigs.release
         }
     }
 
-    sourceSets {
-        main {
-            res.srcDirs =
-                    ['src/main/res/layouts/app',
-                     'src/main/res/layouts/widget',
-                     'src/main/res/layouts',
-                     'src/main/res']
-        }
-    }
-
-    lintOptions {
-        lintConfig file("$rootDir/app/lint-rules.xml")
+    lint {
         abortOnError true
+        checkAllWarnings true
         ignoreWarnings false
         htmlReport true
-        htmlOutput file("$rootDir/app/lint-results.html")
+        // Disable the check for invalid references like java.adapter due to
+        // "Invalid package reference in com.android.tools:desugar_jdk_libs_configuration" error
+        disable 'InvalidPackage'
     }
 
     compileOptions {
@@ -103,56 +102,53 @@ android {
 }
 
 dependencies {
+    implementation project(':widget')
     implementation project(':core')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation project(':shared')
+
+    implementation(libs.appcompat)
+    implementation(libs.constraintlayout)
+    implementation(libs.material)
 
     // ViewModel
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation(libs.viewmodel)
 
     // Navigation
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.fragment)
 
     // Koin
-    implementation 'io.insert-koin:koin-core:3.0.1'
-    implementation 'io.insert-koin:koin-android:3.0.1'
-
-    // Gson
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation(libs.koin)
 
     // Maps & Location
-    implementation 'com.google.android.gms:play-services-maps:19.0.0'
-    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     // Play Core (In-app reviews)
-    implementation 'com.google.android.play:review:2.0.1'
-    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation(libs.play.review.core)
+    implementation(libs.play.review.ktx)
 
     // Compose
-    implementation "androidx.compose.runtime:runtime:1.1.1"
-    implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "androidx.compose.foundation:foundation:1.1.1"
-    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
-    implementation "androidx.compose.material:material:1.1.1"
-    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
-    implementation "androidx.compose.ui:ui-tooling:1.1.1"
-    implementation "com.google.android.material:compose-theme-adapter:1.1.1"
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material)
+    implementation(libs.compose.runtime.livedata)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.theme.adapter)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-
-    // Core Library Desugaring
-    implementation "com.android.tools:desugar_jdk_libs:2.0.4"
+    implementation(libs.coroutines)
 
     // Mockito
-    testImplementation 'org.mockito:mockito-core:4.5.1'
-    // Mockito (final classes)
-    testImplementation 'org.mockito:mockito-inline:4.5.1'
+    testImplementation(libs.mockito)
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation(libs.junit)
 
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation(libs.arch.core.testing)
+
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
+    // For GrantPermissionRule
+    androidTestImplementation(libs.test.rules)
 }

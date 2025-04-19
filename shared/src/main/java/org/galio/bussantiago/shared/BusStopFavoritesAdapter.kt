@@ -1,0 +1,42 @@
+package org.galio.bussantiago.shared
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import org.galio.bussantiago.core.model.BusStopFavorite
+
+class BusStopFavoritesAdapter(
+  private val items: List<BusStopFavorite>,
+  private val listener: (BusStopFavorite) -> Unit
+) : RecyclerView.Adapter<BusStopFavoritesAdapter.ItemViewHolder>() {
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+    val itemViewHolder = LayoutInflater.from(parent.context)
+      .inflate(R.layout.busstop_item, parent, false)
+    return ItemViewHolder(itemViewHolder)
+  }
+
+  override fun getItemCount() = items.size
+
+  override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+    holder.bind(items[position])
+  }
+
+  inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val codeView: TextView = itemView.findViewById(R.id.codeTextView)
+    private val nameView: TextView = itemView.findViewById(R.id.nameTextView)
+
+    init {
+      itemView.setOnClickListener {
+        listener(items[adapterPosition])
+      }
+    }
+
+    fun bind(busStopFavorite: BusStopFavorite) {
+      codeView.text = busStopFavorite.code
+      nameView.text = busStopFavorite.name
+    }
+  }
+}

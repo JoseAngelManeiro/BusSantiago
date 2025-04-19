@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.getParcelableArgument
@@ -12,6 +13,8 @@ import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
+import org.galio.bussantiago.shared.DeeplinkHelper
+import org.galio.bussantiago.shared.TimeFormatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,6 +24,7 @@ class TimesDialogFragment : DialogFragment() {
   private val binding get() = _binding!!
   private val viewModel: TimesViewModel by viewModel()
   private val reviewsHelper: ReviewsHelper by inject()
+  private val timeFormatter: TimeFormatter by inject()
 
   companion object {
     private const val BUS_STOP_KEY = "bus_stop_key"
@@ -58,7 +62,11 @@ class TimesDialogFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    getParcelableArgument<BusStopModel>(BUS_STOP_KEY)?.let { busStopModel ->
+    // Arguments can be passed through the constructor or the deeplink
+    val busStopModel: BusStopModel? =
+      getParcelableArgument<BusStopModel>(BUS_STOP_KEY) ?: getDeeplinkInfo()
+
+    busStopModel?.let {
       setUpToolbar(busStopModel)
 
       setUpFavoriteButton()
@@ -70,6 +78,17 @@ class TimesDialogFragment : DialogFragment() {
       viewModel.loadTimes()
       viewModel.validateBusStop()
     } ?: Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
+  }
+
+  private fun getDeeplinkInfo(): BusStopModel? {
+    try {
+      val args = requireArguments()
+      val busStopCode = args.getString(DeeplinkHelper.BUS_STOP_CODE_KEY, "")
+      val busStopName = args.getString(DeeplinkHelper.BUS_STOP_NAME_KEY, "")
+      return BusStopModel(busStopCode, busStopName)
+    } catch (e: Exception) {
+      return null
+    }
   }
 
   private fun setUpToolbar(busStopModel: BusStopModel) {
@@ -117,7 +136,7 @@ class TimesDialogFragment : DialogFragment() {
             } else {
               noInfoTextView.visibility = View.GONE
               timesRecyclerView.visibility = View.VISIBLE
-              timesRecyclerView.adapter = TimesAdapter(times)
+              timesRecyclerView.adapter = TimesAdapter(times, timeFormatter)
               reviewsHelper.launchReviews(requireActivity())
             }
           }
@@ -139,7 +158,7 @@ class TimesDialogFragment : DialogFragment() {
   }
 
   private fun timesAreLoading(): Boolean {
-    return binding.progressBar.visibility == View.VISIBLE
+    return binding.progressBar.isVisible
   }
 
   override fun onDestroyView() {

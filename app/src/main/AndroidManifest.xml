@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="org.galio.bussantiago">
-
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  xmlns:tools="http://schemas.android.com/tools">
 
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -18,7 +14,6 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     android:usesCleartextTraffic="true"
-    tools:targetApi="m"
     tools:ignore="LockedOrientationActivity">
     <!--
     The API key for Google Maps-based APIs is defined as a string resource.
@@ -41,38 +36,18 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity>
 
-    <activity
-      android:name="widget.WidgetActivity"
-      android:label="@string/select_stop"
-      android:screenOrientation="portrait"
-      android:exported="false"
-      tools:ignore="DiscouragedApi">
       <intent-filter>
-        <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE" />
+        <!-- This allows the app to handle deep links -->
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+
+        <!-- Scheme and host that matches the deep link URI -->
+        <data
+          android:scheme="@string/app_scheme"
+          android:host="@string/times_host" />
       </intent-filter>
     </activity>
-
-    <receiver
-      android:name="widget.WidgetProvider"
-      android:label="@string/favorite_stop"
-      android:exported="false">
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="org.galio.bussantiago.REFRESH_WIDGET" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/widget_wprovider" />
-    </receiver>
-
-    <service
-      android:name="widget.WidgetService"
-      android:permission="android.permission.BIND_REMOTEVIEWS" />
 
   </application>
 

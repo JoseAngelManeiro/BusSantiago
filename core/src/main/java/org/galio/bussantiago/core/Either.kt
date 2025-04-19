@@ -1,31 +1,31 @@
 package org.galio.bussantiago.core
 
 sealed class Either<out L, out R> {
-  data class Left<out L>(val a: L) : Either<L, Nothing>()
-  data class Right<out R>(val b: R) : Either<Nothing, R>()
+  data class Error<out L>(val a: L) : Either<L, Nothing>()
+  data class Success<out R>(val b: R) : Either<Nothing, R>()
 
   companion object {
-    fun <L> left(value: L): Either<L, Nothing> = Left(value)
-    fun <R> right(value: R): Either<Nothing, R> = Right(value)
+    fun <L> error(value: L): Either<L, Nothing> = Error(value)
+    fun <R> success(value: R): Either<Nothing, R> = Success(value)
   }
 
-  val isLeft get() = this is Left
-  val isRight get() = this is Right
+  val isError get() = this is Error
+  val isSuccess get() = this is Success
 
-  val leftValue: L
+  val errorValue: L
     get() = when (this) {
-      is Left -> this.a
-      is Right -> throw NoSuchElementException()
+      is Error -> this.a
+      is Success -> throw NoSuchElementException()
     }
 
-  val rightValue: R
+  val successValue: R
     get() = when (this) {
-      is Left -> throw NoSuchElementException()
-      is Right -> this.b
+      is Error -> throw NoSuchElementException()
+      is Success -> this.b
     }
 
-  fun <T> fold(leftOp: (L) -> T, rightOp: (R) -> T): T = when (this) {
-    is Left -> leftOp(this.leftValue)
-    is Right -> rightOp(this.rightValue)
+  fun <T> fold(onError: (L) -> T, onSuccess: (R) -> T): T = when (this) {
+    is Error -> onError(this.errorValue)
+    is Success -> onSuccess(this.successValue)
   }
 }

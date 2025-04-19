@@ -1,6 +1,6 @@
 package org.galio.bussantiago.features.lines
 
-import org.galio.bussantiago.common.model.SynopticModel
+import org.galio.bussantiago.shared.SynopticModel
 
 data class LineModel(
   val id: Int,

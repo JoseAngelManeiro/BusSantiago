@@ -23,26 +23,26 @@ class GetLineIncidencesImplTest {
     val lineId = 123
     val incidences = mock<List<Incidence>>()
     val lineDetailsStub = createLineDetails(incidences)
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Right(lineDetailsStub))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Success(lineDetailsStub))
 
     val result = getLineIncidences(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
-    assertTrue(result.isRight)
-    assertEquals(incidences, result.rightValue)
+    assertTrue(result.isSuccess)
+    assertEquals(incidences, result.successValue)
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val lineId = 123
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Left(exception))
+    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Error(exception))
 
     val result = getLineIncidences(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
-    assertTrue(result.isLeft)
-    assertEquals(exception, result.leftValue)
+    assertTrue(result.isError)
+    assertEquals(exception, result.errorValue)
   }
 
   private fun createLineDetails(incidences: List<Incidence>): LineDetails {

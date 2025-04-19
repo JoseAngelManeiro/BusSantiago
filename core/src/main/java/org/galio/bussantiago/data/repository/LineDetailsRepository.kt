@@ -1,8 +1,8 @@
 package org.galio.bussantiago.data.repository
 
 import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Left
-import org.galio.bussantiago.core.Either.Right
+import org.galio.bussantiago.core.Either.Error
+import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineDetailsCache
@@ -17,15 +17,15 @@ internal class LineDetailsRepository(
   fun getLineDetails(id: Int): Either<Exception, LineDetails> {
     val localData = cache.get(id)
     return if (localData != null) {
-      Right(localData)
+      Success(localData)
     } else {
       val serviceResult = apiClient.getLineDetails(id)
-      if (serviceResult.isRight) {
-        val lineDetails = mapper.toDomain(serviceResult.rightValue)
+      if (serviceResult.isSuccess) {
+        val lineDetails = mapper.toDomain(serviceResult.successValue)
         cache.save(id, lineDetails)
-        Right(lineDetails)
+        Success(lineDetails)
       } else {
-        Left(serviceResult.leftValue)
+        Error(serviceResult.errorValue)
       }
     }
   }

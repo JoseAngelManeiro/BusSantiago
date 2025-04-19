@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    defaultConfig {
+        namespace "org.galio.bussantiago.widget"
+        compileSdk rootProject.ext.compileSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':shared')
+
+    implementation(libs.appcompat)
+    implementation(libs.material)
+
+    // Koin
+    implementation(libs.koin)
+
+    // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
+    implementation(libs.test.core)
+    // Provide a mock Android environment for the preferences
+    testImplementation(libs.roboelectric)
+
+    testImplementation(libs.junit)
+}

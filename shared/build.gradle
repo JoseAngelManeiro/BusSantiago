@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    defaultConfig {
+        namespace "org.galio.bussantiago.shared"
+        compileSdk rootProject.ext.compileSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation project(':core')
+
+    implementation(libs.appcompat)
+    implementation(libs.material)
+
+    // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
+    implementation(libs.test.core)
+    // JUnit-specific helpers for Android tests (test rules...)
+    implementation(libs.junit.ext)
+    // Provides a mock Android environment for the preferences)
+    testImplementation(libs.roboelectric)
+
+    testImplementation(libs.junit)
+
+    androidTestImplementation(libs.test.runner)
+}

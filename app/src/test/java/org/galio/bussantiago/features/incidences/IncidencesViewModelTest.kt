@@ -2,8 +2,8 @@ package org.galio.bussantiago.features.incidences
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.util.TestInteractorExecutor
@@ -13,7 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.whenever
 import java.util.Calendar
 
 class IncidencesViewModelTest {
@@ -42,7 +42,7 @@ class IncidencesViewModelTest {
       createIncidence(description = "Incidence 2"),
       createIncidence(description = "Incidence 3")
     )
-    `when`(getLineIncidences(lineId)).thenReturn(Either.Right(incidencesStub))
+    whenever(getLineIncidences(lineId)).thenReturn(Either.Success(incidencesStub))
 
     viewModel.loadIncidences(lineId)
 
@@ -55,7 +55,7 @@ class IncidencesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    `when`(getLineIncidences(lineId)).thenReturn(Either.Left(exception))
+    whenever(getLineIncidences(lineId)).thenReturn(Either.Error(exception))
 
     viewModel.loadIncidences(lineId)
 
