@@ -143,6 +143,7 @@ jobs:
     executor: android-executor
     steps:
       - checkout
+      - install_jdk
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
       - run:
