@@ -51,7 +51,7 @@ internal class WidgetProvider : AppWidgetProvider() {
         refreshIntent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
       )
-      remoteViews.setOnClickPendingIntent(R.id.syncView, refreshPIntent)
+      remoteViews.setOnClickPendingIntent(R.id.syncContainer, refreshPIntent)
 
       val deeplink = DeeplinkHelper.getTimesDeeplink(context, code, name)
       val intent = Intent(Intent.ACTION_VIEW, deeplink.toUri()).apply {
@@ -63,7 +63,7 @@ internal class WidgetProvider : AppWidgetProvider() {
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
       )
-      remoteViews.setOnClickPendingIntent(R.id.codeStop_textview, navPIntent)
+      remoteViews.setOnClickPendingIntent(R.id.busStopContainer, navPIntent)
 
       // Instruct the widget manager to update the widget
       appWidgetManager.updateAppWidget(widgetId, remoteViews)
