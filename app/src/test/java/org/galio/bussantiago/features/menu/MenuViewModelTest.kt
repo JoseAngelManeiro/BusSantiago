@@ -25,36 +25,34 @@ class MenuViewModelTest {
   private val menuFactory = mock<MenuFactory>()
   private val observer = mock<Observer<Resource<MenuModel>>>()
 
-  private lateinit var viewModel: MenuViewModel
-
-  private val lineId = 123
+  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
 
   @Before
   fun setUp() {
-    viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
-    viewModel.setArgs(lineId)
     viewModel.menuModel.observeForever(observer)
   }
 
   @Test
-  fun `if all goes well, the data is loaded correctly`() {
+  fun `should load the data correctly`() {
+    val lineId = 123
     val lineDetailsStub = mock<LineDetails>()
     val menuModelStub = mock<MenuModel>()
     whenever(getLineDetails(lineId)).thenReturn(Either.Success(lineDetailsStub))
     whenever(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
-    viewModel.loadLineDetails()
+    viewModel.loadLineDetails(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.success(menuModelStub))
   }
 
   @Test
-  fun `fire the exception received`() {
+  fun `should fire the exception received`() {
+    val lineId = 123
     val exception = Exception("Fake exception")
     whenever(getLineDetails(lineId)).thenReturn(Either.Error(exception))
 
-    viewModel.loadLineDetails()
+    viewModel.loadLineDetails(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))

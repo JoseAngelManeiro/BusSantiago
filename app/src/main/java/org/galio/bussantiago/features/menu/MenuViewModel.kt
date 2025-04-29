@@ -13,28 +13,18 @@ class MenuViewModel(
   private val menuFactory: MenuFactory
 ) : BaseViewModel(executor) {
 
-  private var lineId = 0
-
   private val _menuModel = MutableLiveData<Resource<MenuModel>>()
 
   val menuModel: LiveData<Resource<MenuModel>>
     get() = _menuModel
 
-  fun setArgs(lineId: Int) {
-    this.lineId = lineId
-  }
-
-  fun loadLineDetails() {
+  fun loadLineDetails(lineId: Int) {
     _menuModel.value = Resource.loading()
     executor(
       interactor = getLineDetails,
       request = lineId,
-      onSuccess = {
-        _menuModel.value = Resource.success(menuFactory.createMenu(it))
-      },
-      onError = {
-        _menuModel.value = Resource.error(it)
-      }
+      onSuccess = { _menuModel.value = Resource.success(menuFactory.createMenu(it)) },
+      onError = { _menuModel.value = Resource.error(it) }
     )
   }
 }

@@ -1,6 +1,7 @@
 package org.galio.bussantiago.features.menu
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,6 @@ class MenuFragment : DialogFragment() {
 
   private val viewModel: MenuViewModel by viewModel()
   private val menuTextUtils: MenuTextUtils by inject()
-  private var lineId: Int = 0
 
   companion object {
     private const val ID_KEY = "id_key"
@@ -47,45 +47,44 @@ class MenuFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    lineId = arguments?.getInt(ID_KEY) ?: 0
-    viewModel.setArgs(lineId)
+    arguments?.getInt(ID_KEY)?.let { lineId ->
+      viewModel.menuModel.observe(viewLifecycleOwner) { resource ->
+        resource.fold(
+          onLoading = {
+            binding.progressBar.visibility = View.VISIBLE
+          },
+          onError = { exception ->
+            binding.progressBar.visibility = View.GONE
+            handleException(
+              exception = exception,
+              cancel = { dismiss() },
+              retry = { viewModel.loadLineDetails(lineId) }
+            )
+          },
+          onSuccess = { menuModel ->
+            binding.progressBar.visibility = View.GONE
+            setUpView(menuModel, lineId)
+          }
+        )
+      }
 
-    viewModel.menuModel.observe(viewLifecycleOwner) { resource ->
-      resource.fold(
-        onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
-        },
-        onError = {
-          binding.progressBar.visibility = View.GONE
-          handleException(
-            it,
-            cancel = { dismiss() },
-            retry = { viewModel.loadLineDetails() }
-          )
-        },
-        onSuccess = {
-          binding.progressBar.visibility = View.GONE
-          setUpView(it)
-        }
-      )
-    }
-
-    viewModel.loadLineDetails()
+      viewModel.loadLineDetails(lineId)
+    } ?: Log.w("MenuFragment", "Argument line id was not sent correctly.")
   }
 
-  private fun setUpView(menuModel: MenuModel) {
+  private fun setUpView(menuModel: MenuModel, lineId: Int) {
     with(binding) {
       menuOptionsContainer.visibility = View.VISIBLE
       menuOptionsTextView.text =
         getString(R.string.line_name, menuModel.synopticModel.getSynopticFormatted())
       menuOptionsRecyclerView.adapter =
         MenuAdapter(items = menuModel.options, menuTextUtils = menuTextUtils) {
-          onMenuOptionClicked(it)
+          onMenuOptionClicked(it, lineId)
         }
     }
   }
 
-  private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel) {
+  private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel, lineId: Int) {
     when (menuOptionModel.menuType) {
       MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE, MenuType.ROUNDTRIP_ROUTE -> {
         navigateSafe(
