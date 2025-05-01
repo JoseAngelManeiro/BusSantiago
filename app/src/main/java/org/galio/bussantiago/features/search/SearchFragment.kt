@@ -236,7 +236,7 @@ class SearchFragment : Fragment() {
     // Set the text truncated in the edit text
     val searchTextView = binding.searchAutocompleteTextView
     val width: Int = searchTextView.measuredWidth -
-      (searchTextView.paddingLeft + searchTextView.paddingRight)
+      (searchTextView.paddingStart + searchTextView.paddingEnd)
 
     val truncatedText = TextUtils.ellipsize(
       busStopSearch.toString(),
@@ -245,7 +245,7 @@ class SearchFragment : Fragment() {
       TextUtils.TruncateAt.END
     )
     if (truncatedText.isNotEmpty()) {
-      binding.searchAutocompleteTextView.setText(truncatedText)
+      searchTextView.setText(truncatedText)
     }
 
     markerMap[busStopSearch.id]?.showInfoWindow()
