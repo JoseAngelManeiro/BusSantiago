@@ -8,17 +8,18 @@ import androidx.fragment.app.Fragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.databinding.LinesFragmentBinding
-import org.galio.bussantiago.features.menu.MenuFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class LinesFragment : Fragment() {
 
   private var _binding: LinesFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: LinesViewModel by viewModel()
+  private val viewModel: LinesViewModel by viewModel {
+    parametersOf(this)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -59,11 +60,7 @@ class LinesFragment : Fragment() {
   }
 
   private fun setUpLinesAdapter(lines: List<LineModel>) {
-    binding.linesRecyclerView.adapter = LinesAdapter(lines) { onLineClicked(it) }
-  }
-
-  private fun onLineClicked(id: Int) {
-    navigateSafe(R.id.actionShowMenu, MenuFragment.createArguments(id))
+    binding.linesRecyclerView.adapter = LinesAdapter(lines) { viewModel.onLineClicked(it) }
   }
 
   override fun onDestroyView() {

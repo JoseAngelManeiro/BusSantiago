@@ -8,21 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.databinding.MenuFragmentBinding
-import org.galio.bussantiago.features.incidences.IncidencesFragment
-import org.galio.bussantiago.features.information.InformationFragment
-import org.galio.bussantiago.features.stops.BusStopsArgs
-import org.galio.bussantiago.features.stops.BusStopsContainerFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MenuFragment : DialogFragment() {
 
   private var _binding: MenuFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: MenuViewModel by viewModel()
+  private val viewModel: MenuViewModel by viewModel {
+    parametersOf(this)
+  }
   private val menuTextUtils: MenuTextUtils by inject()
 
   companion object {
@@ -79,29 +77,8 @@ class MenuFragment : DialogFragment() {
         getString(R.string.line_name, menuModel.synopticModel.getSynopticFormatted())
       menuOptionsRecyclerView.adapter =
         MenuAdapter(items = menuModel.options, menuTextUtils = menuTextUtils) {
-          onMenuOptionClicked(it, lineId)
+          viewModel.onMenuOptionClicked(it, lineId)
         }
-    }
-  }
-
-  private fun onMenuOptionClicked(menuOptionModel: MenuOptionModel, lineId: Int) {
-    when (menuOptionModel.menuType) {
-      MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE, MenuType.ROUNDTRIP_ROUTE -> {
-        navigateSafe(
-          R.id.actionShowBusStops,
-          BusStopsContainerFragment.createArguments(
-            BusStopsArgs(lineId = lineId, routeName = menuOptionModel.title!!)
-          )
-        )
-      }
-
-      MenuType.INFORMATION -> {
-        navigateSafe(R.id.actionShowInformation, InformationFragment.createArguments(lineId))
-      }
-
-      MenuType.INCIDENCES -> {
-        navigateSafe(R.id.actionShowIncidences, IncidencesFragment.createArguments(lineId))
-      }
     }
   }
 

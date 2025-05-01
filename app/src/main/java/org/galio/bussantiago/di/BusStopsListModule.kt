@@ -1,22 +1,17 @@
 package org.galio.bussantiago.di
 
 import androidx.fragment.app.Fragment
-import org.galio.bussantiago.features.menu.MenuFactory
-import org.galio.bussantiago.features.menu.MenuTextUtils
-import org.galio.bussantiago.features.menu.MenuViewModel
 import org.galio.bussantiago.navigation.Navigator
+import org.galio.bussantiago.features.stops.list.BusStopsListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val menuModule = module {
-
-  factory { MenuTextUtils() }
+val busStopsListModule = module {
 
   viewModel { (fragment: Fragment) ->
-    MenuViewModel(
+    BusStopsListViewModel(
       executor = get(),
-      getLineDetails = get(),
-      menuFactory = MenuFactory(),
+      getLineBusStops = get(),
       navigator = Navigator(fragment)
     )
   }

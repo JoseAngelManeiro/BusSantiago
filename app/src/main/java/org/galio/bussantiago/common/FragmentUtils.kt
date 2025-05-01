@@ -2,14 +2,12 @@ package org.galio.bussantiago.common
 
 import android.app.Activity
 import android.os.Build
-import android.os.Bundle
 import android.os.Parcelable
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 
 fun Fragment.initActionBar(
@@ -44,14 +42,6 @@ fun Fragment.handleException(
     .setCancelable(false)
     .create()
     .show()
-}
-
-fun Fragment.navigateSafe(resId: Int, args: Bundle? = null) {
-  val navController = findNavController()
-  val action = navController.currentDestination?.getAction(resId)
-  if (action != null) {
-    navController.navigate(resId, args)
-  }
 }
 
 fun Fragment.hideKeyboard() {
