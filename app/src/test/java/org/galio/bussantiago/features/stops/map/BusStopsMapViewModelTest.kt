@@ -3,10 +3,12 @@ package org.galio.bussantiago.features.stops.map
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -16,6 +18,8 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.never
 
 class BusStopsMapViewModelTest {
 
@@ -61,5 +65,35 @@ class BusStopsMapViewModelTest {
     viewModel.load(busStopsArgs)
 
     verify(observer).onChanged(Resource.error(exceptionStub))
+  }
+
+  @Test
+  fun `when info window is clicked should navigate to expected screen`() {
+    val markerTitle = "1"
+    val markerDescription = "Os Tilos"
+
+    viewModel.onInfoWindowClick(markerTitle, markerDescription)
+
+    verify(navigator).navigate(NavScreen.Times(BusStopModel(markerTitle, markerDescription)))
+  }
+
+  @Test
+  fun `when info window is clicked and title is null should not navigate`() {
+    val markerTitle = null
+    val markerDescription = "Os Tilos"
+
+    viewModel.onInfoWindowClick(markerTitle, markerDescription)
+
+    verify(navigator, never()).navigate(anyOrNull())
+  }
+
+  @Test
+  fun `when info window is clicked and description is null should not navigate`() {
+    val markerTitle = "1"
+    val markerDescription = null
+
+    viewModel.onInfoWindowClick(markerTitle, markerDescription)
+
+    verify(navigator, never()).navigate(anyOrNull())
   }
 }

@@ -88,7 +88,7 @@ class Navigator(
 
 // We need to expose NavControllerProvider for testing purposes
 // in order to get a NavController's mock instance
-private fun getNavController(fragment: Fragment): () -> NavController? = {
+internal fun getNavController(fragment: Fragment): () -> NavController? = {
   try {
     fragment.view?.let { fragment.findNavController() }
   } catch (e: IllegalStateException) {

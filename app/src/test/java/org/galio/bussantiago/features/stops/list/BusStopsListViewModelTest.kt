@@ -8,6 +8,7 @@ import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -62,6 +63,15 @@ class BusStopsListViewModelTest {
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when bus stop is clicked should navigate to screen expected`() {
+    val busStopModel = mock<BusStopModel>()
+
+    viewModel.onBusStopClick(busStopModel)
+
+    verify(navigator).navigate(NavScreen.Times(busStopModel))
   }
 
   private fun createBusStop(code: String, name: String): BusStop {

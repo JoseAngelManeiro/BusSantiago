@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
   private var _binding: SearchFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: SearchViewModel by viewModel {
+  internal val viewModel: SearchViewModel by viewModel {
     parametersOf(this)
   }
   private val searchUtils: SearchUtils by inject()

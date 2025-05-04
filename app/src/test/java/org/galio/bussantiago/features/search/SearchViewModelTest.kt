@@ -7,6 +7,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -64,7 +65,7 @@ class SearchViewModelTest {
 
     searchViewModel.onMapInfoWindowClicked(busStopModel)
 
-    //verify(searchEventObserver).onChanged(SearchEvent.NavigateToTimes(busStopModel))
+    verify(navigator).navigate(NavScreen.Times(busStopModel))
   }
 
   @Test
@@ -88,5 +89,26 @@ class SearchViewModelTest {
     searchViewModel.onMyLocationButtonClicked()
 
     verify(searchEventObserver).onChanged(SearchEvent.ShowMapMyLocation)
+  }
+
+  @Test
+  fun `when onFavoritesActionButtonClicked should navigate to the expected screen`() {
+    searchViewModel.onFavoritesActionButtonClicked()
+
+    verify(navigator).navigate(NavScreen.Favorites)
+  }
+
+  @Test
+  fun `when onLinesActionButtonClicked should navigate to the expected screen`() {
+    searchViewModel.onLinesActionButtonClicked()
+
+    verify(navigator).navigate(NavScreen.Lines)
+  }
+
+  @Test
+  fun `when onAboutActionButtonClicked should navigate to the expected screen`() {
+    searchViewModel.onAboutActionButtonClicked()
+
+    verify(navigator).navigate(NavScreen.About)
   }
 }

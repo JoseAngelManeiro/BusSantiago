@@ -6,6 +6,7 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestInteractorExecutor
@@ -56,6 +57,13 @@ class LinesViewModelTest {
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when line is clicked should navigate to screen expected`() {
+    linesViewModel.onLineClicked(53)
+
+    verify(navigator).navigate(NavScreen.LineMenu(53))
   }
 
   private fun createLineStub(): Line {

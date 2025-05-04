@@ -6,7 +6,6 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
-import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -16,6 +15,7 @@ import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
+// See also: MenuOptionClickParameterizedTest.kt for parameterized test cases
 class MenuViewModelTest {
 
   @get:Rule
@@ -25,9 +25,8 @@ class MenuViewModelTest {
   private val getLineDetails = mock<GetLineDetails>()
   private val menuFactory = mock<MenuFactory>()
   private val observer = mock<Observer<Resource<MenuModel>>>()
-  private val navigator = mock<Navigator>()
 
-  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory, navigator)
+  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory, mock())
 
   @Before
   fun setUp() {
