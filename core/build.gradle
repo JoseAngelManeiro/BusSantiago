@@ -39,7 +39,7 @@ dependencies {
 
     // Core Android testing APIs (ApplicationProvider.getApplicationContext(), ActivityScenario...)
     implementation(libs.test.core)
-    // Provides a mock Android environment for the database)
+    // Provides a mock Android environment for the database
     testImplementation(libs.roboelectric)
 
     testImplementation(libs.junit)

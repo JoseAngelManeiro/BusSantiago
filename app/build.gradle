@@ -142,6 +142,9 @@ dependencies {
     // Mockito
     testImplementation(libs.mockito)
 
+    // Provides a mock Android environment for the Navigator
+    testImplementation(libs.roboelectric)
+
     testImplementation(libs.junit)
 
     testImplementation(libs.arch.core.testing)

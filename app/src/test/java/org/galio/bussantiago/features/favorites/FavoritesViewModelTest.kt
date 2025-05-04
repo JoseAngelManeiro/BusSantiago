@@ -6,6 +6,7 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -23,12 +24,13 @@ class FavoritesViewModelTest {
   private val executor = TestInteractorExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
   private val observer = mock<Observer<Resource<List<BusStopFavorite>>>>()
+  private val navigator = mock<Navigator>()
 
   private lateinit var viewModel: FavoritesViewModel
 
   @Before
   fun setUp() {
-    viewModel = FavoritesViewModel(executor, getBusStopFavorites)
+    viewModel = FavoritesViewModel(executor, getBusStopFavorites, navigator)
     viewModel.favoriteModels.observeForever(observer)
   }
 

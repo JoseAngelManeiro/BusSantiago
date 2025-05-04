@@ -13,6 +13,7 @@ import org.galio.bussantiago.features.menu.MenuFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragment
 import org.galio.bussantiago.features.times.TimesDialogFragment
+import org.jetbrains.annotations.VisibleForTesting
 
 sealed class NavScreen {
   data class Times(val busStopModel: BusStopModel): NavScreen()
@@ -25,7 +26,13 @@ sealed class NavScreen {
   data object Favorites : NavScreen()
 }
 
-class Navigator(private val fragment: Fragment) {
+class Navigator(
+  private val fragment: Fragment,
+  @VisibleForTesting
+  internal val navControllerProvider: () -> NavController? = getNavController(fragment),
+  @VisibleForTesting
+  internal val favoritesDialogFactory: () -> FavoritesDialogFragment = { FavoritesDialogFragment() }
+) {
 
   fun navigate(navScreen: NavScreen) {
     when (navScreen) {
@@ -63,14 +70,7 @@ class Navigator(private val fragment: Fragment) {
 
   private fun navigateSafe(resId: Int, args: Bundle? = null) {
     // Try getting the NavController only if the Fragment is still attached and has a valid view
-    val navController: NavController? = fragment.view?.let {
-      try {
-        fragment.findNavController()
-      } catch (e: IllegalStateException) {
-        // NavController cannot be retrieved
-        null
-      }
-    }
+    val navController = navControllerProvider()
     val action = navController?.currentDestination?.getAction(resId)
     // If the Fragment is still added to the Activity and the action is valid
     if (fragment.isAdded && action != null) {
@@ -82,6 +82,16 @@ class Navigator(private val fragment: Fragment) {
   // Jetpack Navigation does not officially support BottomSheetDialogFragment
   // as a <dialog> destination in the nav_graph.xml
   private fun navigateToFavorites() {
-    FavoritesDialogFragment().show(fragment.childFragmentManager, "FavoritesDialogFragment")
+    favoritesDialogFactory().show(fragment.childFragmentManager, "FavoritesDialogFragment")
+  }
+}
+
+// We need to expose NavControllerProvider for testing purposes
+// in order to get a NavController's mock instance
+private fun getNavController(fragment: Fragment): () -> NavController? = {
+  try {
+    fragment.view?.let { fragment.findNavController() }
+  } catch (e: IllegalStateException) {
+    null
   }
 }

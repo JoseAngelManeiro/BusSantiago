@@ -7,6 +7,7 @@ import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -25,12 +26,13 @@ class BusStopsMapViewModelTest {
   private val getLineDetails = mock<GetLineDetails>()
   private val lineMapModelFactory = mock<LineMapModelFactory>()
   private val observer = mock<Observer<Resource<LineMapModel>>>()
+  private val navigator = mock<Navigator>()
 
   private lateinit var viewModel: BusStopsMapViewModel
 
   @Before
   fun setUp() {
-    viewModel = BusStopsMapViewModel(executor, getLineDetails, lineMapModelFactory)
+    viewModel = BusStopsMapViewModel(executor, getLineDetails, lineMapModelFactory, navigator)
     viewModel.lineMapModel.observeForever(observer)
   }
 
