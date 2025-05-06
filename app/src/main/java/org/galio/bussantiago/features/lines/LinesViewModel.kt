@@ -6,11 +6,14 @@ import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.navigation.NavScreen
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.SynopticModel
 
 class LinesViewModel(
   private val executor: InteractorExecutor,
-  private val getLines: GetLines
+  private val getLines: GetLines,
+  private val navigator: Navigator
 ) : BaseViewModel(executor) {
 
   private val _lineModels = MutableLiveData<Resource<List<LineModel>>>()
@@ -38,9 +41,11 @@ class LinesViewModel(
           }
         )
       },
-      onError = {
-        _lineModels.value = Resource.error(it)
-      }
+      onError = { _lineModels.value = Resource.error(it) }
     )
+  }
+
+  fun onLineClicked(lineId: Int) {
+    navigator.navigate(NavScreen.LineMenu(lineId))
   }
 }

@@ -6,6 +6,8 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
+import org.galio.bussantiago.navigation.NavScreen
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
@@ -24,12 +26,13 @@ class LinesViewModelTest {
   private val executor = TestInteractorExecutor()
   private val getLines = mock<GetLines>()
   private val observer = mock<Observer<Resource<List<LineModel>>>>()
+  private val navigator = mock<Navigator>()
 
   private lateinit var linesViewModel: LinesViewModel
 
   @Before
   fun setUp() {
-    linesViewModel = LinesViewModel(executor, getLines)
+    linesViewModel = LinesViewModel(executor, getLines, navigator)
     linesViewModel.lineModels.observeForever(observer)
   }
 
@@ -54,6 +57,13 @@ class LinesViewModelTest {
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when line is clicked should navigate to screen expected`() {
+    linesViewModel.onLineClicked(53)
+
+    verify(navigator).navigate(NavScreen.LineMenu(53))
   }
 
   private fun createLineStub(): Line {

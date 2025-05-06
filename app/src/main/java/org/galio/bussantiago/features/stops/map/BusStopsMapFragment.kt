@@ -16,19 +16,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import org.galio.bussantiago.R
 import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.stops.BusStopsArgs
-import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.core.graphics.toColorInt
+import org.koin.core.parameter.parametersOf
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
-  private val viewModel: BusStopsMapViewModel by viewModel()
+  private val viewModel: BusStopsMapViewModel by viewModel {
+    parametersOf(this)
+  }
 
   private var busStopsArgs: BusStopsArgs? = null
   private var mGoogleMap: GoogleMap? = null
@@ -75,12 +74,7 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
     mGoogleMap = googleMap
     enableMyLocation()
     mGoogleMap?.setOnInfoWindowClickListener { marker ->
-      if (marker.title != null && marker.snippet != null) {
-        navigateSafe(
-          R.id.actionShowTimes,
-          TimesDialogFragment.createArguments(BusStopModel(marker.title!!, marker.snippet!!))
-        )
-      }
+      viewModel.onInfoWindowClick(marker.title, marker.snippet)
     }
 
     busStopsArgs?.let { viewModel.load(it) }

@@ -7,20 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import android.R as androidR
+import com.google.android.material.R as materialR
 
-class FavoritesDialogFragment(
-  private val onBusStopClicked: (BusStopModel) -> Unit
-) : BottomSheetDialogFragment() {
+class FavoritesDialogFragment : BottomSheetDialogFragment() {
 
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: FavoritesViewModel by viewModel()
+  private val viewModel: FavoritesViewModel by viewModel {
+    parametersOf(this)
+  }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return super.onCreateDialog(savedInstanceState).apply {
@@ -29,10 +30,8 @@ class FavoritesDialogFragment(
 
       // Set transparency to dialog layer
       setOnShowListener {
-        val bottomSheet = findViewById<View>(
-          com.google.android.material.R.id.design_bottom_sheet
-        ) as FrameLayout
-        bottomSheet.setBackgroundResource(android.R.color.transparent)
+        val bottomSheet = findViewById<View>(materialR.id.design_bottom_sheet) as FrameLayout
+        bottomSheet.setBackgroundResource(androidR.color.transparent)
       }
     }
   }
@@ -56,19 +55,16 @@ class FavoritesDialogFragment(
           if (busStopFavorites.isEmpty()) {
             noFavoritesTextView.visibility = View.VISIBLE
           } else {
-            favoritesRecyclerView.adapter =
-              BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+            favoritesRecyclerView.adapter = BusStopFavoritesAdapter(busStopFavorites) {
+              viewModel.onBusStopFavoriteClick(it)
+              dismiss()
+            }
           }
         }
       }
     }
 
     viewModel.loadFavorites()
-  }
-
-  private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
-    dismiss()
-    onBusStopClicked(BusStopModel(busStopFavorite.code, busStopFavorite.name))
   }
 
   override fun onDestroyView() {

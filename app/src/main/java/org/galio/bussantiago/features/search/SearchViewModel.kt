@@ -9,10 +9,13 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.navigation.NavScreen
+import org.galio.bussantiago.navigation.Navigator
 
 class SearchViewModel(
   private val executor: InteractorExecutor,
-  private val searchAllBusStops: SearchAllBusStops
+  private val searchAllBusStops: SearchAllBusStops,
+  private val navigator: Navigator
 ) : BaseViewModel(executor) {
 
   private val _searchEvent = SingleLiveEvent<SearchEvent>()
@@ -39,7 +42,7 @@ class SearchViewModel(
   }
 
   fun onMapInfoWindowClicked(busStopModel: BusStopModel) {
-    _searchEvent.value = SearchEvent.NavigateToTimes(busStopModel)
+    navigator.navigate(NavScreen.Times(busStopModel))
   }
 
   fun onSuggestionItemClicked(busStopSearch: BusStopSearch) {
@@ -52,5 +55,17 @@ class SearchViewModel(
 
   fun onMyLocationButtonClicked() {
     _searchEvent.value = SearchEvent.ShowMapMyLocation
+  }
+
+  fun onFavoritesActionButtonClicked() {
+    navigator.navigate(NavScreen.Favorites)
+  }
+
+  fun onLinesActionButtonClicked() {
+    navigator.navigate(NavScreen.Lines)
+  }
+
+  fun onAboutActionButtonClicked() {
+    navigator.navigate(NavScreen.About)
   }
 }
