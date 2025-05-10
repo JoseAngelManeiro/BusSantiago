@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.net.ConnectException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://app.tussa.org/tussa/api/"
 
@@ -22,9 +23,16 @@ internal class ApiClient(baseEndpoint: String = BASE_URL) {
   private val service: ApiService
 
   init {
-    val interceptor = HttpLoggingInterceptor()
-    interceptor.level = HttpLoggingInterceptor.Level.BODY
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    val interceptor = HttpLoggingInterceptor().apply {
+      level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    val client = OkHttpClient.Builder()
+      .connectTimeout(20, TimeUnit.SECONDS) // time to establish connection (default 10)
+      .readTimeout(20, TimeUnit.SECONDS)    // time to wait for server response (default 10)
+      .writeTimeout(20, TimeUnit.SECONDS)   // time to send request data (default 10)
+      .addInterceptor(interceptor)
+      .build()
 
     val retrofit = Retrofit.Builder()
       .baseUrl(baseEndpoint)
