@@ -29,7 +29,6 @@
 
     <activity
       android:name=".features.MainActivity"
-      android:screenOrientation="portrait"
       android:exported="true"
       android:launchMode="singleTop"
       tools:ignore="DiscouragedApi">

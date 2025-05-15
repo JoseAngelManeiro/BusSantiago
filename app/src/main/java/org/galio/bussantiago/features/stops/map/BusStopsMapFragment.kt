@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,15 +20,13 @@ import com.google.android.gms.maps.model.PolylineOptions
 import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.graphics.toColorInt
-import org.koin.core.parameter.parametersOf
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
-  private val viewModel: BusStopsMapViewModel by viewModel {
-    parametersOf(this)
-  }
+  private val viewModel: BusStopsMapViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   private var busStopsArgs: BusStopsArgs? = null
   private var mGoogleMap: GoogleMap? = null
@@ -67,6 +66,10 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         onError = { handleException(it) },
         onSuccess = { setUpMap(it) }
       )
+    }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
     }
   }
 

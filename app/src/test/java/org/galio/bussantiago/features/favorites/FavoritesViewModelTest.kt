@@ -8,7 +8,6 @@ import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
 import org.junit.Before
@@ -25,15 +24,16 @@ class FavoritesViewModelTest {
 
   private val executor = TestInteractorExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
-  private val observer = mock<Observer<Resource<List<BusStopFavorite>>>>()
-  private val navigator = mock<Navigator>()
+  private val favoritesObserver = mock<Observer<Resource<List<BusStopFavorite>>>>()
+  private val navEventObserver = mock<Observer<NavScreen>>()
 
   private lateinit var viewModel: FavoritesViewModel
 
   @Before
   fun setUp() {
-    viewModel = FavoritesViewModel(executor, getBusStopFavorites, navigator)
-    viewModel.favoriteModels.observeForever(observer)
+    viewModel = FavoritesViewModel(executor, getBusStopFavorites)
+    viewModel.favoriteModels.observeForever(favoritesObserver)
+    viewModel.navigationEvent.observeForever(navEventObserver)
   }
 
   @Test
@@ -43,7 +43,7 @@ class FavoritesViewModelTest {
 
     viewModel.loadFavorites()
 
-    verify(observer).onChanged(Resource.success(favorites))
+    verify(favoritesObserver).onChanged(Resource.success(favorites))
   }
 
   @Test
@@ -53,7 +53,7 @@ class FavoritesViewModelTest {
 
     viewModel.loadFavorites()
 
-    verify(observer).onChanged(Resource.error(exception))
+    verify(favoritesObserver).onChanged(Resource.error(exception))
   }
 
   @Test
@@ -62,6 +62,8 @@ class FavoritesViewModelTest {
 
     viewModel.onBusStopFavoriteClick(busStopFavorite)
 
-    verify(navigator).navigate(NavScreen.Times(BusStopModel("53", "As Pereiras")))
+    verify(navEventObserver).onChanged(
+      NavScreen.Times(BusStopModel("53", "As Pereiras"))
+    )
   }
 }

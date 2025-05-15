@@ -37,9 +37,9 @@ import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 private const val MAP_ZOOM = 18f
 
@@ -48,9 +48,8 @@ class SearchFragment : Fragment() {
   private var _binding: SearchFragmentBinding? = null
   private val binding get() = _binding!!
 
-  internal val viewModel: SearchViewModel by viewModel {
-    parametersOf(this)
-  }
+  internal val viewModel: SearchViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
   private val searchUtils: SearchUtils by inject()
 
   private var mapView: MapView? = null
@@ -131,6 +130,10 @@ class SearchFragment : Fragment() {
           addBusStopMarkers(busStops)
         }
       )
+    }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
     }
 
     viewModel.loadBusStops()

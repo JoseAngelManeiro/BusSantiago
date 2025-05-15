@@ -4,22 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.SynopticModel
 
 class LinesViewModel(
   private val executor: InteractorExecutor,
-  private val getLines: GetLines,
-  private val navigator: Navigator
+  private val getLines: GetLines
 ) : BaseViewModel(executor) {
 
+  private val _navigationEvent = SingleLiveEvent<NavScreen>()
   private val _lineModels = MutableLiveData<Resource<List<LineModel>>>()
 
   val lineModels: LiveData<Resource<List<LineModel>>>
     get() = _lineModels
+
+  val navigationEvent: LiveData<NavScreen>
+    get() = _navigationEvent
 
   fun loadLines() {
     _lineModels.value = Resource.loading()
@@ -46,6 +49,6 @@ class LinesViewModel(
   }
 
   fun onLineClicked(lineId: Int) {
-    navigator.navigate(NavScreen.LineMenu(lineId))
+    _navigationEvent.value = NavScreen.LineMenu(lineId)
   }
 }

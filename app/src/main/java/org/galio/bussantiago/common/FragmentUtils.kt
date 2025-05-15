@@ -58,10 +58,15 @@ fun EditText.showKeyboard() {
 }
 
 inline fun <reified T : Parcelable> Fragment.getParcelableArgument(key: String): T? {
-  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-    arguments?.getParcelable(key, T::class.java)
-  } else {
-    @Suppress("DEPRECATION")
-    arguments?.getParcelable(key)
+  return try {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      arguments?.getParcelable(key, T::class.java)
+    } else {
+      @Suppress("DEPRECATION")
+      arguments?.getParcelable(key)
+    }
+  } catch (e: Exception) {
+    // If something goes wrong, return null instead of propagate a RuntimeException
+    null
   }
 }

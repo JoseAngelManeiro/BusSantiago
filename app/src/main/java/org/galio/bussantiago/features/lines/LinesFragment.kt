@@ -9,17 +9,16 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.databinding.LinesFragmentBinding
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class LinesFragment : Fragment() {
 
   private var _binding: LinesFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: LinesViewModel by viewModel {
-    parametersOf(this)
-  }
+  private val viewModel: LinesViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -50,6 +49,10 @@ class LinesFragment : Fragment() {
           setUpLinesAdapter(lines)
         }
       )
+    }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
     }
 
     viewModel.loadLines()

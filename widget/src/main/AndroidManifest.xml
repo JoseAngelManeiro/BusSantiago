@@ -7,7 +7,6 @@
     <activity
       android:name="WidgetActivity"
       android:label="@string/select_stop"
-      android:screenOrientation="portrait"
       android:exported="false"
       tools:ignore="DiscouragedApi,LockedOrientationActivity">
       <intent-filter>

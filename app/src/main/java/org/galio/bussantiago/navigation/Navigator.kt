@@ -16,11 +16,11 @@ import org.galio.bussantiago.features.times.TimesDialogFragment
 import org.jetbrains.annotations.VisibleForTesting
 
 sealed class NavScreen {
-  data class Times(val busStopModel: BusStopModel): NavScreen()
-  data class BusStops(val lineId: Int, val routeName: String): NavScreen()
-  data class Information(val lineId: Int): NavScreen()
-  data class Incidences(val lineId: Int): NavScreen()
-  data class LineMenu(val lineId: Int): NavScreen()
+  data class Times(val busStopModel: BusStopModel) : NavScreen()
+  data class BusStops(val lineId: Int, val routeName: String) : NavScreen()
+  data class Information(val lineId: Int) : NavScreen()
+  data class Incidences(val lineId: Int) : NavScreen()
+  data class LineMenu(val lineId: Int) : NavScreen()
   data object Lines : NavScreen()
   data object About : NavScreen()
   data object Favorites : NavScreen()
@@ -40,30 +40,37 @@ class Navigator(
         resId = R.id.actionShowTimes,
         args = TimesDialogFragment.createArguments(navScreen.busStopModel)
       )
+
       is NavScreen.BusStops -> navigateSafe(
         resId = R.id.actionShowBusStops,
         args = BusStopsContainerFragment.createArguments(
           BusStopsArgs(navScreen.lineId, navScreen.routeName)
         )
       )
+
       is NavScreen.Information -> navigateSafe(
         resId = R.id.actionShowInformation,
         args = InformationFragment.createArguments(navScreen.lineId)
       )
+
       is NavScreen.Incidences -> navigateSafe(
         resId = R.id.actionShowIncidences,
         args = IncidencesFragment.createArguments(navScreen.lineId)
       )
+
       is NavScreen.LineMenu -> navigateSafe(
         resId = R.id.actionShowMenu,
         args = MenuFragment.createArguments(navScreen.lineId)
       )
+
       is NavScreen.Lines -> navigateSafe(
         resId = R.id.actionShowLines
       )
+
       is NavScreen.About -> navigateSafe(
         resId = R.id.actionShowAbout
       )
+
       is NavScreen.Favorites -> navigateToFavorites()
     }
   }
