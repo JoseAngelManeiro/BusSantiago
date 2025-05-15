@@ -4,22 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.navigation.Navigator
 
 class MenuViewModel(
   private val executor: InteractorExecutor,
   private val getLineDetails: GetLineDetails,
-  private val menuFactory: MenuFactory,
-  private val navigator: Navigator
+  private val menuFactory: MenuFactory
 ) : BaseViewModel(executor) {
 
   private val _menuModel = MutableLiveData<Resource<MenuModel>>()
+  private val _navigationEvent = SingleLiveEvent<NavScreen>()
 
   val menuModel: LiveData<Resource<MenuModel>>
     get() = _menuModel
+
+  val navigationEvent: LiveData<NavScreen>
+    get() = _navigationEvent
 
   fun loadLineDetails(lineId: Int) {
     _menuModel.value = Resource.loading()
@@ -32,16 +35,19 @@ class MenuViewModel(
   }
 
   fun onMenuOptionClicked(menuOptionModel: MenuOptionModel, lineId: Int) {
-    when (menuOptionModel.menuType) {
+    val navScreen = when (menuOptionModel.menuType) {
       MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE, MenuType.ROUNDTRIP_ROUTE -> {
-        navigator.navigate(NavScreen.BusStops(lineId, menuOptionModel.title.orEmpty()))
+        NavScreen.BusStops(lineId, menuOptionModel.title.orEmpty())
       }
+
       MenuType.INFORMATION -> {
-        navigator.navigate(NavScreen.Information(lineId))
+        NavScreen.Information(lineId)
       }
+
       MenuType.INCIDENCES -> {
-        navigator.navigate(NavScreen.Incidences(lineId))
+        NavScreen.Incidences(lineId)
       }
     }
+    _navigationEvent.value = navScreen
   }
 }

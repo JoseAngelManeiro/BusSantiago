@@ -9,9 +9,9 @@ import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import android.R as androidR
 import com.google.android.material.R as materialR
 
@@ -20,9 +20,8 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: FavoritesViewModel by viewModel {
-    parametersOf(this)
-  }
+  private val viewModel: FavoritesViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return super.onCreateDialog(savedInstanceState).apply {
@@ -66,6 +65,10 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
           }
         }
       }
+    }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
     }
 
     viewModel.loadFavorites()

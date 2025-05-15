@@ -5,23 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.databinding.BusstopslistFragmentBinding
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.view.isVisible
-import org.koin.core.parameter.parametersOf
 
 class BusStopsListFragment : Fragment() {
 
   private var _binding: BusstopslistFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: BusStopsListViewModel by viewModel {
-    parametersOf(this)
-  }
+  private val viewModel: BusStopsListViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   companion object {
     private const val BUS_STOPS_ARGS_KEY = "bus_stops_args_key"
@@ -63,6 +62,10 @@ class BusStopsListFragment : Fragment() {
               BusStopsListAdapter(busStopModels) { viewModel.onBusStopClick(it) }
           }
         )
+      }
+
+      viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+        navigator.navigate(navScreen)
       }
 
       viewModel.loadBusStops(busStopsArgs)

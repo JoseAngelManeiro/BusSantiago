@@ -9,18 +9,17 @@ import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.databinding.MenuFragmentBinding
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class MenuFragment : DialogFragment() {
 
   private var _binding: MenuFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: MenuViewModel by viewModel {
-    parametersOf(this)
-  }
+  private val viewModel: MenuViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
   private val menuTextUtils: MenuTextUtils by inject()
 
   companion object {
@@ -64,6 +63,10 @@ class MenuFragment : DialogFragment() {
             setUpView(menuModel, lineId)
           }
         )
+      }
+
+      viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+        navigator.navigate(navScreen)
       }
 
       viewModel.loadLineDetails(lineId)

@@ -24,13 +24,13 @@ class MenuViewModelTest {
   private val executor = TestInteractorExecutor()
   private val getLineDetails = mock<GetLineDetails>()
   private val menuFactory = mock<MenuFactory>()
-  private val observer = mock<Observer<Resource<MenuModel>>>()
+  private val menuObserver = mock<Observer<Resource<MenuModel>>>()
 
-  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory, mock())
+  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
 
   @Before
   fun setUp() {
-    viewModel.menuModel.observeForever(observer)
+    viewModel.menuModel.observeForever(menuObserver)
   }
 
   @Test
@@ -43,8 +43,8 @@ class MenuViewModelTest {
 
     viewModel.loadLineDetails(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(menuModelStub))
+    verify(menuObserver).onChanged(Resource.loading())
+    verify(menuObserver).onChanged(Resource.success(menuModelStub))
   }
 
   @Test
@@ -55,7 +55,7 @@ class MenuViewModelTest {
 
     viewModel.loadLineDetails(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(menuObserver).onChanged(Resource.loading())
+    verify(menuObserver).onChanged(Resource.error(exception))
   }
 }

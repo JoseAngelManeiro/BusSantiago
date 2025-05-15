@@ -1,9 +1,13 @@
 package org.galio.bussantiago.features.menu
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.util.mock
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.mockito.Mockito.verify
@@ -16,14 +20,22 @@ class MenuOptionClickParameterizedTest(
   private val navScreenExpected: NavScreen
 ) {
 
-  private val navigator = mock<Navigator>()
-  private val viewModel = MenuViewModel(mock(), mock(), mock(), navigator)
+  @get:Rule
+  var rule: TestRule = InstantTaskExecutorRule()
+
+  private val navEventObserver = mock<Observer<NavScreen>>()
+  private val viewModel = MenuViewModel(mock(), mock(), mock())
+
+  @Before
+  fun setUp() {
+    viewModel.navigationEvent.observeForever(navEventObserver)
+  }
 
   @Test
   fun `when menu option is clicked should navigate to screen expected`() {
     viewModel.onMenuOptionClicked(menuOptionModel, lineId)
 
-    verify(navigator).navigate(navScreenExpected)
+    verify(navEventObserver).onChanged(navScreenExpected)
   }
 
   companion object {
