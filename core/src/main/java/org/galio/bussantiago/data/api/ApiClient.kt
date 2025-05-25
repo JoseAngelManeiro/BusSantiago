@@ -2,9 +2,6 @@ package org.galio.bussantiago.data.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Error
-import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.exception.NetworkConnectionException
 import org.galio.bussantiago.data.exception.ServiceException
@@ -59,20 +56,21 @@ internal class ApiClient(baseEndpoint: String = BASE_URL) {
     service.searchBusStop(request)
   }
 
-  private fun <T> callService(callback: () -> Call<T>): Either<Exception, T> {
+  private fun <T> callService(callback: () -> Call<T>): Result<T> {
     return try {
       val response = callback().execute()
       val responseBody = response.body()
       if (response.isSuccessful && responseBody != null) {
-        Success(responseBody)
+        Result.success(responseBody)
       } else {
-        Error(ServiceException())
+        Result.failure(ServiceException())
       }
-    } catch (exception: IOException) {
-      when (exception) {
-        is UnknownHostException, is ConnectException -> Error(NetworkConnectionException())
-        else -> Error(ServiceException())
+    } catch (e: IOException) {
+      val exception = when (e) {
+        is UnknownHostException, is ConnectException -> NetworkConnectionException()
+        else -> ServiceException()
       }
+      Result.failure(exception)
     }
   }
 }

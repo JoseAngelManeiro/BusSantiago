@@ -1,14 +1,13 @@
 package org.galio.bussantiago.domain
 
 import org.galio.bussantiago.data.repository.BusStopRemainingTimesRepository
+import org.galio.bussantiago.util.mock
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
 class GetBusStopRemainingTimesImplTest {
 
-  private val busStopRemainingTimesRepository =
-    Mockito.mock(BusStopRemainingTimesRepository::class.java)
+  private val busStopRemainingTimesRepository = mock<BusStopRemainingTimesRepository>()
   private val getBusStopRemainingTimes =
     GetBusStopRemainingTimesImpl(busStopRemainingTimesRepository)
 

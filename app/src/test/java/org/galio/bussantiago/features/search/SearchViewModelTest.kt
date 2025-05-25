@@ -4,18 +4,19 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
+import org.mockito.kotlin.whenever
 
 class SearchViewModelTest {
 
@@ -40,7 +41,7 @@ class SearchViewModelTest {
   @Test
   fun `load all bus stops successfully should return the data received`() {
     val busStops = listOf<BusStopSearch>(mock())
-    given(searchAllBusStops(Unit)).willReturn(Either.success(busStops))
+    whenever(searchAllBusStops(Unit)).thenSuccess(busStops)
 
     searchViewModel.loadBusStops()
 
@@ -51,7 +52,7 @@ class SearchViewModelTest {
   @Test
   fun `when load all bus stops fails should return the exception`() {
     val exception = mock<Exception>()
-    given(searchAllBusStops(Unit)).willReturn(Either.error(exception))
+    whenever(searchAllBusStops(Unit)).thenFailure(exception)
 
     searchViewModel.loadBusStops()
 

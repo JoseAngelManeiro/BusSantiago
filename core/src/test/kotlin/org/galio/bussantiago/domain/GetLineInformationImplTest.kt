@@ -1,19 +1,18 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.repository.LineDetailsRepository
+import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
-import org.mockito.Mockito
 
 class GetLineInformationImplTest {
 
-  private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
+  private val lineDetailsRepository = mock<LineDetailsRepository>()
   private val getLineInformation = GetLineInformationImpl(lineDetailsRepository)
 
   @Test
@@ -21,26 +20,28 @@ class GetLineInformationImplTest {
     val lineId = 123
     val information = "Any Information"
     val lineDetailsStub = createLineDetails(information)
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Success(lineDetailsStub))
+    given(lineDetailsRepository.getLineDetails(lineId))
+      .willReturn(Result.success(lineDetailsStub))
 
     val result = getLineInformation(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
     assertTrue(result.isSuccess)
-    assertEquals("Any Information", result.successValue)
+    assertEquals("Any Information", result.getOrNull())
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val lineId = 123
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(lineId)).willReturn(Either.Error(exception))
+    given(lineDetailsRepository.getLineDetails(lineId))
+      .willReturn(Result.failure(exception))
 
     val result = getLineInformation(lineId)
 
     verify(lineDetailsRepository).getLineDetails(lineId)
-    assertTrue(result.isError)
-    assertEquals(exception, result.errorValue)
+    assertTrue(result.isFailure)
+    assertEquals(exception, result.exceptionOrNull())
   }
 
   private fun createLineDetails(information: String): LineDetails {

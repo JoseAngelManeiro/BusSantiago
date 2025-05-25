@@ -4,13 +4,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -43,7 +44,7 @@ class BusStopsListViewModelTest {
   fun `if all goes well, the bus stop models are mapped and loaded correctly`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val busStopsStub = listOf(createBusStop(code = "1234", name = "Bus Stop 1"))
-    whenever(getLineBusStops(request)).thenReturn(Either.Success(busStopsStub))
+    whenever(getLineBusStops(request)).thenSuccess(busStopsStub)
 
     viewModel.loadBusStops(busStopsArgs)
 
@@ -57,7 +58,7 @@ class BusStopsListViewModelTest {
   fun `fire the exception received`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val exception = Exception("Fake exception")
-    whenever(getLineBusStops(request)).thenReturn(Either.Error(exception))
+    whenever(getLineBusStops(request)).thenFailure(exception)
 
     viewModel.loadBusStops(busStopsArgs)
 

@@ -3,6 +3,7 @@ package org.galio.bussantiago.data.cache
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -16,8 +17,10 @@ class BusStopSearchCacheTest {
   }
 
   @Test
-  fun `when cache has no data should return an empty list`() {
-    assertEquals(emptyList<BusStopSearch>(), busStopSearchCache.getAll())
+  fun `when cache has no data should return a NoSuchElementException`() {
+    val result = busStopSearchCache.getAll()
+
+    assertTrue(result.exceptionOrNull() is NoSuchElementException)
   }
 
   @Test
@@ -26,7 +29,7 @@ class BusStopSearchCacheTest {
 
     busStopSearchCache.save(busStops)
 
-    assertEquals(busStops, busStopSearchCache.getAll())
+    assertEquals(busStops, busStopSearchCache.getAll().getOrNull())
   }
 
   @Test
@@ -35,9 +38,9 @@ class BusStopSearchCacheTest {
     val newBusStops = listOf<BusStopSearch>(mock(), mock())
 
     busStopSearchCache.save(oldBusStops)
-    assertEquals(oldBusStops, busStopSearchCache.getAll())
+    assertEquals(oldBusStops, busStopSearchCache.getAll().getOrNull())
 
     busStopSearchCache.save(newBusStops)
-    assertEquals(newBusStops, busStopSearchCache.getAll())
+    assertEquals(newBusStops, busStopSearchCache.getAll().getOrNull())
   }
 }
