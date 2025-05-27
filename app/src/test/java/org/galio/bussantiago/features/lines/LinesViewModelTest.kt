@@ -3,13 +3,14 @@ package org.galio.bussantiago.features.lines
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +40,7 @@ class LinesViewModelTest {
   @Test
   fun `load the expected list of lines`() {
     val linesStub = listOf(createLineStub())
-    whenever(getLines(Unit)).thenReturn(Either.Success(linesStub))
+    whenever(getLines(Unit)).thenSuccess(linesStub)
 
     linesViewModel.loadLines()
 
@@ -51,7 +52,7 @@ class LinesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    whenever(getLines(Unit)).thenReturn(Either.Error(exception))
+    whenever(getLines(Unit)).thenFailure(exception)
 
     linesViewModel.loadLines()
 

@@ -1,14 +1,15 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.repository.SearchBusStopRepository
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.BDDMockito.given
+import org.mockito.kotlin.whenever
 
 class SearchAllBusStopsImplTest {
 
@@ -18,22 +19,22 @@ class SearchAllBusStopsImplTest {
   @Test
   fun `invokes repository and returns the list received`() {
     val busStops = listOf(mock<BusStopSearch>())
-    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.success(busStops))
+    whenever(searchBusStopRepository.searchAllBusStops()).thenSuccess(busStops)
 
     val result = searchAllBusStops(Unit)
 
     assertTrue(result.isSuccess)
-    assertEquals(busStops, result.successValue)
+    assertEquals(busStops, result.getOrNull())
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val exception = ServiceException()
-    given(searchBusStopRepository.searchAllBusStops()).willReturn(Either.error(exception))
+    whenever(searchBusStopRepository.searchAllBusStops()).thenFailure(exception)
 
     val result = searchAllBusStops(Unit)
 
-    assertTrue(result.isError)
-    assertEquals(exception, result.errorValue)
+    assertTrue(result.isFailure)
+    assertEquals(exception, result.exceptionOrNull())
   }
 }

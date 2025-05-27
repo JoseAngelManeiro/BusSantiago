@@ -1,6 +1,5 @@
 package org.galio.bussantiago.domain
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.core.model.LineDetails
@@ -8,16 +7,17 @@ import org.galio.bussantiago.core.model.Route
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.repository.LineDetailsRepository
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.whenever
 
 class GetLineBusStopsImplTest {
 
-  private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
+  private val lineDetailsRepository = mock<LineDetailsRepository>()
   private val getLineBusStops = GetLineBusStopsImpl(lineDetailsRepository)
 
   @Test
@@ -26,28 +26,26 @@ class GetLineBusStopsImplTest {
     val route1 = createRoute("Route 1", mock())
     val route2 = createRoute("Route 2", mock())
     val lineDetailsStub = createLineDetails(listOf(route1, route2))
-    given(lineDetailsRepository.getLineDetails(request.lineId))
-      .willReturn(Either.Success(lineDetailsStub))
+    whenever(lineDetailsRepository.getLineDetails(request.lineId)).thenSuccess(lineDetailsStub)
 
     val result = getLineBusStops(request)
 
     verify(lineDetailsRepository).getLineDetails(request.lineId)
     assertTrue(result.isSuccess)
-    assertEquals(route1.busStops, result.successValue)
+    assertEquals(route1.busStops, result.getOrNull())
   }
 
   @Test
   fun `if the repository fails, returns the exception received`() {
     val request = GetLineBusStops.Request(123, "Any name")
     val exception = ServiceException()
-    given(lineDetailsRepository.getLineDetails(request.lineId))
-      .willReturn(Either.Error(exception))
+    whenever(lineDetailsRepository.getLineDetails(request.lineId)).thenFailure(exception)
 
     val result = getLineBusStops(request)
 
     verify(lineDetailsRepository).getLineDetails(request.lineId)
-    assertTrue(result.isError)
-    assertEquals(exception, result.errorValue)
+    assertTrue(result.isFailure)
+    assertEquals(exception, result.exceptionOrNull())
   }
 
   private fun createRoute(name: String, busStops: List<BusStop>): Route {

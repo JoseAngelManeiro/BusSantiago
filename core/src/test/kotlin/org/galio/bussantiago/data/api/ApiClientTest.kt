@@ -34,7 +34,7 @@ class ApiClientTest : MockWebServerTest() {
 
     val response = apiClient.getLines()
 
-    assertTrue(response.errorValue is NetworkConnectionException)
+    assertTrue(response.exceptionOrNull() is NetworkConnectionException)
   }
 
   @Test
@@ -43,7 +43,7 @@ class ApiClientTest : MockWebServerTest() {
 
     val response = apiClient.getLines()
 
-    assertTrue(response.errorValue is ServiceException)
+    assertTrue(response.exceptionOrNull() is ServiceException)
   }
 
   @Test
@@ -52,7 +52,7 @@ class ApiClientTest : MockWebServerTest() {
 
     val response = apiClient.getLines()
 
-    assertTrue(response.errorValue is ServiceException)
+    assertTrue(response.exceptionOrNull() is ServiceException)
   }
 
   @Test
@@ -62,7 +62,7 @@ class ApiClientTest : MockWebServerTest() {
     val response = apiClient.getLines()
 
     assertGetRequestSentTo("/lineas")
-    assertEquals(lineEntitiesExpected, response.successValue)
+    assertEquals(lineEntitiesExpected, response.getOrNull())
   }
 
   @Test
@@ -72,7 +72,7 @@ class ApiClientTest : MockWebServerTest() {
     val response = apiClient.getLineDetails(id = 15)
 
     assertGetRequestSentTo("/lineas/15?lang=es")
-    assertEquals(lineDetailsEntityExpected, response.successValue)
+    assertEquals(lineDetailsEntityExpected, response.getOrNull())
   }
 
   @Test
@@ -82,7 +82,7 @@ class ApiClientTest : MockWebServerTest() {
     val response = apiClient.getBusStopRemainingTimes("662")
 
     assertGetRequestSentTo("/lineas/0/parada/662")
-    assertEquals(busStopRemainingTimesEntityExpected, response.successValue)
+    assertEquals(busStopRemainingTimesEntityExpected, response.getOrNull())
   }
 
   @Test
@@ -92,7 +92,7 @@ class ApiClientTest : MockWebServerTest() {
     val response = apiClient.searchBusStop(BusStopRequest(nombre = "345"))
 
     assertPostRequestSentTo("/paradas")
-    assertEquals(busStopSearchEntitiesExpected, response.successValue)
+    assertEquals(busStopSearchEntitiesExpected, response.getOrNull())
   }
 
   @Test

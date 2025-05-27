@@ -4,21 +4,22 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.verify
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.never
+import org.mockito.kotlin.whenever
 
 class BusStopsMapViewModelTest {
 
@@ -44,11 +45,10 @@ class BusStopsMapViewModelTest {
   fun `should invokes the factory and load the result correctly`() {
     val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
     val lineDetailsStub = mock<LineDetails>()
-    given(getLineDetails.invoke(123))
-      .willReturn(Either.Success(lineDetailsStub))
+    whenever(getLineDetails.invoke(123)).thenSuccess(lineDetailsStub)
     val lineMapModelStub = mock<LineMapModel>()
-    given(lineMapModelFactory.createLineMapModelFactory("Route 1", lineDetailsStub))
-      .willReturn(lineMapModelStub)
+    whenever(lineMapModelFactory.createLineMapModelFactory("Route 1", lineDetailsStub))
+      .thenReturn(lineMapModelStub)
 
     viewModel.load(busStopsArgs)
 
@@ -59,8 +59,7 @@ class BusStopsMapViewModelTest {
   fun `should fire the exception received`() {
     val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
     val exceptionStub = mock<Exception>()
-    given(getLineDetails.invoke(123))
-      .willReturn(Either.Error(exceptionStub))
+    whenever(getLineDetails.invoke(123)).thenFailure(exceptionStub)
 
     viewModel.load(busStopsArgs)
 

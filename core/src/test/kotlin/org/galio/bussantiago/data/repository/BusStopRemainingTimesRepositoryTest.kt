@@ -1,12 +1,13 @@
 package org.galio.bussantiago.data.repository
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.entity.BusStopRemainingTimesEntity
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.kotlin.whenever
@@ -23,25 +24,22 @@ class BusStopRemainingTimesRepositoryTest {
     val busCode = "123"
     val busStopRemainingTimesEntity = mock<BusStopRemainingTimesEntity>()
     val busStopRemainingTimes = mock<BusStopRemainingTimes>()
-    whenever(apiClient.getBusStopRemainingTimes(busCode))
-      .thenReturn(Either.success(busStopRemainingTimesEntity))
-    whenever(mapper.toDomain(busStopRemainingTimesEntity))
-      .thenReturn(busStopRemainingTimes)
+    whenever(apiClient.getBusStopRemainingTimes(busCode)).thenSuccess(busStopRemainingTimesEntity)
+    whenever(mapper.toDomain(busStopRemainingTimesEntity)).thenReturn(busStopRemainingTimes)
 
     val result = repository.getBusStopRemainingTimes(busCode)
 
-    assertEquals(busStopRemainingTimes, result.successValue)
+    assertEquals(busStopRemainingTimes, result.getOrNull())
   }
 
   @Test
   fun `when api client fails should return the exception received`() {
     val busCode = "123"
     val exception = ServiceException()
-    whenever(apiClient.getBusStopRemainingTimes(busCode))
-      .thenReturn(Either.error(exception))
+    whenever(apiClient.getBusStopRemainingTimes(busCode)).thenFailure(exception)
 
     val result = repository.getBusStopRemainingTimes(busCode)
 
-    assertEquals(exception, result.errorValue)
+    assertEquals(exception, result.exceptionOrNull())
   }
 }

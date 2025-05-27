@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.AddBusStopFavorite
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
@@ -14,6 +13,8 @@ import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.shared.TimesFactory
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -59,7 +60,7 @@ class TimesViewModelTest {
     val busStopRemainingTimesStub = mock<BusStopRemainingTimes>()
     val lineRemainingTimeModelsStub = mock<List<LineRemainingTimeModel>>()
     whenever(getBusStopRemainingTimes(busStopCode))
-      .thenReturn(Either.Success(busStopRemainingTimesStub))
+      .thenSuccess(busStopRemainingTimesStub)
     whenever(timesFactory.createLineRemainingTimeModels(busStopRemainingTimesStub))
       .thenReturn(lineRemainingTimeModelsStub)
     viewModel.lineRemainingTimeModels.observeForever(timesObserver)
@@ -73,7 +74,7 @@ class TimesViewModelTest {
   @Test
   fun `fire the exception received when load times fail`() {
     val exception = mock<Exception>()
-    whenever(getBusStopRemainingTimes(busStopCode)).thenReturn(Either.Error(exception))
+    whenever(getBusStopRemainingTimes(busStopCode)).thenFailure(exception)
     viewModel.lineRemainingTimeModels.observeForever(timesObserver)
 
     viewModel.loadTimes()
@@ -84,7 +85,7 @@ class TimesViewModelTest {
 
   @Test
   fun `after validating if the stop is favorite, the status will be updated`() {
-    whenever(validateIfBusStopIsFavorite(busStopCode)).thenReturn(Either.Success(true))
+    whenever(validateIfBusStopIsFavorite(busStopCode)).thenSuccess(true)
     viewModel.isFavorite.observeForever(favoriteObserver)
 
     viewModel.validateBusStop()
@@ -96,7 +97,7 @@ class TimesViewModelTest {
   fun `when changing the status to favorite, we add the stop to favorites`() {
     initFavoriteState(false)
     val request = BusStopFavorite(busStopCode, busStopName)
-    whenever(addBusStopFavorite(request)).thenReturn(Either.Success(Unit))
+    whenever(addBusStopFavorite(request)).thenSuccess(Unit)
     viewModel.isFavorite.observeForever(favoriteObserver)
 
     viewModel.changeFavoriteState()
@@ -109,7 +110,7 @@ class TimesViewModelTest {
   fun `when changing the status to not favorite, we remove the stop from favorites`() {
     initFavoriteState(true)
     val request = BusStopFavorite(busStopCode, busStopName)
-    whenever(removeBusStopFavorite(request)).thenReturn(Either.Success(Unit))
+    whenever(removeBusStopFavorite(request)).thenSuccess(Unit)
     viewModel.isFavorite.observeForever(favoriteObserver)
 
     viewModel.changeFavoriteState()
@@ -119,7 +120,7 @@ class TimesViewModelTest {
   }
 
   private fun initFavoriteState(state: Boolean) {
-    whenever(validateIfBusStopIsFavorite(busStopCode)).thenReturn(Either.Success(state))
+    whenever(validateIfBusStopIsFavorite(busStopCode)).thenSuccess(state)
     viewModel.validateBusStop()
   }
 }

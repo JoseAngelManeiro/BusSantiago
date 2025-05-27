@@ -3,11 +3,12 @@ package org.galio.bussantiago.features.menu
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +39,7 @@ class MenuViewModelTest {
     val lineId = 123
     val lineDetailsStub = mock<LineDetails>()
     val menuModelStub = mock<MenuModel>()
-    whenever(getLineDetails(lineId)).thenReturn(Either.Success(lineDetailsStub))
+    whenever(getLineDetails(lineId)).thenSuccess(lineDetailsStub)
     whenever(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
     viewModel.loadLineDetails(lineId)
@@ -51,7 +52,7 @@ class MenuViewModelTest {
   fun `should fire the exception received`() {
     val lineId = 123
     val exception = Exception("Fake exception")
-    whenever(getLineDetails(lineId)).thenReturn(Either.Error(exception))
+    whenever(getLineDetails(lineId)).thenFailure(exception)
 
     viewModel.loadLineDetails(lineId)
 

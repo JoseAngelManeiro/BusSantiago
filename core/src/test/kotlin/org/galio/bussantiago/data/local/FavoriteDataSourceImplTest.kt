@@ -26,7 +26,7 @@ class FavoriteDataSourceImplTest {
 
   @Test
   fun `when there is no favorites saved should return an empty list`() {
-    assertEquals(emptyList<BusStopFavorite>(), favoriteDataSource.getAll().successValue)
+    assertEquals(emptyList<BusStopFavorite>(), favoriteDataSource.getAll().getOrNull())
   }
 
   @Test
@@ -38,7 +38,7 @@ class FavoriteDataSourceImplTest {
     favoriteDataSource.save(busStopFavorite2)
 
     val favoritesExpected = listOf(busStopFavorite1, busStopFavorite2)
-    assertEquals(favoritesExpected, favoriteDataSource.getAll().successValue)
+    assertEquals(favoritesExpected, favoriteDataSource.getAll().getOrNull())
   }
 
   @Test
@@ -52,6 +52,6 @@ class FavoriteDataSourceImplTest {
     favoriteDataSource.remove(busStopFavorite1)
 
     val favoritesExpected = listOf(busStopFavorite2)
-    assertEquals(favoritesExpected, favoriteDataSource.getAll().successValue)
+    assertEquals(favoritesExpected, favoriteDataSource.getAll().getOrNull())
   }
 }

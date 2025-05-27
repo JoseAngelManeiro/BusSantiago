@@ -13,9 +13,9 @@ class TestInteractorExecutor : InteractorExecutor() {
   ) {
     val response = interactor(request)
     if (response.isSuccess) {
-      onSuccess(response.successValue)
+      onSuccess(response.getOrNull()!!)
     } else {
-      onError(response.errorValue)
+      onError(response.exceptionOrNull() as Exception)
     }
   }
 }
