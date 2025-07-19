@@ -2,6 +2,12 @@
 <resources>
 
   <style name="AppTheme" parent="BaseTheme">
+    <!--
+    Temporary patch applied to avoid edge-to-edge problems when raising the targetSdkVersion to 35.
+    https://www.droidcon.com/2024/09/20/%F0%9F%9A%A8-google-secretly-adds-opt-out-api-for-android-15s-edge-to-edge-behaviour-%F0%9F%9A%A8/
+    Once this property is deprecated, a proper migration to EdgeToEdge will have to be addressed.
+    19/07/2025
+    -->
     <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
   </style>
 
