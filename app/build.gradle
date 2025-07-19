@@ -40,8 +40,8 @@ android {
         compileSdk rootProject.ext.compileSdkVersion
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 56
-        versionName "4.2.6"
+        versionCode 57
+        versionName "4.2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue "string", "app_version", "v${defaultConfig.versionName}"
     }
