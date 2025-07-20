@@ -1,13 +1,13 @@
 package org.galio.bussantiago.domain
 
 import org.galio.bussantiago.data.repository.LineDetailsRepository
+import org.galio.bussantiago.util.mock
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
 class GetLineDetailsImplTest {
 
-  private val lineDetailsRepository = Mockito.mock(LineDetailsRepository::class.java)
+  private val lineDetailsRepository = mock<LineDetailsRepository>()
   private val getLineDetails = GetLineDetailsImpl(lineDetailsRepository)
 
   @Test

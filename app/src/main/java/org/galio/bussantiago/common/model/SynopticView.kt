@@ -5,9 +5,9 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.graphics.toColorInt
 import org.galio.bussantiago.R
 import org.galio.bussantiago.shared.SynopticModel
-import androidx.core.graphics.toColorInt
 
 class SynopticView(
   context: Context,

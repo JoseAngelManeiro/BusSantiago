@@ -7,6 +7,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val menuModule = module {
+
   factory { MenuTextUtils() }
-  viewModel { MenuViewModel(executor = get(), getLineDetails = get(), menuFactory = MenuFactory()) }
+
+  viewModel {
+    MenuViewModel(
+      executor = get(),
+      getLineDetails = get(),
+      menuFactory = MenuFactory()
+    )
+  }
 }

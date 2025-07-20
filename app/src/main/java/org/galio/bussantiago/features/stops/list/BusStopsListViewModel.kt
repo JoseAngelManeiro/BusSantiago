@@ -4,28 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.executor.InteractorExecutor
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.NavScreen
 
 class BusStopsListViewModel(
   private val executor: InteractorExecutor,
   private val getLineBusStops: GetLineBusStops
 ) : BaseViewModel(executor) {
 
-  private lateinit var busStopsArgs: BusStopsArgs
-
   private val _busStopModels = MutableLiveData<Resource<List<BusStopModel>>>()
+  private val _navigationEvent = SingleLiveEvent<NavScreen>()
 
   val busStopModels: LiveData<Resource<List<BusStopModel>>>
     get() = _busStopModels
 
-  fun setArgs(busStopsArgs: BusStopsArgs) {
-    this.busStopsArgs = busStopsArgs
-  }
+  val navigationEvent: LiveData<NavScreen>
+    get() = _navigationEvent
 
-  fun loadBusStops() {
+  fun loadBusStops(busStopsArgs: BusStopsArgs) {
     _busStopModels.value = Resource.loading()
     executor(
       interactor = getLineBusStops,
@@ -42,5 +42,9 @@ class BusStopsListViewModel(
         _busStopModels.value = Resource.error(it)
       }
     )
+  }
+
+  fun onBusStopClick(busStopModel: BusStopModel) {
+    _navigationEvent.value = NavScreen.Times(busStopModel)
   }
 }

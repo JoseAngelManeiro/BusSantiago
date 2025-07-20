@@ -11,5 +11,11 @@ internal class BusStopSearchCache(
     this.busStops.addAll(busStops)
   }
 
-  fun getAll(): List<BusStopSearch> = busStops.toList()
+  fun getAll(): Result<List<BusStopSearch>> {
+    return if (busStops.isNotEmpty()) {
+      Result.success(busStops.toList())
+    } else {
+      Result.failure(NoSuchElementException())
+    }
+  }
 }

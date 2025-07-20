@@ -3,11 +3,12 @@ package org.galio.bussantiago.features.menu
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -15,6 +16,7 @@ import org.junit.rules.TestRule
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
+// See also: MenuOptionClickParameterizedTest.kt for parameterized test cases
 class MenuViewModelTest {
 
   @get:Rule
@@ -23,40 +25,38 @@ class MenuViewModelTest {
   private val executor = TestInteractorExecutor()
   private val getLineDetails = mock<GetLineDetails>()
   private val menuFactory = mock<MenuFactory>()
-  private val observer = mock<Observer<Resource<MenuModel>>>()
+  private val menuObserver = mock<Observer<Resource<MenuModel>>>()
 
-  private lateinit var viewModel: MenuViewModel
-
-  private val lineId = 123
+  private val viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
 
   @Before
   fun setUp() {
-    viewModel = MenuViewModel(executor, getLineDetails, menuFactory)
-    viewModel.setArgs(lineId)
-    viewModel.menuModel.observeForever(observer)
+    viewModel.menuModel.observeForever(menuObserver)
   }
 
   @Test
-  fun `if all goes well, the data is loaded correctly`() {
+  fun `should load the data correctly`() {
+    val lineId = 123
     val lineDetailsStub = mock<LineDetails>()
     val menuModelStub = mock<MenuModel>()
-    whenever(getLineDetails(lineId)).thenReturn(Either.Success(lineDetailsStub))
+    whenever(getLineDetails(lineId)).thenSuccess(lineDetailsStub)
     whenever(menuFactory.createMenu(lineDetailsStub)).thenReturn(menuModelStub)
 
-    viewModel.loadLineDetails()
+    viewModel.loadLineDetails(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(menuModelStub))
+    verify(menuObserver).onChanged(Resource.loading())
+    verify(menuObserver).onChanged(Resource.success(menuModelStub))
   }
 
   @Test
-  fun `fire the exception received`() {
+  fun `should fire the exception received`() {
+    val lineId = 123
     val exception = Exception("Fake exception")
-    whenever(getLineDetails(lineId)).thenReturn(Either.Error(exception))
+    whenever(getLineDetails(lineId)).thenFailure(exception)
 
-    viewModel.loadLineDetails()
+    viewModel.loadLineDetails(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(menuObserver).onChanged(Resource.loading())
+    verify(menuObserver).onChanged(Resource.error(exception))
   }
 }

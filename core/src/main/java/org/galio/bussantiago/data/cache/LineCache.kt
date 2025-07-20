@@ -11,5 +11,11 @@ internal class LineCache(
     this.lines.addAll(lines)
   }
 
-  fun getAll(): List<Line> = lines.toList()
+  fun getAll(): Result<List<Line>> {
+    return if (lines.isNotEmpty()) {
+      Result.success(lines.toList())
+    } else {
+      Result.failure(NoSuchElementException())
+    }
+  }
 }

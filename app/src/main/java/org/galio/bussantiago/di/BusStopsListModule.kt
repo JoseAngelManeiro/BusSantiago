@@ -1,15 +1,15 @@
 package org.galio.bussantiago.di
 
-import org.galio.bussantiago.features.favorites.FavoritesViewModel
+import org.galio.bussantiago.features.stops.list.BusStopsListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val favoritesModule = module {
+val busStopsListModule = module {
 
   viewModel {
-    FavoritesViewModel(
+    BusStopsListViewModel(
       executor = get(),
-      getBusStopFavorites = get()
+      getLineBusStops = get()
     )
   }
 }

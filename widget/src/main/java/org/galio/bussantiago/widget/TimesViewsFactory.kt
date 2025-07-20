@@ -50,9 +50,8 @@ internal class TimesViewsFactory(
 
     // Obtain times from service
     val tempList = mutableListOf<LineRemainingTimeModel>()
-    val result = getBusStopRemainingTimes(stopCode)
-    if (result.isSuccess) {
-      tempList.addAll(timesFactory.createLineRemainingTimeModels(result.successValue))
+    getBusStopRemainingTimes(stopCode).onSuccess { busStopRemainingTimes ->
+      tempList.addAll(timesFactory.createLineRemainingTimeModels(busStopRemainingTimes))
     }
 
     // Finish loading mode

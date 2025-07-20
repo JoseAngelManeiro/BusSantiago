@@ -1,6 +1,5 @@
 package org.galio.bussantiago.data.repository
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.BusStopSearchCache
@@ -13,18 +12,17 @@ internal class SearchBusStopRepository(
   private val cache: BusStopSearchCache
 ) {
 
-  fun searchAllBusStops(): Either<Exception, List<BusStopSearch>> {
-    val localData = cache.getAll()
-    return if (localData.isNotEmpty()) {
-      Either.Success(localData)
+  fun searchAllBusStops(): Result<List<BusStopSearch>> {
+    val cachedResult = cache.getAll()
+    return if (cachedResult.isSuccess) {
+      cachedResult
     } else {
-      val serviceResult = apiClient.searchBusStop(BusStopRequest(""))
-      if (serviceResult.isSuccess) {
-        val busStops = serviceResult.successValue.map { mapper.toDomain(it) }
-        cache.save(busStops)
-        Either.Success(busStops)
-      } else {
-        Either.Error(serviceResult.errorValue)
+      apiClient.searchBusStop(BusStopRequest("")).map { entities ->
+        entities.map { busStopSearchEntity ->
+          mapper.toDomain(busStopSearchEntity)
+        }.also {
+          cache.save(it)
+        }
       }
     }
   }

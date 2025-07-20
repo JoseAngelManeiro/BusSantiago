@@ -1,21 +1,24 @@
 package org.galio.bussantiago.data.repository
 
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.entity.LineEntity
+import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.mapper.LineMapper
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.BDDMockito.given
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 class LineRepositoryTest {
 
   private val apiClient = mock<ApiClient>()
   private val mapper = mock<LineMapper>()
-  private val cache = LineCache()
+  private val cache = mock<LineCache>()
 
   private val repository = LineRepository(apiClient, mapper, cache)
 
@@ -23,11 +26,11 @@ class LineRepositoryTest {
   fun `when cache data is valid should return that data directly`() {
     val line = mock<Line>()
     val lines = listOf(line)
-    cache.save(lines)
+    whenever(cache.getAll()).thenSuccess(lines)
 
     val result = repository.getLines()
 
-    assertEquals(lines, result.successValue)
+    assertEquals(lines, result.getOrNull())
   }
 
   @Test
@@ -36,22 +39,24 @@ class LineRepositoryTest {
     val lineEntity = mock<LineEntity>()
     val lines = listOf(line)
     val lineEntities = listOf(lineEntity)
-    given(apiClient.getLines()).willReturn(Either.success(lineEntities))
-    given(mapper.toDomain(lineEntity)).willReturn(line)
+    whenever(cache.getAll()).thenFailure(mock())
+    whenever(apiClient.getLines()).thenSuccess(lineEntities)
+    whenever(mapper.toDomain(lineEntity)).thenReturn(line)
 
     val result = repository.getLines()
 
-    assertEquals(lines, cache.getAll())
-    assertEquals(lines, result.successValue)
+    verify(cache).save(lines)
+    assertEquals(lines, result.getOrNull())
   }
 
   @Test
-  fun `when cache data is not valid and service fails should return the exception`() {
-    val exception = mock<Exception>()
-    given(apiClient.getLines()).willReturn(Either.error(exception))
+  fun `when cache data is not valid and service fails should return the service exception`() {
+    val exception = ServiceException()
+    whenever(cache.getAll()).thenFailure(mock())
+    whenever(apiClient.getLines()).thenFailure(exception)
 
     val result = repository.getLines()
 
-    assertEquals(exception, result.errorValue)
+    assertEquals(exception, result.exceptionOrNull())
   }
 }

@@ -3,6 +3,7 @@ package org.galio.bussantiago.data.cache
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -16,8 +17,10 @@ class LineCacheTest {
   }
 
   @Test
-  fun `when cache has no data should return an empty list`() {
-    assertEquals(emptyList<Line>(), lineCache.getAll())
+  fun `when cache has no data should return a NoSuchElementException`() {
+    val result = lineCache.getAll()
+
+    assertTrue(result.exceptionOrNull() is NoSuchElementException)
   }
 
   @Test
@@ -26,7 +29,7 @@ class LineCacheTest {
 
     lineCache.save(lines)
 
-    assertEquals(lines, lineCache.getAll())
+    assertEquals(lines, lineCache.getAll().getOrNull())
   }
 
   @Test
@@ -35,9 +38,9 @@ class LineCacheTest {
     val newLines = listOf<Line>(mock(), mock())
 
     lineCache.save(oldLines)
-    assertEquals(oldLines, lineCache.getAll())
+    assertEquals(oldLines, lineCache.getAll().getOrNull())
 
     lineCache.save(newLines)
-    assertEquals(newLines, lineCache.getAll())
+    assertEquals(newLines, lineCache.getAll().getOrNull())
   }
 }

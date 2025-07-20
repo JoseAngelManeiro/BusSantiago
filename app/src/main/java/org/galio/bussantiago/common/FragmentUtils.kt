@@ -2,14 +2,12 @@ package org.galio.bussantiago.common
 
 import android.app.Activity
 import android.os.Build
-import android.os.Bundle
 import android.os.Parcelable
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 
 fun Fragment.initActionBar(
@@ -46,14 +44,6 @@ fun Fragment.handleException(
     .show()
 }
 
-fun Fragment.navigateSafe(resId: Int, args: Bundle? = null) {
-  val navController = findNavController()
-  val action = navController.currentDestination?.getAction(resId)
-  if (action != null) {
-    navController.navigate(resId, args)
-  }
-}
-
 fun Fragment.hideKeyboard() {
   val inputMethodManager = activity
     ?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -68,10 +58,15 @@ fun EditText.showKeyboard() {
 }
 
 inline fun <reified T : Parcelable> Fragment.getParcelableArgument(key: String): T? {
-  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-    arguments?.getParcelable(key, T::class.java)
-  } else {
-    @Suppress("DEPRECATION")
-    arguments?.getParcelable(key)
+  return try {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      arguments?.getParcelable(key, T::class.java)
+    } else {
+      @Suppress("DEPRECATION")
+      arguments?.getParcelable(key)
+    }
+  } catch (e: Exception) {
+    // If something goes wrong, return null instead of propagate a RuntimeException
+    null
   }
 }

@@ -34,12 +34,10 @@ import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.moveToLatLng
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
-import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
-import org.galio.bussantiago.features.times.TimesDialogFragment
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -50,7 +48,8 @@ class SearchFragment : Fragment() {
   private var _binding: SearchFragmentBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: SearchViewModel by viewModel()
+  internal val viewModel: SearchViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
   private val searchUtils: SearchUtils by inject()
 
   private var mapView: MapView? = null
@@ -108,7 +107,6 @@ class SearchFragment : Fragment() {
     viewModel.searchEvent.observe(viewLifecycleOwner) { event ->
       when (event) {
         SearchEvent.ClearSearchText -> clearSearchText()
-        is SearchEvent.NavigateToTimes -> navigateToTimesScreen(event.busStopModel)
         is SearchEvent.ShowMapInfoWindow -> showMapInfoWindow(event.busStopSearch)
         SearchEvent.ShowMapMyLocation -> centerInMyLocation()
       }
@@ -132,6 +130,10 @@ class SearchFragment : Fragment() {
           addBusStopMarkers(busStops)
         }
       )
+    }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
     }
 
     viewModel.loadBusStops()
@@ -236,7 +238,7 @@ class SearchFragment : Fragment() {
     // Set the text truncated in the edit text
     val searchTextView = binding.searchAutocompleteTextView
     val width: Int = searchTextView.measuredWidth -
-      (searchTextView.paddingLeft + searchTextView.paddingRight)
+      (searchTextView.paddingStart + searchTextView.paddingEnd)
 
     val truncatedText = TextUtils.ellipsize(
       busStopSearch.toString(),
@@ -245,7 +247,7 @@ class SearchFragment : Fragment() {
       TextUtils.TruncateAt.END
     )
     if (truncatedText.isNotEmpty()) {
-      binding.searchAutocompleteTextView.setText(truncatedText)
+      searchTextView.setText(truncatedText)
     }
 
     markerMap[busStopSearch.id]?.showInfoWindow()
@@ -253,10 +255,6 @@ class SearchFragment : Fragment() {
       latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
       zoom = MAP_ZOOM
     )
-  }
-
-  private fun navigateToTimesScreen(busStopModel: BusStopModel) {
-    navigateSafe(R.id.actionShowTimes, TimesDialogFragment.createArguments(busStopModel))
   }
 
   private fun clearSearchText() {
@@ -277,18 +275,17 @@ class SearchFragment : Fragment() {
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
           R.id.show_favorites_action -> {
-            FavoritesDialogFragment(::navigateToTimesScreen)
-              .show(childFragmentManager, "FavoritesDialogFragment")
+            viewModel.onFavoritesActionButtonClicked()
             true
           }
 
           R.id.lines_action -> {
-            navigateSafe(R.id.actionShowLines)
+            viewModel.onLinesActionButtonClicked()
             true
           }
 
           R.id.about_action -> {
-            navigateSafe(R.id.actionShowAbout)
+            viewModel.onAboutActionButtonClicked()
             true
           }
 

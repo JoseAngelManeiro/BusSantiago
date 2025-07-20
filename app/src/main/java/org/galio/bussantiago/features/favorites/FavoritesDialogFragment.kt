@@ -6,33 +6,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
+import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.R as androidR
+import com.google.android.material.R as materialR
 
-class FavoritesDialogFragment(
-  private val onBusStopClicked: (BusStopModel) -> Unit
-) : BottomSheetDialogFragment() {
+class FavoritesDialogFragment : BottomSheetDialogFragment() {
 
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
 
   private val viewModel: FavoritesViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return super.onCreateDialog(savedInstanceState).apply {
       // Set the opacity level of the parent shadow behind dialog (1.0f is completely black)
       window?.setDimAmount(0.3f)
 
-      // Set transparency to dialog layer
       setOnShowListener {
-        val bottomSheet = findViewById<View>(
-          com.google.android.material.R.id.design_bottom_sheet
-        ) as FrameLayout
-        bottomSheet.setBackgroundResource(android.R.color.transparent)
+        // Set transparency to dialog layer
+        val bottomSheet = findViewById<View>(materialR.id.design_bottom_sheet) as FrameLayout
+        bottomSheet.setBackgroundResource(androidR.color.transparent)
+        // Expand the dialog to show all the content
+        val behavior = BottomSheetBehavior.from(bottomSheet)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
       }
     }
   }
@@ -56,19 +58,20 @@ class FavoritesDialogFragment(
           if (busStopFavorites.isEmpty()) {
             noFavoritesTextView.visibility = View.VISIBLE
           } else {
-            favoritesRecyclerView.adapter =
-              BusStopFavoritesAdapter(busStopFavorites) { onBusStopFavoriteClick(it) }
+            favoritesRecyclerView.adapter = BusStopFavoritesAdapter(busStopFavorites) {
+              viewModel.onBusStopFavoriteClick(it)
+              dismiss()
+            }
           }
         }
       }
     }
 
-    viewModel.loadFavorites()
-  }
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
+    }
 
-  private fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
-    dismiss()
-    onBusStopClicked(BusStopModel(busStopFavorite.code, busStopFavorite.name))
+    viewModel.loadFavorites()
   }
 
   override fun onDestroyView() {

@@ -6,9 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import org.galio.bussantiago.core.Either
-import org.galio.bussantiago.core.Either.Error
-import org.galio.bussantiago.core.Either.Success
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.data.exception.DatabaseException
 
@@ -38,7 +35,7 @@ internal class FavoriteDataSourceImpl(
     database.execSQL("DROP TABLE IF EXISTS " + Tables.TIME)
   }
 
-  override fun getAll(): Either<Exception, List<BusStopFavorite>> {
+  override fun getAll(): Result<List<BusStopFavorite>> {
     return try {
       val busStopFavorites = mutableListOf<BusStopFavorite>()
       val cursor = database.query(
@@ -55,33 +52,33 @@ internal class FavoriteDataSourceImpl(
           busStopFavorites.add(readBusStopFavorite(cursor))
         }
       }
-      Success(busStopFavorites)
+      Result.success(busStopFavorites)
     } catch (e: Exception) {
-      Error(DatabaseException())
+      Result.failure(DatabaseException())
     }
   }
 
-  override fun remove(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
+  override fun remove(busStopFavorite: BusStopFavorite): Result<Unit> {
     return try {
       val whereClause = FavouriteColumns.CODE + "=? AND " + FavouriteColumns.NAME + "=?"
       val whereArgs = arrayOf(busStopFavorite.code, busStopFavorite.name)
       database.delete(Tables.FAVOURITE, whereClause, whereArgs)
-      Success(Unit)
+      Result.success(Unit)
     } catch (e: Exception) {
-      Error(DatabaseException())
+      Result.failure(DatabaseException())
     }
   }
 
-  override fun save(busStopFavorite: BusStopFavorite): Either<Exception, Unit> {
+  override fun save(busStopFavorite: BusStopFavorite): Result<Unit> {
     return try {
       val values = ContentValues().apply {
         put(FavouriteColumns.CODE, busStopFavorite.code)
         put(FavouriteColumns.NAME, busStopFavorite.name)
       }
       database.insert(Tables.FAVOURITE, null, values)
-      Success(Unit)
+      Result.success(Unit)
     } catch (e: Exception) {
-      Error(DatabaseException())
+      Result.failure(DatabaseException())
     }
   }
 

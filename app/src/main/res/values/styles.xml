@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="AppTheme" parent="BaseTheme"/>
+
+  <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -30,7 +31,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:orientation">vertical</item>
     <item name="android:background">@drawable/about_info_box_bg</item>
-    <item name="android:padding">@dimen/extra_small_padding</item>
+    <item name="android:padding">@dimen/small_padding</item>
   </style>
 
   <style name="AboutInfoBox_Title">

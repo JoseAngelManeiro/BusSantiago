@@ -3,6 +3,7 @@ package org.galio.bussantiago.data.cache
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.util.mock
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -23,17 +24,17 @@ class LineDetailsCacheTest {
     lineDetailsCache.save(1, lineDetails1)
     lineDetailsCache.save(2, lineDetails2)
 
-    assertEquals(lineDetails1, lineDetailsCache.get(1))
-    assertEquals(lineDetails2, lineDetailsCache.get(2))
+    assertEquals(lineDetails1, lineDetailsCache.get(1).getOrNull())
+    assertEquals(lineDetails2, lineDetailsCache.get(2).getOrNull())
   }
 
   @Test
-  fun `when the key does not exist should return null`() {
+  fun `when the key does not exist should return NoSuchElementException`() {
     val lineDetails1 = mock<LineDetails>()
 
     lineDetailsCache.save(1, lineDetails1)
 
-    assertEquals(lineDetails1, lineDetailsCache.get(1))
-    assertEquals(null, lineDetailsCache.get(2))
+    assertEquals(lineDetails1, lineDetailsCache.get(1).getOrNull())
+    assertTrue(lineDetailsCache.get(2).exceptionOrNull() is NoSuchElementException)
   }
 }

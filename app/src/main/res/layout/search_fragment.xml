@@ -11,64 +11,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
-  <LinearLayout
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:paddingStart="@dimen/small_padding"
+    android:paddingEnd="@dimen/small_padding"
+    android:paddingTop="@dimen/extra_small_padding"
+    android:paddingBottom="@dimen/extra_small_padding"
+    android:background="@drawable/bg_all_corners"
+    android:elevation="2dp"
     android:layout_margin="@dimen/default_margin">
 
-    <FrameLayout
+    <AutoCompleteTextView
+      android:id="@+id/searchAutocompleteTextView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingStart="@dimen/small_padding"
-      android:paddingEnd="@dimen/small_padding"
-      android:paddingTop="@dimen/extra_small_padding"
-      android:paddingBottom="@dimen/extra_small_padding"
-      android:background="@drawable/bg_all_corners"
-      android:elevation="2dp">
+      android:layout_height="48dp"
+      android:imeOptions="actionDone"
+      android:inputType="text"
+      android:completionThreshold="1"
+      android:textSize="17dp"
+      android:paddingEnd="33dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:hint="@string/search_bus_stop"
+      android:backgroundTint="@android:color/transparent"
+      tools:ignore="RtlSymmetry,SpUsage" />
 
-      <AutoCompleteTextView
-        android:id="@+id/searchAutocompleteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:completionThreshold="1"
-        android:textSize="17sp"
-        android:paddingEnd="30dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:hint="@string/search_bus_stop"
-        android:backgroundTint="@android:color/transparent"
-        tools:ignore="RtlSymmetry" />
+    <ImageView
+      android:id="@+id/closeButtonImageView"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:padding="3dp"
+      android:layout_gravity="center_vertical|end"
+      android:contentDescription="@string/remove_search_text"
+      android:src="@drawable/ic_close" />
 
-      <ImageView
-        android:id="@+id/closeButtonImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_close"
-        android:layout_gravity="center_vertical|end"
-        android:contentDescription="@string/remove_search_text"
-        app:tint="@android:color/tertiary_text_dark" />
+  </FrameLayout>
 
-    </FrameLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/myLocationFAB"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:contentDescription="@string/center_my_position_in_map"
-      android:layout_gravity="end"
-      android:layout_marginTop="@dimen/default_margin"
-      android:visibility="gone"
-      app:srcCompat="@drawable/ic_my_location"
-      app:backgroundTint="@color/colorPrimary"
-      app:tint="@android:color/background_light"
-      app:fabSize="mini"
-      app:elevation="2dp"
-      tools:visibility="visible" />
-
-  </LinearLayout>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/myLocationFAB"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/center_my_position_in_map"
+    android:layout_gravity="end|bottom"
+    android:layout_marginEnd="@dimen/default_margin"
+    android:layout_marginBottom="32dp"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_my_location"
+    app:backgroundTint="@color/colorPrimary"
+    app:borderWidth="1dp"
+    app:elevation="1dp"
+    tools:visibility="visible" />
 
   <ProgressBar
     style="?android:attr/progressBarStyleLarge"

@@ -8,6 +8,7 @@ class LineMapModelFactory {
     routeName: String,
     lineDetails: LineDetails
   ): LineMapModel {
+    // TODO: Review why we're forced to use "!!" operator
     val routeByName = lineDetails.routes.find { it.name == routeName }!!
     return LineMapModel(
       lineStyle = lineDetails.style,

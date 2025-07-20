@@ -3,12 +3,14 @@ package org.galio.bussantiago.features.lines
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,37 +25,46 @@ class LinesViewModelTest {
 
   private val executor = TestInteractorExecutor()
   private val getLines = mock<GetLines>()
-  private val observer = mock<Observer<Resource<List<LineModel>>>>()
+  private val lineModelsObserver = mock<Observer<Resource<List<LineModel>>>>()
+  private val navEventObserver = mock<Observer<NavScreen>>()
 
   private lateinit var linesViewModel: LinesViewModel
 
   @Before
   fun setUp() {
     linesViewModel = LinesViewModel(executor, getLines)
-    linesViewModel.lineModels.observeForever(observer)
+    linesViewModel.lineModels.observeForever(lineModelsObserver)
+    linesViewModel.navigationEvent.observeForever(navEventObserver)
   }
 
   @Test
   fun `load the expected list of lines`() {
     val linesStub = listOf(createLineStub())
-    whenever(getLines(Unit)).thenReturn(Either.Success(linesStub))
+    whenever(getLines(Unit)).thenSuccess(linesStub)
 
     linesViewModel.loadLines()
 
-    verify(observer).onChanged(Resource.loading())
+    verify(lineModelsObserver).onChanged(Resource.loading())
     val lineViewsExpected = listOf(createLineViewStub())
-    verify(observer).onChanged(Resource.success(lineViewsExpected))
+    verify(lineModelsObserver).onChanged(Resource.success(lineViewsExpected))
   }
 
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    whenever(getLines(Unit)).thenReturn(Either.Error(exception))
+    whenever(getLines(Unit)).thenFailure(exception)
 
     linesViewModel.loadLines()
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(lineModelsObserver).onChanged(Resource.loading())
+    verify(lineModelsObserver).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when line is clicked should navigate to screen expected`() {
+    linesViewModel.onLineClicked(53)
+
+    verify(navEventObserver).onChanged(NavScreen.LineMenu(53))
   }
 
   private fun createLineStub(): Line {

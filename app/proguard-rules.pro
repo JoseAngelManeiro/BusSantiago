@@ -31,6 +31,10 @@
     <init>(...);
 }
 
+# === Keep Parcelable classes ===
+-keep class org.galio.bussantiago.common.model.BusStopModel { *; }
+-keep class org.galio.bussantiago.features.stops.BusStopsArgs { *; }
+
 # === Koin (DI) ===
 # Keep Koin modules and factories
 -keep class org.koin.** { *; }

@@ -10,5 +10,9 @@ internal class LineDetailsCache(
     linesDetails[key] = lineDetails
   }
 
-  fun get(key: Int): LineDetails? = linesDetails[key]
+  fun get(key: Int): Result<LineDetails> {
+    return linesDetails[key]?.let {
+      Result.success(it)
+    } ?: Result.failure(NoSuchElementException())
+  }
 }

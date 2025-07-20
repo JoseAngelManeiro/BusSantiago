@@ -4,12 +4,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.core.Either
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestInteractorExecutor
 import org.galio.bussantiago.util.mock
+import org.galio.bussantiago.util.thenFailure
+import org.galio.bussantiago.util.thenSuccess
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,7 +26,8 @@ class BusStopsListViewModelTest {
 
   private val executor = TestInteractorExecutor()
   private val getLineBusStops = mock<GetLineBusStops>()
-  private val observer = mock<Observer<Resource<List<BusStopModel>>>>()
+  private val busStopObserver = mock<Observer<Resource<List<BusStopModel>>>>()
+  private val navEventObserver = mock<Observer<NavScreen>>()
 
   private lateinit var viewModel: BusStopsListViewModel
 
@@ -33,20 +36,20 @@ class BusStopsListViewModelTest {
   @Before
   fun setUp() {
     viewModel = BusStopsListViewModel(executor, getLineBusStops)
-    viewModel.setArgs(busStopsArgs)
-    viewModel.busStopModels.observeForever(observer)
+    viewModel.busStopModels.observeForever(busStopObserver)
+    viewModel.navigationEvent.observeForever(navEventObserver)
   }
 
   @Test
   fun `if all goes well, the bus stop models are mapped and loaded correctly`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val busStopsStub = listOf(createBusStop(code = "1234", name = "Bus Stop 1"))
-    whenever(getLineBusStops(request)).thenReturn(Either.Success(busStopsStub))
+    whenever(getLineBusStops(request)).thenSuccess(busStopsStub)
 
-    viewModel.loadBusStops()
+    viewModel.loadBusStops(busStopsArgs)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(
+    verify(busStopObserver).onChanged(Resource.loading())
+    verify(busStopObserver).onChanged(
       Resource.success(listOf(BusStopModel(code = "1234", name = "Bus Stop 1")))
     )
   }
@@ -55,12 +58,21 @@ class BusStopsListViewModelTest {
   fun `fire the exception received`() {
     val request = GetLineBusStops.Request(busStopsArgs.lineId, busStopsArgs.routeName)
     val exception = Exception("Fake exception")
-    whenever(getLineBusStops(request)).thenReturn(Either.Error(exception))
+    whenever(getLineBusStops(request)).thenFailure(exception)
 
-    viewModel.loadBusStops()
+    viewModel.loadBusStops(busStopsArgs)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(busStopObserver).onChanged(Resource.loading())
+    verify(busStopObserver).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when bus stop is clicked should navigate to screen expected`() {
+    val busStopModel = mock<BusStopModel>()
+
+    viewModel.onBusStopClick(busStopModel)
+
+    verify(navEventObserver).onChanged(NavScreen.Times(busStopModel))
   }
 
   private fun createBusStop(code: String, name: String): BusStop {

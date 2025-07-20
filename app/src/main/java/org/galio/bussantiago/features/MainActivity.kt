@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
     setContentView(R.layout.main_activity)
 
     // Let NavController automatically handle deep links when there is data

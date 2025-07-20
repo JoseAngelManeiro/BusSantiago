@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,19 +17,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import org.galio.bussantiago.R
 import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
-import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.common.navigateSafe
 import org.galio.bussantiago.features.stops.BusStopsArgs
-import org.galio.bussantiago.features.times.TimesDialogFragment
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.graphics.toColorInt
 
 class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
   private val viewModel: BusStopsMapViewModel by viewModel()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   private var busStopsArgs: BusStopsArgs? = null
   private var mGoogleMap: GoogleMap? = null
@@ -69,18 +67,17 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
         onSuccess = { setUpMap(it) }
       )
     }
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
+    }
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
     mGoogleMap = googleMap
     enableMyLocation()
     mGoogleMap?.setOnInfoWindowClickListener { marker ->
-      if (marker.title != null && marker.snippet != null) {
-        navigateSafe(
-          R.id.actionShowTimes,
-          TimesDialogFragment.createArguments(BusStopModel(marker.title!!, marker.snippet!!))
-        )
-      }
+      viewModel.onInfoWindowClick(marker.title, marker.snippet)
     }
 
     busStopsArgs?.let { viewModel.load(it) }
