@@ -30,11 +30,12 @@ class BusStopsMapViewModel(
     executor(
       useCase = { getLineDetails(busStopsArgs.lineId) },
       onSuccess = { lineDetails ->
-        _lineMapModel.value = Resource.success(
-          lineMapModelFactory.createLineMapModelFactory(
-            busStopsArgs.routeName, lineDetails
-          )
-        )
+        lineMapModelFactory.createLineMapModelFactory(
+          routeName = busStopsArgs.routeName,
+          lineDetails = lineDetails
+        )?.let {
+          _lineMapModel.value = Resource.success(it)
+        }
       },
       onError = {
         _lineMapModel.value = Resource.error(it)

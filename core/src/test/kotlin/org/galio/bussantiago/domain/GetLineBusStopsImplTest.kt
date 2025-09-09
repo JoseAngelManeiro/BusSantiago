@@ -48,6 +48,21 @@ class GetLineBusStopsImplTest {
     assertEquals(exception, result.exceptionOrNull())
   }
 
+  @Test
+  fun `if the route requested does not exist, returns an empty list`() {
+    val request = GetLineBusStops.Request(123, "Unknown Route")
+    val route1 = createRoute("Route 1", mock())
+    val route2 = createRoute("Route 2", mock())
+    val lineDetailsStub = createLineDetails(listOf(route1, route2))
+    whenever(lineDetailsRepository.getLineDetails(request.lineId)).thenSuccess(lineDetailsStub)
+
+    val result = getLineBusStops(request)
+
+    verify(lineDetailsRepository).getLineDetails(request.lineId)
+    assertTrue(result.isSuccess)
+    assertEquals(emptyList<BusStop>(), result.getOrNull())
+  }
+
   private fun createRoute(name: String, busStops: List<BusStop>): Route {
     return Route(
       name = name,

@@ -17,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.BDDMockito.verify
+import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.never
 import org.mockito.kotlin.whenever
@@ -53,6 +54,19 @@ class BusStopsMapViewModelTest {
     viewModel.load(busStopsArgs)
 
     verify(lineMapObserver).onChanged(Resource.success(lineMapModelStub))
+  }
+
+  @Test
+  fun `when the use case is successful but the factory returns null should not update data`() {
+    val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
+    val lineDetailsStub = mock<LineDetails>()
+    whenever(getLineDetails.invoke(123)).thenSuccess(lineDetailsStub)
+    whenever(lineMapModelFactory.createLineMapModelFactory("Route 1", lineDetailsStub))
+      .thenReturn(null)
+
+    viewModel.load(busStopsArgs)
+
+    verify(lineMapObserver, never()).onChanged(any())
   }
 
   @Test
