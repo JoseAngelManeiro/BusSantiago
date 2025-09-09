@@ -1,9 +1,8 @@
 package org.galio.bussantiago.executor
 
 import kotlinx.coroutines.CoroutineScope
-import org.galio.bussantiago.core.Interactor
 
-abstract class InteractorExecutor {
+abstract class UseCaseExecutor {
 
   private var scope: CoroutineScope? = null
 
@@ -15,9 +14,8 @@ abstract class InteractorExecutor {
     return scope
   }
 
-  abstract operator fun <Request, Response> invoke(
-    interactor: Interactor<Request, Response>,
-    request: Request,
+  abstract operator fun <Response> invoke(
+    useCase: () -> Result<Response>,
     onError: (Exception) -> Unit = {},
     onSuccess: (Response) -> Unit = {}
   )

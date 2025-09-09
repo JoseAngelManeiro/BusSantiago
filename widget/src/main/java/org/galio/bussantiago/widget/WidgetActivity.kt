@@ -31,7 +31,7 @@ internal class WidgetActivity : AppCompatActivity() {
       val widgetIdHelper = WidgetIdHelper()
       val widgetId = widgetIdHelper.getWidgetId(intent)
       if (widgetIdHelper.isWidgetIdValid(widgetId)) {
-        getBusStopFavorites(Unit).fold(
+        getBusStopFavorites().fold(
           onSuccess = { busStopFavorites ->
             if (busStopFavorites.isEmpty()) {
               binding.noFavoritesTextView.visibility = View.VISIBLE

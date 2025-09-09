@@ -8,11 +8,11 @@ import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.navigation.NavScreen
 
 class SearchViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val searchAllBusStops: SearchAllBusStops
 ) : BaseViewModel(executor) {
 
@@ -32,8 +32,7 @@ class SearchViewModel(
   fun loadBusStops() {
     _busStops.value = Resource.loading()
     executor(
-      interactor = searchAllBusStops,
-      request = Unit,
+      useCase = { searchAllBusStops() },
       onSuccess = {
         _busStops.value = Resource.success(it)
       },

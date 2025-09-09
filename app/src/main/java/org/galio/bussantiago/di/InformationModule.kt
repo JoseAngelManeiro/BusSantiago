@@ -5,5 +5,10 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val informationModule = module {
-  viewModel { InformationViewModel(executor = get(), getLineInformation = get()) }
+  viewModel {
+    InformationViewModel(
+      executor = get(),
+      getLineInformation = get()
+    )
+  }
 }

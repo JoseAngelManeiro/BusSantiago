@@ -1,3 +1,5 @@
 package org.galio.bussantiago.core
 
-interface ValidateIfBusStopIsFavorite : Interactor<String, Boolean>
+interface ValidateIfBusStopIsFavorite {
+  operator fun invoke(busStopCode: String): Result<Boolean>
+}

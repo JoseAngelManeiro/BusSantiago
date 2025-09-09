@@ -3,18 +3,16 @@ package org.galio.bussantiago.executor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.galio.bussantiago.core.Interactor
 
-class AsyncInteractorExecutor : InteractorExecutor() {
+class AsyncUseCaseExecutor : UseCaseExecutor() {
 
-  override fun <Request, Response> invoke(
-    interactor: Interactor<Request, Response>,
-    request: Request,
+  override fun <Response> invoke(
+    useCase: () -> Result<Response>,
     onError: (Exception) -> Unit,
     onSuccess: (Response) -> Unit
   ) {
     getViewModelScope()?.launch(Dispatchers.IO) {
-      val response = interactor(request)
+      val response = useCase()
       withContext(Dispatchers.Main) {
         response.fold(
           onSuccess = { onSuccess(it) },

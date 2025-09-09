@@ -7,12 +7,12 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineBusStops
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
 
 class BusStopsListViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getLineBusStops: GetLineBusStops
 ) : BaseViewModel(executor) {
 
@@ -28,11 +28,11 @@ class BusStopsListViewModel(
   fun loadBusStops(busStopsArgs: BusStopsArgs) {
     _busStopModels.value = Resource.loading()
     executor(
-      interactor = getLineBusStops,
-      request = GetLineBusStops.Request(
-        lineId = busStopsArgs.lineId,
-        routeName = busStopsArgs.routeName
-      ),
+      useCase = {
+        getLineBusStops(
+          GetLineBusStops.Request(lineId = busStopsArgs.lineId, routeName = busStopsArgs.routeName)
+        )
+      },
       onSuccess = { busStops ->
         _busStopModels.value = Resource.success(
           busStops.map { BusStopModel(code = it.code, name = it.name) }

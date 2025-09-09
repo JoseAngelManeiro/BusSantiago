@@ -8,11 +8,11 @@ import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.navigation.NavScreen
 
 class FavoritesViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getBusStopFavorites: GetBusStopFavorites
 ) : BaseViewModel(executor) {
 
@@ -27,8 +27,7 @@ class FavoritesViewModel(
 
   fun loadFavorites() {
     executor(
-      interactor = getBusStopFavorites,
-      request = Unit,
+      useCase = { getBusStopFavorites() },
       onSuccess = { _favoriteModels.value = Resource.success(it) },
       onError = { _favoriteModels.value = Resource.error(it) }
     )

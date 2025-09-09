@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -22,7 +22,7 @@ class IncidencesViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val getLineIncidences = mock<GetLineIncidences>()
   private val observer = mock<Observer<Resource<List<String>>>>()
 

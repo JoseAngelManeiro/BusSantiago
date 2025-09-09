@@ -12,7 +12,7 @@ class GetBusStopFavoritesImplTest {
 
   @Test
   fun `invokes the repository`() {
-    getBusStopFavorites(Unit)
+    getBusStopFavorites()
 
     verify(busStopFavoriteRepository).getBusStopFavorites()
   }

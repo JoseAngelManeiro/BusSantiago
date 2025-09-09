@@ -2,4 +2,6 @@ package org.galio.bussantiago.core
 
 import org.galio.bussantiago.core.model.BusStopFavorite
 
-interface RemoveBusStopFavorite : Interactor<BusStopFavorite, Unit>
+interface RemoveBusStopFavorite {
+  operator fun invoke(busStopFavorite: BusStopFavorite): Result<Unit>
+}

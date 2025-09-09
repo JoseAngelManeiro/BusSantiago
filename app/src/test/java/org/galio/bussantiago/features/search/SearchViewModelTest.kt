@@ -7,7 +7,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -23,7 +23,7 @@ class SearchViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val searchAllBusStops = mock<SearchAllBusStops>()
   private val busStopsObserver = mock<Observer<Resource<List<BusStopSearch>>>>()
   private val searchEventObserver = mock<Observer<SearchEvent>>()
@@ -41,7 +41,7 @@ class SearchViewModelTest {
   @Test
   fun `load all bus stops successfully should return the data received`() {
     val busStops = listOf<BusStopSearch>(mock())
-    whenever(searchAllBusStops(Unit)).thenSuccess(busStops)
+    whenever(searchAllBusStops()).thenSuccess(busStops)
 
     searchViewModel.loadBusStops()
 
@@ -52,7 +52,7 @@ class SearchViewModelTest {
   @Test
   fun `when load all bus stops fails should return the exception`() {
     val exception = mock<Exception>()
-    whenever(searchAllBusStops(Unit)).thenFailure(exception)
+    whenever(searchAllBusStops()).thenFailure(exception)
 
     searchViewModel.loadBusStops()
 
