@@ -7,7 +7,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -23,7 +23,7 @@ class FavoritesViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
   private val favoritesObserver = mock<Observer<Resource<List<BusStopFavorite>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
@@ -40,7 +40,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case is invoked successfully should load data as expected`() {
     val favorites = listOf(mock<BusStopFavorite>())
-    whenever(getBusStopFavorites(Unit)).thenSuccess(favorites)
+    whenever(getBusStopFavorites()).thenSuccess(favorites)
 
     viewModel.loadFavorites()
 
@@ -50,7 +50,7 @@ class FavoritesViewModelTest {
   @Test
   fun `when use case fails should return exception receivedf`() {
     val exception = Exception("Fake exception")
-    whenever(getBusStopFavorites(Unit)).thenFailure(exception)
+    whenever(getBusStopFavorites()).thenFailure(exception)
 
     viewModel.loadFavorites()
 

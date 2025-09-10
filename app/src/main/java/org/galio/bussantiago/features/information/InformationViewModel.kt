@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineInformation
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 
 class InformationViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getLineInformation: GetLineInformation
 ) : BaseViewModel(executor) {
 
@@ -20,14 +20,9 @@ class InformationViewModel(
   fun loadLineInformation(lineId: Int) {
     _information.value = Resource.loading()
     executor(
-      interactor = getLineInformation,
-      request = lineId,
-      onSuccess = {
-        _information.value = Resource.success(it)
-      },
-      onError = {
-        _information.value = Resource.error(it)
-      }
+      useCase = { getLineInformation(lineId) },
+      onSuccess = { _information.value = Resource.success(it) },
+      onError = { _information.value = Resource.error(it) }
     )
   }
 }

@@ -12,7 +12,7 @@ class GetLinesImplTest {
 
   @Test
   fun `invokes the line repository`() {
-    getLines(Unit)
+    getLines()
 
     verify(lineRepository).getLines()
   }

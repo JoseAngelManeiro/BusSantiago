@@ -5,6 +5,7 @@ import org.galio.bussantiago.core.model.Coordinates
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.core.model.Route
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class LineMapModelFactoryTest {
@@ -28,9 +29,29 @@ class LineMapModelFactoryTest {
       lineDetails = lineDetails
     )
 
-    assertEquals(2, result.busStopMapModels.size)
-    assertEquals("657", result.busStopMapModels[0].code)
-    assertEquals("210", result.busStopMapModels[1].code)
+    assertEquals(2, result?.busStopMapModels?.size)
+    assertEquals("657", result?.busStopMapModels?.getOrNull(0)?.code)
+    assertEquals("210", result?.busStopMapModels?.getOrNull(1)?.code)
+  }
+
+  @Test
+  fun `should return null if the route is not in line details`() {
+    val route1 = createRoute(
+      "Route 1",
+      listOf(createBusStop("657"), createBusStop("210"))
+    )
+    val route2 = createRoute(
+      "Route 2",
+      listOf(createBusStop("502"))
+    )
+    val lineDetails = createLineDetails(listOf(route1, route2))
+
+    val result = lineMapModelFactory.createLineMapModelFactory(
+      routeName = "Unknown Route",
+      lineDetails = lineDetails
+    )
+
+    assertNull(result)
   }
 
   private fun createBusStop(code: String): BusStop {

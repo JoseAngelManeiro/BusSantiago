@@ -10,10 +10,9 @@ internal class GetLineBusStopsImpl(
 
   override fun invoke(request: GetLineBusStops.Request): Result<List<BusStop>> {
     return lineDetailsRepository.getLineDetails(request.lineId).map { lineDetails ->
-      // TODO: Review why we're forced to use "!!" operator
-      lineDetails.routes
-        .find { it.name == request.routeName }!!
-        .busStops
+      lineDetails.routes.find {
+        it.name == request.routeName
+      }?.busStops.orEmpty()
     }
   }
 }

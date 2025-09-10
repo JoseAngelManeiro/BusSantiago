@@ -7,7 +7,7 @@ import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.shared.SynopticModel
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -23,7 +23,7 @@ class LinesViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val getLines = mock<GetLines>()
   private val lineModelsObserver = mock<Observer<Resource<List<LineModel>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
@@ -40,7 +40,7 @@ class LinesViewModelTest {
   @Test
   fun `load the expected list of lines`() {
     val linesStub = listOf(createLineStub())
-    whenever(getLines(Unit)).thenSuccess(linesStub)
+    whenever(getLines()).thenSuccess(linesStub)
 
     linesViewModel.loadLines()
 
@@ -52,7 +52,7 @@ class LinesViewModelTest {
   @Test
   fun `fire the exception received`() {
     val exception = Exception("Fake exception")
-    whenever(getLines(Unit)).thenFailure(exception)
+    whenever(getLines()).thenFailure(exception)
 
     linesViewModel.loadLines()
 

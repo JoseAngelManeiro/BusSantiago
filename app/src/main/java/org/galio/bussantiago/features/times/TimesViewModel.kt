@@ -9,12 +9,12 @@ import org.galio.bussantiago.core.GetBusStopRemainingTimes
 import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.shared.TimesFactory
 
 class TimesViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getBusStopRemainingTimes: GetBusStopRemainingTimes,
   private val validateIfBusStopIsFavorite: ValidateIfBusStopIsFavorite,
   private val addBusStopFavorite: AddBusStopFavorite,
@@ -41,8 +41,7 @@ class TimesViewModel(
   fun loadTimes() {
     _lineRemainingTimeModels.value = Resource.loading()
     executor(
-      interactor = getBusStopRemainingTimes,
-      request = busStopCode,
+      useCase = { getBusStopRemainingTimes(busStopCode) },
       onSuccess = {
         _lineRemainingTimeModels.value = Resource.success(
           timesFactory.createLineRemainingTimeModels(it)
@@ -55,10 +54,7 @@ class TimesViewModel(
   }
 
   fun validateBusStop() {
-    executor(
-      interactor = validateIfBusStopIsFavorite,
-      request = busStopCode
-    ) {
+    executor(useCase = { validateIfBusStopIsFavorite(busStopCode) }) {
       _isFavorite.value = it
     }
   }
@@ -68,13 +64,11 @@ class TimesViewModel(
       _isFavorite.value = !it
       if (_isFavorite.value!!) {
         executor(
-          interactor = addBusStopFavorite,
-          request = BusStopFavorite(busStopCode, busStopName)
+          useCase = { addBusStopFavorite(BusStopFavorite(busStopCode, busStopName)) }
         )
       } else {
         executor(
-          interactor = removeBusStopFavorite,
-          request = BusStopFavorite(busStopCode, busStopName)
+          useCase = { removeBusStopFavorite(BusStopFavorite(busStopCode, busStopName)) }
         )
       }
     }

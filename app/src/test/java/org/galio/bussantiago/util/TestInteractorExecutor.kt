@@ -1,17 +1,15 @@
 package org.galio.bussantiago.util
 
-import org.galio.bussantiago.core.Interactor
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 
-class TestInteractorExecutor : InteractorExecutor() {
+class TestUseCaseExecutor : UseCaseExecutor() {
 
-  override operator fun <Request, Response> invoke(
-    interactor: Interactor<Request, Response>,
-    request: Request,
+  override fun <Response> invoke(
+    useCase: () -> Result<Response>,
     onError: (Exception) -> Unit,
     onSuccess: (Response) -> Unit
   ) {
-    val response = interactor(request)
+    val response = useCase()
     if (response.isSuccess) {
       onSuccess(response.getOrNull()!!)
     } else {

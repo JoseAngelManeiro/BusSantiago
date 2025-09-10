@@ -7,12 +7,12 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineDetails
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
 
 class BusStopsMapViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getLineDetails: GetLineDetails,
   private val lineMapModelFactory: LineMapModelFactory
 ) : BaseViewModel(executor) {
@@ -28,14 +28,14 @@ class BusStopsMapViewModel(
 
   fun load(busStopsArgs: BusStopsArgs) {
     executor(
-      interactor = getLineDetails,
-      request = busStopsArgs.lineId,
+      useCase = { getLineDetails(busStopsArgs.lineId) },
       onSuccess = { lineDetails ->
-        _lineMapModel.value = Resource.success(
-          lineMapModelFactory.createLineMapModelFactory(
-            busStopsArgs.routeName, lineDetails
-          )
-        )
+        lineMapModelFactory.createLineMapModelFactory(
+          routeName = busStopsArgs.routeName,
+          lineDetails = lineDetails
+        )?.let {
+          _lineMapModel.value = Resource.success(it)
+        }
       },
       onError = {
         _lineMapModel.value = Resource.error(it)

@@ -7,18 +7,18 @@ class LineMapModelFactory {
   fun createLineMapModelFactory(
     routeName: String,
     lineDetails: LineDetails
-  ): LineMapModel {
-    // TODO: Review why we're forced to use "!!" operator
-    val routeByName = lineDetails.routes.find { it.name == routeName }!!
-    return LineMapModel(
-      lineStyle = lineDetails.style,
-      busStopMapModels = routeByName.busStops.map {
-        BusStopMapModel(
-          code = it.code,
-          name = it.name,
-          coordinates = it.coordinates
-        )
-      }
-    )
+  ): LineMapModel? {
+    return lineDetails.routes.find { it.name == routeName }?.let { route ->
+      LineMapModel(
+        lineStyle = lineDetails.style,
+        busStopMapModels = route.busStops.map {
+          BusStopMapModel(
+            code = it.code,
+            name = it.name,
+            coordinates = it.coordinates
+          )
+        }
+      )
+    }
   }
 }
