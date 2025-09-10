@@ -47,13 +47,11 @@ internal class FavoriteDataSourceImpl(
         null,
         null
       )
-      if (cursor != null) {
-        while (cursor.moveToNext()) {
-          busStopFavorites.add(readBusStopFavorite(cursor))
-        }
+      while (cursor.moveToNext()) {
+        busStopFavorites.add(readBusStopFavorite(cursor))
       }
       Result.success(busStopFavorites)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
       Result.failure(DatabaseException())
     }
   }
@@ -64,7 +62,7 @@ internal class FavoriteDataSourceImpl(
       val whereArgs = arrayOf(busStopFavorite.code, busStopFavorite.name)
       database.delete(Tables.FAVOURITE, whereClause, whereArgs)
       Result.success(Unit)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
       Result.failure(DatabaseException())
     }
   }
@@ -77,7 +75,7 @@ internal class FavoriteDataSourceImpl(
       }
       database.insert(Tables.FAVOURITE, null, values)
       Result.success(Unit)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
       Result.failure(DatabaseException())
     }
   }
