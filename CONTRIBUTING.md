@@ -3,6 +3,7 @@
 Thank you for your interest in contributing to **Bus Santiago**!  
 This document explains how to report issues, propose improvements, and submit pull requests while keeping the project consistent and maintainable.
 
+&nbsp;
 
 # 📝 Table of Contents
 1. [Code of Conduct](#code-of-conduct)
@@ -14,11 +15,13 @@ This document explains how to report issues, propose improvements, and submit pu
 7. [Pull Request Guidelines](#pull-request-guidelines)
 8. [Commit Message Style](#commit-message-style)
 
+&nbsp;
 
 ## 🧭 Code of Conduct
 By participating in this project, you agree to follow the principles of respect, collaboration, and kindness.  
 Please keep discussions constructive.
 
+&nbsp;
 
 ## 🐞 How to Report Issues
 
@@ -38,6 +41,7 @@ If you want to propose a new feature, please describe:
 - Which module it affects
 - Any alternative solutions considered
 
+&nbsp;
 
 ## 🧱 Project Structure
 
@@ -58,6 +62,7 @@ All logic and UI for the Android home-screen widget.
 ### **app/**
 Presentation layer containing Fragments, ViewModels, and Navigation.
 
+&nbsp;
 
 ## 🔧 Development Guidelines
 
@@ -79,6 +84,7 @@ Use `val` over `var` unless absolutely required.
 
 ### ✔ Follow existing architecture (MVVM + coroutines + Koin)
 
+&nbsp;
 
 ## 🎨 Coding Style
 
@@ -92,6 +98,7 @@ Use `val` over `var` unless absolutely required.
 If you use tools like **Ktlint/Detekt**, contributions should respect their formatting.  
 (If they are added to the project in the future, this section will be updated.)
 
+&nbsp;
 
 ## 🌱 Branching Model
 
@@ -108,6 +115,7 @@ Example:
     fix/crash-on-stop-details  
     docs/update-readme
 
+&nbsp;
 
 ## 🔄 Pull Request Guidelines
 
@@ -134,6 +142,7 @@ Before opening a PR:
 All PRs will be reviewed by the project maintainer.  
 Feedback is expected to be constructive and technical.
 
+&nbsp;
 
 ## 🧾 Commit Message Style
 
@@ -156,6 +165,7 @@ Examples:
     fix: prevent crash when API response is empty  
     docs: update architecture image in README
 
+&nbsp;
 
 ## 🙌 Thank You!
 
