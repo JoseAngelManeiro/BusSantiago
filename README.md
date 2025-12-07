@@ -10,7 +10,7 @@ It is a personal side-project, published on Google Play, built with **Clean Arch
 </kbd>
 </p>
 
-
+&nbsp;
 
 ## 📐 Architecture Overview
 
@@ -22,6 +22,8 @@ It follows **MVVM**, Android Architecture Components, **coroutines**, and depend
 <img src="./art/app_architecture.png" width="540" alt="App Architecture"/>  
 </kbd>
 </p>
+
+&nbsp;
 
 ### 🧱 Modules
 
@@ -55,6 +57,7 @@ It follows a **Fragment ↔ ViewModel** structure and uses:
 
 The `ViewModel` exposes UI state and handles business operations, while Fragments remain **thin observers**.
 
+&nbsp;
 
 ## 🧩 Dependency & Version Management (Version Catalog)
 
@@ -69,6 +72,7 @@ It centralizes:
 
 This improves maintainability and ensures consistent dependency upgrades across all modules.
 
+&nbsp;
 
 ## 🧪 Tech Stack
 
@@ -83,7 +87,7 @@ This improves maintainability and ensures consistent dependency upgrades across 
 
 > _Note: A migration toward Jetpack Compose + newer DI options may be considered in the future._
 
----
+&nbsp;
 
 ## 🎯 Project Goals
 
@@ -91,6 +95,7 @@ This improves maintainability and ensures consistent dependency upgrades across 
 - Maintain a clean, scalable structure suitable for long-term personal development
 - Serve as an open-source reference project for architectural clarity and modularization in a real production app
 
+&nbsp;
 
 ## 🔧 Building the Project
 
@@ -98,6 +103,8 @@ This improves maintainability and ensures consistent dependency upgrades across 
 2. Open it in **Android Studio**
 3. Let Gradle sync (Version Catalog is applied automatically)
 4. Run the `app` module on any device with API level 26+
+
+&nbsp;
 
 ## 🤝 Contributing
 
@@ -109,12 +116,14 @@ Please see `CONTRIBUTING.md` for guidelines on:
 - Module boundaries
 - PR process
 
+&nbsp;
 
 ## 📄 License
 
 This project is licensed under the **GNU General Public License v3.0 (GPLv3)**.  
 See the `LICENSE` file in the root of this repository for full details.
 
+&nbsp;
 
 ## 📎 Links
 
