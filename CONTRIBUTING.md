@@ -9,11 +9,12 @@ This document explains how to report issues, propose improvements, and submit pu
 1. [Code of Conduct](#code-of-conduct)
 2. [How to Report Issues](#how-to-report-issues)
 3. [Project Structure](#project-structure)
-4. [Development Guidelines](#development-guidelines)
-5. [Coding Style](#coding-style)
-6. [Branching Model](#branching-model)
-7. [Pull Request Guidelines](#pull-request-guidelines)
-8. [Commit Message Style](#commit-message-style)
+4. [Development Setup](#development-setup)
+5. [Development Guidelines](#development-guidelines)
+6. [Coding Style](#coding-style)
+7. [Branching Model](#branching-model)
+8. [Pull Request Guidelines](#pull-request-guidelines)
+9. [Commit Message Style](#commit-message-style)
 
 &nbsp;
 
@@ -61,6 +62,42 @@ All logic and UI for the Android home-screen widget.
 
 ### **app/**
 Presentation layer containing Fragments, ViewModels, and Navigation.
+
+&nbsp;
+
+## 🛠️ Development Setup
+
+### Prerequisites
+- Android Studio (latest stable version recommended)
+- JDK 21
+- Android SDK with API 35
+
+### Google Maps Configuration
+
+The app uses Google Maps to display bus stops on a map. To enable this feature locally, you need to configure your own API key:
+
+1. **Copy the template file:**
+   ```bash
+   cp apikey.properties.template apikey.properties
+   ```
+
+2. **Get a Google Maps API key:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/google/maps-apis/credentials)
+   - Create a new project (or select an existing one)
+   - Enable **Maps SDK for Android**
+   - Create an API key under "Credentials"
+
+3. **Add your key to `apikey.properties`:**
+   ```properties
+   apikeyDebug=YOUR_API_KEY_HERE
+   apikeyRelease=YOUR_API_KEY_HERE
+   ```
+
+4. **Build and run the app**
+
+> **Note:** The `apikey.properties` file is gitignored and will never be committed. If you don't configure an API key, the app will still build and run, but the map screen will display an error instead of the map tiles.
+
+For more details on API key setup, see the [official documentation](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
 
 &nbsp;
 
