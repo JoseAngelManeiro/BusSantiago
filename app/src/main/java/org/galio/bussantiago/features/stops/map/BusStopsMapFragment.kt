@@ -80,8 +80,9 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
       viewModel.onInfoWindowClick(marker.title, marker.snippet)
     }
 
-    busStopsArgs?.let { viewModel.load(it) }
-      ?: Log.w("BusStopsMapFragment", "Argument BusStopsArgs was not sent correctly.")
+    busStopsArgs?.let {
+      viewModel.load(it)
+    } ?: Log.w("BusStopsMapFragment", "Argument BusStopsArgs was not sent correctly.")
   }
 
   private fun setUpMap(lineMapModel: LineMapModel) {
@@ -114,12 +115,13 @@ class BusStopsMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
     mGoogleMap?.addPolyline(polylineOptions)
 
-    val firstBusStopMapModel = lineMapModel.busStopMapModels.first()
-    val firstLatLng = LatLng(
-      firstBusStopMapModel.coordinates.latitude,
-      firstBusStopMapModel.coordinates.longitude
-    )
-    mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
+    busStopMapModels.firstOrNull()?.let { firstBusStopMapModel ->
+      val firstLatLng = LatLng(
+        firstBusStopMapModel.coordinates.latitude,
+        firstBusStopMapModel.coordinates.longitude
+      )
+      mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 13f))
+    }
   }
 
   private fun enableMyLocation() {

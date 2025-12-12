@@ -7,9 +7,9 @@ internal class ValidateIfBusStopIsFavoriteImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository
 ) : ValidateIfBusStopIsFavorite {
 
-  override fun invoke(request: String): Result<Boolean> {
+  override fun invoke(busStopCode: String): Result<Boolean> {
     return busStopFavoriteRepository.getBusStopFavorites().map { busStopFavorites ->
-      busStopFavorites.any { it.code == request }
+      busStopFavorites.any { it.code == busStopCode }
     }
   }
 }

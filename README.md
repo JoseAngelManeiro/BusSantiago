@@ -1,7 +1,8 @@
 
 # Bus Santiago
 
-This project contains the code of [Bus Santiago][bus-santiago], a personal app published in Google Play Store which is used to know the arrival times of city buses in real time.
+Bus Santiago is an Android application that provides **real-time city bus arrival times** for Santiago de Compostela.  
+It is a personal side-project, published on Google Play, built with **Clean Architecture**, **modularization**, and modern Android development practices.
 
 <p>
 <kbd>
@@ -9,9 +10,12 @@ This project contains the code of [Bus Santiago][bus-santiago], a personal app p
 </kbd>
 </p>
 
-## Architecture
+&nbsp;
 
-This app uses [Android Architecture components][architecture] with [Koin][koin].
+## 📐 Architecture Overview
+
+The project is structured into **four independent modules**, each with a clear responsibility boundary.  
+It follows **MVVM**, Android Architecture Components, **coroutines**, and dependency injection with **Koin**.
 
 <p>
 <kbd>  
@@ -19,49 +23,116 @@ This app uses [Android Architecture components][architecture] with [Koin][koin].
 </kbd>
 </p>
 
-The architecture of the app is composed of 4 modules:
+&nbsp;
 
-### core
+### 🧱 Modules
 
-Core is the module in charge of **managing access to data** and has no dependencies with other modules.
-
-The **models** and **interfaces** that it exposes to the other modules are located in the `org.galio.bussantiago.core` package, everything else, the implementations of the use cases, the repositories and data sources, is protected with the `internal` modifier.
-
-### shared
-
-This module contains **resources** and **classes** shared by **app** and **widget** modules.
-Its function is to avoid repeating certain presentation logic and provide consistency through those modules.
-
-### widget
-
-All **logic and layouts related exclusively to the widget** are in this Android module.
-
-### app
-
-In this module we can find all the presentation features, and it consists mainly of Fragment-ViewModel pairs.
-
-#### ViewModel
-
-The [ViewModel][viewmodel] is the fundamental piece of the [MVVM pattern][mvvm-pattern]. It exposes [LiveData][livedata] objects, which are **lifecycle-aware**, and thanks to this it can protect the state of the information in situations such as changing the orientation of the screen.
-
-On the other hand, the management of asynchrony is done through an instance of [InteractorExecutor][executor], which is responsible for handling the scope of the ViewModels and using **coroutines** to execute the UseCases (whose implementation belongs to **core** module).
-
-#### Fragment
-
-The Fragment acts as a simple **Observer** of the data exposed by the ViewModel.
-
-**Note:** This app follows the **single activity structure** with the [Navigation component][navigation].
+#### **core**
+Module responsible for **domain logic** and **data access**.  
+It exposes only the models and interfaces located under `org.galio.bussantiago.core`.
 
 
+All implementation details (repositories, data sources, use cases…) are kept **internal** to enforce a clean separation of concerns.
 
+---
 
+#### **shared**
+A set of **shared presentation utilities**, **extensions**, and **resources** used by both the `app` and the `widget` modules.  
+Its goal is to avoid duplication and keep UI logic consistent.
+
+---
+
+#### **widget**
+Contains all logic and layouts required for the **Android home-screen widget**, isolated from the main app to keep boundaries clean.
+
+---
+
+#### **app**
+This module contains the **presentation layer**.  
+It follows a **Fragment ↔ ViewModel** structure and uses:
+
+- `LiveData` for lifecycle-aware state observation
+- `InteractorExecutor` to execute domain use cases inside a coroutine scope
+- Android Navigation Component (single-activity setup)
+
+The `ViewModel` exposes UI state and handles business operations, while Fragments remain **thin observers**.
+
+&nbsp;
+
+## 🧩 Dependency & Version Management (Version Catalog)
+
+The project uses **Gradle Version Catalog** with the file `gradle/libs.versions.toml`.
+
+It centralizes:
+
+- Library versions
+- Plugin versions
+- Dependency bundles
+- Aliases for common imports
+
+This improves maintainability and ensures consistent dependency upgrades across all modules.
+
+&nbsp;
+
+## 🧪 Tech Stack
+
+- **Kotlin**
+- Android Architecture Components (ViewModel, LiveData, Navigation)
+- **Coroutines**
+- **Koin** for dependency injection
+- Clean modular architecture
+- Widgets API
+- Version Catalog with TOML
+- Material Components
+
+> _Note: A migration toward Jetpack Compose + newer DI options may be considered in the future._
+
+&nbsp;
+
+## 🎯 Project Goals
+
+- Provide reliable real-time bus information for Santiago de Compostela
+- Maintain a clean, scalable structure suitable for long-term personal development
+- Serve as an open-source reference project for architectural clarity and modularization in a real production app
+
+&nbsp;
+
+## 🔧 Building the Project
+
+1. Clone the repository
+2. Open it in **Android Studio**
+3. Let Gradle sync (Version Catalog is applied automatically)
+4. Run the `app` module on any device with API level 26+
+
+&nbsp;
+
+## 🤝 Contributing
+
+Contributions are welcome!  
+Please see `CONTRIBUTING.md` for guidelines on:
+
+- Opening issues
+- Coding style
+- Module boundaries
+- PR process
+
+&nbsp;
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0 (GPLv3)**.  
+See the `LICENSE` file in the root of this repository for full details.
+
+&nbsp;
+
+## 📎 Links
+
+- **Google Play:** [Bus Santiago][bus-santiago]
+- Architecture Components: [Documentation][architecture]
+- Koin: [Documentation][koin]
 
 [bus-santiago]: https://play.google.com/store/apps/details?id=org.galio.bussantiago&hl=es
 [architecture]: https://developer.android.com/topic/libraries/architecture
 [koin]: https://insert-koin.io/
-[viewmodel]: https://developer.android.com/topic/libraries/architecture/viewmodel
-[mvvm-pattern]: https://docs.microsoft.com/en-us/previous-versions/msp-n-p/hh848246(v%3dpandp.10)
-[livedata]: https://developer.android.com/topic/libraries/architecture/livedata
-[resource]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/common/Resource.kt
-[executor]: https://github.com/JoseAngelManeiro/BusSantiago/blob/master/app/src/main/java/org/galio/bussantiago/executor/InteractorExecutor.kt
-[navigation]: https://developer.android.com/guide/navigation/navigation-getting-started
+
+

@@ -8,7 +8,7 @@ internal class SearchAllBusStopsImpl(
   private val searchBusStopRepository: SearchBusStopRepository
 ) : SearchAllBusStops {
 
-  override fun invoke(request: Unit): Result<List<BusStopSearch>> {
+  override fun invoke(): Result<List<BusStopSearch>> {
     return searchBusStopRepository.searchAllBusStops()
   }
 }

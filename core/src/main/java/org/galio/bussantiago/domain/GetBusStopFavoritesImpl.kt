@@ -8,7 +8,7 @@ internal class GetBusStopFavoritesImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository
 ) : GetBusStopFavorites {
 
-  override fun invoke(request: Unit): Result<List<BusStopFavorite>> {
+  override fun invoke(): Result<List<BusStopFavorite>> {
     return busStopFavoriteRepository.getBusStopFavorites()
   }
 }

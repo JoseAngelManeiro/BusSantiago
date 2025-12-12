@@ -8,7 +8,7 @@ import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -24,7 +24,7 @@ class BusStopsListViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val getLineBusStops = mock<GetLineBusStops>()
   private val busStopObserver = mock<Observer<Resource<List<BusStopModel>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()

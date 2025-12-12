@@ -6,12 +6,12 @@ import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLines
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.shared.SynopticModel
 
 class LinesViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getLines: GetLines
 ) : BaseViewModel(executor) {
 
@@ -27,8 +27,7 @@ class LinesViewModel(
   fun loadLines() {
     _lineModels.value = Resource.loading()
     executor(
-      getLines,
-      Unit,
+      useCase = { getLines() },
       onSuccess = {
         _lineModels.value = Resource.success(
           it.map { line ->

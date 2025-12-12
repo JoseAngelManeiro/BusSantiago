@@ -8,7 +8,7 @@ internal class AddBusStopFavoriteImpl(
   private val busStopFavoriteRepository: BusStopFavoriteRepository
 ) : AddBusStopFavorite {
 
-  override fun invoke(request: BusStopFavorite): Result<Unit> {
-    return busStopFavoriteRepository.add(request)
+  override fun invoke(busStopFavorite: BusStopFavorite): Result<Unit> {
+    return busStopFavoriteRepository.add(busStopFavorite)
   }
 }

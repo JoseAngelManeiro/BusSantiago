@@ -21,7 +21,7 @@ class SearchAllBusStopsImplTest {
     val busStops = listOf(mock<BusStopSearch>())
     whenever(searchBusStopRepository.searchAllBusStops()).thenSuccess(busStops)
 
-    val result = searchAllBusStops(Unit)
+    val result = searchAllBusStops()
 
     assertTrue(result.isSuccess)
     assertEquals(busStops, result.getOrNull())
@@ -32,7 +32,7 @@ class SearchAllBusStopsImplTest {
     val exception = ServiceException()
     whenever(searchBusStopRepository.searchAllBusStops()).thenFailure(exception)
 
-    val result = searchAllBusStops(Unit)
+    val result = searchAllBusStops()
 
     assertTrue(result.isFailure)
     assertEquals(exception, result.exceptionOrNull())

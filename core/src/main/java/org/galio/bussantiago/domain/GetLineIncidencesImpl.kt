@@ -8,7 +8,7 @@ internal class GetLineIncidencesImpl(
   private val lineDetailsRepository: LineDetailsRepository
 ) : GetLineIncidences {
 
-  override fun invoke(request: Int): Result<List<Incidence>> {
-    return lineDetailsRepository.getLineDetails(request).map { it.incidences }
+  override fun invoke(lineId: Int): Result<List<Incidence>> {
+    return lineDetailsRepository.getLineDetails(lineId).map { it.incidences }
   }
 }

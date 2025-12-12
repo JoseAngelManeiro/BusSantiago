@@ -8,7 +8,7 @@ internal class GetLineDetailsImpl(
   private val lineDetailsRepository: LineDetailsRepository
 ) : GetLineDetails {
 
-  override fun invoke(request: Int): Result<LineDetails> {
-    return lineDetailsRepository.getLineDetails(request)
+  override fun invoke(lineId: Int): Result<LineDetails> {
+    return lineDetailsRepository.getLineDetails(lineId)
   }
 }

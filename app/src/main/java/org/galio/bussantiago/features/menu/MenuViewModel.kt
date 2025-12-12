@@ -6,11 +6,11 @@ import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineDetails
-import org.galio.bussantiago.executor.InteractorExecutor
+import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.navigation.NavScreen
 
 class MenuViewModel(
-  private val executor: InteractorExecutor,
+  private val executor: UseCaseExecutor,
   private val getLineDetails: GetLineDetails,
   private val menuFactory: MenuFactory
 ) : BaseViewModel(executor) {
@@ -27,8 +27,7 @@ class MenuViewModel(
   fun loadLineDetails(lineId: Int) {
     _menuModel.value = Resource.loading()
     executor(
-      interactor = getLineDetails,
-      request = lineId,
+      useCase = { getLineDetails(lineId) },
       onSuccess = { _menuModel.value = Resource.success(menuFactory.createMenu(it)) },
       onError = { _menuModel.value = Resource.error(it) }
     )

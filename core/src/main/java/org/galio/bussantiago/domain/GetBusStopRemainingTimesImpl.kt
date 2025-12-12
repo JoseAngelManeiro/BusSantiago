@@ -8,7 +8,7 @@ internal class GetBusStopRemainingTimesImpl(
   private val busStopRemainingTimesRepository: BusStopRemainingTimesRepository
 ) : GetBusStopRemainingTimes {
 
-  override fun invoke(request: String): Result<BusStopRemainingTimes> {
-    return busStopRemainingTimesRepository.getBusStopRemainingTimes(request)
+  override fun invoke(busStopCode: String): Result<BusStopRemainingTimes> {
+    return busStopRemainingTimesRepository.getBusStopRemainingTimes(busStopCode)
   }
 }

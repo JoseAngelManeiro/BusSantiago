@@ -11,7 +11,7 @@ import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
 import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.shared.TimesFactory
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -45,7 +45,7 @@ class TimesViewModelTest {
   @Before
   fun setUp() {
     viewModel = TimesViewModel(
-      executor = TestInteractorExecutor(),
+      executor = TestUseCaseExecutor(),
       getBusStopRemainingTimes,
       validateIfBusStopIsFavorite,
       addBusStopFavorite,

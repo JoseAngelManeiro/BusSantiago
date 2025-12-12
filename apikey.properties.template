@@ -1,0 +1,19 @@
+# Google Maps API Key Configuration
+# ==================================
+#
+# To display maps in the app, you need a Google Maps API key.
+#
+# Setup instructions:
+# 1. Copy this file to `apikey.properties` (in the project root)
+# 2. Get your API key from Google Cloud Console:
+#    https://console.cloud.google.com/google/maps-apis/credentials
+# 3. Enable "Maps SDK for Android" for your project
+# 4. Replace the placeholder values below with your actual API key
+#
+# Note: The `apikey.properties` file is gitignored and will not be committed.
+#
+# For more details, see:
+# https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+apikeyDebug=YOUR_API_KEY_HERE
+apikeyRelease=YOUR_API_KEY_HERE

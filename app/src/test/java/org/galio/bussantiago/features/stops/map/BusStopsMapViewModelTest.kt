@@ -8,7 +8,7 @@ import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.util.TestInteractorExecutor
+import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
@@ -17,6 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.BDDMockito.verify
+import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.never
 import org.mockito.kotlin.whenever
@@ -26,7 +27,7 @@ class BusStopsMapViewModelTest {
   @get:Rule
   var rule: TestRule = InstantTaskExecutorRule()
 
-  private val executor = TestInteractorExecutor()
+  private val executor = TestUseCaseExecutor()
   private val getLineDetails = mock<GetLineDetails>()
   private val lineMapModelFactory = mock<LineMapModelFactory>()
   private val lineMapObserver = mock<Observer<Resource<LineMapModel>>>()
@@ -53,6 +54,19 @@ class BusStopsMapViewModelTest {
     viewModel.load(busStopsArgs)
 
     verify(lineMapObserver).onChanged(Resource.success(lineMapModelStub))
+  }
+
+  @Test
+  fun `when the use case is successful but the factory returns null should not update data`() {
+    val busStopsArgs = BusStopsArgs(lineId = 123, routeName = "Route 1")
+    val lineDetailsStub = mock<LineDetails>()
+    whenever(getLineDetails.invoke(123)).thenSuccess(lineDetailsStub)
+    whenever(lineMapModelFactory.createLineMapModelFactory("Route 1", lineDetailsStub))
+      .thenReturn(null)
+
+    viewModel.load(busStopsArgs)
+
+    verify(lineMapObserver, never()).onChanged(any())
   }
 
   @Test
