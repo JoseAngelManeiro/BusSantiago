@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.features.incidences.ui.IncidencesScreenWithAppBar
+import org.galio.bussantiago.common.BusSantiagoTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IncidencesFragment : Fragment() {
@@ -31,10 +32,12 @@ class IncidencesFragment : Fragment() {
   ): View {
     val composeView = ComposeView(requireContext())
     composeView.setContent {
-      IncidencesScreenWithAppBar(
-        lineId = arguments?.getInt(ID_KEY) ?: 0, // TODO: Control what happens when argument is null
-        viewModel = viewModel
-      )
+      BusSantiagoTheme {
+        IncidencesScreenWithAppBar(
+          lineId = arguments?.getInt(ID_KEY) ?: 0, // TODO: Control what happens when argument is null
+          viewModel = viewModel
+        )
+      }
     }
     return composeView
   }
