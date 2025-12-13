@@ -26,7 +26,7 @@ fun IncidencesScreenContainer(
     viewModel.loadIncidences(lineId)
   }
 
-  Box {
+  Box(modifier = Modifier.fillMaxSize()) {
     when (incidencesState.status) {
       Status.LOADING -> {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
