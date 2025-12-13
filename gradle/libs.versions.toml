@@ -72,6 +72,7 @@ play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref =
 # Navigation
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-safe-args = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 
 # Play Services
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps" }

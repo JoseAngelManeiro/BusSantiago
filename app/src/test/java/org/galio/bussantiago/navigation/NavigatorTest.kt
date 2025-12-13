@@ -99,7 +99,7 @@ class NavigatorTest {
         screen = NavScreen.Incidences(76),
         navActionResId = R.id.actionShowIncidences,
         argsChecker = { bundle ->
-          bundle.getInt("id_key") == 76
+          bundle.getInt("lineId") == 76
         }
       ),
       NavigationCase(
