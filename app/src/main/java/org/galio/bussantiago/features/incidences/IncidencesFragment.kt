@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.features.incidences.ui.IncidencesScreenWithAppBar
+import org.galio.bussantiago.features.incidences.ui.IncidencesScreenContainer
 import org.galio.bussantiago.common.BusSantiagoTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,7 +33,7 @@ class IncidencesFragment : Fragment() {
     val composeView = ComposeView(requireContext())
     composeView.setContent {
       BusSantiagoTheme {
-        IncidencesScreenWithAppBar(
+        IncidencesScreenContainer(
           lineId = arguments?.getInt(ID_KEY) ?: 0, // TODO: Control what happens when argument is null
           viewModel = viewModel
         )

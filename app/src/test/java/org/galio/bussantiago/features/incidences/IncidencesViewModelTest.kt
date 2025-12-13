@@ -24,7 +24,7 @@ class IncidencesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineIncidences = mock<GetLineIncidences>()
-  private val observer = mock<Observer<Resource<List<String>>>>()
+  private val observer = mock<Observer<Resource<List<Incidence>>>>()
 
   private lateinit var viewModel: IncidencesViewModel
 
@@ -37,19 +37,23 @@ class IncidencesViewModelTest {
   }
 
   @Test
-  fun `if all goes well, the incidences descriptions are loaded correctly in reverse order`() {
-    val incidencesStub = listOf(
-      createIncidence(description = "Incidence 1"),
-      createIncidence(description = "Incidence 2"),
-      createIncidence(description = "Incidence 3")
-    )
+  fun `if all goes well, the incidences are loaded sorted by startDate descending`() {
+    val oldDate = Calendar.getInstance().apply { set(2025, 11, 10) }.time
+    val middleDate = Calendar.getInstance().apply { set(2025, 11, 11) }.time
+    val recentDate = Calendar.getInstance().apply { set(2025, 11, 12) }.time
+
+    val incidence1 = createIncidence(id = 1, startDate = oldDate)
+    val incidence2 = createIncidence(id = 2, startDate = recentDate)
+    val incidence3 = createIncidence(id = 3, startDate = middleDate)
+
+    val incidencesStub = listOf(incidence1, incidence2, incidence3)
     whenever(getLineIncidences(lineId)).thenSuccess(incidencesStub)
 
     viewModel.loadIncidences(lineId)
 
     verify(observer).onChanged(Resource.loading())
     verify(observer).onChanged(
-      Resource.success(listOf("Incidence 3", "Incidence 2", "Incidence 1"))
+      Resource.success(listOf(incidence2, incidence3, incidence1))
     )
   }
 
@@ -64,12 +68,17 @@ class IncidencesViewModelTest {
     verify(observer).onChanged(Resource.error(exception))
   }
 
-  private fun createIncidence(description: String): Incidence {
+  private fun createIncidence(
+    id: Int = 1,
+    title: String = "Any title",
+    description: String = "Any description",
+    startDate: java.util.Date? = Calendar.getInstance().time
+  ): Incidence {
     return Incidence(
-      id = 1,
-      title = "Any title",
+      id = id,
+      title = title,
       description = description,
-      startDate = Calendar.getInstance().time,
+      startDate = startDate,
       endDate = null
     )
   }

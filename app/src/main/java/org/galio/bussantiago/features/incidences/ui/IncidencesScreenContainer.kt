@@ -10,15 +10,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.Status
+import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.features.incidences.IncidencesViewModel
 
 @Composable
-fun IncidencesScreenWithAppBar(
+fun IncidencesScreenContainer(
   lineId: Int,
   viewModel: IncidencesViewModel
 ) {
-  val incidencesState: Resource<List<String>>
-  by viewModel.incidences.observeAsState(initial = Resource.loading())
+  val incidencesState: Resource<List<Incidence>>
+    by viewModel.incidences.observeAsState(initial = Resource.loading())
 
   // Trigger loading data when composable first enters the screen
   LaunchedEffect(lineId) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
+import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.executor.UseCaseExecutor
 
 class IncidencesViewModel(
@@ -12,9 +13,9 @@ class IncidencesViewModel(
   private val getLineIncidences: GetLineIncidences
 ) : BaseViewModel(executor) {
 
-  private val _incidences = MutableLiveData<Resource<List<String>>>()
+  private val _incidences = MutableLiveData<Resource<List<Incidence>>>()
 
-  val incidences: LiveData<Resource<List<String>>>
+  val incidences: LiveData<Resource<List<Incidence>>>
     get() = _incidences
 
   fun loadIncidences(lineId: Int) {
@@ -23,7 +24,7 @@ class IncidencesViewModel(
       useCase = { getLineIncidences(lineId) },
       onSuccess = { incidences ->
         _incidences.value = Resource.success(
-          incidences.map { it.description }.sortedDescending()
+          incidences.sortedByDescending { it.startDate }
         )
       },
       onError = {
