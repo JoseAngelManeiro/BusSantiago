@@ -23,9 +23,7 @@ class IncidencesViewModel(
     executor(
       useCase = { getLineIncidences(lineId) },
       onSuccess = { incidences ->
-        _incidences.value = Resource.success(
-          incidences.sortedByDescending { it.startDate }
-        )
+        _incidences.value = Resource.success(incidences)
       },
       onError = {
         _incidences.value = Resource.error(it)
