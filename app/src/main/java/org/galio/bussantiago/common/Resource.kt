@@ -5,8 +5,8 @@ import org.galio.bussantiago.common.Status.LOADING
 import org.galio.bussantiago.common.Status.SUCCESS
 
 data class Resource<out T>(
-  val status: Status,
-  val data: T?,
+  private val status: Status,
+  private val data: T?,
   private val exception: Exception?
 ) {
   companion object {

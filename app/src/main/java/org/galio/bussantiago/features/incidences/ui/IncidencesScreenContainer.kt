@@ -9,7 +9,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.Status
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.features.incidences.IncidencesViewModel
 
@@ -27,13 +26,17 @@ fun IncidencesScreenContainer(
   }
 
   Box {
-    when (incidencesState.status) {
-      Status.LOADING -> {
+    incidencesState.fold(
+      onLoading = {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+      },
+      onError = {
+        // Show error state - for now, show empty list
+        IncidencesScreen(incidences = emptyList())
+      },
+      onSuccess = { incidences ->
+        IncidencesScreen(incidences = incidences)
       }
-      else -> {
-        IncidencesScreen(incidences = incidencesState.data.orEmpty())
-      }
-    }
+    )
   }
 }
