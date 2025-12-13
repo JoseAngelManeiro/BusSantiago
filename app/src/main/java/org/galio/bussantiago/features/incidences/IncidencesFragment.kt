@@ -23,16 +23,16 @@ class IncidencesFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val composeView = ComposeView(requireContext())
-    composeView.setContent {
-      BusSantiagoTheme {
-        IncidencesScreenContainer(
-          lineId = args.lineId,
-          viewModel = viewModel
-        )
+    return ComposeView(requireContext()).apply {
+      setContent {
+        BusSantiagoTheme {
+          IncidencesScreenContainer(
+            lineId = args.lineId,
+            viewModel = viewModel
+          )
+        }
       }
     }
-    return composeView
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
