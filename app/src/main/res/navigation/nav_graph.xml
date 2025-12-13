@@ -2,6 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_graph"
   app:startDestination="@+id/searchFragment">
 
   <fragment
@@ -56,8 +57,13 @@
 
   <fragment
     android:id="@+id/incidencesFragment"
-    android:name="org.galio.bussantiago.features.incidences.IncidencesFragment"
-    tools:layout="@layout/incidences_fragment" />
+    android:name="org.galio.bussantiago.features.incidences.IncidencesFragment">
+
+    <argument
+      android:name="lineId"
+      app:argType="integer" />
+
+  </fragment>
 
   <fragment
     android:id="@+id/busStopsFragment"

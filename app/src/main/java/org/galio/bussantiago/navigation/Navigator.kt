@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
-import org.galio.bussantiago.features.incidences.IncidencesFragment
+import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
 import org.galio.bussantiago.features.information.InformationFragment
 import org.galio.bussantiago.features.menu.MenuFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
@@ -55,7 +55,7 @@ class Navigator(
 
       is NavScreen.Incidences -> navigateSafe(
         resId = R.id.actionShowIncidences,
-        args = IncidencesFragment.createArguments(navScreen.lineId)
+        args = IncidencesFragmentArgs(navScreen.lineId).toBundle()
       )
 
       is NavScreen.LineMenu -> navigateSafe(
