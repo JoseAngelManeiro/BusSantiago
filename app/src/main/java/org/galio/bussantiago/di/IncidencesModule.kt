@@ -5,5 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val incidencesModule = module {
-  viewModel { IncidencesViewModel(executor = get(), getLineIncidences = get()) }
+  viewModel { (lineId: Int) ->
+    IncidencesViewModel(lineId = lineId, executor = get(), getLineIncidences = get())
+  }
 }
