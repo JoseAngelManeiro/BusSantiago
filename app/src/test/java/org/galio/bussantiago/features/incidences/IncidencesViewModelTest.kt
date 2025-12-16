@@ -1,21 +1,19 @@
 package org.galio.bussantiago.features.incidences
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
 import org.galio.bussantiago.util.thenSuccess
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
-import java.util.Calendar
 
 class IncidencesViewModelTest {
 
@@ -24,33 +22,18 @@ class IncidencesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineIncidences = mock<GetLineIncidences>()
-  private val observer = mock<Observer<Resource<List<String>>>>()
-
-  private lateinit var viewModel: IncidencesViewModel
-
   private val lineId = 123
 
-  @Before
-  fun setUp() {
-    viewModel = IncidencesViewModel(executor, getLineIncidences)
-    viewModel.incidences.observeForever(observer)
-  }
-
   @Test
-  fun `if all goes well, the incidences descriptions are loaded correctly in reverse order`() {
-    val incidencesStub = listOf(
-      createIncidence(description = "Incidence 1"),
-      createIncidence(description = "Incidence 2"),
-      createIncidence(description = "Incidence 3")
-    )
-    whenever(getLineIncidences(lineId)).thenSuccess(incidencesStub)
+  fun `if all goes well, the incidences are loaded as expected`() {
+    val incidence1 = mock<Incidence>()
+    val incidence2 = mock<Incidence>()
+    val incidence3 = mock<Incidence>()
+    whenever(getLineIncidences(lineId)).thenSuccess(listOf(incidence1, incidence2, incidence3))
 
-    viewModel.loadIncidences(lineId)
+    val viewModel = createViewModel()
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(
-      Resource.success(listOf("Incidence 3", "Incidence 2", "Incidence 1"))
-    )
+    assertEquals(Resource.success(listOf(incidence1, incidence2, incidence3)), viewModel.incidences.value)
   }
 
   @Test
@@ -58,19 +41,37 @@ class IncidencesViewModelTest {
     val exception = Exception("Fake exception")
     whenever(getLineIncidences(lineId)).thenFailure(exception)
 
-    viewModel.loadIncidences(lineId)
+    val viewModel = createViewModel()
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    assertEquals(Resource.error<List<Incidence>>(exception), viewModel.incidences.value)
   }
 
-  private fun createIncidence(description: String): Incidence {
-    return Incidence(
-      id = 1,
-      title = "Any title",
-      description = description,
-      startDate = Calendar.getInstance().time,
-      endDate = null
-    )
+  @Test
+  fun `onRetry should reload incidences`() {
+    val exception = Exception("Fake exception")
+    whenever(getLineIncidences(lineId)).thenFailure(exception)
+
+    val viewModel = createViewModel()
+
+    assertEquals(Resource.error<List<Incidence>>(exception), viewModel.incidences.value)
+
+    val incidence = mock<Incidence>()
+    whenever(getLineIncidences(lineId)).thenSuccess(listOf(incidence))
+
+    viewModel.onRetry()
+
+    assertEquals(Resource.success(listOf(incidence)), viewModel.incidences.value)
   }
+
+  @Test
+  fun `onCancel should emit Exit navigation event`() {
+    whenever(getLineIncidences(lineId)).thenSuccess(emptyList())
+
+    val viewModel = createViewModel()
+    viewModel.onCancel()
+
+    assertEquals(NavScreen.Exit, viewModel.navigationEvent.value)
+  }
+
+  private fun createViewModel() = IncidencesViewModel(lineId, executor, getLineIncidences)
 }

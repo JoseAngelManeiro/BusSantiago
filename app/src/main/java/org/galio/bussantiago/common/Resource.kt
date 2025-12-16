@@ -1,5 +1,6 @@
 package org.galio.bussantiago.common
 
+import androidx.compose.runtime.Composable
 import org.galio.bussantiago.common.Status.ERROR
 import org.galio.bussantiago.common.Status.LOADING
 import org.galio.bussantiago.common.Status.SUCCESS
@@ -27,6 +28,19 @@ data class Resource<out T>(
     onLoading: () -> Unit = {},
     onError: (Exception) -> Unit = {},
     onSuccess: (T) -> Unit = {}
+  ) {
+    when (this.status) {
+      LOADING -> onLoading()
+      ERROR -> onError(this.exception!!)
+      SUCCESS -> onSuccess(this.data!!)
+    }
+  }
+
+  @Composable
+  fun Fold(
+    onLoading: @Composable () -> Unit = {},
+    onError: @Composable (Exception) -> Unit = {},
+    onSuccess: @Composable (T) -> Unit = {}
   ) {
     when (this.status) {
       LOADING -> onLoading()
