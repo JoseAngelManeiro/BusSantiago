@@ -24,6 +24,7 @@ sealed class NavScreen {
   data object Lines : NavScreen()
   data object About : NavScreen()
   data object Favorites : NavScreen()
+  data object Exit : NavScreen()
 }
 
 class Navigator(
@@ -72,6 +73,8 @@ class Navigator(
       )
 
       is NavScreen.Favorites -> navigateToFavorites()
+
+      is NavScreen.Exit ->  navControllerProvider()?.popBackStack()
     }
   }
 

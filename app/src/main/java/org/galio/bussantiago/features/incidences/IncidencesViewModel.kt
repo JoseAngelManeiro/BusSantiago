@@ -4,19 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.executor.UseCaseExecutor
+import org.galio.bussantiago.navigation.NavScreen
 
 class IncidencesViewModel(
   private val executor: UseCaseExecutor,
   private val getLineIncidences: GetLineIncidences
 ) : BaseViewModel(executor) {
 
+  private val _navigationEvent = SingleLiveEvent<NavScreen>()
   private val _incidences = MutableLiveData<Resource<List<Incidence>>>()
 
   val incidences: LiveData<Resource<List<Incidence>>>
     get() = _incidences
+
+  val navigationEvent: LiveData<NavScreen>
+    get() = _navigationEvent
 
   fun loadIncidences(lineId: Int) {
     _incidences.value = Resource.loading()
@@ -29,5 +35,9 @@ class IncidencesViewModel(
         _incidences.value = Resource.error(it)
       }
     )
+  }
+
+  fun onCancelButtonClicked() {
+    _navigationEvent.value = NavScreen.Exit
   }
 }

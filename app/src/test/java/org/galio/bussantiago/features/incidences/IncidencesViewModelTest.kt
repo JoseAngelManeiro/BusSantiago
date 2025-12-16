@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
+import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
@@ -23,7 +24,8 @@ class IncidencesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineIncidences = mock<GetLineIncidences>()
-  private val observer = mock<Observer<Resource<List<Incidence>>>>()
+  private val incidencesObserver = mock<Observer<Resource<List<Incidence>>>>()
+  private val navEventObserver = mock<Observer<NavScreen>>()
 
   private lateinit var viewModel: IncidencesViewModel
 
@@ -32,7 +34,8 @@ class IncidencesViewModelTest {
   @Before
   fun setUp() {
     viewModel = IncidencesViewModel(executor, getLineIncidences)
-    viewModel.incidences.observeForever(observer)
+    viewModel.incidences.observeForever(incidencesObserver)
+    viewModel.navigationEvent.observeForever(navEventObserver)
   }
 
   @Test
@@ -44,8 +47,8 @@ class IncidencesViewModelTest {
 
     viewModel.loadIncidences(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.success(listOf(incidence1, incidence2, incidence3)))
+    verify(incidencesObserver).onChanged(Resource.loading())
+    verify(incidencesObserver).onChanged(Resource.success(listOf(incidence1, incidence2, incidence3)))
   }
 
   @Test
@@ -55,7 +58,14 @@ class IncidencesViewModelTest {
 
     viewModel.loadIncidences(lineId)
 
-    verify(observer).onChanged(Resource.loading())
-    verify(observer).onChanged(Resource.error(exception))
+    verify(incidencesObserver).onChanged(Resource.loading())
+    verify(incidencesObserver).onChanged(Resource.error(exception))
+  }
+
+  @Test
+  fun `when cancel button is clicked should exit`() {
+    viewModel.onCancelButtonClicked()
+
+    verify(navEventObserver).onChanged(NavScreen.Exit)
   }
 }

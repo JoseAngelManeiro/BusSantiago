@@ -41,6 +41,17 @@ class NavigatorTest {
     verify(favoritesDialog).show(fragmentManager, "FavoritesDialogFragment")
   }
 
+  @Test
+  fun `navigate to Exit should go back`() {
+    val navController = mock<NavController>()
+    val fragment = mock<Fragment> { on { view } doReturn mock<View>() }
+    val navControllerProvider: () -> NavController? = { navController }
+    val navigator = Navigator(fragment, navControllerProvider)
+
+    navigator.navigate(NavScreen.Exit)
+
+    verify(navController).popBackStack()
+  }
 
   @Test
   fun `navigateSafe destinations should trigger navigation with expected args`() {

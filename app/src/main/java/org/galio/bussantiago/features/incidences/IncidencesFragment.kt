@@ -11,12 +11,14 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.initActionBar
 import org.galio.bussantiago.features.incidences.ui.IncidencesScreenContainer
 import org.galio.bussantiago.common.BusSantiagoTheme
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class IncidencesFragment : Fragment() {
 
   private val viewModel: IncidencesViewModel by viewModel()
   private val args: IncidencesFragmentArgs by navArgs()
+  private val navigator: Navigator by lazy { Navigator(this) }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -40,5 +42,9 @@ class IncidencesFragment : Fragment() {
 
     // We need to keep the Activity's ActionBar for compatibility with the rest of xml Fragments
     initActionBar(title = getString(R.string.incidences), backEnabled = true)
+
+    viewModel.navigationEvent.observe(viewLifecycleOwner) { navScreen ->
+      navigator.navigate(navScreen)
+    }
   }
 }
