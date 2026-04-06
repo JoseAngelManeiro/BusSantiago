@@ -8,11 +8,11 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
-import org.galio.bussantiago.features.information.InformationFragment
-import org.galio.bussantiago.features.menu.MenuFragment
+import org.galio.bussantiago.features.information.InformationFragmentArgs
+import org.galio.bussantiago.features.menu.MenuFragmentArgs
 import org.galio.bussantiago.features.stops.BusStopsArgs
-import org.galio.bussantiago.features.stops.BusStopsContainerFragment
-import org.galio.bussantiago.features.times.TimesDialogFragment
+import org.galio.bussantiago.features.stops.BusStopsContainerFragmentArgs
+import org.galio.bussantiago.features.times.TimesDialogFragmentArgs
 import org.jetbrains.annotations.VisibleForTesting
 
 sealed class NavScreen {
@@ -39,19 +39,22 @@ class Navigator(
     when (navScreen) {
       is NavScreen.Times -> navigateSafe(
         resId = R.id.actionShowTimes,
-        args = TimesDialogFragment.createArguments(navScreen.busStopModel)
+        args = TimesDialogFragmentArgs(
+          busStopCode = navScreen.busStopModel.code,
+          busStopName = navScreen.busStopModel.name
+        ).toBundle()
       )
 
       is NavScreen.BusStops -> navigateSafe(
         resId = R.id.actionShowBusStops,
-        args = BusStopsContainerFragment.createArguments(
+        args = BusStopsContainerFragmentArgs(
           BusStopsArgs(navScreen.lineId, navScreen.routeName)
-        )
+        ).toBundle()
       )
 
       is NavScreen.Information -> navigateSafe(
         resId = R.id.actionShowInformation,
-        args = InformationFragment.createArguments(navScreen.lineId)
+        args = InformationFragmentArgs(navScreen.lineId).toBundle()
       )
 
       is NavScreen.Incidences -> navigateSafe(
@@ -61,7 +64,7 @@ class Navigator(
 
       is NavScreen.LineMenu -> navigateSafe(
         resId = R.id.actionShowMenu,
-        args = MenuFragment.createArguments(navScreen.lineId)
+        args = MenuFragmentArgs(navScreen.lineId).toBundle()
       )
 
       is NavScreen.Lines -> navigateSafe(

@@ -85,9 +85,7 @@ class NavigatorTest {
         screen = NavScreen.Times(BusStopModel("123", "Main St")),
         navActionResId = R.id.actionShowTimes,
         argsChecker = { bundle ->
-          @Suppress("DEPRECATION") // Roboelectric still uses legacy sdk versions
-          val extracted = bundle.getParcelable("bus_stop_key") as? BusStopModel
-          extracted?.code == "123" && extracted.name == "Main St"
+          bundle.getString("bus_stop_code") == "123" && bundle.getString("bus_stop_name") == "Main St"
         }
       ),
       NavigationCase(
@@ -95,7 +93,7 @@ class NavigatorTest {
         navActionResId = R.id.actionShowBusStops,
         argsChecker = { bundle ->
           @Suppress("DEPRECATION") // Roboelectric still uses legacy sdk versions
-          val args = bundle.getParcelable("bus_stops_args_key") as? BusStopsArgs
+          val args = bundle.getParcelable("busStopsArgs") as? BusStopsArgs
           args?.lineId == 42 && args.routeName == "Blue Line"
         }
       ),
@@ -103,7 +101,7 @@ class NavigatorTest {
         screen = NavScreen.Information(77),
         navActionResId = R.id.actionShowInformation,
         argsChecker = { bundle ->
-          bundle.getInt("id_key") == 77
+          bundle.getInt("lineId") == 77
         }
       ),
       NavigationCase(
@@ -117,7 +115,7 @@ class NavigatorTest {
         screen = NavScreen.LineMenu(75),
         navActionResId = R.id.actionShowMenu,
         argsChecker = { bundle ->
-          bundle.getInt("id_key") == 75
+          bundle.getInt("lineId") == 75
         }
       ),
       NavigationCase(

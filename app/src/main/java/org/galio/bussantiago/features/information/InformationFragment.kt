@@ -1,11 +1,11 @@
 package org.galio.bussantiago.features.information
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.common.handleException
@@ -18,16 +18,8 @@ class InformationFragment : Fragment() {
   private var _binding: InformationFragmentBinding? = null
   private val binding get() = _binding!!
 
+  private val args: InformationFragmentArgs by navArgs()
   private val viewModel: InformationViewModel by viewModel()
-
-  companion object {
-    private const val ID_KEY = "id_key"
-    fun createArguments(id: Int): Bundle {
-      val bundle = Bundle()
-      bundle.putInt(ID_KEY, id)
-      return bundle
-    }
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -44,25 +36,24 @@ class InformationFragment : Fragment() {
 
     initActionBar(title = getString(R.string.information), backEnabled = true)
 
-    arguments?.getInt(ID_KEY)?.let { lineId ->
-      viewModel.information.observe(viewLifecycleOwner) { resource ->
-        resource.fold(
-          onLoading = {
-            binding.progressBar.visibility = View.VISIBLE
-          },
-          onError = {
-            binding.progressBar.visibility = View.GONE
-            handleException(it) { viewModel.loadLineInformation(lineId) }
-          },
-          onSuccess = {
-            binding.progressBar.visibility = View.GONE
-            binding.informationTextView.text = it.fromHtml()
-          }
-        )
-      }
+    val lineId = args.lineId
+    viewModel.information.observe(viewLifecycleOwner) { resource ->
+      resource.fold(
+        onLoading = {
+          binding.progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+          binding.progressBar.visibility = View.GONE
+          handleException(it) { viewModel.loadLineInformation(lineId) }
+        },
+        onSuccess = {
+          binding.progressBar.visibility = View.GONE
+          binding.informationTextView.text = it.fromHtml()
+        }
+      )
+    }
 
-      viewModel.loadLineInformation(lineId)
-    } ?: Log.w("InformationFragment", "Argument line id was not sent correctly.")
+    viewModel.loadLineInformation(lineId)
   }
 
   override fun onDestroyView() {

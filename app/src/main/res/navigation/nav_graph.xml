@@ -36,6 +36,10 @@
     android:name="org.galio.bussantiago.features.menu.MenuFragment"
     tools:layout="@layout/menu_fragment">
 
+    <argument
+      android:name="lineId"
+      app:argType="integer" />
+
     <action
       android:id="@+id/actionShowInformation"
       app:destination="@id/informationFragment" />
@@ -53,7 +57,13 @@
   <fragment
     android:id="@+id/informationFragment"
     android:name="org.galio.bussantiago.features.information.InformationFragment"
-    tools:layout="@layout/information_fragment" />
+    tools:layout="@layout/information_fragment">
+
+    <argument
+      android:name="lineId"
+      app:argType="integer" />
+
+  </fragment>
 
   <fragment
     android:id="@+id/incidencesFragment"
@@ -68,7 +78,13 @@
   <fragment
     android:id="@+id/busStopsFragment"
     android:name="org.galio.bussantiago.features.stops.BusStopsContainerFragment"
-    tools:layout="@layout/busstopscontainer_fragment" />
+    tools:layout="@layout/busstopscontainer_fragment">
+
+    <argument
+      android:name="busStopsArgs"
+      app:argType="org.galio.bussantiago.features.stops.BusStopsArgs" />
+
+  </fragment>
 
   <dialog
     android:id="@+id/aboutFragment"
@@ -79,6 +95,14 @@
     android:id="@+id/timesDialogFragment"
     android:name="org.galio.bussantiago.features.times.TimesDialogFragment"
     tools:layout="@layout/times_dialog_fragment">
+
+    <argument
+      android:name="bus_stop_code"
+      app:argType="string" />
+
+    <argument
+      android:name="bus_stop_name"
+      app:argType="string" />
 
     <deepLink app:uri="@string/times_deeplink_pattern" />
   </dialog>

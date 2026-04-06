@@ -55,3 +55,6 @@ apikey.properties
 
 # Local .jks file
 mykey.jks
+
+# Gemini exclusion files
+.aiexclude
