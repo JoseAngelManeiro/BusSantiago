@@ -41,7 +41,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: ./gradlew androidDependencies --no-daemon
       - save_cache:
           paths:
             - ~/.gradle
@@ -55,7 +55,7 @@ jobs:
       - install_jdk
       - run:
           name: Run Lint
-          command: ./gradlew lint
+          command: ./gradlew lint --no-daemon
       - store_lint_artifacts
 
   unit_tests:
@@ -66,7 +66,7 @@ jobs:
       - install_jdk
       - run:
           name: Run unit tests
-          command: ./gradlew test
+          command: ./gradlew test --no-daemon
       - store_unit_test_results
 
   instrumented_tests:
@@ -102,7 +102,7 @@ jobs:
           # run in parallel with the emulator starting up, to optimize build time
           name: Run assembleDebugAndroidTest task
           command: |
-            ./gradlew assembleDebugAndroidTest
+            ./gradlew assembleDebugAndroidTest --no-daemon
       - run:
           name: Wait for emulator to start
           command: |
@@ -122,7 +122,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew connectedAndroidTest && break
+                  ./gradlew connectedAndroidTest --no-daemon && break
                   n=$[$n+1]
                   sleep 5
                done
