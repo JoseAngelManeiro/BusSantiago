@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.navArgs
 import org.galio.bussantiago.R
-import org.galio.bussantiago.common.getParcelableArgument
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
-import org.galio.bussantiago.shared.DeeplinkHelper
 import org.galio.bussantiago.shared.TimeFormatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,18 +21,10 @@ class TimesDialogFragment : DialogFragment() {
 
   private var _binding: TimesDialogFragmentBinding? = null
   private val binding get() = _binding!!
+  private val args: TimesDialogFragmentArgs by navArgs()
   private val viewModel: TimesViewModel by viewModel()
   private val reviewsHelper: ReviewsHelper by inject()
   private val timeFormatter: TimeFormatter by inject()
-
-  companion object {
-    private const val BUS_STOP_KEY = "bus_stop_key"
-    fun createArguments(busStopModel: BusStopModel): Bundle {
-      val bundle = Bundle()
-      bundle.putParcelable(BUS_STOP_KEY, busStopModel)
-      return bundle
-    }
-  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -62,33 +53,23 @@ class TimesDialogFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // Arguments can be passed through the constructor or the deeplink
-    val busStopModel: BusStopModel? =
-      getParcelableArgument<BusStopModel>(BUS_STOP_KEY) ?: getDeeplinkInfo()
+    val busStopModel = BusStopModel(args.busStopCode, args.busStopName)
 
-    busStopModel?.let {
-      setUpToolbar(busStopModel)
-
-      setUpFavoriteButton()
-
-      viewModel.setArgs(busStopModel.code, busStopModel.name)
-
-      setUpObservers()
-
-      viewModel.loadTimes()
-      viewModel.validateBusStop()
-    } ?: Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
-  }
-
-  private fun getDeeplinkInfo(): BusStopModel? {
-    try {
-      val args = requireArguments()
-      val busStopCode = args.getString(DeeplinkHelper.BUS_STOP_CODE_KEY, "")
-      val busStopName = args.getString(DeeplinkHelper.BUS_STOP_NAME_KEY, "")
-      return BusStopModel(busStopCode, busStopName)
-    } catch (e: Exception) {
-      return null
+    if (busStopModel.isNotValid()) {
+      Log.w("TimesDialogFragment", "Argument BusStopModel was not sent correctly.")
+      return
     }
+
+    setUpToolbar(busStopModel)
+
+    setUpFavoriteButton()
+
+    viewModel.setArgs(busStopModel.code, busStopModel.name)
+
+    setUpObservers()
+
+    viewModel.loadTimes()
+    viewModel.validateBusStop()
   }
 
   private fun setUpToolbar(busStopModel: BusStopModel) {
