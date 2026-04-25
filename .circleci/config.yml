@@ -25,10 +25,10 @@ workflows:
 executors:
   android-executor:
     docker:
-      - image: cimg/android:2022.09
+      - image: cimg/android:2024.10
     environment:
-      JVM_OPTS: -Xmx1024m
-      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=512m" -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false
+      JVM_OPTS: -Xmx2048m
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:MaxMetaspaceSize=1024m" -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false
       CIRCLE_JDK_VERSION: openjdk21
 
 jobs:
@@ -37,7 +37,6 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - install_jdk
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -53,7 +52,8 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - install_jdk
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Lint
           command: ./gradlew lint --no-daemon
@@ -64,10 +64,12 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - install_jdk
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run unit tests
-          command: ./gradlew test --no-daemon
+          command: ./gradlew test --no-daemon --info
+          no_output_timeout: 15m
       - store_unit_test_results
 
   instrumented_tests:
@@ -144,7 +146,6 @@ jobs:
     executor: android-executor
     steps:
       - checkout
-      - install_jdk
       - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
       - run: echo 'export KEYSTORE=${HOME}/keystore.jks' >> $BASH_ENV
       - run:
