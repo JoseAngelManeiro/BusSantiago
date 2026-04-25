@@ -7,6 +7,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -16,12 +17,14 @@ class FavoriteDataSourceImplTest {
 
   @Before
   fun setUp() {
+    stopKoin()
     favoriteDataSource = FavoriteDataSourceImpl(ApplicationProvider.getApplicationContext())
   }
 
   @After
   fun tearDown() {
     favoriteDataSource.close()
+    stopKoin()
   }
 
   @Test
