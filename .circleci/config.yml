@@ -28,7 +28,7 @@ executors:
       - image: cimg/android:2022.09
     environment:
       JVM_OPTS: -Xmx1024m
-      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m" -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false
+      GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=512m" -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false
       CIRCLE_JDK_VERSION: openjdk21
 
 jobs:

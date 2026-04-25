@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.galio.bussantiago.common.BusSantiagoTheme
 import org.galio.bussantiago.shared.R as sharedR
 
+import androidx.compose.ui.platform.testTag
+
 @Composable
 fun InformationScreen(information: String) {
   val defaultPadding = dimensionResource(id = sharedR.dimen.default_padding)
@@ -41,7 +43,8 @@ fun InformationScreen(information: String) {
             style = SpanStyle(color = MaterialTheme.colors.secondary)
           )
         ),
-        fontSize = defaultTextSize
+        fontSize = defaultTextSize,
+        modifier = Modifier.testTag("InformationText")
       )
     }
   }

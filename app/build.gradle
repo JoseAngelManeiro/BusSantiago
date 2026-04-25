@@ -101,6 +101,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -151,6 +155,11 @@ dependencies {
     testImplementation(libs.junit)
 
     testImplementation(libs.arch.core.testing)
+
+    // Compose Testing
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.espresso.intents)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.junit.ext)

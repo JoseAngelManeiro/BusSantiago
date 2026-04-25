@@ -10,6 +10,8 @@ import org.galio.bussantiago.common.ErrorDialog
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.features.information.InformationUserInteractions
 
+import androidx.compose.ui.platform.testTag
+
 @Composable
 fun InformationScreenContainer(
   informationState: Resource<String>,
@@ -18,7 +20,11 @@ fun InformationScreenContainer(
   Box(modifier = Modifier.fillMaxSize()) {
     informationState.Fold(
       onLoading = {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        CircularProgressIndicator(
+          modifier = Modifier
+            .align(Alignment.Center)
+            .testTag("LoadingIndicator")
+        )
       },
       onSuccess = { information ->
         InformationScreen(information = information)
