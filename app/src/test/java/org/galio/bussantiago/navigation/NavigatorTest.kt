@@ -14,8 +14,10 @@ import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.util.argumentCaptor
 import org.galio.bussantiago.util.capture
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
@@ -27,6 +29,12 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class NavigatorTest {
+
+  @Before
+  fun setUp() {
+    // ensure a clean state for each test
+    stopKoin()
+  }
 
   @Test
   fun `navigate to Favorites should show FavoritesDialogFragment`() {

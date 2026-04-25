@@ -159,6 +159,8 @@ dependencies {
     // Compose Testing
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.mockito)
+    androidTestImplementation(libs.mockito.android)
     debugImplementation(libs.compose.ui.test.manifest)
 
     androidTestImplementation(libs.test.runner)

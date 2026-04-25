@@ -12,22 +12,19 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.features.information.InformationUserInteractions
-import org.galio.bussantiago.util.mock
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
 
 @RunWith(AndroidJUnit4::class)
 class InformationScreenTest {
 
   @get:Rule
   val composeTestRule = createComposeRule()
-
-  private val userInteractions = mock<InformationUserInteractions>()
 
   @Before
   fun setUp() {
@@ -44,7 +41,7 @@ class InformationScreenTest {
     composeTestRule.setContent {
       InformationScreenContainer(
         informationState = Resource.loading(),
-        userInteractions = userInteractions
+        userInteractions = mock()
       )
     }
 
@@ -57,7 +54,7 @@ class InformationScreenTest {
     composeTestRule.setContent {
       InformationScreenContainer(
         informationState = Resource.success(information),
-        userInteractions = userInteractions
+        userInteractions = mock()
       )
     }
 
@@ -71,7 +68,7 @@ class InformationScreenTest {
     composeTestRule.setContent {
       InformationScreenContainer(
         informationState = Resource.success(information),
-        userInteractions = userInteractions
+        userInteractions = mock()
       )
     }
 
@@ -92,7 +89,7 @@ class InformationScreenTest {
     composeTestRule.setContent {
       InformationScreenContainer(
         informationState = Resource.error(Exception(errorMessage)),
-        userInteractions = userInteractions
+        userInteractions = mock()
       )
     }
 
