@@ -5,8 +5,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val informationModule = module {
-  viewModel {
+  viewModel { (lineId: Int) ->
     InformationViewModel(
+      lineId = lineId,
       executor = get(),
       getLineInformation = get()
     )
