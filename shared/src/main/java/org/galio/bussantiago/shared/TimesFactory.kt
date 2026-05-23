@@ -12,6 +12,6 @@ class TimesFactory {
         synopticModel = SynopticModel(it.synoptic, it.style),
         minutesUntilNextArrival = it.minutesUntilNextArrival
       )
-    }
+    }.filter { it.minutesUntilNextArrival >= 0 }
   }
 }
