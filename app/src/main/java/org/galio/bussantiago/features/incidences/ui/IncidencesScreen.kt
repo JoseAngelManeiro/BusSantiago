@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,15 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import org.galio.bussantiago.common.BusSantiagoTheme
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.shared.R as sharedR
 import java.util.Date
+import org.galio.bussantiago.common.HtmlText
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun IncidencesScreen(incidences: List<Incidence>) {
@@ -42,32 +40,25 @@ fun IncidenceItem(incidence: Incidence) {
   val titleTextSize = with(LocalDensity.current) {
     dimensionResource(id = sharedR.dimen.large_text_size).toSp()
   }
-  val descriptionTextSize = with(LocalDensity.current) {
-    dimensionResource(id = sharedR.dimen.default_text_size).toSp()
-  }
 
-  SelectionContainer {
-    Column(
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(defaultPadding)
+  ) {
+    Text(
+      text = incidence.title,
+      fontSize = titleTextSize,
+      color = MaterialTheme.colors.primary
+    )
+    HtmlText(
+      html = incidence.description,
+      fontSizeSp = 18,
       modifier = Modifier
         .fillMaxWidth()
-        .padding(defaultPadding)
-    ) {
-      Text(
-        text = incidence.title,
-        fontSize = titleTextSize,
-        color = MaterialTheme.colors.primary
-      )
-      Text(
-        text = AnnotatedString.fromHtml(
-          htmlString = incidence.description,
-          linkStyles = TextLinkStyles(
-            style = SpanStyle(color = MaterialTheme.colors.secondary)
-          )
-        ),
-        fontSize = descriptionTextSize,
-        modifier = Modifier.padding(top = defaultPadding)
-      )
-    }
+        .padding(top = defaultPadding)
+        .heightIn(min = 40.dp) // Minimum height to avoid WebView initial collapse
+    )
   }
 }
 
