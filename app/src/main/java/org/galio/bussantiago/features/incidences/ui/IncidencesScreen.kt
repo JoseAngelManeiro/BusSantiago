@@ -8,19 +8,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import org.galio.bussantiago.common.BusSantiagoTheme
+import org.galio.bussantiago.common.fromHtml
 import org.galio.bussantiago.core.model.Incidence
+import org.galio.bussantiago.common.toAnnotatedString
 import org.galio.bussantiago.shared.R as sharedR
 import java.util.Date
 
@@ -39,11 +37,11 @@ fun IncidencesScreen(incidences: List<Incidence>) {
 @Composable
 fun IncidenceItem(incidence: Incidence) {
   val defaultPadding = dimensionResource(id = sharedR.dimen.default_padding)
-  val titleTextSize = with(LocalDensity.current) {
-    dimensionResource(id = sharedR.dimen.large_text_size).toSp()
-  }
   val descriptionTextSize = with(LocalDensity.current) {
     dimensionResource(id = sharedR.dimen.default_text_size).toSp()
+  }
+  val annotatedString = remember(incidence.description) {
+    incidence.description.fromHtml().toAnnotatedString()
   }
 
   SelectionContainer {
@@ -53,19 +51,8 @@ fun IncidenceItem(incidence: Incidence) {
         .padding(defaultPadding)
     ) {
       Text(
-        text = incidence.title,
-        fontSize = titleTextSize,
-        color = MaterialTheme.colors.primary
-      )
-      Text(
-        text = AnnotatedString.fromHtml(
-          htmlString = incidence.description,
-          linkStyles = TextLinkStyles(
-            style = SpanStyle(color = MaterialTheme.colors.secondary)
-          )
-        ),
-        fontSize = descriptionTextSize,
-        modifier = Modifier.padding(top = defaultPadding)
+        text = annotatedString,
+        fontSize = descriptionTextSize
       )
     }
   }
