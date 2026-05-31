@@ -1,75 +1,53 @@
 package org.galio.bussantiago.features.information.ui
 
-import android.content.Intent
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import org.galio.bussantiago.common.BusSantiagoTheme
+import org.galio.bussantiago.shared.R as sharedR
+
+import androidx.compose.ui.platform.testTag
 
 @Composable
 fun InformationScreen(information: String) {
-  AndroidView(
-    modifier = Modifier
-      .fillMaxSize()
-      .testTag("InformationText"),
-    factory = { context ->
-      WebView(context).apply {
-        webViewClient = object : WebViewClient() {
-          override fun shouldOverrideUrlLoading(
-            view: WebView?,
-            request: WebResourceRequest?
-          ): Boolean {
-            request?.url?.let { uri ->
-              val intent = Intent(Intent.ACTION_VIEW, uri)
-              context.startActivity(intent)
-            }
-            return true // We handled it
-          }
-        }
-        settings.apply {
-          javaScriptEnabled = false
-          setSupportZoom(true)
-          builtInZoomControls = true
-          displayZoomControls = false // Pinch-to-zoom works, but buttons are hidden
-        }
-        setBackgroundColor(0)
-      }
-    },
-    update = { webView ->
-      webView.loadDataWithBaseURL(null, wrapInHtml(information), "text/html", "utf-8", null)
-    }
-  )
-}
+  val defaultPadding = dimensionResource(id = sharedR.dimen.default_padding)
+  val defaultTextSize = with(LocalDensity.current) {
+    dimensionResource(id = sharedR.dimen.default_text_size).toSp()
+  }
 
-private fun wrapInHtml(content: String): String {
-  return """
-        <html>
-        <head>
-            <style type="text/css">
-                body {
-                    font-family: sans-serif;
-                    font-size: 16px;
-                    line-height: 1.5;
-                    color: #333333;
-                    padding: 8px;
-                }
-                a {
-                    color: #007bff;
-                    text-decoration: none;
-                }
-            </style>
-        </head>
-        <body>
-            $content
-        </body>
-        </html>
-    """.trimIndent()
+  SelectionContainer {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(defaultPadding)
+    ) {
+      Text(
+        text = AnnotatedString.fromHtml(
+          htmlString = information,
+          linkStyles = TextLinkStyles(
+            style = SpanStyle(color = MaterialTheme.colors.secondary)
+          )
+        ),
+        fontSize = defaultTextSize,
+        modifier = Modifier.testTag("InformationText")
+      )
+    }
+  }
 }
 
 @Preview(showBackground = true)
