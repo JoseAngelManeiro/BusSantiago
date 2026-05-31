@@ -42,17 +42,12 @@ internal class TimesViewsFactory(
   override fun onDataSetChanged() {
     val appWidgetManager = AppWidgetManager.getInstance(context)
 
-    // Init loading mode
-    val loadingViews = RemoteViews(context.packageName, R.layout.app_widget)
-    loadingViews.setViewVisibility(R.id.refresh_button, View.GONE)
-    loadingViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
-    appWidgetManager.updateAppWidget(widgetId, loadingViews)
-
     // Obtain times from service
     val tempList = mutableListOf<LineRemainingTimeModel>()
     getBusStopRemainingTimes(stopCode).onSuccess { busStopRemainingTimes ->
       tempList.addAll(timesFactory.createLineRemainingTimeModels(busStopRemainingTimes))
     }
+    lineRemainingTimeModels = tempList
 
     // Finish loading mode
     val resultViews = RemoteViews(context.packageName, R.layout.app_widget)
@@ -61,18 +56,10 @@ internal class TimesViewsFactory(
     val formatter = SimpleDateFormat("HH:mm", Locale.US)
     val hour = formatter.format(Calendar.getInstance().timeInMillis)
     resultViews.setTextViewText(R.id.hourSync_textview, hour)
-    appWidgetManager.updateAppWidget(widgetId, resultViews)
+    appWidgetManager.partiallyUpdateAppWidget(widgetId, resultViews)
 
     // Save sync hour in preferences
     widgetPrefsHelper.save(hour = hour, widgetId = widgetId)
-
-    // At the end of the data load, we must rebuild our widget,
-    // so that when it is restored it does not suffer loss of instances.
-    WidgetProvider.updateWidget(context, appWidgetManager, widgetId)
-
-    // We refresh values from our list, which will be collected from the getViewAt()
-    // method to paint the result in the widget.
-    lineRemainingTimeModels = tempList
   }
 
   override fun getViewAt(position: Int): RemoteViews {

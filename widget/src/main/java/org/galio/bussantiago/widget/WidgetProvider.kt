@@ -87,6 +87,11 @@ internal class WidgetProvider : AppWidgetProvider() {
       val widgetIdHelper = WidgetIdHelper()
       val widgetId = widgetIdHelper.getWidgetId(intent)
       if (widgetIdHelper.isWidgetIdValid(widgetId)) {
+        val loadingViews = RemoteViews(context.packageName, R.layout.app_widget)
+        loadingViews.setViewVisibility(R.id.refresh_button, View.GONE)
+        loadingViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
+        appWidgetManager.partiallyUpdateAppWidget(widgetId, loadingViews)
+
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.times_listview)
       }
     }

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply from: '../flavors.gradle'
 
 // First, we try to access to CircleCI environment variable,
 // if this is a local build, we obtain api key from a local file
@@ -41,8 +42,8 @@ android {
         compileSdk rootProject.ext.compileSdkVersion
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 57
-        versionName "4.2.7"
+        versionCode 59
+        versionName "4.2.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue "string", "app_version", "v${defaultConfig.versionName}"
     }
@@ -70,6 +71,12 @@ android {
                     'proguard-rules.pro'
 
             signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        dev {
+            versionNameSuffix "-dev"
         }
     }
 

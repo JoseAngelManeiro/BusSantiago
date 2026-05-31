@@ -11,20 +11,26 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.galio.bussantiago.common.BusSantiagoTheme
 import org.galio.bussantiago.common.Resource
+import org.galio.bussantiago.features.information.InformationUserInteractions
 import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
 
 @RunWith(AndroidJUnit4::class)
 class InformationScreenTest {
 
   @get:Rule
   val composeTestRule = createComposeRule()
+
+  private val userInteractions = object : InformationUserInteractions {
+    override fun onRetry() {}
+    override fun onCancel() {}
+  }
 
   @Before
   fun setUp() {
@@ -39,10 +45,12 @@ class InformationScreenTest {
   @Test
   fun loadingState_showsIndicator() {
     composeTestRule.setContent {
-      InformationScreenContainer(
-        informationState = Resource.loading(),
-        userInteractions = mock()
-      )
+      BusSantiagoTheme {
+        InformationScreenContainer(
+          informationState = Resource.loading(),
+          userInteractions = userInteractions
+        )
+      }
     }
 
     composeTestRule.onNodeWithTag("LoadingIndicator").assertIsDisplayed()
@@ -52,24 +60,28 @@ class InformationScreenTest {
   fun successState_showsInformation() {
     val information = "Línea 1 info"
     composeTestRule.setContent {
-      InformationScreenContainer(
-        informationState = Resource.success(information),
-        userInteractions = mock()
-      )
+      BusSantiagoTheme {
+        InformationScreenContainer(
+          informationState = Resource.success(information),
+          userInteractions = userInteractions
+        )
+      }
     }
 
-    composeTestRule.onNodeWithText(information).assertIsDisplayed()
+    composeTestRule.onNodeWithText(information, substring = true).assertIsDisplayed()
   }
 
   @Test
   fun successState_withLink_opensIntentOnNavigate() {
     val url = "https://example.com/"
-    val information = "Click <a href=\"$url\">here</a>"
+    val information = "<a href=\"$url\">Click here</a>"
     composeTestRule.setContent {
-      InformationScreenContainer(
-        informationState = Resource.success(information),
-        userInteractions = mock()
-      )
+      BusSantiagoTheme {
+        InformationScreenContainer(
+          informationState = Resource.success(information),
+          userInteractions = userInteractions
+        )
+      }
     }
 
     // Click the text that contains the link
@@ -87,12 +99,14 @@ class InformationScreenTest {
   fun errorState_showsErrorDialog() {
     val errorMessage = "Error message"
     composeTestRule.setContent {
-      InformationScreenContainer(
-        informationState = Resource.error(Exception(errorMessage)),
-        userInteractions = mock()
-      )
+      BusSantiagoTheme {
+        InformationScreenContainer(
+          informationState = Resource.error(Exception(errorMessage)),
+          userInteractions = userInteractions
+        )
+      }
     }
 
-    composeTestRule.onNodeWithText(errorMessage).assertIsDisplayed()
+    composeTestRule.onNodeWithText(errorMessage, substring = true).assertIsDisplayed()
   }
 }

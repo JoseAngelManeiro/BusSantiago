@@ -1,5 +1,6 @@
 package org.galio.bussantiago.data.api
 
+import androidx.test.core.app.ApplicationProvider
 import org.galio.bussantiago.data.entity.BusStopEntity
 import org.galio.bussantiago.data.entity.BusStopRemainingTimesEntity
 import org.galio.bussantiago.data.entity.BusStopRequest
@@ -17,7 +18,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [28])
 class ApiClientTest : MockWebServerTest() {
 
   private lateinit var apiClient: ApiClient
@@ -25,7 +31,7 @@ class ApiClientTest : MockWebServerTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    apiClient = ApiClient(baseEndpoint)
+    apiClient = ApiClient(ApplicationProvider.getApplicationContext(), baseEndpoint)
   }
 
   @Test

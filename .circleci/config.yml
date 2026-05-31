@@ -54,7 +54,7 @@ jobs:
       - prepare_environment
       - run:
           name: Run Lint
-          command: ./gradlew lint --no-daemon --build-cache
+          command: ./gradlew lintProdDebug --no-daemon --build-cache
       - store_lint_artifacts
 
   unit_tests:
@@ -64,7 +64,7 @@ jobs:
       - prepare_environment
       - run:
           name: Run unit tests
-          command: ./gradlew test --no-daemon --info --build-cache
+          command: ./gradlew testProdDebugUnitTest --no-daemon --info --build-cache
           no_output_timeout: 15m
       - store_unit_test_results_and_artifacts
 
@@ -92,9 +92,9 @@ jobs:
           background: true
       - run:
           # run in parallel with the emulator starting up, to optimize build time
-          name: Run assembleDebugAndroidTest task
+          name: Run assembleProdDebugAndroidTest task
           command: |
-            ./gradlew assembleDebugAndroidTest --no-daemon --build-cache
+            ./gradlew assembleProdDebugAndroidTest --no-daemon --build-cache
       - run:
           name: Wait for emulator to start
           command: |
@@ -114,7 +114,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew connectedAndroidTest --no-daemon --build-cache && break
+                  ./gradlew connectedProdDebugAndroidTest --no-daemon --build-cache && break
                   n=$[$n+1]
                   sleep 5
                done
@@ -140,12 +140,12 @@ jobs:
           command: |
             echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
             export KEYSTORE=${HOME}/keystore.jks
-            ./gradlew clean assembleRelease --no-daemon --stacktrace --build-cache
+            ./gradlew clean assembleProdRelease --no-daemon --stacktrace --build-cache
       - store_artifacts:
-          path: app/build/outputs/apk/release
+          path: app/build/outputs/apk/prod/release
           destination: distribution
       - store_artifacts:
-          path: app/build/outputs/mapping
+          path: app/build/outputs/mapping/prodRelease
           destination: distribution
 
 commands:
@@ -164,52 +164,52 @@ commands:
     description: "Store Lint artifacts"
     steps:
       - store_artifacts:
-          path: app/build/reports/lint-results-debug.html
+          path: app/build/reports/lint-results-prodDebug.html
           destination: app_lint_report
       - store_artifacts:
-          path: core/build/reports/lint-results-debug.html
+          path: core/build/reports/lint-results-prodDebug.html
           destination: core_lint_report
       - store_artifacts:
-          path: shared/build/reports/lint-results-debug.html
+          path: shared/build/reports/lint-results-prodDebug.html
           destination: shared_lint_report
       - store_artifacts:
-          path: widget/build/reports/lint-results-debug.html
+          path: widget/build/reports/lint-results-prodDebug.html
           destination: widget_lint_report
 
   store_unit_test_results_and_artifacts:
     description: "Store Unit Test results and HTML reports"
     steps:
       - store_test_results:
-          path: app/build/test-results/testDebugUnitTest
+          path: app/build/test-results/testProdDebugUnitTest
       - store_test_results:
-          path: core/build/test-results/testDebugUnitTest
+          path: core/build/test-results/testProdDebugUnitTest
       - store_test_results:
-          path: shared/build/test-results/testDebugUnitTest
+          path: shared/build/test-results/testProdDebugUnitTest
       - store_test_results:
-          path: widget/build/test-results/testDebugUnitTest
+          path: widget/build/test-results/testProdDebugUnitTest
       - store_artifacts:
-          path: app/build/reports/tests/testDebugUnitTest
+          path: app/build/reports/tests/testProdDebugUnitTest
           destination: app_unit_tests_report
       - store_artifacts:
-          path: core/build/reports/tests/testDebugUnitTest
+          path: core/build/reports/tests/testProdDebugUnitTest
           destination: core_unit_tests_report
       - store_artifacts:
-          path: shared/build/reports/tests/testDebugUnitTest
+          path: shared/build/reports/tests/testProdDebugUnitTest
           destination: shared_unit_tests_report
       - store_artifacts:
-          path: widget/build/reports/tests/testDebugUnitTest
+          path: widget/build/reports/tests/testProdDebugUnitTest
           destination: widget_unit_tests_report
 
   store_android_test_results_and_artifacts:
     description: "Store Android Test results and HTML reports"
     steps:
       - store_test_results:
-          path: shared/build/outputs/androidTest-results/connected/debug
+          path: shared/build/outputs/androidTest-results/connected/prodDebug
       - store_test_results:
-          path: app/build/outputs/androidTest-results/connected/debug
+          path: app/build/outputs/androidTest-results/connected/prodDebug
       - store_artifacts:
-          path: app/build/reports/androidTests/connected
+          path: app/build/reports/androidTests/connected/flavors/prod
           destination: app_android_test_report
       - store_artifacts:
-          path: shared/build/reports/androidTests/connected
+          path: shared/build/reports/androidTests/connected/flavors/prod
           destination: shared_android_test_report

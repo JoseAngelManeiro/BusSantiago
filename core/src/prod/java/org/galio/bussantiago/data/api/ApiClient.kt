@@ -1,5 +1,6 @@
 package org.galio.bussantiago.data.api
 
+import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.galio.bussantiago.data.entity.BusStopRequest
@@ -15,7 +16,10 @@ import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "https://app.tussa.org/tussa/api/"
 
-internal class ApiClient(baseEndpoint: String = BASE_URL) {
+internal class ApiClient(
+  private val context: Context,
+  baseEndpoint: String = BASE_URL
+) {
 
   private val service: ApiService
 
