@@ -33,33 +33,32 @@ internal class TimesViewsFactory(
   private val timeFormatter = TimeFormatter()
   private val timesFactory = TimesFactory()
 
-  private lateinit var lineRemainingTimeModels: MutableList<LineRemainingTimeModel>
+  private lateinit var lineRemainingTimeModels: List<LineRemainingTimeModel>
 
   override fun onCreate() {
-    lineRemainingTimeModels = mutableListOf()
+    lineRemainingTimeModels = emptyList()
   }
 
   override fun onDataSetChanged() {
+    if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) return
+
     val appWidgetManager = AppWidgetManager.getInstance(context)
 
-    // Obtain times from service
-    val tempList = mutableListOf<LineRemainingTimeModel>()
-    getBusStopRemainingTimes(stopCode).onSuccess { busStopRemainingTimes ->
-      tempList.addAll(timesFactory.createLineRemainingTimeModels(busStopRemainingTimes))
+    try {
+      // Obtain times from service
+      getBusStopRemainingTimes(stopCode).onSuccess { busStopRemainingTimes ->
+        lineRemainingTimeModels = timesFactory.createLineRemainingTimeModels(busStopRemainingTimes)
+
+        val formatter = SimpleDateFormat("HH:mm", Locale.US)
+        val hour = formatter.format(Calendar.getInstance().timeInMillis)
+
+        // Save sync hour in preferences
+        widgetPrefsHelper.save(hour = hour, widgetId = widgetId)
+      }
+    } finally {
+      // Finish loading mode by calling updateWidget
+      WidgetProvider.updateWidget(context, appWidgetManager, widgetId, forceHideLoading = true)
     }
-    lineRemainingTimeModels = tempList
-
-    // Finish loading mode
-    val resultViews = RemoteViews(context.packageName, R.layout.app_widget)
-    resultViews.setViewVisibility(R.id.progressBar, View.GONE)
-    resultViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
-    val formatter = SimpleDateFormat("HH:mm", Locale.US)
-    val hour = formatter.format(Calendar.getInstance().timeInMillis)
-    resultViews.setTextViewText(R.id.hourSync_textview, hour)
-    appWidgetManager.partiallyUpdateAppWidget(widgetId, resultViews)
-
-    // Save sync hour in preferences
-    widgetPrefsHelper.save(hour = hour, widgetId = widgetId)
   }
 
   override fun getViewAt(position: Int): RemoteViews {
@@ -97,7 +96,9 @@ internal class TimesViewsFactory(
 
   override fun getViewTypeCount() = 1
 
-  override fun onDestroy() = lineRemainingTimeModels.clear()
+  override fun onDestroy() {
+    lineRemainingTimeModels = emptyList()
+  }
 
   override fun getLoadingView(): RemoteViews? = null
 

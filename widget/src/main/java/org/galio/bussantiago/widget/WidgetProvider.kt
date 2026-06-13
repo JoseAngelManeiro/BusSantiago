@@ -13,7 +13,12 @@ import org.galio.bussantiago.shared.DeeplinkHelper
 internal class WidgetProvider : AppWidgetProvider() {
 
   companion object {
-    fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
+    fun updateWidget(
+      context: Context,
+      appWidgetManager: AppWidgetManager,
+      widgetId: Int,
+      forceHideLoading: Boolean = false
+    ) {
       val prefs = WidgetPrefsHelper(context)
       val code = prefs.getCode(widgetId)
       val name = prefs.getName(widgetId)
@@ -24,7 +29,7 @@ internal class WidgetProvider : AppWidgetProvider() {
       // Connect the service that will load the times with our listView
       val widgetServiceIntent = Intent(context, WidgetService::class.java).apply {
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        data = toUri(Intent.URI_INTENT_SCHEME).toUri()
+        data = this.toUri(Intent.URI_INTENT_SCHEME).toUri()
       }
       remoteViews.setRemoteAdapter(R.id.times_listview, widgetServiceIntent)
       // Define the view to be shown when there are no items
@@ -36,14 +41,19 @@ internal class WidgetProvider : AppWidgetProvider() {
       remoteViews.setTextViewText(R.id.hourSync_textview, hour)
 
       // Restore default visibility values
-      remoteViews.setViewVisibility(R.id.progressBar, View.GONE)
-      remoteViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
+      if (hour.isEmpty() && !forceHideLoading) {
+        remoteViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
+        remoteViews.setViewVisibility(R.id.refresh_button, View.GONE)
+      } else {
+        remoteViews.setViewVisibility(R.id.progressBar, View.GONE)
+        remoteViews.setViewVisibility(R.id.refresh_button, View.VISIBLE)
+      }
 
       // Declare the Intent to manage the manual data refresh
       val refreshIntent = Intent(context, WidgetProvider::class.java).apply {
         action = context.getString(R.string.action_refresh_widget)
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        data = toUri(Intent.URI_INTENT_SCHEME).toUri()
+        data = this.toUri(Intent.URI_INTENT_SCHEME).toUri()
       }
       val refreshPIntent = PendingIntent.getBroadcast(
         context,
@@ -77,6 +87,7 @@ internal class WidgetProvider : AppWidgetProvider() {
   ) {
     appWidgetIds.forEach {
       updateWidget(context, appWidgetManager, it)
+      appWidgetManager.notifyAppWidgetViewDataChanged(it, R.id.times_listview)
     }
     super.onUpdate(context, appWidgetManager, appWidgetIds)
   }
