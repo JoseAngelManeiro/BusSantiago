@@ -1,0 +1,834 @@
+{
+  "id": 1,
+  "codigo": "1",
+  "sinoptico": "L1",
+  "nombre": "Cemiterio de Boisaca / hospital Clínico",
+  "informacion": "<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"></p><u><b>Cemiterio de Boisaca – Hospital Clínico</b></u>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>L-V laborables</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 7:10 a 22:06 (cada 16 min.)</p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">22:30 22:50</p>\r\n\r\n\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Sábados laborables</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 7:00 a 15:00 (cada 20 min.)<br></p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 15:00 a 22:30 (cada 30 min.).\r\n\r\n</p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Domingos, festivos</b></p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">7:20<br></p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 8:00 a 22:30 (cada 30 min.).\r\n\r\n</p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><u><b>Hospital Clínico – Cemiterio de Boisaca</b></u></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>L-V laborables</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">6:30 7:20 7:40</p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 8:06 a 23:02 (cada 16')</p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Sábados laborables</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 7:30 a 15:30 (cada 20 min.)</p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 15:30 a 23:00 (cada 30 min.)<br></p>\r\n\r\n\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Domingos, festivos</b></p><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 8:00 a 14:30 (cada 30 min.)</p>15:10<br><p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">De 15:30 a 23:00 (cada 30 min.)<br></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b><u>Notas horario</u></b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Prolongación aparcadoiro de Santa Marta (L-V laborables): </b>de 7:20 a 15:18</p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Prolongación a Son (L-V laborables):</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">Desde Garabal, 7:25</p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">Pasos aproximados por rúa da Senra a Son, 7:52 14:40<br></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Prolongación a Son (sábados laborables):</b></p>\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\">Desde Garabal, 7:25</p>\r\n\r\n\r\n\r\n<p class=\"MsoNormal\" style=\"margin-bottom: 0.0001pt;\"><b>Prolongación por rúa Manuel María:</b></p>\r\n\r\nL-V laborables, 7:58 9:02 10:06 11:10 14:54 15:58 17:02 18:06<p></p>",
+  "estilo": "#f32621",
+  "trayectos": [
+    {
+      "nombre": "Cemiterio Boisaca - Hospital Clínico",
+      "sentido": "IDA",
+      "paradas": [
+        {
+          "id": 538,
+          "codigo": "538",
+          "nombre": "Garabal (cruce)",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9164167,
+            "longitud": -8.5154668
+          }
+        },
+        {
+          "id": 268,
+          "codigo": "268",
+          "nombre": "Garabal",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9173447491528,
+            "longitud": -8.51259380578995
+          }
+        },
+        {
+          "id": 333,
+          "codigo": "333",
+          "nombre": "O Barral",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9204305563203,
+            "longitud": -8.50842028856277
+          }
+        },
+        {
+          "id": 690,
+          "codigo": "690",
+          "nombre": "O Barral 2",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9226922703624,
+            "longitud": -8.5075056552887
+          }
+        },
+        {
+          "id": 53,
+          "codigo": "53",
+          "nombre": "As Pereiras",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9246691152418,
+            "longitud": -8.51013153791428
+          }
+        },
+        {
+          "id": 114,
+          "codigo": "114",
+          "nombre": "Bálsoma",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9330707347107,
+            "longitud": -8.51512581110001
+          }
+        },
+        {
+          "id": 682,
+          "codigo": "682",
+          "nombre": "Bálsoma 2",
+          "zona": null,
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9301279,
+            "longitud": -8.5193463
+          }
+        },
+        {
+          "id": 574,
+          "codigo": "574",
+          "nombre": "San Silvestre - A Gracia",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9280442373054,
+            "longitud": -8.52313220500946
+          }
+        },
+        {
+          "id": 28,
+          "codigo": "28",
+          "nombre": "A Xesteira",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9293099831472,
+            "longitud": -8.5253718495369
+          }
+        },
+        {
+          "id": 607,
+          "codigo": "607",
+          "nombre": "Son de Arriba",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9316892007032,
+            "longitud": -8.52934956550598
+          }
+        },
+        {
+          "id": 604,
+          "codigo": "604",
+          "nombre": "Son de Abaixo 1",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9277476,
+            "longitud": -8.5332085
+          }
+        },
+        {
+          "id": 605,
+          "codigo": "605",
+          "nombre": "Son de Abaixo 2",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9255273977398,
+            "longitud": -8.53266477584839
+          }
+        },
+        {
+          "id": 606,
+          "codigo": "606",
+          "nombre": "Son de abaixo 3 (Escarabuña)",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9227678885465,
+            "longitud": -8.53193521499634
+          }
+        },
+        {
+          "id": 425,
+          "codigo": "425",
+          "nombre": "Rebordaos",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9208283018883,
+            "longitud": -8.53107824921608
+          }
+        },
+        {
+          "id": 185,
+          "codigo": "185",
+          "nombre": "Cemiterio de Boisaca",
+          "zona": "Boisaca",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9077180414256,
+            "longitud": -8.51602971553802
+          }
+        },
+        {
+          "id": 510,
+          "codigo": "510",
+          "nombre": "Rúa de Boisaca",
+          "zona": "Boisaca",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9064420288326,
+            "longitud": -8.51497560739517
+          }
+        },
+        {
+          "id": 70,
+          "codigo": "70",
+          "nombre": "Avda. Cruceiro da Coruña 1 (Castrosua)",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9048035074155,
+            "longitud": -8.51686120033264
+          }
+        },
+        {
+          "id": 71,
+          "codigo": "71",
+          "nombre": "Avda. Cruceiro da Coruña 2",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9031060004495,
+            "longitud": -8.51979285478592
+          }
+        },
+        {
+          "id": 72,
+          "codigo": "72",
+          "nombre": "Avda. Cruceiro da Coruña 3 (EGASA)",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9009172477152,
+            "longitud": -8.52348357439041
+          }
+        },
+        {
+          "id": 73,
+          "codigo": "73",
+          "nombre": "Avda. Cruceiro da Coruña 4 (Meixonfrío)",
+          "zona": "Meixonfrío",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8980102517632,
+            "longitud": -8.52877289056778
+          }
+        },
+        {
+          "id": 650,
+          "codigo": "650",
+          "nombre": "Manuel María nº 20",
+          "zona": "Salgueiriños",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.8986555,
+            "longitud": -8.5305826
+          }
+        },
+        {
+          "id": 544,
+          "codigo": "544",
+          "nombre": "Salgueiriños (aparcadoiro)",
+          "zona": "Salgueiriños",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8935841633929,
+            "longitud": -8.53251188993454
+          }
+        },
+        {
+          "id": 552,
+          "codigo": "552",
+          "nombre": "San Caetano (parque)",
+          "zona": "San Caetano",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8901668683213,
+            "longitud": -8.5350438952446
+          }
+        },
+        {
+          "id": 366,
+          "codigo": "366",
+          "nombre": "Pastoriza nº 103A",
+          "zona": "San Caetano",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8877791691232,
+            "longitud": -8.53788435459137
+          }
+        },
+        {
+          "id": 576,
+          "codigo": "576",
+          "nombre": "Santa Clara",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8851791248794,
+            "longitud": -8.54117810726166
+          }
+        },
+        {
+          "id": 573,
+          "codigo": "573",
+          "nombre": "San Roque nº 21",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8839832249546,
+            "longitud": -8.54174539446831
+          }
+        },
+        {
+          "id": 661,
+          "codigo": "661",
+          "nombre": "Virxe da Cerca (Praza de abastos 2)",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8801192386458,
+            "longitud": -8.54079052805901
+          }
+        },
+        {
+          "id": 247,
+          "codigo": "247",
+          "nombre": "Fonte de San Antonio nº 3",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8776250111364,
+            "longitud": -8.54257687926292
+          }
+        },
+        {
+          "id": 599,
+          "codigo": "599",
+          "nombre": "Senra nº 14",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8768338737848,
+            "longitud": -8.54497477412224
+          }
+        },
+        {
+          "id": 113,
+          "codigo": "113",
+          "nombre": "Avda. Xoán Carlos I - Igrexa do Pilar",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8763139780024,
+            "longitud": -8.54785412549973
+          }
+        },
+        {
+          "id": 451,
+          "codigo": "451",
+          "nombre": "Rosalía de Castro nº 96",
+          "zona": "Ensanche",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8736476005515,
+            "longitud": -8.55279207229614
+          }
+        },
+        {
+          "id": 448,
+          "codigo": "448",
+          "nombre": "Rosalía de Castro nº 126",
+          "zona": "Ensanche",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8724996370025,
+            "longitud": -8.55437457561493
+          }
+        },
+        {
+          "id": 449,
+          "codigo": "449",
+          "nombre": "Rosalía de Castro nº 158",
+          "zona": "Santa Marta",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8717674059482,
+            "longitud": -8.55613946914673
+          }
+        },
+        {
+          "id": 586,
+          "codigo": "586",
+          "nombre": "Santa Marta de Arriba nº 10",
+          "zona": "Santa Marta",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8707009867931,
+            "longitud": -8.55776488780975
+          }
+        },
+        {
+          "id": 463,
+          "codigo": "463",
+          "nombre": "Rúa da Choupana nº 22",
+          "zona": "Choupana",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8680727009214,
+            "longitud": -8.56163531541824
+          }
+        },
+        {
+          "id": 685,
+          "codigo": "685",
+          "nombre": "Feliciano Barrera Fernández",
+          "zona": "Santa Marta",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.8659161254884,
+            "longitud": -8.56036394834518
+          }
+        },
+        {
+          "id": 278,
+          "codigo": "278",
+          "nombre": "Hospital Clínico",
+          "zona": "Choupana",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8692620288852,
+            "longitud": -8.56517851352692
+          }
+        }
+      ]
+    },
+    {
+      "nombre": "Hospital Clínico - Cemiterio Boisaca",
+      "sentido": "VUELTA",
+      "paradas": [
+        {
+          "id": 278,
+          "codigo": "278",
+          "nombre": "Hospital Clínico",
+          "zona": "Choupana",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8692620288852,
+            "longitud": -8.56517851352692
+          }
+        },
+        {
+          "id": 684,
+          "codigo": "684",
+          "nombre": "Feliciano Barrera Fernández (aparcadoiro)",
+          "zona": "Santa Marta",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.865883687817,
+            "longitud": -8.56027945876122
+          }
+        },
+        {
+          "id": 187,
+          "codigo": "187",
+          "nombre": "Rúa da Choupana",
+          "zona": "Choupana",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8685592469491,
+            "longitud": -8.56068313121796
+          }
+        },
+        {
+          "id": 587,
+          "codigo": "587",
+          "nombre": "Sta. Marta (colexio Divino Maestro)",
+          "zona": "Santa Marta",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8706439795361,
+            "longitud": -8.55769246816635
+          }
+        },
+        {
+          "id": 447,
+          "codigo": "447",
+          "nombre": "Rosalía de Castro (hotel Peregrino)",
+          "zona": "Santa Marta",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8718430866073,
+            "longitud": -8.55578005313873
+          }
+        },
+        {
+          "id": 450,
+          "codigo": "450",
+          "nombre": "Rosalía de Castro nº 87",
+          "zona": "Ensanche",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.873331126431,
+            "longitud": -8.55310052633286
+          }
+        },
+        {
+          "id": 112,
+          "codigo": "112",
+          "nombre": "Avda. Xoán Carlos I",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.876352,
+            "longitud": -8.547944
+          }
+        },
+        {
+          "id": 598,
+          "codigo": "598",
+          "nombre": "Senra nº 13",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8768191319988,
+            "longitud": -8.54556083679199
+          }
+        },
+        {
+          "id": 228,
+          "codigo": "228",
+          "nombre": "Ensinanza",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8789635334699,
+            "longitud": -8.5410962998867
+          }
+        },
+        {
+          "id": 662,
+          "codigo": "662",
+          "nombre": "Virxe da Cerca nº 10",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8804523843327,
+            "longitud": -8.54050487279892
+          }
+        },
+        {
+          "id": 572,
+          "codigo": "572",
+          "nombre": "San Roque (La Salle)",
+          "zona": "Casco antiguo",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.884222996395,
+            "longitud": -8.54158043861389
+          }
+        },
+        {
+          "id": 125,
+          "codigo": "125",
+          "nombre": "Basquiños nº 28",
+          "zona": "San Caetano",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8869233087602,
+            "longitud": -8.5395111143589
+          }
+        },
+        {
+          "id": 367,
+          "codigo": "367",
+          "nombre": "Pastoriza nº 22",
+          "zona": "San Caetano",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8878695692948,
+            "longitud": -8.53741630911827
+          }
+        },
+        {
+          "id": 551,
+          "codigo": "551",
+          "nombre": "San Caetano (igrexa)",
+          "zona": "San Caetano",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8901138093433,
+            "longitud": -8.534936606884
+          }
+        },
+        {
+          "id": 545,
+          "codigo": "545",
+          "nombre": "Cruceiro da Coruña nº 24",
+          "zona": "Salgueiriños",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8938022821815,
+            "longitud": -8.53197276592255
+          }
+        },
+        {
+          "id": 546,
+          "codigo": "546",
+          "nombre": "Cruceiro da Coruña nº 52",
+          "zona": "Salgueiriños",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8956562607381,
+            "longitud": -8.53063032031059
+          }
+        },
+        {
+          "id": 74,
+          "codigo": "74",
+          "nombre": "Avda. Cruceiro da Coruña 5 (c. Mallou)",
+          "zona": "Meixonfrío",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8979090595066,
+            "longitud": -8.52840811014175
+          }
+        },
+        {
+          "id": 252,
+          "codigo": "252",
+          "nombre": "Meixonfrío (rotonda)",
+          "zona": "Meixonfrío",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.8992707200313,
+            "longitud": -8.52577552199364
+          }
+        },
+        {
+          "id": 75,
+          "codigo": "75",
+          "nombre": "Avda. Cruceiro da Coruña 6 (Gramalleira)",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9013455734857,
+            "longitud": -8.52240264415741
+          }
+        },
+        {
+          "id": 76,
+          "codigo": "76",
+          "nombre": "Avda. Cruceiro da Coruña 7 (FORD)",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9030185697163,
+            "longitud": -8.5195380449295
+          }
+        },
+        {
+          "id": 77,
+          "codigo": "77",
+          "nombre": "Avda. Cruceiro da Coruña 8 (c. Costa Vella)",
+          "zona": "Meixonfrío/Tambre",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9057406526939,
+            "longitud": -8.51486966013908
+          }
+        },
+        {
+          "id": 538,
+          "codigo": "538",
+          "nombre": "Garabal (cruce)",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9164167,
+            "longitud": -8.5154668
+          }
+        },
+        {
+          "id": 268,
+          "codigo": "268",
+          "nombre": "Garabal",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9173447491528,
+            "longitud": -8.51259380578995
+          }
+        },
+        {
+          "id": 333,
+          "codigo": "333",
+          "nombre": "O Barral",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9204305563203,
+            "longitud": -8.50842028856277
+          }
+        },
+        {
+          "id": 690,
+          "codigo": "690",
+          "nombre": "O Barral 2",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9226922703624,
+            "longitud": -8.5075056552887
+          }
+        },
+        {
+          "id": 53,
+          "codigo": "53",
+          "nombre": "As Pereiras",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9246691152418,
+            "longitud": -8.51013153791428
+          }
+        },
+        {
+          "id": 114,
+          "codigo": "114",
+          "nombre": "Bálsoma",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9330707347107,
+            "longitud": -8.51512581110001
+          }
+        },
+        {
+          "id": 682,
+          "codigo": "682",
+          "nombre": "Bálsoma 2",
+          "zona": null,
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9301279,
+            "longitud": -8.5193463
+          }
+        },
+        {
+          "id": 574,
+          "codigo": "574",
+          "nombre": "San Silvestre - A Gracia",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9280442373054,
+            "longitud": -8.52313220500946
+          }
+        },
+        {
+          "id": 28,
+          "codigo": "28",
+          "nombre": "A Xesteira",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9293099831472,
+            "longitud": -8.5253718495369
+          }
+        },
+        {
+          "id": 607,
+          "codigo": "607",
+          "nombre": "Son de Arriba",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9316892007032,
+            "longitud": -8.52934956550598
+          }
+        },
+        {
+          "id": 604,
+          "codigo": "604",
+          "nombre": "Son de Abaixo 1",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9277476,
+            "longitud": -8.5332085
+          }
+        },
+        {
+          "id": 605,
+          "codigo": "605",
+          "nombre": "Son de Abaixo 2",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9255273977398,
+            "longitud": -8.53266477584839
+          }
+        },
+        {
+          "id": 606,
+          "codigo": "606",
+          "nombre": "Son de abaixo 3 (Escarabuña)",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9227678885465,
+            "longitud": -8.53193521499634
+          }
+        },
+        {
+          "id": 425,
+          "codigo": "425",
+          "nombre": "Rebordaos",
+          "zona": "Son",
+          "extraordinaria": true,
+          "coordenadas": {
+            "latitud": 42.9208283018883,
+            "longitud": -8.53107824921608
+          }
+        },
+        {
+          "id": 185,
+          "codigo": "185",
+          "nombre": "Cemiterio de Boisaca",
+          "zona": "Boisaca",
+          "extraordinaria": false,
+          "coordenadas": {
+            "latitud": 42.9077180414256,
+            "longitud": -8.51602971553802
+          }
+        }
+      ]
+    }
+  ],
+  "incidencias": [
+    {
+      "id": 734,
+      "titulo": "Desvíos por carreira (sábado 30, 21:00-23:30)",
+      "descripcion": "<b><u>Desvíos en el transporte urbano (sábado 30/5/2026, de 21:00 a 23:30)</u></b><br>Con motivo de las restricciones de tráfico que tendrán lugar durante la carrera SantYaGo10K, entre las 21:00 y las 23:30 del sábado 30 de mayo, las líneas del transporte urbano tendrán los siguientes desvíos:<br>En el documento adjunto figuran los servicios afectados por línea y sentido, así como las paradas suprimidas.<br>Rogamos disculpen las molestias que estas alteraciones les puedan ocasionar.<br>*<a href=\"https://drive.google.com/file/d/1IGq9NK0oLElbf8Hy4FlFZbyMik80fa0L/view?usp=sharing\" target=\"_blank\">Desvíos Tte. urbano 30-5-2026</a>",
+      "inicio": "2026-05-26 00:00",
+      "fin": "2026-05-31 23:59"
+    }
+  ]
+}

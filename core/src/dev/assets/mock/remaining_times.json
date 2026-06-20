@@ -1,0 +1,100 @@
+{
+  "id": 228,
+  "codigo": "228",
+  "nombre": "Ensinanza",
+  "zona": "Casco antiguo",
+  "coordenadas": {
+    "latitud": 42.8789635334699,
+    "longitud": -8.5410962998867
+  },
+  "lineas": [
+    {
+      "id": 5,
+      "sinoptico": "L5",
+      "nombre": "Vite / Rocha",
+      "estilo": "#fa8405",
+      "proximoPaso": "2026-05-28 10:40",
+      "minutosProximoPaso": 0
+    },
+    {
+      "id": 6,
+      "sinoptico": "L6",
+      "nombre": "San Marcos / Os Tilos",
+      "estilo": "#d73983",
+      "proximoPaso": "2026-05-28 10:43",
+      "minutosProximoPaso": 1
+    },
+    {
+      "id": 8,
+      "sinoptico": "L8",
+      "nombre": "Tanatorio / Vidán",
+      "estilo": "#6aaf48",
+      "proximoPaso": "2026-05-28 10:44",
+      "minutosProximoPaso": 3
+    },
+    {
+      "id": 4,
+      "sinoptico": "L4",
+      "nombre": "As Cancelas / Romaño",
+      "estilo": "#ffcc33",
+      "proximoPaso": "2026-05-28 10:46",
+      "minutosProximoPaso": 5
+    },
+    {
+      "id": 1,
+      "sinoptico": "L1",
+      "nombre": "Cemiterio de Boisaca / hospital Clínico",
+      "estilo": "#f32621",
+      "proximoPaso": "2026-05-28 10:47",
+      "minutosProximoPaso": 6
+    },
+    {
+      "id": 40,
+      "sinoptico": "L6A",
+      "nombre": "Aeroporto / Hórreo (est. Intermodal)",
+      "estilo": "#d73983",
+      "proximoPaso": "2026-05-28 10:50",
+      "minutosProximoPaso": 8
+    },
+    {
+      "id": 7,
+      "sinoptico": "L7",
+      "nombre": "San Roque / Aríns",
+      "estilo": "#488bc1",
+      "proximoPaso": "2026-05-28 10:56",
+      "minutosProximoPaso": 15
+    },
+    {
+      "id": 15,
+      "sinoptico": "L15",
+      "nombre": "Campus Norte / Campus Sur",
+      "estilo": "#7a4b2a",
+      "proximoPaso": "2026-05-28 11:00",
+      "minutosProximoPaso": 18
+    },
+    {
+      "id": 33,
+      "sinoptico": "LP3",
+      "nombre": "San Roque / Santa Lucía / Pajuela",
+      "estilo": "#75bd96",
+      "proximoPaso": "2026-05-28 11:04",
+      "minutosProximoPaso": 23
+    },
+    {
+      "id": 26,
+      "sinoptico": "LC6",
+      "nombre": "Amio / Paxonal / Hórreo / Fontiñas / Amio",
+      "estilo": "#006666",
+      "proximoPaso": "2026-05-28 11:05",
+      "minutosProximoPaso": 24
+    },
+    {
+      "id": 9,
+      "sinoptico": "L9",
+      "nombre": "Casas Novas / Cidade da Cultura",
+      "estilo": "#46b8bb",
+      "proximoPaso": "2026-05-28 11:07",
+      "minutosProximoPaso": 26
+    }
+  ]
+}
