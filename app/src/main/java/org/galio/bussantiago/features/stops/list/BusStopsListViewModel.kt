@@ -9,11 +9,16 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 
 class BusStopsListViewModel(
   private val executor: UseCaseExecutor,
-  private val getLineBusStops: GetLineBusStops
+  private val getLineBusStops: GetLineBusStops,
+  private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor) {
 
   private val _busStopModels = MutableLiveData<Resource<List<BusStopModel>>>()
@@ -45,6 +50,15 @@ class BusStopsListViewModel(
   }
 
   fun onBusStopClick(busStopModel: BusStopModel) {
+    analyticsTracker.trackEvent(
+      AnalyticsEvents.SELECT_STOP,
+      mapOf(
+        AnalyticsParams.ORIGIN to Screens.LINE_STOPS_LIST,
+        AnalyticsParams.STOP_CODE to busStopModel.code,
+        AnalyticsParams.STOP_NAME to busStopModel.name
+      )
+    )
+
     _navigationEvent.value = NavScreen.Times(busStopModel)
   }
 }

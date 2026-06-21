@@ -27,7 +27,7 @@ arch-core-testing = "2.2.0"
 espresso = "3.7.0"
 test-rules = "1.7.0"
 google-services = "4.3.3"
-firebase-analytics = "17.4.1"
+firebase-analytics = "18.0.0"
 
 [libraries]
 # Root Gradle

@@ -42,7 +42,7 @@ class FavoritesViewModelTest {
     val favorites = listOf(mock<BusStopFavorite>())
     whenever(getBusStopFavorites()).thenSuccess(favorites)
 
-    viewModel.loadFavorites()
+    viewModel.init()
 
     verify(favoritesObserver).onChanged(Resource.success(favorites))
   }
@@ -52,7 +52,7 @@ class FavoritesViewModelTest {
     val exception = Exception("Fake exception")
     whenever(getBusStopFavorites()).thenFailure(exception)
 
-    viewModel.loadFavorites()
+    viewModel.init()
 
     verify(favoritesObserver).onChanged(Resource.error(exception))
   }

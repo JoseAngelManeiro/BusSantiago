@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import org.galio.bussantiago.R
 import org.galio.bussantiago.databinding.AboutFragmentBinding
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
+import org.koin.android.ext.android.inject
 
 class AboutFragment : DialogFragment() {
 
   private var _binding: AboutFragmentBinding? = null
   private val binding get() = _binding!!
+  private val analyticsTracker: AnalyticsTracker by inject()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -40,6 +44,7 @@ class AboutFragment : DialogFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setUpToolbar()
+    analyticsTracker.trackScreen(Screens.ABOUT)
   }
 
   private fun setUpToolbar() {

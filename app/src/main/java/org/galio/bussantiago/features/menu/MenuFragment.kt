@@ -37,6 +37,7 @@ class MenuFragment : DialogFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     val lineId = args.lineId
+
     viewModel.menuModel.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
@@ -61,7 +62,7 @@ class MenuFragment : DialogFragment() {
       navigator.navigate(navScreen)
     }
 
-    viewModel.loadLineDetails(lineId)
+    viewModel.init(lineId)
   }
 
   private fun setUpView(menuModel: MenuModel, lineId: Int) {

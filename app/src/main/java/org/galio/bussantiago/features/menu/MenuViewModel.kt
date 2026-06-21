@@ -7,12 +7,17 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.executor.UseCaseExecutor
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 
 class MenuViewModel(
   private val executor: UseCaseExecutor,
   private val getLineDetails: GetLineDetails,
-  private val menuFactory: MenuFactory
+  private val menuFactory: MenuFactory,
+  private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor) {
 
   private val _menuModel = MutableLiveData<Resource<MenuModel>>()
@@ -24,6 +29,11 @@ class MenuViewModel(
   val navigationEvent: LiveData<NavScreen>
     get() = _navigationEvent
 
+  fun init(lineId: Int) {
+    analyticsTracker.trackScreen(Screens.MENU)
+    loadLineDetails(lineId)
+  }
+
   fun loadLineDetails(lineId: Int) {
     _menuModel.value = Resource.loading()
     executor(
@@ -34,19 +44,24 @@ class MenuViewModel(
   }
 
   fun onMenuOptionClicked(menuOptionModel: MenuOptionModel, lineId: Int) {
+    trackMenuOptionSelected(menuOptionModel, lineId)
     val navScreen = when (menuOptionModel.menuType) {
-      MenuType.OUTWARD_ROUTE, MenuType.RETURN_ROUTE, MenuType.ROUNDTRIP_ROUTE -> {
-        NavScreen.BusStops(lineId, menuOptionModel.title.orEmpty())
-      }
-
-      MenuType.INFORMATION -> {
-        NavScreen.Information(lineId)
-      }
-
-      MenuType.INCIDENCES -> {
-        NavScreen.Incidences(lineId)
-      }
+      MenuType.OUTWARD_ROUTE,
+      MenuType.RETURN_ROUTE,
+      MenuType.ROUNDTRIP_ROUTE -> NavScreen.BusStops(lineId, menuOptionModel.title.orEmpty())
+      MenuType.INFORMATION -> NavScreen.Information(lineId)
+      MenuType.INCIDENCES -> NavScreen.Incidences(lineId)
     }
     _navigationEvent.value = navScreen
+  }
+
+  private fun trackMenuOptionSelected(menuOptionModel: MenuOptionModel, lineId: Int) {
+    analyticsTracker.trackEvent(
+      AnalyticsEvents.SELECT_LINE_ROUTE,
+      mapOf(
+        AnalyticsParams.LINE_ID to lineId,
+        AnalyticsParams.MENU_OPTION to menuOptionModel.title.orEmpty()
+      )
+    )
   }
 }

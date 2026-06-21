@@ -68,8 +68,7 @@ class TimesDialogFragment : DialogFragment() {
 
     setUpObservers()
 
-    viewModel.loadTimes()
-    viewModel.validateBusStop()
+    viewModel.init()
   }
 
   private fun setUpToolbar(busStopModel: BusStopModel) {

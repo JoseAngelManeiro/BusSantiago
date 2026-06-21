@@ -1,6 +1,7 @@
 package org.galio.bussantiago
 
 import android.app.Application
+import org.galio.bussantiago.di.analyticsModule
 import org.galio.bussantiago.di.appModule
 import org.galio.bussantiago.di.busStopsListModule
 import org.galio.bussantiago.di.busStopsMapModule
@@ -26,6 +27,7 @@ class BusSantiagoApp : Application() {
       androidContext(this@BusSantiagoApp)
       modules(
         listOf(
+          analyticsModule,
           appModule,
           coreModule,
           linesModule,

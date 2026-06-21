@@ -13,7 +13,8 @@ val busStopsMapModule = module {
     BusStopsMapViewModel(
       executor = get(),
       getLineDetails = get(),
-      lineMapModelFactory = get()
+      lineMapModelFactory = get(),
+      analyticsTracker = get()
     )
   }
 }

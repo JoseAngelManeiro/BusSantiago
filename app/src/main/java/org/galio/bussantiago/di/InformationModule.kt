@@ -9,7 +9,8 @@ val informationModule = module {
     InformationViewModel(
       lineId = lineId,
       executor = get(),
-      getLineInformation = get()
+      getLineInformation = get(),
+      analyticsTracker = get()
     )
   }
 }

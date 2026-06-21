@@ -136,7 +136,7 @@ class SearchFragment : Fragment() {
       navigator.navigate(navScreen)
     }
 
-    viewModel.loadBusStops()
+    viewModel.init()
   }
 
   private fun setUpMap(map: GoogleMap) {

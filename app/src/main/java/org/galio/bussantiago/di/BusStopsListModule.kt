@@ -9,7 +9,8 @@ val busStopsListModule = module {
   viewModel {
     BusStopsListViewModel(
       executor = get(),
-      getLineBusStops = get()
+      getLineBusStops = get(),
+      analyticsTracker = get()
     )
   }
 }

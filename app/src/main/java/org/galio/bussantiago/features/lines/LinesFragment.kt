@@ -55,7 +55,7 @@ class LinesFragment : Fragment() {
       navigator.navigate(navScreen)
     }
 
-    viewModel.loadLines()
+    viewModel.init()
   }
 
   private fun updateProgressBarStatus(visible: Boolean) {
