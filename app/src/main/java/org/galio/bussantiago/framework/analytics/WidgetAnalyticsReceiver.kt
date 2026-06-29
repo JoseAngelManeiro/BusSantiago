@@ -3,6 +3,7 @@ package org.galio.bussantiago.framework.analytics
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import org.galio.bussantiago.shared.analytics.WidgetAnalyticsConstants
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -19,8 +20,8 @@ class WidgetAnalyticsReceiver : BroadcastReceiver(), KoinComponent {
   private val analyticsTracker: AnalyticsTracker by inject()
 
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == "org.galio.bussantiago.WIDGET_ANALYTICS_EVENT") {
-      val eventName = intent.getStringExtra("eventName") ?: return
+    if (intent.action == WidgetAnalyticsConstants.ACTION_WIDGET_ANALYTICS_EVENT) {
+      val eventName = intent.getStringExtra(WidgetAnalyticsConstants.EXTRA_EVENT_NAME) ?: return
       analyticsTracker.trackEvent(eventName, mapOf("origin" to "widget"))
     }
   }

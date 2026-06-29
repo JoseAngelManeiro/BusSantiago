@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.net.toUri
 import org.galio.bussantiago.shared.DeeplinkHelper
+import org.galio.bussantiago.shared.analytics.WidgetAnalyticsConstants
 
 internal class WidgetProvider : AppWidgetProvider() {
 
@@ -105,7 +106,8 @@ internal class WidgetProvider : AppWidgetProvider() {
 
         val analyticsIntent = Intent().apply {
           setClassName(context, "org.galio.bussantiago.framework.analytics.WidgetAnalyticsReceiver")
-          putExtra("eventName", "refresh_widget")
+          putExtra(WidgetAnalyticsConstants.EXTRA_EVENT_NAME, "refresh_widget")
+          action = WidgetAnalyticsConstants.ACTION_WIDGET_ANALYTICS_EVENT
         }
         context.sendBroadcast(analyticsIntent)
 
