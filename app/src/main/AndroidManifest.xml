@@ -53,6 +53,10 @@
       </intent-filter>
     </activity>
 
+    <receiver
+      android:name=".framework.analytics.WidgetAnalyticsReceiver"
+      android:exported="false" />
+
   </application>
 
 </manifest>

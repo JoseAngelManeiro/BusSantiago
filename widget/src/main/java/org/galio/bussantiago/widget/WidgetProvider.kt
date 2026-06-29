@@ -103,6 +103,12 @@ internal class WidgetProvider : AppWidgetProvider() {
         loadingViews.setViewVisibility(R.id.progressBar, View.VISIBLE)
         appWidgetManager.partiallyUpdateAppWidget(widgetId, loadingViews)
 
+        val analyticsIntent = Intent().apply {
+          setClassName(context, "org.galio.bussantiago.framework.analytics.WidgetAnalyticsReceiver")
+          putExtra("eventName", "refresh_widget")
+        }
+        context.sendBroadcast(analyticsIntent)
+
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.times_listview)
       }
     }
