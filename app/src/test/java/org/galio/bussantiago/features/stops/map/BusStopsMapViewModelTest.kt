@@ -7,6 +7,10 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineDetails
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -30,6 +34,7 @@ class BusStopsMapViewModelTest {
   private val executor = TestUseCaseExecutor()
   private val getLineDetails = mock<GetLineDetails>()
   private val lineMapModelFactory = mock<LineMapModelFactory>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val lineMapObserver = mock<Observer<Resource<LineMapModel>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
 
@@ -37,7 +42,7 @@ class BusStopsMapViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = BusStopsMapViewModel(executor, getLineDetails, lineMapModelFactory)
+    viewModel = BusStopsMapViewModel(executor, getLineDetails, lineMapModelFactory, analyticsTracker)
     viewModel.lineMapModel.observeForever(lineMapObserver)
     viewModel.navigationEvent.observeForever(navEventObserver)
   }
@@ -93,6 +98,23 @@ class BusStopsMapViewModelTest {
           markerTitle,
           markerDescription
         )
+      )
+    )
+  }
+
+  @Test
+  fun `when info window is clicked should track select stop event`() {
+    val markerTitle = "1"
+    val markerDescription = "Os Tilos"
+
+    viewModel.onInfoWindowClick(markerTitle, markerDescription)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.SELECT_STOP,
+      mapOf(
+        AnalyticsParams.ORIGIN to Screens.LINE_STOPS_MAP,
+        AnalyticsParams.STOP_CODE to "1",
+        AnalyticsParams.STOP_NAME to "Os Tilos"
       )
     )
   }

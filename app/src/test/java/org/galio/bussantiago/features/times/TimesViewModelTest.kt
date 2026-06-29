@@ -9,6 +9,10 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.core.model.BusStopRemainingTimes
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.shared.LineRemainingTimeModel
 import org.galio.bussantiago.shared.TimesFactory
 import org.galio.bussantiago.util.TestUseCaseExecutor
@@ -19,6 +23,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
+import org.mockito.kotlin.any
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
@@ -37,6 +42,7 @@ class TimesViewModelTest {
   private val addBusStopFavorite = mock<AddBusStopFavorite>()
   private val removeBusStopFavorite = mock<RemoveBusStopFavorite>()
   private val timesFactory = mock<TimesFactory>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val timesObserver = mock<Observer<Resource<List<LineRemainingTimeModel>>>>()
   private val favoriteObserver = mock<Observer<Boolean>>()
 
@@ -50,7 +56,8 @@ class TimesViewModelTest {
       validateIfBusStopIsFavorite,
       addBusStopFavorite,
       removeBusStopFavorite,
-      timesFactory
+      timesFactory,
+      analyticsTracker
     )
     viewModel.setArgs(busStopCode, busStopName)
   }
@@ -122,5 +129,50 @@ class TimesViewModelTest {
   private fun initFavoriteState(state: Boolean) {
     whenever(validateIfBusStopIsFavorite(busStopCode)).thenSuccess(state)
     viewModel.validateBusStop()
+  }
+
+  @Test
+  fun `when init is called should track the Times screen`() {
+    whenever(getBusStopRemainingTimes(busStopCode)).thenSuccess(mock())
+    whenever(validateIfBusStopIsFavorite(busStopCode)).thenSuccess(false)
+    whenever(timesFactory.createLineRemainingTimeModels(any())).thenReturn(emptyList())
+
+    viewModel.init()
+
+    verify(analyticsTracker).trackScreen(Screens.TIMES)
+  }
+
+  @Test
+  fun `when toggling to favorite should track the toggle favorite event`() {
+    initFavoriteState(false)
+    whenever(addBusStopFavorite(BusStopFavorite(busStopCode, busStopName))).thenSuccess(Unit)
+
+    viewModel.changeFavoriteState()
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to busStopCode,
+        AnalyticsParams.STOP_NAME to busStopName,
+        AnalyticsParams.IS_FAVORITE to true
+      )
+    )
+  }
+
+  @Test
+  fun `when toggling to not favorite should track the toggle favorite event`() {
+    initFavoriteState(true)
+    whenever(removeBusStopFavorite(BusStopFavorite(busStopCode, busStopName))).thenSuccess(Unit)
+
+    viewModel.changeFavoriteState()
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to busStopCode,
+        AnalyticsParams.STOP_NAME to busStopName,
+        AnalyticsParams.IS_FAVORITE to false
+      )
+    )
   }
 }

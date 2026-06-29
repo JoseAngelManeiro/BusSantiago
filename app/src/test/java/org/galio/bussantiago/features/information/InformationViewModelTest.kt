@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineInformation
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -24,12 +26,13 @@ class InformationViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineInformation = mock<GetLineInformation>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val observer = mock<Observer<Resource<String>>>()
   private val navigationObserver = mock<Observer<NavScreen>>()
 
   private val lineId = 123
 
-  private fun createViewModel() = InformationViewModel(lineId, executor, getLineInformation)
+  private fun createViewModel() = InformationViewModel(lineId, executor, getLineInformation, analyticsTracker)
 
   @Test
   fun `if all goes well, the data is loaded correctly on initialization`() {
@@ -40,6 +43,15 @@ class InformationViewModelTest {
     viewModel.information.observeForever(observer)
 
     verify(observer).onChanged(Resource.success("Any Information"))
+  }
+
+  @Test
+  fun `when initialized should track the Information screen`() {
+    whenever(getLineInformation(lineId)).thenSuccess("stub")
+
+    createViewModel()
+
+    verify(analyticsTracker).trackScreen(Screens.INFORMATION)
   }
 
   @Test

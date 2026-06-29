@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -13,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
+import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
 class IncidencesViewModelTest {
@@ -22,6 +25,7 @@ class IncidencesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineIncidences = mock<GetLineIncidences>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val lineId = 123
 
   @Test
@@ -34,6 +38,15 @@ class IncidencesViewModelTest {
     val viewModel = createViewModel()
 
     assertEquals(Resource.success(listOf(incidence1, incidence2, incidence3)), viewModel.incidences.value)
+  }
+
+  @Test
+  fun `when initialized should track the Incidences screen`() {
+    whenever(getLineIncidences(lineId)).thenSuccess(emptyList())
+
+    createViewModel()
+
+    verify(analyticsTracker).trackScreen(Screens.INCIDENCES)
   }
 
   @Test
@@ -73,5 +86,6 @@ class IncidencesViewModelTest {
     assertEquals(NavScreen.Exit, viewModel.navigationEvent.value)
   }
 
-  private fun createViewModel() = IncidencesViewModel(lineId, executor, getLineIncidences)
+  private fun createViewModel() = IncidencesViewModel(lineId, executor, getLineIncidences, analyticsTracker)
 }
+
