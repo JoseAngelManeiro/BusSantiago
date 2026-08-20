@@ -127,4 +127,20 @@ internal class WidgetProvider : AppWidgetProvider() {
     }
     super.onDeleted(context, appWidgetIds)
   }
+
+  override fun onRestored(context: Context, oldWidgetIds: IntArray, newWidgetIds: IntArray) {
+    val prefs = WidgetPrefsHelper(context)
+    oldWidgetIds.forEachIndexed { index, oldId ->
+      val newId = newWidgetIds[index]
+      val code = prefs.getCode(oldId)
+      val name = prefs.getName(oldId)
+      val hour = prefs.getHour(oldId)
+
+      if (code.isNotEmpty()) {
+        prefs.save(code, name, hour, newId)
+        prefs.remove(oldId)
+      }
+    }
+    super.onRestored(context, oldWidgetIds, newWidgetIds)
+  }
 }
