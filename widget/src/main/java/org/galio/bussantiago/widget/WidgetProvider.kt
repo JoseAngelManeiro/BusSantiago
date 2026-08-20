@@ -27,6 +27,37 @@ internal class WidgetProvider : AppWidgetProvider() {
 
       val remoteViews = RemoteViews(context.packageName, R.layout.app_widget)
 
+      if (code.isEmpty()) {
+        remoteViews.setTextViewText(R.id.codeStop_textview, "")
+        remoteViews.setTextViewText(R.id.nameStop_textview, "")
+        remoteViews.setViewVisibility(R.id.busStopContainer, View.INVISIBLE)
+        remoteViews.setViewVisibility(R.id.syncContainer, View.GONE)
+        
+        remoteViews.setViewVisibility(R.id.times_listview, View.GONE)
+        remoteViews.setViewVisibility(R.id.empty_message_textview, View.VISIBLE)
+        
+        val errorMessage = context.getString(R.string.widget_unconfigured) + "\n\n" + context.getString(R.string.widget_recreate)
+        remoteViews.setTextViewText(R.id.empty_message_textview, errorMessage)
+        
+        val intent = Intent()
+        val dummyPIntent = PendingIntent.getActivity(
+          context,
+          0,
+          intent,
+          PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        remoteViews.setOnClickPendingIntent(R.id.busStopContainer, dummyPIntent)
+        
+        appWidgetManager.updateAppWidget(widgetId, remoteViews)
+        return
+      }
+
+      // Explicitly restore visibilities in case it recovered from an empty state
+      remoteViews.setViewVisibility(R.id.busStopContainer, View.VISIBLE)
+      remoteViews.setViewVisibility(R.id.syncContainer, View.VISIBLE)
+      remoteViews.setViewVisibility(R.id.times_listview, View.VISIBLE)
+      remoteViews.setTextViewText(R.id.empty_message_textview, context.getString(org.galio.bussantiago.shared.R.string.no_information))
+
       // Connect the service that will load the times with our listView
       val widgetServiceIntent = Intent(context, WidgetService::class.java).apply {
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)

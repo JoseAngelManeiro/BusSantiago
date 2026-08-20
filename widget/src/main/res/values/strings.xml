@@ -2,5 +2,7 @@
   <string name="action_refresh_widget" translatable="false">org.galio.bussantiago.widget.REFRESH_WIDGET</string>
   <string name="sync_widget">Sincronizar Widget</string>
   <string name="widget_label">Parada favorita</string>
+  <string name="widget_unconfigured">Widget no configurado</string>
+  <string name="widget_recreate">Por favor, elimine el widget y vuelva a crearlo.</string>
 </resources>
 
