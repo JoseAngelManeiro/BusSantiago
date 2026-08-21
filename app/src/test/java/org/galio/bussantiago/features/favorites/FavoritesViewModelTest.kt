@@ -6,6 +6,10 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -25,6 +29,7 @@ class FavoritesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val favoritesObserver = mock<Observer<Resource<List<BusStopFavorite>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
 
@@ -32,9 +37,18 @@ class FavoritesViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = FavoritesViewModel(executor, getBusStopFavorites)
+    viewModel = FavoritesViewModel(executor, getBusStopFavorites, analyticsTracker)
     viewModel.favoriteModels.observeForever(favoritesObserver)
     viewModel.navigationEvent.observeForever(navEventObserver)
+  }
+
+  @Test
+  fun `when init is called should track the Favorites screen`() {
+    whenever(getBusStopFavorites()).thenSuccess(emptyList())
+
+    viewModel.init()
+
+    verify(analyticsTracker).trackScreen(Screens.FAVORITES)
   }
 
   @Test
@@ -42,7 +56,7 @@ class FavoritesViewModelTest {
     val favorites = listOf(mock<BusStopFavorite>())
     whenever(getBusStopFavorites()).thenSuccess(favorites)
 
-    viewModel.loadFavorites()
+    viewModel.init()
 
     verify(favoritesObserver).onChanged(Resource.success(favorites))
   }
@@ -52,7 +66,7 @@ class FavoritesViewModelTest {
     val exception = Exception("Fake exception")
     whenever(getBusStopFavorites()).thenFailure(exception)
 
-    viewModel.loadFavorites()
+    viewModel.init()
 
     verify(favoritesObserver).onChanged(Resource.error(exception))
   }
@@ -65,6 +79,22 @@ class FavoritesViewModelTest {
 
     verify(navEventObserver).onChanged(
       NavScreen.Times(BusStopModel("53", "As Pereiras"))
+    )
+  }
+
+  @Test
+  fun `when bus stop is clicked should track the select stop event`() {
+    val busStopFavorite = BusStopFavorite("53", "As Pereiras")
+
+    viewModel.onBusStopFavoriteClick(busStopFavorite)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.SELECT_STOP,
+      mapOf(
+        AnalyticsParams.ORIGIN to Screens.FAVORITES,
+        AnalyticsParams.STOP_CODE to "53",
+        AnalyticsParams.STOP_NAME to "As Pereiras"
+      )
     )
   }
 }

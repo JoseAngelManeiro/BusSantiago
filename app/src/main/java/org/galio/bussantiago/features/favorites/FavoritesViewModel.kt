@@ -9,11 +9,16 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.executor.UseCaseExecutor
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 
 class FavoritesViewModel(
   private val executor: UseCaseExecutor,
-  private val getBusStopFavorites: GetBusStopFavorites
+  private val getBusStopFavorites: GetBusStopFavorites,
+  private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor) {
 
   private val _favoriteModels = MutableLiveData<Resource<List<BusStopFavorite>>>()
@@ -25,7 +30,9 @@ class FavoritesViewModel(
   val navigationEvent: LiveData<NavScreen>
     get() = _navigationEvent
 
-  fun loadFavorites() {
+  fun init() {
+    analyticsTracker.trackScreen(Screens.FAVORITES)
+
     executor(
       useCase = { getBusStopFavorites() },
       onSuccess = { _favoriteModels.value = Resource.success(it) },
@@ -34,6 +41,15 @@ class FavoritesViewModel(
   }
 
   fun onBusStopFavoriteClick(busStopFavorite: BusStopFavorite) {
+    analyticsTracker.trackEvent(
+      AnalyticsEvents.SELECT_STOP,
+      mapOf(
+        AnalyticsParams.ORIGIN to Screens.FAVORITES,
+        AnalyticsParams.STOP_CODE to busStopFavorite.code,
+        AnalyticsParams.STOP_NAME to busStopFavorite.name
+      )
+    )
+
     val busStopModel = BusStopModel(busStopFavorite.code, busStopFavorite.name)
     _navigationEvent.value = NavScreen.Times(busStopModel)
   }

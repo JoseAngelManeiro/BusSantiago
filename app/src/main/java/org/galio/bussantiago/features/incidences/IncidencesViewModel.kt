@@ -8,12 +8,15 @@ import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineIncidences
 import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.executor.UseCaseExecutor
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 
 class IncidencesViewModel(
   private val lineId: Int,
   private val executor: UseCaseExecutor,
-  private val getLineIncidences: GetLineIncidences
+  private val getLineIncidences: GetLineIncidences,
+  private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor), IncidencesUserInteractions {
 
   private val _navigationEvent = SingleLiveEvent<NavScreen>()
@@ -26,6 +29,7 @@ class IncidencesViewModel(
     get() = _navigationEvent
 
   init {
+    analyticsTracker.trackScreen(Screens.INCIDENCES)
     loadIncidences()
   }
 

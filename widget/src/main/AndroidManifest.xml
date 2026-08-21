@@ -10,7 +10,7 @@
       android:exported="false"
       tools:ignore="DiscouragedApi,LockedOrientationActivity">
       <intent-filter>
-        <action android:name="android.apwidget.action.APPWIDGET_CONFIGURE" />
+        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
       </intent-filter>
     </activity>
 

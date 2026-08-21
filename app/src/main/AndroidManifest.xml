@@ -27,6 +27,10 @@
       android:name="com.google.android.geo.API_KEY"
       android:value="@string/google_maps_api_key" />
 
+    <meta-data
+      android:name="google_analytics_automatic_screen_reporting_enabled"
+      android:value="false" />
+
     <activity
       android:name=".features.MainActivity"
       android:exported="true"
@@ -48,6 +52,10 @@
           android:host="@string/times_host" />
       </intent-filter>
     </activity>
+
+    <receiver
+      android:name=".framework.analytics.WidgetAnalyticsReceiver"
+      android:exported="false" />
 
   </application>
 

@@ -14,7 +14,8 @@ val menuModule = module {
     MenuViewModel(
       executor = get(),
       getLineDetails = get(),
-      menuFactory = MenuFactory()
+      menuFactory = MenuFactory(),
+      analyticsTracker = get()
     )
   }
 }

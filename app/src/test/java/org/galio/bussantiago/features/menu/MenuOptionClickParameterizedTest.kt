@@ -24,7 +24,7 @@ class MenuOptionClickParameterizedTest(
   var rule: TestRule = InstantTaskExecutorRule()
 
   private val navEventObserver = mock<Observer<NavScreen>>()
-  private val viewModel = MenuViewModel(mock(), mock(), mock())
+  private val viewModel = MenuViewModel(mock(), mock(), mock(), mock())
 
   @Before
   fun setUp() {

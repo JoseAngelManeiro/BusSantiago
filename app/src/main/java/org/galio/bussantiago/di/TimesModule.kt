@@ -17,7 +17,8 @@ val timesModule = module {
       validateIfBusStopIsFavorite = get(),
       addBusStopFavorite = get(),
       removeBusStopFavorite = get(),
-      timesFactory = TimesFactory()
+      timesFactory = TimesFactory(),
+      analyticsTracker = get()
     )
   }
 }

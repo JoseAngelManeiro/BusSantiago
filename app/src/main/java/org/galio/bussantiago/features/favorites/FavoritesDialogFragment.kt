@@ -71,7 +71,7 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
       navigator.navigate(navScreen)
     }
 
-    viewModel.loadFavorites()
+    viewModel.init()
   }
 
   override fun onDestroyView() {

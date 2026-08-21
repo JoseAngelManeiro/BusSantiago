@@ -9,7 +9,8 @@ val linesModule = module {
   viewModel {
     LinesViewModel(
       executor = get(),
-      getLines = get()
+      getLines = get(),
+      analyticsTracker = get()
     )
   }
 }

@@ -7,6 +7,10 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.core.GetLineBusStops
 import org.galio.bussantiago.core.model.BusStop
 import org.galio.bussantiago.features.stops.BusStopsArgs
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -26,6 +30,7 @@ class BusStopsListViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLineBusStops = mock<GetLineBusStops>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val busStopObserver = mock<Observer<Resource<List<BusStopModel>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
 
@@ -35,7 +40,7 @@ class BusStopsListViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = BusStopsListViewModel(executor, getLineBusStops)
+    viewModel = BusStopsListViewModel(executor, getLineBusStops, analyticsTracker)
     viewModel.busStopModels.observeForever(busStopObserver)
     viewModel.navigationEvent.observeForever(navEventObserver)
   }
@@ -73,6 +78,22 @@ class BusStopsListViewModelTest {
     viewModel.onBusStopClick(busStopModel)
 
     verify(navEventObserver).onChanged(NavScreen.Times(busStopModel))
+  }
+
+  @Test
+  fun `when bus stop is clicked should track select stop event`() {
+    val busStopModel = BusStopModel("1234", "Bus Stop 1")
+
+    viewModel.onBusStopClick(busStopModel)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.SELECT_STOP,
+      mapOf(
+        AnalyticsParams.ORIGIN to Screens.LINE_STOPS_LIST,
+        AnalyticsParams.STOP_CODE to "1234",
+        AnalyticsParams.STOP_NAME to "Bus Stop 1"
+      )
+    )
   }
 
   private fun createBusStop(code: String, name: String): BusStop {

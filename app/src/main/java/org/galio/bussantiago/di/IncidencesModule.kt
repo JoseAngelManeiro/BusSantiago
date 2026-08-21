@@ -6,6 +6,11 @@ import org.koin.dsl.module
 
 val incidencesModule = module {
   viewModel { (lineId: Int) ->
-    IncidencesViewModel(lineId = lineId, executor = get(), getLineIncidences = get())
+    IncidencesViewModel(
+      lineId = lineId,
+      executor = get(),
+      getLineIncidences = get(),
+      analyticsTracker = get()
+    )
   }
 }

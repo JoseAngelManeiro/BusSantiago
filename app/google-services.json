@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "432037783273",
+    "project_id": "bus-santiago",
+    "storage_bucket": "bus-santiago.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432037783273:android:6a8dba129be1854ce33278",
+        "android_client_info": {
+          "package_name": "org.galio.bussantiago"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHN-KIYEFEoeeqvF1ZaSyyyUzEi1VyACo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,6 +5,10 @@ import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.core.GetLines
 import org.galio.bussantiago.core.model.Line
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.shared.SynopticModel
 import org.galio.bussantiago.util.TestUseCaseExecutor
@@ -25,6 +29,7 @@ class LinesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getLines = mock<GetLines>()
+  private val analyticsTracker = mock<AnalyticsTracker>()
   private val lineModelsObserver = mock<Observer<Resource<List<LineModel>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
 
@@ -32,7 +37,7 @@ class LinesViewModelTest {
 
   @Before
   fun setUp() {
-    linesViewModel = LinesViewModel(executor, getLines)
+    linesViewModel = LinesViewModel(executor, getLines, analyticsTracker)
     linesViewModel.lineModels.observeForever(lineModelsObserver)
     linesViewModel.navigationEvent.observeForever(navEventObserver)
   }
@@ -65,6 +70,25 @@ class LinesViewModelTest {
     linesViewModel.onLineClicked(53)
 
     verify(navEventObserver).onChanged(NavScreen.LineMenu(53))
+  }
+
+  @Test
+  fun `when init is called should track the Lines screen`() {
+    whenever(getLines()).thenSuccess(emptyList())
+
+    linesViewModel.init()
+
+    verify(analyticsTracker).trackScreen(Screens.LINES)
+  }
+
+  @Test
+  fun `when a line is clicked should track the select line event`() {
+    linesViewModel.onLineClicked(53)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.SELECT_LINE,
+      mapOf(AnalyticsParams.LINE_ID to 53)
+    )
   }
 
   private fun createLineStub(): Line {

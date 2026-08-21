@@ -7,12 +7,15 @@ import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.core.GetLineInformation
 import org.galio.bussantiago.executor.UseCaseExecutor
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 
 class InformationViewModel(
   private val lineId: Int,
   private val executor: UseCaseExecutor,
-  private val getLineInformation: GetLineInformation
+  private val getLineInformation: GetLineInformation,
+  private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor), InformationUserInteractions {
 
   private val _navigationEvent = SingleLiveEvent<NavScreen>()
@@ -25,6 +28,7 @@ class InformationViewModel(
     get() = _navigationEvent
 
   init {
+    analyticsTracker.trackScreen(Screens.INFORMATION)
     loadLineInformation()
   }
 

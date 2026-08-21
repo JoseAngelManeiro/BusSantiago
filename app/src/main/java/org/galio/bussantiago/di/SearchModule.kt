@@ -12,7 +12,8 @@ val searchModule = module {
   viewModel {
     SearchViewModel(
       executor = get(),
-      searchAllBusStops = get()
+      searchAllBusStops = get(),
+      analyticsTracker = get()
     )
   }
 }
