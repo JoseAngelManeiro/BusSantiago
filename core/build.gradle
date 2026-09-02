@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply from: '../flavors.gradle'
 
 android {
@@ -44,4 +45,10 @@ dependencies {
     testImplementation(libs.roboelectric)
 
     testImplementation(libs.junit)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+    testImplementation(libs.room.testing)
 }

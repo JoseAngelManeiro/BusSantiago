@@ -12,11 +12,11 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.data.api.ApiClient
-import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.cache.LineDetailsCache
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.data.local.FavoriteDataSourceImpl
+import org.galio.bussantiago.data.local.room.BusSantiagoDatabase
 import org.galio.bussantiago.data.mapper.BusStopMapper
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
@@ -46,6 +46,7 @@ import org.galio.bussantiago.domain.SearchAllBusStopsImpl
 import org.galio.bussantiago.domain.ValidateIfBusStopIsFavoriteImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import kotlin.jvm.java
 
 val coreModule = module {
 
@@ -74,11 +75,25 @@ val coreModule = module {
   // Cache factories
   factory { LineDetailsCache() }
   factory { LineCache() }
-  factory { BusStopSearchCache() }
+
+  // Database
+  single {
+    androidx.room.Room.databaseBuilder(
+      androidContext(),
+      BusSantiagoDatabase::class.java,
+      "bussantiago_network.db"
+    ).build()
+  }
+  single { get<BusSantiagoDatabase>().busStopDao() }
+  single { get<BusSantiagoDatabase>().lineDao() }
+
+  single {
+    androidContext().getSharedPreferences("bus_santiago_prefs", android.content.Context.MODE_PRIVATE)
+  }
 
   // Repositories
   single {
-    LineRepository(apiClient = get(), mapper = get(), cache = get())
+    LineRepository(apiClient = get(), mapper = get(), cache = get(), lineDao = get())
   }
   single {
     LineDetailsRepository(apiClient = get(), mapper = get(), cache = get())
@@ -90,7 +105,7 @@ val coreModule = module {
     BusStopFavoriteRepository(favoriteDataSource = get())
   }
   single {
-    SearchBusStopRepository(apiClient = get(), mapper = get(), cache = get())
+    SearchBusStopRepository(apiClient = get(), mapper = get(), busStopDao = get(), sharedPreferences = get())
   }
 
   // UseCases
