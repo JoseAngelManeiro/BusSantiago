@@ -3,9 +3,8 @@ package org.galio.bussantiago.data.repository
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineDetailsCache
-import org.galio.bussantiago.data.mapper.LineDetailsMapper
-
 import org.galio.bussantiago.data.local.room.LineDetailsDao
+import org.galio.bussantiago.data.mapper.LineDetailsMapper
 import org.galio.bussantiago.data.mapper.LineDetailsRoomMapper
 
 internal class LineDetailsRepository(

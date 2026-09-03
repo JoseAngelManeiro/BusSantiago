@@ -1,11 +1,11 @@
 package org.galio.bussantiago.data.mapper
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.core.model.Coordinates
 import org.galio.bussantiago.core.model.LineSearch
 import org.galio.bussantiago.data.local.room.BusStopEntity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 internal class BusStopRoomMapper : Mapper<BusStopEntity, BusStopSearch> {
 

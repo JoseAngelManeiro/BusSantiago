@@ -1,14 +1,13 @@
 package org.galio.bussantiago.data.repository
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.local.room.BusStopDao
-import org.galio.bussantiago.data.mapper.BusStopSearchMapper
-import android.content.SharedPreferences
-
 import org.galio.bussantiago.data.mapper.BusStopRoomMapper
-import androidx.core.content.edit
+import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 
 internal class SearchBusStopRepository(
   private val apiClient: ApiClient,

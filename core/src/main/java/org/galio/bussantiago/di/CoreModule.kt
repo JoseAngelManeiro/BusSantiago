@@ -27,8 +27,8 @@ import org.galio.bussantiago.data.mapper.IncidenceMapper
 import org.galio.bussantiago.data.mapper.LineDetailsMapper
 import org.galio.bussantiago.data.mapper.LineDetailsRoomMapper
 import org.galio.bussantiago.data.mapper.LineMapper
-import org.galio.bussantiago.data.mapper.LineRoomMapper
 import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
+import org.galio.bussantiago.data.mapper.LineRoomMapper
 import org.galio.bussantiago.data.mapper.LineSearchMapper
 import org.galio.bussantiago.data.mapper.RouteMapper
 import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
@@ -50,7 +50,6 @@ import org.galio.bussantiago.domain.ValidateIfBusStopIsFavoriteImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import kotlin.jvm.java
 
 private const val DATABASE_NAME = "bussantiago_network.db"
 private const val PREFERENCES_NAME = "bus_santiago_prefs"
