@@ -6,7 +6,6 @@ import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.entity.LineEntity
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.local.room.LineDao
-import org.galio.bussantiago.data.local.room.toEntity
 import org.galio.bussantiago.data.mapper.LineMapper
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
@@ -17,14 +16,17 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
+import org.galio.bussantiago.data.mapper.LineRoomMapper
+
 class LineRepositoryTest {
 
   private val apiClient = mock<ApiClient>()
   private val mapper = mock<LineMapper>()
+  private val roomMapper = mock<LineRoomMapper>()
   private val cache = mock<LineCache>()
   private val lineDao = mock<LineDao>()
 
-  private val repository = LineRepository(apiClient, mapper, cache, lineDao)
+  private val repository = LineRepository(apiClient, mapper, roomMapper, cache, lineDao)
 
   @Test
   fun `when cache data is valid should return that data directly`() {
@@ -46,6 +48,7 @@ class LineRepositoryTest {
     whenever(cache.getAll()).thenFailure(mock())
     whenever(apiClient.getLines()).thenSuccess(lineEntities)
     whenever(mapper.toDomain(lineEntity)).thenReturn(line)
+    whenever(roomMapper.toEntity(any())).thenReturn(mock<org.galio.bussantiago.data.local.room.LineEntity>())
 
     val result = repository.getLines()
 
@@ -70,10 +73,11 @@ class LineRepositoryTest {
   fun `when cache data is not valid and service fails but fallback exists should return fallback`() {
     val exception = ServiceException()
     val line = Line(1, "1", "syn", "name", "company", 1, "style")
-    val lineDbEntity = line.toEntity()
+    val lineDbEntity = mock<org.galio.bussantiago.data.local.room.LineEntity>()
     whenever(cache.getAll()).thenFailure(mock())
     whenever(apiClient.getLines()).thenFailure(exception)
     whenever(lineDao.getAll()).thenReturn(listOf(lineDbEntity))
+    whenever(roomMapper.toDomain(lineDbEntity)).thenReturn(line)
 
     val result = repository.getLines()
 

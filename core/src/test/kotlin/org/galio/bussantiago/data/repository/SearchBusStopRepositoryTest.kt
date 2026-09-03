@@ -8,7 +8,6 @@ import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.local.room.BusStopDao
 import org.galio.bussantiago.data.local.room.BusStopEntity
-import org.galio.bussantiago.data.local.room.toEntity
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure
@@ -19,15 +18,18 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
+import org.galio.bussantiago.data.mapper.BusStopRoomMapper
+
 class SearchBusStopRepositoryTest {
 
   private val apiClient = mock<ApiClient>()
   private val mapper = mock<BusStopSearchMapper>()
+  private val roomMapper = mock<BusStopRoomMapper>()
   private val busStopDao = mock<BusStopDao>()
   private val sharedPreferences = mock<android.content.SharedPreferences>()
   private val sharedPrefsEditor = mock<android.content.SharedPreferences.Editor>()
 
-  private val repository = SearchBusStopRepository(apiClient, mapper, busStopDao, sharedPreferences)
+  private val repository = SearchBusStopRepository(apiClient, mapper, roomMapper, busStopDao, sharedPreferences)
 
   init {
     whenever(sharedPreferences.edit()).thenReturn(sharedPrefsEditor)
@@ -40,8 +42,9 @@ class SearchBusStopRepositoryTest {
   fun `when cache data is valid should return that data directly`() {
     val busStopEntity = BusStopEntity(1, "1", "name", "zone", 42.0, -8.0, "[]")
     val busStopsEntities = listOf(busStopEntity)
-    val expectedDomain = busStopEntity.toDomain()
+    val expectedDomain = mock<BusStopSearch>()
     whenever(busStopDao.getAll()).thenReturn(busStopsEntities)
+    whenever(roomMapper.toDomain(busStopEntity)).thenReturn(expectedDomain)
     whenever(apiClient.searchBusStop(any())).thenFailure(ServiceException())
 
     val result = repository.searchAllBusStops()
@@ -54,9 +57,12 @@ class SearchBusStopRepositoryTest {
     val busStopEntity = mock<BusStopSearchEntity>()
     val busStopSearch = BusStopSearch(1, "1", "name", "zone", Coordinates(42.0, -8.0), emptyList())
     val busStopEntities = listOf(busStopEntity)
+    val roomBusStopEntity = mock<BusStopEntity>()
     
     // First call to getAll() returns empty
-    whenever(busStopDao.getAll()).thenReturn(emptyList(), listOf(busStopSearch.toEntity()))
+    whenever(busStopDao.getAll()).thenReturn(emptyList(), listOf(roomBusStopEntity))
+    whenever(roomMapper.toDomain(roomBusStopEntity)).thenReturn(busStopSearch)
+    whenever(roomMapper.toEntity(busStopSearch)).thenReturn(roomBusStopEntity)
     
     whenever(apiClient.searchBusStop(BusStopRequest(""))).thenSuccess(busStopEntities)
     whenever(mapper.toDomain(busStopEntity)).thenReturn(busStopSearch)

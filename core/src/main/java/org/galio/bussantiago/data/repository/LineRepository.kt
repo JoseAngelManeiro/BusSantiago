@@ -4,12 +4,14 @@ import org.galio.bussantiago.core.model.Line
 import org.galio.bussantiago.data.api.ApiClient
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.local.room.LineDao
-import org.galio.bussantiago.data.local.room.toEntity
 import org.galio.bussantiago.data.mapper.LineMapper
+
+import org.galio.bussantiago.data.mapper.LineRoomMapper
 
 internal class LineRepository(
   private val apiClient: ApiClient,
   private val mapper: LineMapper,
+  private val roomMapper: LineRoomMapper,
   private val cache: LineCache,
   private val lineDao: LineDao
 ) {
@@ -27,7 +29,7 @@ internal class LineRepository(
       cache.save(lines)
       
       // Save to database, but clear incidences as they change often
-      val linesForDb = lines.map { it.copy(incidents = 0).toEntity() }
+      val linesForDb = lines.map { roomMapper.toEntity(it.copy(incidents = 0)) }
       try {
         lineDao.clearAndInsertAll(linesForDb)
       } catch (_: Exception) {
@@ -41,7 +43,7 @@ internal class LineRepository(
       apiResult
     } else {
       // Fallback to local DB
-      val localLines = lineDao.getAll().map { it.toDomain() }
+      val localLines = lineDao.getAll().map { roomMapper.toDomain(it) }
       if (localLines.isNotEmpty()) {
         Result.success(localLines)
       } else {

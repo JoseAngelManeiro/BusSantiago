@@ -19,12 +19,14 @@ import org.galio.bussantiago.data.local.FavoriteDataSourceImpl
 import org.galio.bussantiago.data.local.room.BusSantiagoDatabase
 import org.galio.bussantiago.data.mapper.BusStopMapper
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
+import org.galio.bussantiago.data.mapper.BusStopRoomMapper
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.data.mapper.CoordinatesMapper
 import org.galio.bussantiago.data.mapper.DateMapper
 import org.galio.bussantiago.data.mapper.IncidenceMapper
 import org.galio.bussantiago.data.mapper.LineDetailsMapper
 import org.galio.bussantiago.data.mapper.LineMapper
+import org.galio.bussantiago.data.mapper.LineRoomMapper
 import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
 import org.galio.bussantiago.data.mapper.LineSearchMapper
 import org.galio.bussantiago.data.mapper.RouteMapper
@@ -60,8 +62,10 @@ val coreModule = module {
   // Mappers factories
   factory { DateMapper() }
   factory { LineMapper() }
+  factory { LineRoomMapper() }
   factory { CoordinatesMapper() }
   factory { BusStopMapper(coordinatesMapper = get()) }
+  factory { BusStopRoomMapper() }
   factory { RouteMapper(busStopMapper = get()) }
   factory { IncidenceMapper(dateMapper = get()) }
   factory { LineDetailsMapper(routeMapper = get(), incidenceMapper = get()) }
@@ -88,12 +92,15 @@ val coreModule = module {
   single { get<BusSantiagoDatabase>().lineDao() }
 
   single {
-    androidContext().getSharedPreferences("bus_santiago_prefs", android.content.Context.MODE_PRIVATE)
+    androidContext().getSharedPreferences(
+      "bus_santiago_prefs",
+      android.content.Context.MODE_PRIVATE
+    )
   }
 
   // Repositories
   single {
-    LineRepository(apiClient = get(), mapper = get(), cache = get(), lineDao = get())
+    LineRepository(apiClient = get(), mapper = get(), roomMapper = get(), cache = get(), lineDao = get())
   }
   single {
     LineDetailsRepository(apiClient = get(), mapper = get(), cache = get())
@@ -105,7 +112,7 @@ val coreModule = module {
     BusStopFavoriteRepository(favoriteDataSource = get())
   }
   single {
-    SearchBusStopRepository(apiClient = get(), mapper = get(), busStopDao = get(), sharedPreferences = get())
+    SearchBusStopRepository(apiClient = get(), mapper = get(), roomMapper = get(), busStopDao = get(), sharedPreferences = get())
   }
 
   // UseCases
