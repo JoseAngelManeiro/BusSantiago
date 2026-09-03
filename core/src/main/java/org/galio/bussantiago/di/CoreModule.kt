@@ -25,6 +25,7 @@ import org.galio.bussantiago.data.mapper.CoordinatesMapper
 import org.galio.bussantiago.data.mapper.DateMapper
 import org.galio.bussantiago.data.mapper.IncidenceMapper
 import org.galio.bussantiago.data.mapper.LineDetailsMapper
+import org.galio.bussantiago.data.mapper.LineDetailsRoomMapper
 import org.galio.bussantiago.data.mapper.LineMapper
 import org.galio.bussantiago.data.mapper.LineRoomMapper
 import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
@@ -73,6 +74,7 @@ val coreModule = module {
   factory { RouteMapper(busStopMapper = get()) }
   factory { IncidenceMapper(dateMapper = get()) }
   factory { LineDetailsMapper(routeMapper = get(), incidenceMapper = get()) }
+  factory { LineDetailsRoomMapper() }
   factory { LineRemainingTimeMapper(dateMapper = get()) }
   factory {
     BusStopRemainingTimesMapper(coordinatesMapper = get(), lineRemainingTimeMapper = get())
@@ -94,6 +96,7 @@ val coreModule = module {
   }
   single { get<BusSantiagoDatabase>().busStopDao() }
   single { get<BusSantiagoDatabase>().lineDao() }
+  single { get<BusSantiagoDatabase>().lineDetailsDao() }
 
   single(named(PREFERENCES_NAME)) {
     androidContext().getSharedPreferences(
@@ -107,7 +110,7 @@ val coreModule = module {
     LineRepository(apiClient = get(), mapper = get(), roomMapper = get(), cache = get(), lineDao = get())
   }
   single {
-    LineDetailsRepository(apiClient = get(), mapper = get(), cache = get())
+    LineDetailsRepository(apiClient = get(), mapper = get(), roomMapper = get(), cache = get(), lineDetailsDao = get())
   }
   single {
     BusStopRemainingTimesRepository(apiClient = get(), mapper = get())
