@@ -31,8 +31,7 @@ It follows **MVVM**, Android Architecture Components, **coroutines**, and depend
 Module responsible for **domain logic** and **data access**.  
 It exposes only the models and interfaces located under `org.galio.bussantiago.core`.
 
-
-All implementation details (repositories, data sources, use cases…) are kept **internal** to enforce a clean separation of concerns.
+All implementation details (repositories, API clients, Room databases, use cases…) are kept **internal** to enforce a clean separation of concerns.
 
 ---
 
@@ -78,6 +77,7 @@ This improves maintainability and ensures consistent dependency upgrades across 
 
 - **Kotlin**
 - Android Architecture Components (ViewModel, LiveData, Navigation)
+- **Room** for local persistence and offline caching
 - **Coroutines**
 - **Koin** for dependency injection
 - Clean modular architecture
