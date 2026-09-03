@@ -47,8 +47,12 @@ import org.galio.bussantiago.domain.RemoveBusStopFavoriteImpl
 import org.galio.bussantiago.domain.SearchAllBusStopsImpl
 import org.galio.bussantiago.domain.ValidateIfBusStopIsFavoriteImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import kotlin.jvm.java
+
+private const val DATABASE_NAME = "bussantiago_network.db"
+private const val PREFERENCES_NAME = "bus_santiago_prefs"
 
 val coreModule = module {
 
@@ -85,15 +89,15 @@ val coreModule = module {
     androidx.room.Room.databaseBuilder(
       androidContext(),
       BusSantiagoDatabase::class.java,
-      "bussantiago_network.db"
+      DATABASE_NAME
     ).build()
   }
   single { get<BusSantiagoDatabase>().busStopDao() }
   single { get<BusSantiagoDatabase>().lineDao() }
 
-  single {
+  single(named(PREFERENCES_NAME)) {
     androidContext().getSharedPreferences(
-      "bus_santiago_prefs",
+      PREFERENCES_NAME,
       android.content.Context.MODE_PRIVATE
     )
   }
@@ -112,7 +116,13 @@ val coreModule = module {
     BusStopFavoriteRepository(favoriteDataSource = get())
   }
   single {
-    SearchBusStopRepository(apiClient = get(), mapper = get(), roomMapper = get(), busStopDao = get(), sharedPreferences = get())
+    SearchBusStopRepository(
+      apiClient = get(),
+      mapper = get(),
+      roomMapper = get(),
+      busStopDao = get(),
+      sharedPreferences = get(named(PREFERENCES_NAME))
+    )
   }
 
   // UseCases
