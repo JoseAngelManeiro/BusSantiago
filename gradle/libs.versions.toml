@@ -28,6 +28,7 @@ espresso = "3.7.0"
 test-rules = "1.7.0"
 google-services = "4.4.2"
 firebase-analytics = "18.0.0"
+room = "2.6.1"
 
 [libraries]
 # Root Gradle
@@ -91,4 +92,8 @@ google-services = { module = "com.google.gms:google-services", version.ref = "go
 # Firebase
 firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebase-analytics" }
 
-
+# Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }

@@ -12,20 +12,23 @@ import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.ValidateIfBusStopIsFavorite
 import org.galio.bussantiago.data.api.ApiClient
-import org.galio.bussantiago.data.cache.BusStopSearchCache
 import org.galio.bussantiago.data.cache.LineCache
 import org.galio.bussantiago.data.cache.LineDetailsCache
 import org.galio.bussantiago.data.local.FavoriteDataSource
 import org.galio.bussantiago.data.local.FavoriteDataSourceImpl
+import org.galio.bussantiago.data.local.room.BusSantiagoDatabase
 import org.galio.bussantiago.data.mapper.BusStopMapper
 import org.galio.bussantiago.data.mapper.BusStopRemainingTimesMapper
+import org.galio.bussantiago.data.mapper.BusStopRoomMapper
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.data.mapper.CoordinatesMapper
 import org.galio.bussantiago.data.mapper.DateMapper
 import org.galio.bussantiago.data.mapper.IncidenceMapper
 import org.galio.bussantiago.data.mapper.LineDetailsMapper
+import org.galio.bussantiago.data.mapper.LineDetailsRoomMapper
 import org.galio.bussantiago.data.mapper.LineMapper
 import org.galio.bussantiago.data.mapper.LineRemainingTimeMapper
+import org.galio.bussantiago.data.mapper.LineRoomMapper
 import org.galio.bussantiago.data.mapper.LineSearchMapper
 import org.galio.bussantiago.data.mapper.RouteMapper
 import org.galio.bussantiago.data.repository.BusStopFavoriteRepository
@@ -45,7 +48,11 @@ import org.galio.bussantiago.domain.RemoveBusStopFavoriteImpl
 import org.galio.bussantiago.domain.SearchAllBusStopsImpl
 import org.galio.bussantiago.domain.ValidateIfBusStopIsFavoriteImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+
+private const val DATABASE_NAME = "bussantiago_network.db"
+private const val PREFERENCES_NAME = "bus_santiago_prefs"
 
 val coreModule = module {
 
@@ -59,11 +66,14 @@ val coreModule = module {
   // Mappers factories
   factory { DateMapper() }
   factory { LineMapper() }
+  factory { LineRoomMapper() }
   factory { CoordinatesMapper() }
   factory { BusStopMapper(coordinatesMapper = get()) }
+  factory { BusStopRoomMapper() }
   factory { RouteMapper(busStopMapper = get()) }
   factory { IncidenceMapper(dateMapper = get()) }
   factory { LineDetailsMapper(routeMapper = get(), incidenceMapper = get()) }
+  factory { LineDetailsRoomMapper() }
   factory { LineRemainingTimeMapper(dateMapper = get()) }
   factory {
     BusStopRemainingTimesMapper(coordinatesMapper = get(), lineRemainingTimeMapper = get())
@@ -74,14 +84,32 @@ val coreModule = module {
   // Cache factories
   factory { LineDetailsCache() }
   factory { LineCache() }
-  factory { BusStopSearchCache() }
+
+  // Database
+  single {
+    androidx.room.Room.databaseBuilder(
+      androidContext(),
+      BusSantiagoDatabase::class.java,
+      DATABASE_NAME
+    ).build()
+  }
+  single { get<BusSantiagoDatabase>().busStopDao() }
+  single { get<BusSantiagoDatabase>().lineDao() }
+  single { get<BusSantiagoDatabase>().lineDetailsDao() }
+
+  single(named(PREFERENCES_NAME)) {
+    androidContext().getSharedPreferences(
+      PREFERENCES_NAME,
+      android.content.Context.MODE_PRIVATE
+    )
+  }
 
   // Repositories
   single {
-    LineRepository(apiClient = get(), mapper = get(), cache = get())
+    LineRepository(apiClient = get(), mapper = get(), roomMapper = get(), cache = get(), lineDao = get())
   }
   single {
-    LineDetailsRepository(apiClient = get(), mapper = get(), cache = get())
+    LineDetailsRepository(apiClient = get(), mapper = get(), roomMapper = get(), cache = get(), lineDetailsDao = get())
   }
   single {
     BusStopRemainingTimesRepository(apiClient = get(), mapper = get())
@@ -90,7 +118,13 @@ val coreModule = module {
     BusStopFavoriteRepository(favoriteDataSource = get())
   }
   single {
-    SearchBusStopRepository(apiClient = get(), mapper = get(), cache = get())
+    SearchBusStopRepository(
+      apiClient = get(),
+      mapper = get(),
+      roomMapper = get(),
+      busStopDao = get(),
+      sharedPreferences = get(named(PREFERENCES_NAME))
+    )
   }
 
   // UseCases
