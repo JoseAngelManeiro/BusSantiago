@@ -111,4 +111,17 @@
     android:id="@+id/actionShowTimes"
     app:destination="@id/timesDialogFragment" />
 
+  <dialog
+    android:id="@+id/mapMarkerBottomSheetFragment"
+    android:name="org.galio.bussantiago.features.search.MapMarkerBottomSheetFragment"
+    tools:layout="@layout/map_marker_bottom_sheet_content">
+    <argument
+      android:name="busStop"
+      app:argType="org.galio.bussantiago.common.model.BusStopUiModel" />
+  </dialog>
+
+  <action
+    android:id="@+id/actionShowMapMarker"
+    app:destination="@id/mapMarkerBottomSheetFragment" />
+
 </navigation>

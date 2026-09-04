@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -38,6 +39,8 @@ import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
 import org.galio.bussantiago.navigation.Navigator
+import org.galio.bussantiago.navigation.NavScreen
+import org.galio.bussantiago.common.mapper.BusStopUiMapper
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,6 +54,7 @@ class SearchFragment : Fragment() {
   internal val viewModel: SearchViewModel by viewModel()
   private val navigator: Navigator by lazy { Navigator(this) }
   private val searchUtils: SearchUtils by inject()
+  private val busStopUiMapper: BusStopUiMapper by inject()
 
   private var mapView: MapView? = null
   private var googleMap: GoogleMap? = null
@@ -145,13 +149,21 @@ class SearchFragment : Fragment() {
       disableMapButtons()
       // We set the camera first in the default location
       moveToLatLng(defaultLocation, MAP_ZOOM)
-      setOnInfoWindowClickListener { marker ->
-        if (marker.title != null && marker.snippet != null) {
-          viewModel.onMapInfoWindowClicked(BusStopModel(marker.title!!, marker.snippet!!))
+      setOnMarkerClickListener { marker ->
+        val busStop = marker.tag as? BusStopSearch
+        if (busStop != null) {
+          navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStop)))
         }
+        true // Return true to consume the click and prevent default InfoWindow
       }
     }
     checkForLocationPermission()
+
+    setFragmentResultListener("requestKey_seeArrivals") { _, bundle ->
+      val code = bundle.getString("busStopCode") ?: return@setFragmentResultListener
+      val name = bundle.getString("busStopName") ?: return@setFragmentResultListener
+      viewModel.onMapInfoWindowClicked(BusStopModel(code, name))
+    }
   }
 
   private fun checkForLocationPermission() {
@@ -230,7 +242,10 @@ class SearchFragment : Fragment() {
           .position(latLng)
           .title(busStop.code)
           .snippet(busStop.name)
-      )?.let { markerMap[busStop.id] = it }
+      )?.let { marker ->
+        marker.tag = busStop
+        markerMap[busStop.id] = marker 
+      }
     }
   }
 
@@ -250,11 +265,13 @@ class SearchFragment : Fragment() {
       searchTextView.setText(truncatedText)
     }
 
-    markerMap[busStopSearch.id]?.showInfoWindow()
     googleMap?.animateToLatLng(
       latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
       zoom = MAP_ZOOM
     )
+    
+    // Show Bottom Sheet instead of old InfoWindow
+    navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStopSearch)))
   }
 
   private fun clearSearchText() {

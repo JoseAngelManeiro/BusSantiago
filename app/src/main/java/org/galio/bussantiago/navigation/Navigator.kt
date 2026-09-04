@@ -6,10 +6,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.model.BusStopUiModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
 import org.galio.bussantiago.features.information.InformationFragmentArgs
 import org.galio.bussantiago.features.menu.MenuFragmentArgs
+import org.galio.bussantiago.features.search.MapMarkerBottomSheetFragmentArgs
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragmentArgs
 import org.galio.bussantiago.features.times.TimesDialogFragmentArgs
@@ -25,6 +27,7 @@ sealed class NavScreen {
   data object About : NavScreen()
   data object Favorites : NavScreen()
   data object Exit : NavScreen()
+  data class MapMarker(val busStop: BusStopUiModel) : NavScreen()
 }
 
 class Navigator(
@@ -42,6 +45,13 @@ class Navigator(
         args = TimesDialogFragmentArgs(
           busStopCode = navScreen.busStopModel.code,
           busStopName = navScreen.busStopModel.name
+        ).toBundle()
+      )
+
+      is NavScreen.MapMarker -> navigateSafe(
+        resId = R.id.actionShowMapMarker,
+        args = MapMarkerBottomSheetFragmentArgs(
+          busStop = navScreen.busStop
         ).toBundle()
       )
 

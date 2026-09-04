@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.galio.bussantiago.databinding.BottomSheetWrapperBinding
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
@@ -44,9 +45,9 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    _binding = FavoritesDialogFragmentBinding.inflate(inflater, container, false)
-    val view = binding.root
-    return view
+    val wrapperBinding = BottomSheetWrapperBinding.inflate(inflater, container, false)
+    _binding = FavoritesDialogFragmentBinding.inflate(inflater, wrapperBinding.bottomSheetContentContainer, true)
+    return wrapperBinding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

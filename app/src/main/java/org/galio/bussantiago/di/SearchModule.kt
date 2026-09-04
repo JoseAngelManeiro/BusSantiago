@@ -5,9 +5,12 @@ import org.galio.bussantiago.features.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+import org.galio.bussantiago.common.mapper.BusStopUiMapper
+
 val searchModule = module {
 
   factory { SearchUtils() }
+  factory { BusStopUiMapper() }
 
   viewModel {
     SearchViewModel(
