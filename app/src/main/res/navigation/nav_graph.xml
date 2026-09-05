@@ -112,7 +112,7 @@
 
   <dialog
     android:id="@+id/mapMarkerBottomSheetFragment"
-    android:name="org.galio.bussantiago.features.search.MapMarkerBottomSheetFragment"
+    android:name="org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment"
     tools:layout="@layout/map_marker_bottom_sheet_content">
 
     <argument

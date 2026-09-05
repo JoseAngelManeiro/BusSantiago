@@ -12,8 +12,8 @@ import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
 import org.galio.bussantiago.features.information.InformationFragmentArgs
 import org.galio.bussantiago.features.menu.MenuFragmentArgs
-import org.galio.bussantiago.features.search.MapMarkerBottomSheetFragment
-import org.galio.bussantiago.features.search.MapMarkerBottomSheetFragmentArgs
+import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment
+import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragmentArgs
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragmentArgs
 import org.galio.bussantiago.features.times.TimesDialogFragmentArgs
@@ -42,10 +42,10 @@ class Navigator(
       FavoritesDialogFragment()
     },
   @VisibleForTesting
-  internal val mapMarkerDialogFactory: (BusStopUiModel) -> MapMarkerBottomSheetFragment =
+  internal val mapMarkerDialogFactory: (BusStopUiModel) -> MapMarkerDialogFragment =
     { busStop ->
-      MapMarkerBottomSheetFragment().apply {
-        arguments = MapMarkerBottomSheetFragmentArgs(busStopModel = busStop).toBundle()
+      MapMarkerDialogFragment().apply {
+        arguments = MapMarkerDialogFragmentArgs(busStopModel = busStop).toBundle()
       }
     }
 ) {
@@ -127,7 +127,7 @@ class Navigator(
 internal fun getNavController(fragment: Fragment): () -> NavController? = {
   try {
     fragment.view?.let { fragment.findNavController() }
-  } catch (e: IllegalStateException) {
+  } catch (_: IllegalStateException) {
     null
   }
 }

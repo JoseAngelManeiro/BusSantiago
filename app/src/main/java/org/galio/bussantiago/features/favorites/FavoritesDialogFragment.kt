@@ -1,22 +1,20 @@
 package org.galio.bussantiago.features.favorites
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.galio.bussantiago.common.BaseBottomSheetDialogFragment
 import org.galio.bussantiago.databinding.BottomSheetWrapperBinding
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
 import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.R as androidR
-import com.google.android.material.R as materialR
 
-class FavoritesDialogFragment : BottomSheetDialogFragment() {
+class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
+
+  private var _wrapperBinding: BottomSheetWrapperBinding? = null
+  private val wrapperBinding get() = _wrapperBinding!!
 
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
@@ -24,28 +22,12 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
   private val viewModel: FavoritesViewModel by viewModel()
   private val navigator: Navigator by lazy { Navigator(this) }
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    return super.onCreateDialog(savedInstanceState).apply {
-      // Set the opacity level of the parent shadow behind dialog (1.0f is completely black)
-      window?.setDimAmount(0.3f)
-
-      setOnShowListener {
-        // Set transparency to dialog layer
-        val bottomSheet = findViewById<View>(materialR.id.design_bottom_sheet) as FrameLayout
-        bottomSheet.setBackgroundResource(androidR.color.transparent)
-        // Expand the dialog to show all the content
-        val behavior = BottomSheetBehavior.from(bottomSheet)
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-      }
-    }
-  }
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val wrapperBinding = BottomSheetWrapperBinding.inflate(
+    _wrapperBinding = BottomSheetWrapperBinding.inflate(
       inflater,
       container,
       false
@@ -85,6 +67,7 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    _wrapperBinding = null
     _binding = null
   }
 }

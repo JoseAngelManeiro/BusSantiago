@@ -12,7 +12,7 @@ import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.model.BusStopUiModel
 import org.galio.bussantiago.common.model.LineUiModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
-import org.galio.bussantiago.features.search.MapMarkerBottomSheetFragment
+import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.util.argumentCaptor
 import org.galio.bussantiago.util.capture
@@ -56,8 +56,8 @@ class NavigatorTest {
   fun `navigate to MapMarker should show MapMarkerBottomSheetFragment`() {
     val fragmentManager = mock<FragmentManager>()
     val fragment = mock<Fragment> { on { childFragmentManager } doReturn fragmentManager }
-    val mapMarkerDialog = mock<MapMarkerBottomSheetFragment>()
-    val mapMarkerDialogFactory: (BusStopUiModel) -> MapMarkerBottomSheetFragment = { mapMarkerDialog }
+    val mapMarkerDialog = mock<MapMarkerDialogFragment>()
+    val mapMarkerDialogFactory: (BusStopUiModel) -> MapMarkerDialogFragment = { mapMarkerDialog }
     val navigator = Navigator(fragment, mapMarkerDialogFactory = mapMarkerDialogFactory)
     val busStop = BusStopUiModel("123", "Main St", listOf(LineUiModel("1", "Any Style")))
 
