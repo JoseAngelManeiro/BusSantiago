@@ -11,9 +11,9 @@ import org.galio.bussantiago.common.model.BusStopUiModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
 import org.galio.bussantiago.features.information.InformationFragmentArgs
-import org.galio.bussantiago.features.menu.MenuFragmentArgs
 import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment
 import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragmentArgs
+import org.galio.bussantiago.features.menu.MenuFragmentArgs
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragmentArgs
 import org.galio.bussantiago.features.times.TimesDialogFragmentArgs
@@ -100,7 +100,7 @@ class Navigator(
         tag = "FavoritesDialogFragment"
       )
 
-      is NavScreen.Exit ->  navControllerProvider()?.popBackStack()
+      is NavScreen.Exit -> navControllerProvider()?.popBackStack()
     }
   }
 

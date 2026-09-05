@@ -22,8 +22,8 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.galio.bussantiago.R
@@ -33,13 +33,13 @@ import org.galio.bussantiago.common.disableMapButtons
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
+import org.galio.bussantiago.common.mapper.BusStopUiMapper
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
-import org.galio.bussantiago.navigation.Navigator
 import org.galio.bussantiago.navigation.NavScreen
-import org.galio.bussantiago.common.mapper.BusStopUiMapper
+import org.galio.bussantiago.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
