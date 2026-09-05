@@ -118,6 +118,9 @@ class Navigator(
   // Jetpack Navigation does not officially support it as a <dialog> destination
   // in the nav_graph.xml — showing via childFragmentManager keeps interactions working.
   private fun showBottomSheetDialog(dialog: DialogFragment, tag: String) {
+    // Guard against double-show (e.g., fast double-tap) which would cause
+    // an IllegalStateException since the fragment is already added.
+    if (fragment.childFragmentManager.findFragmentByTag(tag) != null) return
     dialog.show(fragment.childFragmentManager, tag)
   }
 }
