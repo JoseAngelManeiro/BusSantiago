@@ -60,7 +60,7 @@ class SearchFragment : Fragment() {
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
   private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-  private val busStopMarkers = mutableMapOf<BusStopSearch, Marker>()
+  private val busStopMarkers = mutableMapOf<Int, Marker>()
   private var selectedMarker: Marker? = null
 
   // The default location is the center of the city (Santiago de Compostela)
@@ -235,7 +235,7 @@ class SearchFragment : Fragment() {
 
       googleMap?.addMarker(MarkerOptions().position(latLng))?.let { marker ->
         marker.tag = busStop
-        busStopMarkers[busStop] = marker
+        busStopMarkers[busStop.id] = marker
       }
     }
   }
@@ -248,7 +248,7 @@ class SearchFragment : Fragment() {
 
   private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
     // Highlight the corresponding marker immediately
-    busStopMarkers[busStopSearch]?.let { selectMarker(it) }
+    busStopMarkers[busStopSearch.id]?.let { selectMarker(it) }
 
     // Set the text truncated in the edit text
     val searchTextView = binding.searchAutocompleteTextView
