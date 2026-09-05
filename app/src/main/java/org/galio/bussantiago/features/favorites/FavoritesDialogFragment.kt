@@ -45,8 +45,16 @@ class FavoritesDialogFragment : BottomSheetDialogFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val wrapperBinding = BottomSheetWrapperBinding.inflate(inflater, container, false)
-    _binding = FavoritesDialogFragmentBinding.inflate(inflater, wrapperBinding.bottomSheetContentContainer, true)
+    val wrapperBinding = BottomSheetWrapperBinding.inflate(
+      inflater,
+      container,
+      false
+    )
+    _binding = FavoritesDialogFragmentBinding.inflate(
+      inflater,
+      wrapperBinding.bottomSheetContentContainer,
+      true
+    )
     return wrapperBinding.root
   }
 

@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.navArgs
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,10 +23,6 @@ import android.R as androidR
 import com.google.android.material.R as materialR
 
 class MapMarkerBottomSheetFragment : BottomSheetDialogFragment() {
-
-    companion object {
-        const val TAG = "MapMarkerBottomSheet"
-    }
 
     private val args: MapMarkerBottomSheetFragmentArgs by navArgs()
 
@@ -53,7 +49,7 @@ class MapMarkerBottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val busStop = args.busStop
+        val busStop = args.busStopModel
 
         _wrapperBinding = BottomSheetWrapperBinding.inflate(inflater, container, false)
         _contentBinding = MapMarkerBottomSheetContentBinding.inflate(inflater, wrapperBinding.bottomSheetContentContainer, true)
