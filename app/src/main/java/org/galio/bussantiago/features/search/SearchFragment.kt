@@ -23,6 +23,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.animateToLatLng
@@ -57,6 +59,9 @@ class SearchFragment : Fragment() {
   private var googleMap: GoogleMap? = null
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
   private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+  private val busStopMarkers = mutableMapOf<BusStopSearch, Marker>()
+  private var selectedMarker: Marker? = null
 
   // The default location is the center of the city (Santiago de Compostela)
   private val defaultLocation = LatLng(42.877295815283944, -8.544272857240758)
@@ -148,6 +153,7 @@ class SearchFragment : Fragment() {
       setOnMarkerClickListener { marker ->
         val busStop = marker.tag as? BusStopSearch
         if (busStop != null) {
+          selectMarker(marker)
           navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStop)))
         }
         true // Return true to consume the click and prevent default InfoWindow
@@ -229,11 +235,21 @@ class SearchFragment : Fragment() {
 
       googleMap?.addMarker(MarkerOptions().position(latLng))?.let { marker ->
         marker.tag = busStop
+        busStopMarkers[busStop] = marker
       }
     }
   }
 
+  private fun selectMarker(marker: Marker) {
+    selectedMarker?.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+    selectedMarker = marker
+  }
+
   private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
+    // Highlight the corresponding marker immediately
+    busStopMarkers[busStopSearch]?.let { selectMarker(it) }
+
     // Set the text truncated in the edit text
     val searchTextView = binding.searchAutocompleteTextView
     val width: Int = searchTextView.measuredWidth -

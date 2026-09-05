@@ -42,7 +42,7 @@
         android:id="@+id/linesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:spanCount="5"
         tools:listitem="@layout/synoptic_badge_item" />
