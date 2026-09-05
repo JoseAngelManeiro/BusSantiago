@@ -18,13 +18,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.animateToLatLng
@@ -33,7 +31,6 @@ import org.galio.bussantiago.common.disableMapButtons
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
@@ -58,7 +55,6 @@ class SearchFragment : Fragment() {
 
   private var mapView: MapView? = null
   private var googleMap: GoogleMap? = null
-  private var markerMap = mutableMapOf<Int, Marker>()
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
   private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -158,12 +154,6 @@ class SearchFragment : Fragment() {
       }
     }
     checkForLocationPermission()
-
-    setFragmentResultListener("requestKey_seeArrivals") { _, bundle ->
-      val code = bundle.getString("busStopCode") ?: return@setFragmentResultListener
-      val name = bundle.getString("busStopName") ?: return@setFragmentResultListener
-      viewModel.onMapInfoWindowClicked(BusStopModel(code, name))
-    }
   }
 
   private fun checkForLocationPermission() {
@@ -237,14 +227,8 @@ class SearchFragment : Fragment() {
     busStops.forEach { busStop ->
       val latLng = LatLng(busStop.coordinates.latitude, busStop.coordinates.longitude)
 
-      googleMap?.addMarker(
-        MarkerOptions()
-          .position(latLng)
-          .title(busStop.code)
-          .snippet(busStop.name)
-      )?.let { marker ->
+      googleMap?.addMarker(MarkerOptions().position(latLng))?.let { marker ->
         marker.tag = busStop
-        markerMap[busStop.id] = marker 
       }
     }
   }
@@ -268,10 +252,10 @@ class SearchFragment : Fragment() {
     googleMap?.animateToLatLng(
       latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
       zoom = MAP_ZOOM
-    )
-    
-    // Show Bottom Sheet instead of old InfoWindow
-    navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStopSearch)))
+    ) {
+      // Show Bottom Sheet instead of old InfoWindow
+      navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStopSearch)))
+    }
   }
 
   private fun clearSearchText() {
