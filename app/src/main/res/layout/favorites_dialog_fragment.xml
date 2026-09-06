@@ -4,16 +4,8 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/bg_top_corners"
   android:orientation="vertical"
   tools:context="org.galio.bussantiago.features.favorites.FavoritesDialogFragment">
-
-  <View
-    android:layout_width="40dp"
-    android:layout_height="4dp"
-    android:layout_marginTop="9dp"
-    android:background="@drawable/bg_tap_element"
-    android:layout_gravity="center_horizontal" />
 
   <TextView
     android:layout_width="wrap_content"

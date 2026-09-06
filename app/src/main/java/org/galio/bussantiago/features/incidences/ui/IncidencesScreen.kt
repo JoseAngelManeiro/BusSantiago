@@ -17,10 +17,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.galio.bussantiago.common.BusSantiagoTheme
 import org.galio.bussantiago.common.fromHtml
-import org.galio.bussantiago.core.model.Incidence
 import org.galio.bussantiago.common.toAnnotatedString
-import org.galio.bussantiago.shared.R as sharedR
+import org.galio.bussantiago.core.model.Incidence
 import java.util.Date
+import org.galio.bussantiago.shared.R as sharedR
 
 @Composable
 fun IncidencesScreen(incidences: List<Incidence>) {
@@ -69,7 +69,7 @@ private fun IncidencesScreenPreview() {
           title = "Información folga 12/12 (10:00)",
           description =
             "Información estado servicios mínimos (huelga 12/12, 10:00):<br>" +
-            "*Circulando las líneas 1, 7, C2, C4, P6 e P8 @PazodeRaxoi",
+              "*Circulando las líneas 1, 7, C2, C4, P6 e P8 @PazodeRaxoi",
           startDate = Date(),
           endDate = null
         ),
@@ -78,8 +78,8 @@ private fun IncidencesScreenPreview() {
           title = "SERVIZOS MÍNIMOS folga 12, 15 e 19 decembro 2025",
           description =
             "<p><b><u>SERVICIOS MÍNIMOS en el transporte urbano</u></b><br>" +
-            "Información de servicios mínimos decretados.</p>" +
-            "<p><a href=\"https://example.com\">Ver documento adjunto</a></p>",
+              "Información de servicios mínimos decretados.</p>" +
+              "<p><a href=\"https://example.com\">Ver documento adjunto</a></p>",
           startDate = Date(),
           endDate = null
         )

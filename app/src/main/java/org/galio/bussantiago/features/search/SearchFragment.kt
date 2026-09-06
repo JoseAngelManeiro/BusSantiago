@@ -22,6 +22,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -32,7 +33,6 @@ import org.galio.bussantiago.common.disableMapButtons
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
@@ -54,9 +54,11 @@ class SearchFragment : Fragment() {
 
   private var mapView: MapView? = null
   private var googleMap: GoogleMap? = null
-  private var markerMap = mutableMapOf<Int, Marker>()
   private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
   private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+  private val busStopMarkers = mutableMapOf<Int, Marker>()
+  private var selectedMarker: Marker? = null
 
   // The default location is the center of the city (Santiago de Compostela)
   private val defaultLocation = LatLng(42.877295815283944, -8.544272857240758)
@@ -145,10 +147,13 @@ class SearchFragment : Fragment() {
       disableMapButtons()
       // We set the camera first in the default location
       moveToLatLng(defaultLocation, MAP_ZOOM)
-      setOnInfoWindowClickListener { marker ->
-        if (marker.title != null && marker.snippet != null) {
-          viewModel.onMapInfoWindowClicked(BusStopModel(marker.title!!, marker.snippet!!))
+      setOnMarkerClickListener { marker ->
+        val busStop = marker.tag as? BusStopSearch
+        if (busStop != null) {
+          selectMarker(marker)
+          viewModel.onMarkerClicked(busStop)
         }
+        true // Return true to consume the click and prevent default InfoWindow
       }
     }
     checkForLocationPermission()
@@ -225,16 +230,23 @@ class SearchFragment : Fragment() {
     busStops.forEach { busStop ->
       val latLng = LatLng(busStop.coordinates.latitude, busStop.coordinates.longitude)
 
-      googleMap?.addMarker(
-        MarkerOptions()
-          .position(latLng)
-          .title(busStop.code)
-          .snippet(busStop.name)
-      )?.let { markerMap[busStop.id] = it }
+      googleMap?.addMarker(MarkerOptions().position(latLng))?.let { marker ->
+        marker.tag = busStop
+        busStopMarkers[busStop.id] = marker
+      }
     }
   }
 
+  private fun selectMarker(marker: Marker) {
+    selectedMarker?.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+    selectedMarker = marker
+  }
+
   private fun showMapInfoWindow(busStopSearch: BusStopSearch) {
+    // Highlight the corresponding marker immediately
+    busStopMarkers[busStopSearch.id]?.let { selectMarker(it) }
+
     // Set the text truncated in the edit text
     val searchTextView = binding.searchAutocompleteTextView
     val width: Int = searchTextView.measuredWidth -
@@ -250,11 +262,12 @@ class SearchFragment : Fragment() {
       searchTextView.setText(truncatedText)
     }
 
-    markerMap[busStopSearch.id]?.showInfoWindow()
     googleMap?.animateToLatLng(
       latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
       zoom = MAP_ZOOM
-    )
+    ) {
+      viewModel.onMarkerCentered(busStopSearch)
+    }
   }
 
   private fun clearSearchText() {

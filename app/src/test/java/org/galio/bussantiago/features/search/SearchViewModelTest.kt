@@ -3,7 +3,8 @@ package org.galio.bussantiago.features.search
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
-import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.mapper.BusStopUiMapper
+import org.galio.bussantiago.common.model.BusStopUiModel
 import org.galio.bussantiago.core.SearchAllBusStops
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.framework.analytics.AnalyticsEvents
@@ -30,11 +31,14 @@ class SearchViewModelTest {
   private val executor = TestUseCaseExecutor()
   private val searchAllBusStops = mock<SearchAllBusStops>()
   private val analyticsTracker = mock<AnalyticsTracker>()
+  private val busStopUiMapper = mock<BusStopUiMapper>()
   private val busStopsObserver = mock<Observer<Resource<List<BusStopSearch>>>>()
   private val searchEventObserver = mock<Observer<SearchEvent>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
 
-  private val searchViewModel = SearchViewModel(executor, searchAllBusStops, analyticsTracker)
+  private val searchViewModel = SearchViewModel(
+    executor, searchAllBusStops, analyticsTracker, busStopUiMapper
+  )
 
   @Before
   fun setUp() {
@@ -66,12 +70,25 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun `when onMapInfoWindowClicked should navigate with model received`() {
-    val busStopModel = mock<BusStopModel>()
+  fun `when onMarkerClicked should navigate to MapMarker with mapped model`() {
+    val busStopSearch = mock<BusStopSearch>()
+    val busStopUiModel = mock<BusStopUiModel>()
+    whenever(busStopUiMapper.map(busStopSearch)).thenReturn(busStopUiModel)
 
-    searchViewModel.onMapInfoWindowClicked(busStopModel)
+    searchViewModel.onMarkerClicked(busStopSearch)
 
-    verify(navEventObserver).onChanged(NavScreen.Times(busStopModel))
+    verify(navEventObserver).onChanged(NavScreen.MapMarker(busStopUiModel))
+  }
+
+  @Test
+  fun `when onMarkerCentered should navigate to MapMarker with mapped model`() {
+    val busStopSearch = mock<BusStopSearch>()
+    val busStopUiModel = mock<BusStopUiModel>()
+    whenever(busStopUiMapper.map(busStopSearch)).thenReturn(busStopUiModel)
+
+    searchViewModel.onMarkerCentered(busStopSearch)
+
+    verify(navEventObserver).onChanged(NavScreen.MapMarker(busStopUiModel))
   }
 
   @Test
@@ -125,22 +142,6 @@ class SearchViewModelTest {
     searchViewModel.init()
 
     verify(analyticsTracker).trackScreen(Screens.SEARCH)
-  }
-
-  @Test
-  fun `when a map info window is clicked should track the select stop event`() {
-    val busStopModel = BusStopModel("53", "As Pereiras")
-
-    searchViewModel.onMapInfoWindowClicked(busStopModel)
-
-    verify(analyticsTracker).trackEvent(
-      AnalyticsEvents.SELECT_STOP,
-      mapOf(
-        AnalyticsParams.ORIGIN to Screens.SEARCH,
-        AnalyticsParams.STOP_CODE to "53",
-        AnalyticsParams.STOP_NAME to "As Pereiras"
-      )
-    )
   }
 
   @Test

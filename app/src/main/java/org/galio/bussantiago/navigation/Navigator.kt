@@ -1,14 +1,18 @@
 package org.galio.bussantiago.navigation
 
 import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.common.model.BusStopUiModel
 import org.galio.bussantiago.features.favorites.FavoritesDialogFragment
 import org.galio.bussantiago.features.incidences.IncidencesFragmentArgs
 import org.galio.bussantiago.features.information.InformationFragmentArgs
+import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment
+import org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragmentArgs
 import org.galio.bussantiago.features.menu.MenuFragmentArgs
 import org.galio.bussantiago.features.stops.BusStopsArgs
 import org.galio.bussantiago.features.stops.BusStopsContainerFragmentArgs
@@ -25,6 +29,7 @@ sealed class NavScreen {
   data object About : NavScreen()
   data object Favorites : NavScreen()
   data object Exit : NavScreen()
+  data class MapMarker(val busStop: BusStopUiModel) : NavScreen()
 }
 
 class Navigator(
@@ -32,7 +37,17 @@ class Navigator(
   @VisibleForTesting
   internal val navControllerProvider: () -> NavController? = getNavController(fragment),
   @VisibleForTesting
-  internal val favoritesDialogFactory: () -> FavoritesDialogFragment = { FavoritesDialogFragment() }
+  internal val favoritesDialogFactory: () -> FavoritesDialogFragment =
+    {
+      FavoritesDialogFragment()
+    },
+  @VisibleForTesting
+  internal val mapMarkerDialogFactory: (BusStopUiModel) -> MapMarkerDialogFragment =
+    { busStop ->
+      MapMarkerDialogFragment().apply {
+        arguments = MapMarkerDialogFragmentArgs(busStopModel = busStop).toBundle()
+      }
+    }
 ) {
 
   fun navigate(navScreen: NavScreen) {
@@ -43,6 +58,11 @@ class Navigator(
           busStopCode = navScreen.busStopModel.code,
           busStopName = navScreen.busStopModel.name
         ).toBundle()
+      )
+
+      is NavScreen.MapMarker -> showBottomSheetDialog(
+        dialog = mapMarkerDialogFactory(navScreen.busStop),
+        tag = "MapMarkerBottomSheetFragment"
       )
 
       is NavScreen.BusStops -> navigateSafe(
@@ -75,9 +95,12 @@ class Navigator(
         resId = R.id.actionShowAbout
       )
 
-      is NavScreen.Favorites -> navigateToFavorites()
+      is NavScreen.Favorites -> showBottomSheetDialog(
+        dialog = favoritesDialogFactory(),
+        tag = "FavoritesDialogFragment"
+      )
 
-      is NavScreen.Exit ->  navControllerProvider()?.popBackStack()
+      is NavScreen.Exit -> navControllerProvider()?.popBackStack()
     }
   }
 
@@ -91,11 +114,14 @@ class Navigator(
     }
   }
 
-  // We need to treat this as a special case since
-  // Jetpack Navigation does not officially support BottomSheetDialogFragment
-  // as a <dialog> destination in the nav_graph.xml
-  private fun navigateToFavorites() {
-    favoritesDialogFactory().show(fragment.childFragmentManager, "FavoritesDialogFragment")
+  // We need to treat BottomSheetDialogFragment as a special case since
+  // Jetpack Navigation does not officially support it as a <dialog> destination
+  // in the nav_graph.xml — showing via childFragmentManager keeps interactions working.
+  private fun showBottomSheetDialog(dialog: DialogFragment, tag: String) {
+    // Guard against double-show (e.g., fast double-tap) which would cause
+    // an IllegalStateException since the fragment is already added.
+    if (fragment.childFragmentManager.findFragmentByTag(tag) != null) return
+    dialog.show(fragment.childFragmentManager, tag)
   }
 }
 
@@ -104,7 +130,7 @@ class Navigator(
 internal fun getNavController(fragment: Fragment): () -> NavController? = {
   try {
     fragment.view?.let { fragment.findNavController() }
-  } catch (e: IllegalStateException) {
+  } catch (_: IllegalStateException) {
     null
   }
 }

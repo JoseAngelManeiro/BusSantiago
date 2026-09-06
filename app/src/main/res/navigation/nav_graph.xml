@@ -56,8 +56,7 @@
 
   <fragment
     android:id="@+id/informationFragment"
-    android:name="org.galio.bussantiago.features.information.InformationFragment"
-    tools:layout="@layout/information_fragment">
+    android:name="org.galio.bussantiago.features.information.InformationFragment">
 
     <argument
       android:name="lineId"
@@ -110,5 +109,16 @@
   <action
     android:id="@+id/actionShowTimes"
     app:destination="@id/timesDialogFragment" />
+
+  <dialog
+    android:id="@+id/mapMarkerBottomSheetFragment"
+    android:name="org.galio.bussantiago.features.mapmarker.MapMarkerDialogFragment"
+    tools:layout="@layout/map_marker_bottom_sheet_content">
+
+    <argument
+      android:name="bus_stop_model"
+      app:argType="org.galio.bussantiago.common.model.BusStopUiModel" />
+
+  </dialog>
 
 </navigation>

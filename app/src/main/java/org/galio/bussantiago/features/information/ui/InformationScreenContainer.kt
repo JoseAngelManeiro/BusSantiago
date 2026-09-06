@@ -6,11 +6,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import org.galio.bussantiago.common.ErrorDialog
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.features.information.InformationUserInteractions
-
-import androidx.compose.ui.platform.testTag
 
 @Composable
 fun InformationScreenContainer(

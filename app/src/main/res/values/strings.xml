@@ -37,5 +37,7 @@
   <string name="favorite_bus_stops">Paradas favoritas</string>
   <string name="center_my_position_in_map">Centrar mi posición en el mapa</string>
   <string name="line_name">Línea %s</string>
+  <string name="map_bottom_sheet_stop_code">Parada %1$s</string>
+  <string name="map_bottom_sheet_see_arrivals">Ver tiempos de llegada</string>
 </resources>
 

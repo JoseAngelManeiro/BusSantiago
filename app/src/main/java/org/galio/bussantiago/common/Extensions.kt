@@ -19,8 +19,14 @@ fun GoogleMap.moveToLatLng(latLng: LatLng, zoom: Float) {
   moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
 }
 
-fun GoogleMap.animateToLatLng(latLng: LatLng, zoom: Float) {
-  animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, zoom)))
+fun GoogleMap.animateToLatLng(latLng: LatLng, zoom: Float, onFinish: (() -> Unit)? = null) {
+  animateCamera(
+    CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, zoom)),
+    object : GoogleMap.CancelableCallback {
+      override fun onFinish() { onFinish?.invoke() }
+      override fun onCancel() { onFinish?.invoke() }
+    }
+  )
 }
 
 fun AutoCompleteTextView.clearText() {
