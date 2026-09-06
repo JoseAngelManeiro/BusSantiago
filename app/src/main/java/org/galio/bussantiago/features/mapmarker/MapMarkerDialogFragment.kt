@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.BaseBottomSheetDialogFragment
 import org.galio.bussantiago.common.model.BusStopModel
-import org.galio.bussantiago.databinding.BottomSheetWrapperBinding
 import org.galio.bussantiago.databinding.MapMarkerBottomSheetContentBinding
 import org.galio.bussantiago.framework.analytics.AnalyticsEvents
 import org.galio.bussantiago.framework.analytics.AnalyticsParams
@@ -25,9 +24,6 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
     private const val LINES_GRID_SPAN_COUNT = 6
   }
 
-  private var _wrapperBinding: BottomSheetWrapperBinding? = null
-  private val wrapperBinding get() = _wrapperBinding!!
-
   private var _binding: MapMarkerBottomSheetContentBinding? = null
   private val binding get() = _binding!!
 
@@ -35,18 +31,11 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
   private val navigator: Navigator by lazy { Navigator(this) }
   private val analyticsTracker: AnalyticsTracker by inject()
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
+  override fun onCreateContentView(
+    inflater: LayoutInflater, container: ViewGroup
   ): View {
-    _wrapperBinding = BottomSheetWrapperBinding.inflate(inflater, container, false)
-    _binding = MapMarkerBottomSheetContentBinding.inflate(
-      inflater,
-      wrapperBinding.bottomSheetContentContainer,
-      true
-    )
-
-    return wrapperBinding.root
+    _binding = MapMarkerBottomSheetContentBinding.inflate(inflater, container, true)
+    return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,7 +76,6 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    _wrapperBinding = null
     _binding = null
   }
 }
