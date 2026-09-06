@@ -13,6 +13,7 @@ import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
+import org.galio.bussantiago.shared.SystemBarsHelper
 import org.galio.bussantiago.shared.TimeFormatter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,7 +37,10 @@ class TimesDialogFragment : DialogFragment() {
     dialog?.let { dialog ->
       val width = ViewGroup.LayoutParams.MATCH_PARENT
       val height = ViewGroup.LayoutParams.MATCH_PARENT
-      dialog.window?.setLayout(width, height)
+      dialog.window?.let { window ->
+        window.setLayout(width, height)
+        SystemBarsHelper.applyEdgeToEdgeWithScrims(window, binding.root)
+      }
     }
   }
 

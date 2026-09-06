@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import org.galio.bussantiago.R
 import org.galio.bussantiago.framework.ReviewsHelper
+import org.galio.bussantiago.shared.SystemBarsHelper
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.main_activity)
+
+    SystemBarsHelper.applyEdgeToEdgeWithScrims(
+      window,
+      findViewById(R.id.navHostFragment)
+    )
 
     // Let NavController automatically handle deep links when there is data
     if (intent?.data != null) {

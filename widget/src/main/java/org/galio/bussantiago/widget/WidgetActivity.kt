@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.galio.bussantiago.core.GetBusStopFavorites
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.shared.BusStopFavoritesAdapter
+import org.galio.bussantiago.shared.SystemBarsHelper
 import org.galio.bussantiago.widget.databinding.WidgetActivityBinding
 import org.koin.android.ext.android.inject
 
@@ -22,6 +23,8 @@ internal class WidgetActivity : AppCompatActivity() {
     binding = WidgetActivityBinding.inflate(layoutInflater)
     val view = binding.root
     setContentView(view)
+
+    SystemBarsHelper.applyEdgeToEdgeWithScrims(window, view)
 
     // First we set a default value
     setResult(RESULT_CANCELED)

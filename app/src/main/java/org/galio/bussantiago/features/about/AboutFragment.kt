@@ -9,6 +9,7 @@ import org.galio.bussantiago.R
 import org.galio.bussantiago.databinding.AboutFragmentBinding
 import org.galio.bussantiago.framework.analytics.AnalyticsTracker
 import org.galio.bussantiago.framework.analytics.Screens
+import org.galio.bussantiago.shared.SystemBarsHelper
 import org.koin.android.ext.android.inject
 
 class AboutFragment : DialogFragment() {
@@ -27,7 +28,10 @@ class AboutFragment : DialogFragment() {
     dialog?.let { dialog ->
       val width = ViewGroup.LayoutParams.MATCH_PARENT
       val height = ViewGroup.LayoutParams.MATCH_PARENT
-      dialog.window?.setLayout(width, height)
+      dialog.window?.let { window ->
+        window.setLayout(width, height)
+        SystemBarsHelper.applyEdgeToEdgeWithScrims(window, binding.root)
+      }
     }
   }
 
