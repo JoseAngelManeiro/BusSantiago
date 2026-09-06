@@ -21,6 +21,10 @@ import org.koin.android.ext.android.inject
 
 class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
 
+  companion object {
+    private const val LINES_GRID_SPAN_COUNT = 6
+  }
+
   private var _wrapperBinding: BottomSheetWrapperBinding? = null
   private val wrapperBinding get() = _wrapperBinding!!
 
@@ -63,7 +67,7 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
       binding.linesTitleTextView.visibility = View.VISIBLE
       binding.linesRecyclerView.visibility = View.VISIBLE
 
-      binding.linesRecyclerView.layoutManager = GridLayoutManager(requireContext(), 6)
+      binding.linesRecyclerView.layoutManager = GridLayoutManager(requireContext(), LINES_GRID_SPAN_COUNT)
       binding.linesRecyclerView.adapter = LinesBadgeAdapter(busStop.lines)
     }
 
