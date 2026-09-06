@@ -33,12 +33,10 @@ import org.galio.bussantiago.common.disableMapButtons
 import org.galio.bussantiago.common.handleException
 import org.galio.bussantiago.common.hideKeyboard
 import org.galio.bussantiago.common.initActionBar
-import org.galio.bussantiago.common.mapper.BusStopUiMapper
 import org.galio.bussantiago.common.moveToLatLng
 import org.galio.bussantiago.common.showKeyboard
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.databinding.SearchFragmentBinding
-import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,7 +51,6 @@ class SearchFragment : Fragment() {
   internal val viewModel: SearchViewModel by viewModel()
   private val navigator: Navigator by lazy { Navigator(this) }
   private val searchUtils: SearchUtils by inject()
-  private val busStopUiMapper: BusStopUiMapper by inject()
 
   private var mapView: MapView? = null
   private var googleMap: GoogleMap? = null
@@ -154,7 +151,7 @@ class SearchFragment : Fragment() {
         val busStop = marker.tag as? BusStopSearch
         if (busStop != null) {
           selectMarker(marker)
-          navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStop)))
+          viewModel.onMarkerClicked(busStop)
         }
         true // Return true to consume the click and prevent default InfoWindow
       }
@@ -269,8 +266,7 @@ class SearchFragment : Fragment() {
       latLng = LatLng(busStopSearch.coordinates.latitude, busStopSearch.coordinates.longitude),
       zoom = MAP_ZOOM
     ) {
-      // Show Bottom Sheet instead of old InfoWindow
-      navigator.navigate(NavScreen.MapMarker(busStopUiMapper.map(busStopSearch)))
+      viewModel.onMarkerCentered(busStopSearch)
     }
   }
 

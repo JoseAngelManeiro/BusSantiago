@@ -11,8 +11,13 @@ import org.galio.bussantiago.common.BaseBottomSheetDialogFragment
 import org.galio.bussantiago.common.model.BusStopModel
 import org.galio.bussantiago.databinding.BottomSheetWrapperBinding
 import org.galio.bussantiago.databinding.MapMarkerBottomSheetContentBinding
+import org.galio.bussantiago.framework.analytics.AnalyticsEvents
+import org.galio.bussantiago.framework.analytics.AnalyticsParams
+import org.galio.bussantiago.framework.analytics.AnalyticsTracker
+import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.navigation.NavScreen
 import org.galio.bussantiago.navigation.Navigator
+import org.koin.android.ext.android.inject
 
 class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
 
@@ -24,6 +29,7 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
 
   private val args: MapMarkerDialogFragmentArgs by navArgs()
   private val navigator: Navigator by lazy { Navigator(this) }
+  private val analyticsTracker: AnalyticsTracker by inject()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +68,14 @@ class MapMarkerDialogFragment : BaseBottomSheetDialogFragment() {
     }
 
     binding.seeArrivalsButton.setOnClickListener {
+      analyticsTracker.trackEvent(
+        AnalyticsEvents.SELECT_STOP,
+        mapOf(
+          AnalyticsParams.ORIGIN to Screens.SEARCH,
+          AnalyticsParams.STOP_CODE to busStop.code,
+          AnalyticsParams.STOP_NAME to busStop.name
+        )
+      )
       navigator.navigate(NavScreen.Times(BusStopModel(busStop.code, busStop.name)))
       dismiss()
     }
