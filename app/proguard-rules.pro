@@ -32,6 +32,7 @@
 }
 
 # === Keep Parcelable classes ===
+-keep class org.galio.bussantiago.common.model.BusStopUiModel { *; }
 -keep class org.galio.bussantiago.common.model.BusStopModel { *; }
 -keep class org.galio.bussantiago.features.stops.BusStopsArgs { *; }
 
