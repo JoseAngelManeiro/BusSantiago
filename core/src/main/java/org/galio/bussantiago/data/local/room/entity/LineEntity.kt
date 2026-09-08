@@ -1,10 +1,10 @@
-package org.galio.bussantiago.data.local.room
+package org.galio.bussantiago.data.local.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "line")
-data class LineEntity(
+internal data class LineEntity(
   @PrimaryKey val id: Int,
   val code: String,
   val synoptic: String,

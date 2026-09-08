@@ -7,7 +7,7 @@ import org.galio.bussantiago.data.entity.BusStopRequest
 import org.galio.bussantiago.data.entity.BusStopSearchEntity
 import org.galio.bussantiago.data.exception.ServiceException
 import org.galio.bussantiago.data.local.room.BusStopDao
-import org.galio.bussantiago.data.local.room.BusStopEntity
+import org.galio.bussantiago.data.local.room.entity.BusStopEntity
 import org.galio.bussantiago.data.mapper.BusStopSearchMapper
 import org.galio.bussantiago.util.mock
 import org.galio.bussantiago.util.thenFailure

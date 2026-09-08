@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.core.model.Coordinates
 import org.galio.bussantiago.core.model.LineSearch
-import org.galio.bussantiago.data.local.room.BusStopEntity
+import org.galio.bussantiago.data.local.room.entity.BusStopEntity
 
 internal class BusStopRoomMapper : Mapper<BusStopEntity, BusStopSearch> {
 

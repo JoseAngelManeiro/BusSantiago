@@ -45,4 +45,4 @@
 -keep class org.galio.bussantiago.data.entity.** { *; }
 
 # Keep Room database entities
--keep class org.galio.bussantiago.data.local.room.** { *; }
+-keep class org.galio.bussantiago.data.local.room.entity.** { *; }

@@ -3,7 +3,7 @@ package org.galio.bussantiago.data.mapper
 import org.galio.bussantiago.core.model.BusStopSearch
 import org.galio.bussantiago.core.model.Coordinates
 import org.galio.bussantiago.core.model.LineSearch
-import org.galio.bussantiago.data.local.room.BusStopEntity
+import org.galio.bussantiago.data.local.room.entity.BusStopEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

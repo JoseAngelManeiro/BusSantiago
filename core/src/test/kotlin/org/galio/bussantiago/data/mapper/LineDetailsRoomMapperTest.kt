@@ -1,8 +1,7 @@
 package org.galio.bussantiago.data.mapper
 
 import org.galio.bussantiago.core.model.LineDetails
-import org.galio.bussantiago.core.model.Route
-import org.galio.bussantiago.data.local.room.LineDetailsEntity
+import org.galio.bussantiago.data.local.room.entity.LineDetailsEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

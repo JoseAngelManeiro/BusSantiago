@@ -17,7 +17,7 @@ import org.mockito.kotlin.whenever
 import org.galio.bussantiago.data.local.room.LineDetailsDao
 import org.galio.bussantiago.data.mapper.LineDetailsRoomMapper
 import org.mockito.kotlin.any
-import org.galio.bussantiago.data.local.room.LineDetailsEntity as RoomLineDetailsEntity
+import org.galio.bussantiago.data.local.room.entity.LineDetailsEntity as RoomLineDetailsEntity
 
 class LineDetailsRepositoryTest {
 
