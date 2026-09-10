@@ -44,5 +44,8 @@
 # Keep models used in API calls
 -keep class org.galio.bussantiago.data.entity.** { *; }
 
+# Keep core models serialized into Room using Gson
+-keep class org.galio.bussantiago.core.model.** { *; }
+
 # Keep Room database entities
 -keep class org.galio.bussantiago.data.local.room.entity.** { *; }
