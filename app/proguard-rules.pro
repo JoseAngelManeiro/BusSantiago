@@ -54,7 +54,7 @@
 -keepattributes Exceptions
 
 # === Optional: Keep all annotations for debugging, reflection, or DI ===
--keepattributes RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations, Signature
 
 -dontwarn org.conscrypt.Conscrypt$Version
 -dontwarn org.conscrypt.Conscrypt
