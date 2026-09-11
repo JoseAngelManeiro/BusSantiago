@@ -35,9 +35,6 @@
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
-# Retain generic signatures of TypeToken and its subclasses
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 -keepattributes Signature
 -keepattributes *Annotation*
@@ -47,9 +44,6 @@
 
 # Keep models used in API calls
 -keep class org.galio.bussantiago.data.entity.** { *; }
-
-# Keep core models serialized into Room using Gson
--keep class org.galio.bussantiago.core.model.** { *; }
 
 # Keep Room database entities
 -keep class org.galio.bussantiago.data.local.room.entity.** { *; }
