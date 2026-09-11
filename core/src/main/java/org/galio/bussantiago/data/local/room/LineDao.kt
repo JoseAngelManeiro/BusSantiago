@@ -5,9 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import org.galio.bussantiago.data.local.room.entity.LineEntity
 
 @Dao
-interface LineDao {
+internal interface LineDao {
 
   @Query("SELECT * FROM line")
   fun getAll(): List<LineEntity>

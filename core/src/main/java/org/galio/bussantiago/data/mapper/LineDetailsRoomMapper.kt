@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.galio.bussantiago.core.model.LineDetails
 import org.galio.bussantiago.core.model.Route
-import org.galio.bussantiago.data.local.room.LineDetailsEntity
+import org.galio.bussantiago.data.local.room.entity.LineDetailsEntity
 
 internal class LineDetailsRoomMapper : Mapper<LineDetailsEntity, LineDetails> {
 

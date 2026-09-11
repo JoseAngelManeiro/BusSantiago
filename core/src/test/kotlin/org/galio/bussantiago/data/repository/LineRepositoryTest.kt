@@ -48,7 +48,7 @@ class LineRepositoryTest {
     whenever(cache.getAll()).thenFailure(mock())
     whenever(apiClient.getLines()).thenSuccess(lineEntities)
     whenever(mapper.toDomain(lineEntity)).thenReturn(line)
-    whenever(roomMapper.toEntity(any())).thenReturn(mock<org.galio.bussantiago.data.local.room.LineEntity>())
+    whenever(roomMapper.toEntity(any())).thenReturn(mock<org.galio.bussantiago.data.local.room.entity.LineEntity>())
 
     val result = repository.getLines()
 
@@ -73,7 +73,7 @@ class LineRepositoryTest {
   fun `when cache data is not valid and service fails but fallback exists should return fallback`() {
     val exception = ServiceException()
     val line = Line(1, "1", "syn", "name", "company", 1, "style")
-    val lineDbEntity = mock<org.galio.bussantiago.data.local.room.LineEntity>()
+    val lineDbEntity = mock<org.galio.bussantiago.data.local.room.entity.LineEntity>()
     whenever(cache.getAll()).thenFailure(mock())
     whenever(apiClient.getLines()).thenFailure(exception)
     whenever(lineDao.getAll()).thenReturn(listOf(lineDbEntity))

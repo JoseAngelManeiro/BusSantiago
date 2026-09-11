@@ -35,11 +35,20 @@
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
+
 -keepattributes Signature
 -keepattributes *Annotation*
+
+
+# Gson-TypeToken
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
 
 # Retrofit API interface
 -keep interface org.galio.bussantiago.data.api.ApiService
 
 # Keep models used in API calls
 -keep class org.galio.bussantiago.data.entity.** { *; }
+
+# Keep Room database entities
+-keep class org.galio.bussantiago.data.local.room.entity.** { *; }

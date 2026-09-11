@@ -32,6 +32,8 @@
 }
 
 # === Keep Parcelable classes ===
+-keep class org.galio.bussantiago.common.model.BusStopUiModel { *; }
+-keep class org.galio.bussantiago.common.model.LineUiModel { *; }
 -keep class org.galio.bussantiago.common.model.BusStopModel { *; }
 -keep class org.galio.bussantiago.features.stops.BusStopsArgs { *; }
 
@@ -52,7 +54,7 @@
 -keepattributes Exceptions
 
 # === Optional: Keep all annotations for debugging, reflection, or DI ===
--keepattributes RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations, Signature
 
 -dontwarn org.conscrypt.Conscrypt$Version
 -dontwarn org.conscrypt.Conscrypt

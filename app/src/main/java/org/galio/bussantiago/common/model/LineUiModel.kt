@@ -4,10 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class BusStopUiModel(
-  val code: String,
-  val name: String,
-  val lines: List<LineUiModel>
+data class LineUiModel(
+  val synoptic: String,
+  val style: String
 ) : Parcelable
-
-
