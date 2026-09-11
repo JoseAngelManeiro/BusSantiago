@@ -39,6 +39,11 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 
+
+# Gson-TypeToken
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+
 # Retrofit API interface
 -keep interface org.galio.bussantiago.data.api.ApiService
 
