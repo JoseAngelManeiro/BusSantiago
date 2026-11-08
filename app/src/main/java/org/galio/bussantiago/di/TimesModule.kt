@@ -18,7 +18,8 @@ val timesModule = module {
       addBusStopFavorite = get(),
       removeBusStopFavorite = get(),
       timesFactory = TimesFactory(),
-      analyticsTracker = get()
+      analyticsTracker = get(),
+      timeFormatter = get()
     )
   }
 }

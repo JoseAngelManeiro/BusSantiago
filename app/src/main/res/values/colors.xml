@@ -2,4 +2,6 @@
 <resources>
   <color name="ic_launcher_background">#FFFFFF</color>
   <color name="tap_element">#c1c7d0</color>
+  <color name="last_updated_bg">#F5F5F5</color>
+  <color name="last_updated_text">#757575</color>
 </resources>

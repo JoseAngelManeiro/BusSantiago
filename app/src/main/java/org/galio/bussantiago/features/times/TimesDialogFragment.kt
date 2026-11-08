@@ -15,6 +15,7 @@ import org.galio.bussantiago.databinding.TimesDialogFragmentBinding
 import org.galio.bussantiago.framework.ReviewsHelper
 import org.galio.bussantiago.shared.SystemBarsHelper
 import org.galio.bussantiago.shared.TimeFormatter
+import org.galio.bussantiago.shared.R as sharedR
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -68,6 +69,8 @@ class TimesDialogFragment : DialogFragment() {
 
     setUpFavoriteButton()
 
+    setUpSwipeRefresh()
+
     viewModel.setArgs(busStopModel.code, busStopModel.name)
 
     setUpObservers()
@@ -85,7 +88,10 @@ class TimesDialogFragment : DialogFragment() {
         inflateMenu(R.menu.times_menu)
         setOnMenuItemClickListener {
           if (it.itemId == R.id.sync_action) {
-            if (!timesAreLoading()) viewModel.loadTimes()
+            if (!timesAreLoading()) {
+              binding.swipeRefreshLayout.isRefreshing = true
+              viewModel.loadTimes()
+            }
             true
           } else {
             false
@@ -101,19 +107,32 @@ class TimesDialogFragment : DialogFragment() {
     }
   }
 
+  private fun setUpSwipeRefresh() {
+    with(binding.swipeRefreshLayout) {
+      setColorSchemeResources(sharedR.color.colorPrimary, sharedR.color.colorAccent)
+      setOnRefreshListener {
+        viewModel.loadTimes()
+      }
+    }
+  }
+
   private fun setUpObservers() {
     viewModel.lineRemainingTimeModels.observe(viewLifecycleOwner) { resource ->
       resource.fold(
         onLoading = {
-          binding.progressBar.visibility = View.VISIBLE
+          if (!binding.swipeRefreshLayout.isRefreshing) {
+            binding.progressBar.visibility = View.VISIBLE
+          }
         },
         onError = {
           binding.progressBar.visibility = View.GONE
+          binding.swipeRefreshLayout.isRefreshing = false
           handleException(it) { viewModel.loadTimes() }
         },
         onSuccess = { times ->
           with(binding) {
             progressBar.visibility = View.GONE
+            swipeRefreshLayout.isRefreshing = false
             if (times.isEmpty()) {
               timesRecyclerView.visibility = View.GONE
               noInfoTextView.visibility = View.VISIBLE
@@ -126,6 +145,13 @@ class TimesDialogFragment : DialogFragment() {
           }
         }
       )
+    }
+
+    viewModel.lastUpdatedTime.observe(viewLifecycleOwner) { time ->
+      with(binding) {
+        lastUpdatedContainer.visibility = View.VISIBLE
+        lastUpdatedTextView.text = getString(R.string.last_updated, time)
+      }
     }
 
     viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
@@ -142,7 +168,7 @@ class TimesDialogFragment : DialogFragment() {
   }
 
   private fun timesAreLoading(): Boolean {
-    return binding.progressBar.isVisible
+    return binding.progressBar.isVisible || binding.swipeRefreshLayout.isRefreshing
   }
 
   override fun onDestroyView() {

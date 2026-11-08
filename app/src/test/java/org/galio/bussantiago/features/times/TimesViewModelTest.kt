@@ -14,6 +14,7 @@ import org.galio.bussantiago.framework.analytics.AnalyticsParams
 import org.galio.bussantiago.framework.analytics.AnalyticsTracker
 import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.TimeFormatter
 import org.galio.bussantiago.shared.TimesFactory
 import org.galio.bussantiago.util.TestUseCaseExecutor
 import org.galio.bussantiago.util.mock
@@ -25,6 +26,7 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.kotlin.any
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 class TimesViewModelTest {
@@ -43,8 +45,10 @@ class TimesViewModelTest {
   private val removeBusStopFavorite = mock<RemoveBusStopFavorite>()
   private val timesFactory = mock<TimesFactory>()
   private val analyticsTracker = mock<AnalyticsTracker>()
+  private val timeFormatter = mock<TimeFormatter>()
   private val timesObserver = mock<Observer<Resource<List<LineRemainingTimeModel>>>>()
   private val favoriteObserver = mock<Observer<Boolean>>()
+  private val lastUpdatedObserver = mock<Observer<String>>()
 
   private lateinit var viewModel: TimesViewModel
 
@@ -57,7 +61,8 @@ class TimesViewModelTest {
       addBusStopFavorite,
       removeBusStopFavorite,
       timesFactory,
-      analyticsTracker
+      analyticsTracker,
+      timeFormatter
     )
     viewModel.setArgs(busStopCode, busStopName)
   }
@@ -174,5 +179,31 @@ class TimesViewModelTest {
         AnalyticsParams.IS_FAVORITE to false
       )
     )
+  }
+
+  @Test
+  fun `when load times succeeds, last updated time is updated`() {
+    val busStopRemainingTimesStub = mock<BusStopRemainingTimes>()
+    val lineRemainingTimeModelsStub = mock<List<LineRemainingTimeModel>>()
+    whenever(getBusStopRemainingTimes(busStopCode)).thenSuccess(busStopRemainingTimesStub)
+    whenever(timesFactory.createLineRemainingTimeModels(busStopRemainingTimesStub))
+      .thenReturn(lineRemainingTimeModelsStub)
+    whenever(timeFormatter.formatTime(any())).thenReturn("12:30")
+    viewModel.lastUpdatedTime.observeForever(lastUpdatedObserver)
+
+    viewModel.loadTimes()
+
+    verify(lastUpdatedObserver).onChanged("12:30")
+  }
+
+  @Test
+  fun `when load times fails, last updated time is not updated`() {
+    val exception = mock<Exception>()
+    whenever(getBusStopRemainingTimes(busStopCode)).thenFailure(exception)
+    viewModel.lastUpdatedTime.observeForever(lastUpdatedObserver)
+
+    viewModel.loadTimes()
+
+    verifyNoInteractions(lastUpdatedObserver)
   }
 }

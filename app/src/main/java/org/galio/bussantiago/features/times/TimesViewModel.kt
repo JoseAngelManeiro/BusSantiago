@@ -15,6 +15,7 @@ import org.galio.bussantiago.framework.analytics.AnalyticsParams
 import org.galio.bussantiago.framework.analytics.AnalyticsTracker
 import org.galio.bussantiago.framework.analytics.Screens
 import org.galio.bussantiago.shared.LineRemainingTimeModel
+import org.galio.bussantiago.shared.TimeFormatter
 import org.galio.bussantiago.shared.TimesFactory
 
 class TimesViewModel(
@@ -24,7 +25,8 @@ class TimesViewModel(
   private val addBusStopFavorite: AddBusStopFavorite,
   private val removeBusStopFavorite: RemoveBusStopFavorite,
   private val timesFactory: TimesFactory,
-  private val analyticsTracker: AnalyticsTracker
+  private val analyticsTracker: AnalyticsTracker,
+  private val timeFormatter: TimeFormatter
 ) : BaseViewModel(executor) {
 
   private lateinit var busStopCode: String
@@ -32,11 +34,14 @@ class TimesViewModel(
 
   private val _lineRemainingTimeModels = MutableLiveData<Resource<List<LineRemainingTimeModel>>>()
   private val _isFavorite = MutableLiveData<Boolean>()
+  private val _lastUpdatedTime = MutableLiveData<String>()
 
   val lineRemainingTimeModels: LiveData<Resource<List<LineRemainingTimeModel>>>
     get() = _lineRemainingTimeModels
   val isFavorite: LiveData<Boolean>
     get() = _isFavorite
+  val lastUpdatedTime: LiveData<String>
+    get() = _lastUpdatedTime
 
   fun setArgs(busStopCode: String, busStopName: String) {
     this.busStopCode = busStopCode
@@ -55,6 +60,7 @@ class TimesViewModel(
       useCase = { getBusStopRemainingTimes(busStopCode) },
       onSuccess = { times ->
         val models = timesFactory.createLineRemainingTimeModels(times)
+        _lastUpdatedTime.value = timeFormatter.formatTime()
         _lineRemainingTimeModels.value = Resource.success(models)
       },
       onError = {
