@@ -26,4 +26,13 @@ class TimeFormatterTest {
   fun `if there are more than 60 minutes until next arrival, formatted time is returned`() {
     assertEquals("1 h 15 min", timeFormatter.getDescription(75))
   }
+
+  @Test
+  fun `formatTime returns the expected HH mm string`() {
+    val calendar = java.util.Calendar.getInstance().apply {
+      set(java.util.Calendar.HOUR_OF_DAY, 14)
+      set(java.util.Calendar.MINUTE, 30)
+    }
+    assertEquals("14:30", timeFormatter.formatTime(calendar.time))
+  }
 }

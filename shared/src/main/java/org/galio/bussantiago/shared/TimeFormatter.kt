@@ -1,5 +1,9 @@
 package org.galio.bussantiago.shared
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 class TimeFormatter {
 
   fun getDescription(minutesUntilNextArrival: Int): String {
@@ -13,6 +17,11 @@ class TimeFormatter {
       }
       else -> "$minutesUntilNextArrival min"
     }
+  }
+
+  fun formatTime(date: Date = Date()): String {
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return formatter.format(date)
   }
 }
 
