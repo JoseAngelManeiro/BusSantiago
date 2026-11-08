@@ -4,4 +4,7 @@
   <color name="colorPrimaryDark">#0288D1</color>//Light Blue 700
   <color name="colorSecondary" tools:ignore="UnusedResources">#4FC3F7</color>//Light Blue 300
   <color name="colorAccent">#FF6E40</color>//Deep Orange A200
+  <color name="last_updated_bg">#F5F5F5</color>
+  <color name="last_updated_text">#757575</color>
+  <color name="tap_element">#C1C7D0</color>
 </resources>

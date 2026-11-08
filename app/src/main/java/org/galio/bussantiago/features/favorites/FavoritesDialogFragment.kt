@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import org.galio.bussantiago.R
 import org.galio.bussantiago.common.BaseBottomSheetDialogFragment
 import org.galio.bussantiago.databinding.FavoritesDialogFragmentBinding
@@ -46,10 +45,16 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
             noFavoritesTextView.visibility = View.VISIBLE
           } else {
             noFavoritesTextView.visibility = View.GONE
-            favoritesRecyclerView.adapter = BusStopFavoritesAdapter(busStopFavorites) {
-              viewModel.onBusStopFavoriteClick(it)
-              dismiss()
-            }
+            favoritesRecyclerView.adapter = BusStopFavoritesAdapter(
+              items = busStopFavorites,
+              onUndoListener = { busStopFavorite ->
+                viewModel.addBusStopFavorite(busStopFavorite)
+              },
+              listener = {
+                viewModel.onBusStopFavoriteClick(it)
+                dismiss()
+              }
+            )
           }
         }
       }
@@ -72,6 +77,18 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
       0,
       ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
+      override fun getSwipeDirs(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+      ): Int {
+        val position = viewHolder.adapterPosition
+        val adapter = binding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter
+        if (adapter != null && adapter.isUndoItem(position)) {
+          return 0
+        }
+        return super.getSwipeDirs(recyclerView, viewHolder)
+      }
+
       override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -81,28 +98,19 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
         val adapter = binding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter ?: return
-        val deletedItem = adapter.removeItem(position) ?: return
+        if (adapter.isUndoItem(position)) return
+        val deletedItem = adapter.showUndo(position) ?: return
         viewModel.removeBusStopFavorite(deletedItem)
-        if (adapter.itemCount == 0) {
-          binding.noFavoritesTextView.visibility = View.VISIBLE
-        }
 
-        val snackbar = Snackbar.make(
-          binding.root,
-          R.string.favorite_stop_removed,
-          Snackbar.LENGTH_LONG
-        ).setAction(R.string.undo) {
-          adapter.addItem(position, deletedItem)
-          viewModel.addBusStopFavorite(deletedItem)
-          binding.noFavoritesTextView.visibility = View.GONE
-          binding.favoritesRecyclerView.scrollToPosition(position)
-        }
-        val params = snackbar.view.layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
-        params?.gravity = android.view.Gravity.TOP
-        val margin = (8 * resources.displayMetrics.density).toInt()
-        params?.setMargins(margin, margin, margin, margin)
-        snackbar.view.layoutParams = params
-        snackbar.show()
+        view?.postDelayed({
+          val undoPos = adapter.findUndoPosition(deletedItem)
+          if (undoPos != null) {
+            adapter.removePermanently(undoPos)
+            if (!adapter.hasVisibleFavorites()) {
+              binding.noFavoritesTextView.visibility = View.VISIBLE
+            }
+          }
+        }, 5000)
       }
 
       override fun onChildDraw(
@@ -114,6 +122,13 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
         actionState: Int,
         isCurrentlyActive: Boolean
       ) {
+        val position = viewHolder.adapterPosition
+        val adapter = binding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter
+        if (adapter != null && adapter.isUndoItem(position)) {
+          super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+          return
+        }
+
         val itemView = viewHolder.itemView
         val itemHeight = itemView.bottom - itemView.top
 

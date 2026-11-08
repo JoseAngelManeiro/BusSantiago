@@ -101,4 +101,50 @@ class BusStopFavoritesAdapterTest {
     assertEquals(item2, adapter.getItem(1))
     assertEquals(1, insertedPosition)
   }
+
+  @Test
+  fun `showUndo marks item as undo and notifies change`() {
+    val adapter = BusStopFavoritesAdapter(listOf(item1, item2)) {}
+    var changedPos = -1
+    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+        changedPos = positionStart
+      }
+    })
+
+    val undoItem = adapter.showUndo(0)
+
+    assertEquals(item1, undoItem)
+    assertEquals(true, adapter.isUndoItem(0))
+    assertEquals(false, adapter.isUndoItem(1))
+    assertEquals(0, changedPos)
+  }
+
+  @Test
+  fun `restore marks undo item as normal content and notifies change`() {
+    val adapter = BusStopFavoritesAdapter(listOf(item1, item2)) {}
+    adapter.showUndo(0)
+
+    var changedPos = -1
+    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+      override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+        changedPos = positionStart
+      }
+    })
+
+    val restoredItem = adapter.restore(0)
+
+    assertEquals(item1, restoredItem)
+    assertEquals(false, adapter.isUndoItem(0))
+    assertEquals(0, changedPos)
+  }
+
+  @Test
+  fun `findUndoPosition returns correct index for undo item`() {
+    val adapter = BusStopFavoritesAdapter(listOf(item1, item2, item3)) {}
+    adapter.showUndo(1)
+
+    assertEquals(1, adapter.findUndoPosition(item2))
+    assertNull(adapter.findUndoPosition(item1))
+  }
 }
