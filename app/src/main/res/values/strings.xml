@@ -40,5 +40,7 @@
   <string name="map_bottom_sheet_stop_code">Parada %1$s</string>
   <string name="map_bottom_sheet_see_arrivals">Ver tiempos de llegada</string>
   <string name="last_updated">Actualizado a las %s</string>
+  <string name="favorite_stop_removed">Parada eliminada de favoritos</string>
+  <string name="undo">Deshacer</string>
 </resources>
 

@@ -10,6 +10,8 @@ val favoritesModule = module {
     FavoritesViewModel(
       executor = get(),
       getBusStopFavorites = get(),
+      removeBusStopFavoriteUseCase = get(),
+      addBusStopFavoriteUseCase = get(),
       analyticsTracker = get()
     )
   }

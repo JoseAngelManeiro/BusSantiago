@@ -6,7 +6,9 @@ import org.galio.bussantiago.common.BaseViewModel
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.SingleLiveEvent
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.core.AddBusStopFavorite
 import org.galio.bussantiago.core.GetBusStopFavorites
+import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.executor.UseCaseExecutor
 import org.galio.bussantiago.framework.analytics.AnalyticsEvents
@@ -18,6 +20,8 @@ import org.galio.bussantiago.navigation.NavScreen
 class FavoritesViewModel(
   private val executor: UseCaseExecutor,
   private val getBusStopFavorites: GetBusStopFavorites,
+  private val removeBusStopFavoriteUseCase: RemoveBusStopFavorite,
+  private val addBusStopFavoriteUseCase: AddBusStopFavorite,
   private val analyticsTracker: AnalyticsTracker
 ) : BaseViewModel(executor) {
 
@@ -52,5 +56,29 @@ class FavoritesViewModel(
 
     val busStopModel = BusStopModel(busStopFavorite.code, busStopFavorite.name)
     _navigationEvent.value = NavScreen.Times(busStopModel)
+  }
+
+  fun removeBusStopFavorite(busStopFavorite: BusStopFavorite) {
+    analyticsTracker.trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to busStopFavorite.code,
+        AnalyticsParams.STOP_NAME to busStopFavorite.name,
+        AnalyticsParams.IS_FAVORITE to false
+      )
+    )
+    executor(useCase = { removeBusStopFavoriteUseCase(busStopFavorite) })
+  }
+
+  fun addBusStopFavorite(busStopFavorite: BusStopFavorite) {
+    analyticsTracker.trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to busStopFavorite.code,
+        AnalyticsParams.STOP_NAME to busStopFavorite.name,
+        AnalyticsParams.IS_FAVORITE to true
+      )
+    )
+    executor(useCase = { addBusStopFavoriteUseCase(busStopFavorite) })
   }
 }
