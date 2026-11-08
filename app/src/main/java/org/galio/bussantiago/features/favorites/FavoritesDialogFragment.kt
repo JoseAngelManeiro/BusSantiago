@@ -87,14 +87,22 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
           binding.noFavoritesTextView.visibility = View.VISIBLE
         }
 
-        Snackbar.make(binding.root, R.string.favorite_stop_removed, Snackbar.LENGTH_SHORT)
-          .setAction(R.string.undo) {
-            adapter.addItem(position, deletedItem)
-            viewModel.addBusStopFavorite(deletedItem)
-            binding.noFavoritesTextView.visibility = View.GONE
-            binding.favoritesRecyclerView.scrollToPosition(position)
-          }
-          .show()
+        val snackbar = Snackbar.make(
+          binding.root,
+          R.string.favorite_stop_removed,
+          Snackbar.LENGTH_LONG
+        ).setAction(R.string.undo) {
+          adapter.addItem(position, deletedItem)
+          viewModel.addBusStopFavorite(deletedItem)
+          binding.noFavoritesTextView.visibility = View.GONE
+          binding.favoritesRecyclerView.scrollToPosition(position)
+        }
+        val params = snackbar.view.layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
+        params?.gravity = android.view.Gravity.TOP
+        val margin = (8 * resources.displayMetrics.density).toInt()
+        params?.setMargins(margin, margin, margin, margin)
+        snackbar.view.layoutParams = params
+        snackbar.show()
       }
 
       override fun onChildDraw(
