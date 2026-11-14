@@ -4,24 +4,32 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.withClip
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import org.galio.bussantiago.R
 
+/**
+ * An [ItemTouchHelper.SimpleCallback] implementation that adds a swipe-to-delete gesture to a [RecyclerView].
+ *
+ * It draws a red background with a centered trash icon behind the item being swiped in either direction
+ * (left or right) and clips the drawing to the swipe distance.
+ *
+ * @param context The [Context] used to resolve drawables and color resources.
+ * @param isItemSwipable Optional lambda returning whether an item at the given adapter position can be swiped.
+ * @param onSwipedAction Callback invoked with the adapter position and swipe direction when an item is swiped.
+ */
 open class SwipeToDeleteCallback(
   context: Context,
-  @DrawableRes iconResId: Int,
-  @ColorRes backgroundColorResId: Int,
   private val isItemSwipable: (position: Int) -> Boolean = { true },
   private val onSwipedAction: (position: Int, direction: Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-  private val deleteIcon: Drawable? = ContextCompat.getDrawable(context, iconResId)
-  private val deleteBackground: ColorDrawable = ContextCompat.getColor(context, backgroundColorResId).toDrawable()
+  private val deleteIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_delete)
+  private val deleteBackground: ColorDrawable =
+    ContextCompat.getColor(context, R.color.swipe_delete_background).toDrawable()
 
   override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
     val position = viewHolder.adapterPosition

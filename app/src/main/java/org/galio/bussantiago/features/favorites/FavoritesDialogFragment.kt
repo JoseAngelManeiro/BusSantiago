@@ -70,8 +70,6 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
   private fun setupRecyclerView() {
     val swipeHandler = SwipeToDeleteCallback(
       context = requireContext(),
-      iconResId = R.drawable.ic_delete,
-      backgroundColorResId = R.color.swipe_delete_background,
       isItemSwipable = { position ->
         val adapter = binding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter
         adapter != null && !adapter.isUndoItem(position)
