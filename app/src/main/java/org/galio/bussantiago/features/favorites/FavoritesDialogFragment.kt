@@ -19,6 +19,10 @@ import androidx.core.graphics.withClip
 
 class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
 
+  companion object {
+    private const val UNDO_TIMEOUT_MS = 3000L
+  }
+
   private var _binding: FavoritesDialogFragmentBinding? = null
   private val binding get() = _binding!!
 
@@ -110,7 +114,7 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
               binding.noFavoritesTextView.visibility = View.VISIBLE
             }
           }
-        }, 5000)
+        }, UNDO_TIMEOUT_MS)
       }
 
       override fun onChildDraw(
