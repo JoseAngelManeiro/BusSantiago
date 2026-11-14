@@ -101,17 +101,20 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
 
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        val adapter = binding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter ?: return
-        if (adapter.isUndoItem(position)) return
-        val deletedItem = adapter.showUndo(position) ?: return
+        val bindingRef = _binding ?: return
+        val currentAdapter = bindingRef.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter ?: return
+        if (currentAdapter.isUndoItem(position)) return
+        val deletedItem = currentAdapter.showUndo(position) ?: return
         viewModel.removeBusStopFavorite(deletedItem)
 
         view?.postDelayed({
+          val currentBinding = _binding ?: return@postDelayed
+          val adapter = currentBinding.favoritesRecyclerView.adapter as? BusStopFavoritesAdapter ?: return@postDelayed
           val undoPos = adapter.findUndoPosition(deletedItem)
           if (undoPos != null) {
             adapter.removePermanently(undoPos)
             if (!adapter.hasVisibleFavorites()) {
-              binding.noFavoritesTextView.visibility = View.VISIBLE
+              currentBinding.noFavoritesTextView.visibility = View.VISIBLE
             }
           }
         }, UNDO_TIMEOUT_MS)
@@ -181,6 +184,7 @@ class FavoritesDialogFragment : BaseBottomSheetDialogFragment() {
   }
 
   override fun onDestroyView() {
+    _binding?.root?.removeCallbacks(null)
     super.onDestroyView()
     _binding = null
   }
