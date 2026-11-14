@@ -5,5 +5,7 @@
   <string name="app_scheme">bussantiago</string>
   <string name="times_host">times</string>
   <string name="times_deeplink_pattern">bussantiago://times/{bus_stop_code}/{bus_stop_name}</string>
+  <string name="favorite_stop_removed">Parada eliminada de favoritos</string>
+  <string name="undo">Deshacer</string>
 </resources>
 

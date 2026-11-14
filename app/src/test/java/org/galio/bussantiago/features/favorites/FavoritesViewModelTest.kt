@@ -4,7 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import org.galio.bussantiago.common.Resource
 import org.galio.bussantiago.common.model.BusStopModel
+import org.galio.bussantiago.core.AddBusStopFavorite
 import org.galio.bussantiago.core.GetBusStopFavorites
+import org.galio.bussantiago.core.RemoveBusStopFavorite
 import org.galio.bussantiago.core.model.BusStopFavorite
 import org.galio.bussantiago.framework.analytics.AnalyticsEvents
 import org.galio.bussantiago.framework.analytics.AnalyticsParams
@@ -29,6 +31,8 @@ class FavoritesViewModelTest {
 
   private val executor = TestUseCaseExecutor()
   private val getBusStopFavorites = mock<GetBusStopFavorites>()
+  private val removeBusStopFavorite = mock<RemoveBusStopFavorite>()
+  private val addBusStopFavorite = mock<AddBusStopFavorite>()
   private val analyticsTracker = mock<AnalyticsTracker>()
   private val favoritesObserver = mock<Observer<Resource<List<BusStopFavorite>>>>()
   private val navEventObserver = mock<Observer<NavScreen>>()
@@ -37,7 +41,13 @@ class FavoritesViewModelTest {
 
   @Before
   fun setUp() {
-    viewModel = FavoritesViewModel(executor, getBusStopFavorites, analyticsTracker)
+    viewModel = FavoritesViewModel(
+      executor,
+      getBusStopFavorites,
+      removeBusStopFavorite,
+      addBusStopFavorite,
+      analyticsTracker
+    )
     viewModel.favoriteModels.observeForever(favoritesObserver)
     viewModel.navigationEvent.observeForever(navEventObserver)
   }
@@ -96,5 +106,59 @@ class FavoritesViewModelTest {
         AnalyticsParams.STOP_NAME to "As Pereiras"
       )
     )
+  }
+
+  @Test
+  fun `when removeBusStopFavorite is called should track toggle favorite event`() {
+    val busStopFavorite = BusStopFavorite("53", "As Pereiras")
+    whenever(removeBusStopFavorite(busStopFavorite)).thenSuccess(Unit)
+
+    viewModel.removeBusStopFavorite(busStopFavorite)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to "53",
+        AnalyticsParams.STOP_NAME to "As Pereiras",
+        AnalyticsParams.IS_FAVORITE to false
+      )
+    )
+  }
+
+  @Test
+  fun `when removeBusStopFavorite is called should invoke removeBusStopFavorite use case`() {
+    val busStopFavorite = BusStopFavorite("53", "As Pereiras")
+    whenever(removeBusStopFavorite(busStopFavorite)).thenSuccess(Unit)
+
+    viewModel.removeBusStopFavorite(busStopFavorite)
+
+    verify(removeBusStopFavorite).invoke(busStopFavorite)
+  }
+
+  @Test
+  fun `when addBusStopFavorite is called should track toggle favorite event`() {
+    val busStopFavorite = BusStopFavorite("53", "As Pereiras")
+    whenever(addBusStopFavorite(busStopFavorite)).thenSuccess(Unit)
+
+    viewModel.addBusStopFavorite(busStopFavorite)
+
+    verify(analyticsTracker).trackEvent(
+      AnalyticsEvents.TOGGLE_FAVORITE,
+      mapOf(
+        AnalyticsParams.STOP_CODE to "53",
+        AnalyticsParams.STOP_NAME to "As Pereiras",
+        AnalyticsParams.IS_FAVORITE to true
+      )
+    )
+  }
+
+  @Test
+  fun `when addBusStopFavorite is called should invoke addBusStopFavorite use case`() {
+    val busStopFavorite = BusStopFavorite("53", "As Pereiras")
+    whenever(addBusStopFavorite(busStopFavorite)).thenSuccess(Unit)
+
+    viewModel.addBusStopFavorite(busStopFavorite)
+
+    verify(addBusStopFavorite).invoke(busStopFavorite)
   }
 }
